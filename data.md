@@ -25,7 +25,6 @@ let data = {
             memberIDs: {1, 2, 3, 6, 8},
             channelName: 'General',
             isPublic: true,
-            start: 0,
             adminIDs : {2, 3},
             messageIDs: {342, 234, 8442}
         }
