@@ -1,5 +1,10 @@
-function channelsCreateV1(authUserId, name, isPublic) {
+function channelsListV1(authUserId) {
     return {
-        channelId: 1
-    }
+        channels: [
+            {
+                channelId: 1,
+                name: 'My Channel',
+            }
+        ],
+    };
 }
