@@ -12,7 +12,7 @@ function channelMessagesV1(authUserId, channelId, start) {
 }      
 
 function channelInviteV1(authUserID, channelID, uID) {
-
+     return {}
 }
 
 function channelJoinV1(authUserID, channelID) {
