@@ -1,5 +1,5 @@
 function channelMessagesV1(authUserId, channelId, start) {
-    messages: [
+     return {messages: [
         {
           messageId: 1,
           uId: 1,
@@ -10,6 +10,7 @@ function channelMessagesV1(authUserId, channelId, start) {
         }
       ]
 }      
+}
 
 function channelInviteV1(authUserID, channelID, uID) {
 
