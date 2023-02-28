@@ -1,22 +1,26 @@
 function channelMessagesV1(authUserId, channelId, start) {
-    messages: [
-        {
-          messageId: 1,
-          uId: 1,
-          message: 'Hello world',
-          timeSent: 1582426789,
-          start: 0,
-          end: 50,
-        }
-      ]
+     return {
+          
+               messages: [
+                 {
+                   messageId: 1,
+                   uId: 1,
+                   message: 'Hello world',
+                   timeSent: 1582426789,
+                 }
+               ],
+               start: 0,
+               end: 50,
+             
 }      
+}
 
 function channelInviteV1(authUserID, channelID, uID) {
      return {}
 }
 
 function channelJoinV1(authUserID, channelID) {
-
+     return {}
 }
 
 function channelDetailsV1(authUserId, channelId) {
