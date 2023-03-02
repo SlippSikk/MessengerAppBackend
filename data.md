@@ -22,11 +22,19 @@ let data = {
     channelDetails: [
         {
             channelID: 6,
-            memberIDs: {1, 2, 3, 6, 8},
+            ownerID: 3,
+            adminIDs : [2, 3],
+            memberIDs: [1, 2, 3, 6, 8],
             channelName: 'General',
             isPublic: true,
-            adminIDs : {2, 3},
-            messageIDs: {342, 234, 8442}
+            messages: [{
+                messageID: 342, 
+                SenderID: 234, 
+                ResponseID: [8442, 65, 764],
+                Time: "10:47",
+                Content: "Hi my name is Chris",
+                reacts: {},
+            },],
         }
     ],
 
