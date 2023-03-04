@@ -46,6 +46,7 @@ function authRegisterV1(email, password, nameFirst, nameLast) {
         nameFirst: nameFirst,
         nameLast: nameLast,
         handleStr: nameConcat,
+        password: password,
     };
 
     data.users.push(user);
