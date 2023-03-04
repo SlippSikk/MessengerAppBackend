@@ -1,5 +1,5 @@
 import { authRegisterV1, authLoginV1 } from './../auth.js'
-import { clearV1 } from './../'
+import { clearV1 } from './../other.js'
 
 // Registration:
 beforeEach(() => {
