@@ -9,3 +9,5 @@ function authLoginV1(email, password) {
         authUserId: 1,
     };
 }
+
+export { authRegisterV1, authLoginV1 };
