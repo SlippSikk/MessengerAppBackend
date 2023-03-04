@@ -10,7 +10,7 @@ beforeEach(() => {
 describe("Correct Login", () => {
     test('Correct Inputs', () => {
         const registered = authLoginV1('adam.baqaie@gmail.com', 'adam123')
-        expect(registered).toEqual({ authUserId: expect.any(Number) });
+        expect(registered).toStrictEqual({ authUserId: expect.any(Number) });
     });
 });
 
