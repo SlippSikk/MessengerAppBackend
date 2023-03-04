@@ -19,12 +19,12 @@ describe("Incorrect Login", () => {
         { testName: 'incorrect email', email: 'albert.kim@gmail.com', password: 'adam123' },
         { testName: 'incorrect password', email: 'adam.baqaie@gmail.com', password: 'hello1' },
     ])('Input has $testName', ({ email, password }) => {
-        expect(authLoginV1(email, password)).toBe({ error: expect.any(String) });
+        expect(authLoginV1(email, password)).toStrictEqual({ error: expect.any(String) });
     });
 
     test('No Users', () => {
         clearV1();
-        expect(authLoginV1('adam.b@gmail.com', 'password')).toBe({ error: expect.any(String) });
+        expect(authLoginV1('adam.b@gmail.com', 'password')).toStrictEqual({ error: expect.any(String) });
     })
 });
 
