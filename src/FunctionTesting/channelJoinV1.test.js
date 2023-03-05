@@ -21,27 +21,39 @@ beforeEach(() => {
 describe('Valid joining sequences', () => {
     test ('Global owner joins private channel', () => {
         expect(channelJoinV1(globalOwnerI, privateChannelID)).toEqual('')
-        expect(chanelDetailsV1(regularUserIDID, privateChannelID)).toEqual(
-            ["Private Channel", false, [regularOwnerID], [regularOwnerID, globalOwnerID]]
-        )
+        expect(chanelDetailsV1(regularUserIDID, privateChannelID)).toEqual({
+            name: "Private Channel",
+            isPublic: false,
+            ownerMembers: regularOwnerID,
+            allMembers: [regularOwnerID, globalOwnerID],
+        })
     });
 
     test ('Regular user joins public channel', () => {
         expect(channelJoinV1(regularUserID,publicChannelID)).toEqual('')
-        expect(chanelDetailsV1(regularUserID, publicChannelID)).toEqual(
-            ["Public Channel", true, [regularOwnerID], [regularOwnerID, regularUserID]]
-        )
+        expect(chanelDetailsV1(regularUserID, publicChannelID)).toEqual({
+            name: "Public Channel",
+            isPublic: true,
+            ownerMembers: regularOwnerID,
+            allMembers: [regularOwnerID, regularUserID],
+        })
     });
 
     test ('Regular user joins multiple channels', () => {
         expect(channelJoinV1(regularUserID,globalChannelID)).toEqual('')
         expect(channelJoinV1(regularUserID,publicChannelID)).toEqual('')
-        expect(chanelDetailsV1(regularUserID, publicChannelID)).toEqual(
-            ["Public Channel", true, [regularOwnerID], [regularOwnerID, regularUserID]]
-        )
-        expect(chanelDetailsV1(regularUserID, globalChannelID)).toEqual(
-            ["Global Channel", true, [globalOwnerID], [globalOwnerID, regularUserID]]
-        )
+        expect(chanelDetailsV1(regularUserID, publicChannelID)).toEqual({
+            name: "Public Channel",
+            isPublic: true,
+            ownerMembers: regularOwnerID,
+            allMembers: [regularOwnerID, regularUserID],
+        })
+        expect(chanelDetailsV1(regularUserID, globalChannelID)).toEqual({
+            name: "Global Channel",
+            isPublic: true,
+            ownerMembers: globalOwnerID,
+            allMembers: [globalOwnerID, regularUserID],
+        })
     });
 
 })
@@ -49,37 +61,52 @@ describe('Valid joining sequences', () => {
 describe('Invalid joining sequences', () => {
     test ('Regular user joins private channel', () => {
         expect(channelJoinV1(regularUserID, privateChannelID)).toEqual({error: 'error'})
-        expect(chanelDetailsV1(regularOwnerID, privateChannelID)).toEqual(
-            ["Private Channel", true, [regularOwnerID], [regularOwnerID]]
-        )
+        expect(chanelDetailsV1(regularOwnerID, privateChannelID)).toEqual({
+            name: "Private Channel",
+            isPublic: false,
+            ownerMembers: regularOwnerID,
+            allMembers: [regularOwnerID],
+        })
     });
 
     test ('Regular user joins multiple times', () => {
         expect(channelJoinV1(regularUserID,publicChannelID)).toEqual('')
         expect(channelJoinV1(regularUserID,publicChannelID)).toEqual({error: 'error'})
-        expect(chanelDetailsV1(regularUserID, publicChannelID)).toEqual(
-            ["Public Channel", true, [regularOwnerID], [regularOwnerID, regularUserID]]
-        )
+        expect(chanelDetailsV1(regularUserID, publicChannelID)).toEqual({
+            name: "Public Channel",
+            isPublic: true,
+            ownerMembers: regularOwnerID,
+            allMembers: [regularOwnerID, regularUserID],
+        })
     });
 
     test ('Owner rejoins channel', () => {
         expect(channelJoinV1(regularOwnerID,publicChannelID)).toEqual({error: 'error'})
-        expect(chanelDetailsV1(regularUserID, publicChannelID)).toEqual(
-            ["Public Channel", true, [regularOwnerID], [regularOwnerID]]
-        )
+        expect(chanelDetailsV1(regularUserID, publicChannelID)).toEqual({
+            name: "Public Channel",
+            isPublic: true,
+            ownerMembers: regularOwnerID,
+            allMembers: [regularOwnerID],
+        })
     });
 
     test ('Invalid userID', () => {
         expect(channelJoinV1('abc', publicChannelID)).toEqual({error: 'error'})
-        expect(chanelDetailsV1(regularOwnerID, publicChannelID)).toEqual(
-            ["Public Channel", true, [regularOwnerID], [regularOwnerID]]
-        )
+        expect(chanelDetailsV1(regularOwnerID, publicChannelID)).toEqual({
+            name: "Public Channel",
+            isPublic: true,
+            ownerMembers: regularOwnerID,
+            allMembers: [regularOwnerID],
+        })
     });
 
     test ('Invalid channelID', () => {
         expect(channelJoinV1(regularUserID, 'abc')).toEqual({error: 'error'})
-        expect(chanelDetailsV1(regularOwnerID, publicChannelID)).toEqual(
-            ["Public Channel", true, [regularOwnerID], [regularOwnerID]]
-        )
+        expect(chanelDetailsV1(regularOwnerID, publicChannelID)).toEqual({
+            name: "Public Channel",
+            isPublic: true,
+            ownerMembers: regularOwnerID,
+            allMembers: [regularOwnerID],
+        })
     });
 })
