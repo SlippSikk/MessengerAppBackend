@@ -16,6 +16,14 @@ function channelMessagesV1(authUserId, channelId, start) {
 }
 
 function channelInviteV1(authUserID, channelID, uID) {
+     if (typeof(authUserID) != "number") {
+          return {error: "authUserID is invalid"}
+     } else if (typeof(channelID) != "number") {
+          return {error: "channelID is invalid"}
+     } else if (typeof(uID) != "number") {
+          return {error: "userID is invalid"}
+     }
+
      return {}
 }
 
