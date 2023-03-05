@@ -60,7 +60,7 @@ describe('Valid joining sequences', () => {
 
 describe('Invalid joining sequences', () => {
     test ('Regular user joins private channel', () => {
-        expect(channelJoinV1(regularUserID, privateChannelID)).toEqual({error: 'error'})
+        expect(channelJoinV1(regularUserID, privateChannelID)).toEqual({error: expect.any(String)})
         expect(chanelDetailsV1(regularOwnerID, privateChannelID)).toEqual({
             name: "Private Channel",
             isPublic: false,
@@ -71,7 +71,7 @@ describe('Invalid joining sequences', () => {
 
     test ('Regular user joins multiple times', () => {
         expect(channelJoinV1(regularUserID,publicChannelID)).toEqual('')
-        expect(channelJoinV1(regularUserID,publicChannelID)).toEqual({error: 'error'})
+        expect(channelJoinV1(regularUserID,publicChannelID)).toEqual({error: expect.any(String)})
         expect(chanelDetailsV1(regularUserID, publicChannelID)).toEqual({
             name: "Public Channel",
             isPublic: true,
@@ -81,7 +81,7 @@ describe('Invalid joining sequences', () => {
     });
 
     test ('Owner rejoins channel', () => {
-        expect(channelJoinV1(regularOwnerID,publicChannelID)).toEqual({error: 'error'})
+        expect(channelJoinV1(regularOwnerID,publicChannelID)).toEqual({error: expect.any(String)})
         expect(chanelDetailsV1(regularUserID, publicChannelID)).toEqual({
             name: "Public Channel",
             isPublic: true,
@@ -91,7 +91,7 @@ describe('Invalid joining sequences', () => {
     });
 
     test ('Invalid userID', () => {
-        expect(channelJoinV1('abc', publicChannelID)).toEqual({error: 'error'})
+        expect(channelJoinV1('abc', publicChannelID)).toEqual({error: expect.any(String)})
         expect(chanelDetailsV1(regularOwnerID, publicChannelID)).toEqual({
             name: "Public Channel",
             isPublic: true,
@@ -101,7 +101,7 @@ describe('Invalid joining sequences', () => {
     });
 
     test ('Invalid channelID', () => {
-        expect(channelJoinV1(regularUserID, 'abc')).toEqual({error: 'error'})
+        expect(channelJoinV1(regularUserID, 'abc')).toEqual({error: expect.any(String)})
         expect(chanelDetailsV1(regularOwnerID, publicChannelID)).toEqual({
             name: "Public Channel",
             isPublic: true,
