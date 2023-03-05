@@ -1,3 +1,5 @@
+import { getData, setData } from './dataStore.js'
+
 function channelMessagesV1(authUserId, channelId, start) {
      return {
           
@@ -19,7 +21,51 @@ function channelInviteV1(authUserID, channelID, uID) {
      return {}
 }
 
+// check if an object exists in an array of objects based on searchID
+// returns the index of that object if it exists, otherwise returns false
+function checkExists(searchID, array) {
+     let i = 0;
+     for (const element of array) {
+          // the ID of a channel or user is always the first value in both objects
+          const currentID = Object.values(element)[0];
+          if (currentID === searchID) {
+               return i;
+          }
+          i++
+     }
+     
+     return false;
+}
+
 function channelJoinV1(authUserID, channelID) {
+     if (typeof(authUserID) != "number") {
+          return {error: "authUserID is invalid"}
+     } else if (typeof(channelID) != "number") {
+          return {error: "channelID is invalid"}
+     }
+
+     let data = getData()
+     let channelExists = checkExists(channelID, data.channelDetails)
+     
+     if (channelExists === false) {
+          return {error: 'This channel does not exist'}
+     }
+
+     if (checkExists(authUserID, data.userMembers) === false) {
+          return {error: 'This user does not exist'}
+     }
+
+     // since the channel does exist, channelExists is that channel object
+     let channelMembers = data.channelDetails[channelExists].memberIDs
+
+     if (channelMembers.includes(authUserID)) {
+          console.log('user is in channel already')
+          return {error: "This user is already in this channel"}
+     }
+
+     // finally adds user to channel
+     data.channelDetails[channelExists].memberIDs.push(authUserID)
+     setData(data)
      return {}
 }
 
