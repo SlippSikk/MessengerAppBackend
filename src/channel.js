@@ -55,9 +55,15 @@ function channelJoinV1(authUserID, channelID) {
           return {error: 'This user does not exist'}
      }
 
-     // since the channel does exist, channelExists is that channel object
-     let channelMembers = data.channelDetails[channelExists].memberIDs
+     // checks if a non-global owner is joining a private channel
+     const globalOwnerID = data.userMembers[0].userID
+     if (data.channelDetails[channelExists].isPublic === false && 
+          authUserID != globalOwnerID) {
+               return {error: "Regular users cannot join private channels"}
+          }
 
+     // checks if that user is already in the channel
+     let channelMembers = data.channelDetails[channelExists].memberIDs
      if (channelMembers.includes(authUserID)) {
           console.log('user is in channel already')
           return {error: "This user is already in this channel"}
