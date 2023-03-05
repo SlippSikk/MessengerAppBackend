@@ -27,30 +27,42 @@ describe('Members with different permissions inviting once', () => {
     
     test ('Global owner invites regular user', () => {        
         expect(channelInviteV1(globalOwnerID, globalChannelID, authID2)).toEqual('')
-        expect(chanelDetailsV1(globalOwnerID, globalChannelID)).toEqual(
-            ["Channel 1", true, [globalOwnerID], [globalOwnerID, authID2]]
-        )
+        expect(chanelDetailsV1(globalOwnerID, globalChannelID)).toEqual({
+            name: "Channel 1",
+            isPublic: true,
+            ownerMembers: globalOwnerID,
+            allMembers: [globalOwnerID, authID2],
+        })
     });
 
     test ('Global owner invites user to a channel they do not own', () => {        
         expect(channelInviteV1(globalOwnerID, channelID2, authID3)).toEqual('')
-        expect(chanelDetailsV1(globalOwnerID, channelID2)).toEqual(
-            ["Channel 2", true, [authID2], [authID2, authID3]]
-        )
+        expect(chanelDetailsV1(globalOwnerID, channelID2)).toEqual({
+            name: "Channel 2",
+            isPublic: true,
+            ownerMembers: authID2,
+            allMembers: [authID2, authID3],
+        })
     });
 
     test ('Regular owner invites global owner', () => {        
         expect(channelInviteV1(authID2, channelID2, globalOwnerID)).toEqual('')
-        expect(chanelDetailsV1(authID2, channelID2)).toEqual(
-            ["Channel 2", true, [authID2], [authID2, globalOwnerID]]
-        )
+        expect(chanelDetailsV1(authID2, channelID2)).toEqual({
+            name: "Channel 2",
+            isPublic: true,
+            ownerMembers: authID2,
+            allMembers: [authID2, globalOwnerID],
+        })
     });
 
     test ('Regular owner invites another regular user', () => {
         expect(channelInviteV1(authID2, channelID2, authID3)).toEqual('')
-        expect(chanelDetailsV1(authID2, channelID2)).toEqual(
-            ["Channel 2", true, [authID2], [authID2, authID3]]
-        )
+        expect(chanelDetailsV1(authID2, channelID2)).toEqual({
+            name: "Channel 2",
+            isPublic: true,
+            ownerMembers: authID2,
+            allMembers: [authID2, authID3],
+        })
     });
 
     test ('Owner invites multiple users', () => {
@@ -59,18 +71,24 @@ describe('Members with different permissions inviting once', () => {
         expect(channelInviteV1(authID2, channelID2, authID3)).toEqual('')
         expect(channelInviteV1(authID2, channelID2, authID4)).toEqual('')
         expect(channelInviteV1(authID2, channelID2, authID5)).toEqual('')
-        expect(chanelDetailsV1(authID2, channelID2)).toEqual(
-            ["Channel 2", true, [authID2], [authID2, authID3, authID4, authID5]]
-        )
+        expect(chanelDetailsV1(authID2, channelID2)).toEqual({
+            name: "Channel 2",
+            isPublic: true,
+            ownerMembers: authID2,
+            allMembers: [authID2, authID3, authID4, authID5],
+        })
     });
 
     test ('Regular member invites others', () => {
         const authID4 = authRegisterV1('dora@outlook.com', 'ddd123', 'Dora', 'DeeExplora')
         expect(channelInviteV1(authID2, channelID2, authID3)).toEqual('')
         expect(channelInviteV1(authID3, channelID2, authID4)).toEqual('')
-        expect(chanelDetailsV1(authID3, channelID2)).toEqual(
-            ["Channel 2", true, [authID2], [authID2, authID3, authID4]]
-        )
+        expect(chanelDetailsV1(authID3, channelID2)).toEqual({
+            name: "Channel 2",
+            isPublic: true,
+            ownerMembers: authID2,
+            allMembers: [authID2, authID3, authID4],
+        })
     });
 });
 
@@ -81,57 +99,72 @@ describe('Multiple invites', () => {
         expect(channelInviteV1(authID2, channelID2, authID3)).toEqual('')
         expect(channelInviteV1(authID3, channelID2, authID4)).toEqual('')
         expect(channelInviteV1(authID3, channelID2, authID5)).toEqual('')
-        expect(chanelDetailsV1(authID3, channelID2)).toEqual(
-            ["Channel 2", true, [authID2], [authID2, authID3, authID4, authID5]]
-        )
+        expect(chanelDetailsV1(authID3, channelID2)).toEqual({
+            name: "Channel 2",
+            isPublic: true,
+            ownerMembers: authID2,
+            allMembers: [authID2, authID3, authID4, authID5],
+        })
     });
 
     test ('Member part of multiple channels', () => {
         expect(channelInviteV1(globalChannelID, globalOwnerID, authID3)).toEqual('')
         expect(channelInviteV1(authID2, channelID2, authID3)).toEqual('')
         expect(channelInviteV1(globalOwnerID, channelID2, globalOwnerID)).toEqual('')
-        expect(chanelDetailsV1(authID3, channelID2)).toEqual(
-            ["Channel 2", true, [authID2], [authID2, authID3, globalOwnerID]]
-        )
-        expect(chanelDetailsV1(globalOwnerID, globalChannelID)).toEqual(
-            ["Channel 1", true, [globalOwnerID], [globalOwnerID, authID3]]
-        )
+        expect(chanelDetailsV1(authID3, channelID2)).toEqual({
+            name: "Channel 2",
+            isPublic: true,
+            ownerMembers: authID2,
+            allMembers: [authID2, authID3, globalOwnerID],
+        })
+        expect(chanelDetailsV1(globalOwnerID, globalChannelID)).toEqual({
+            name: "Channel 1",
+            isPublic: true,
+            ownerMembers: globalOwnerID,
+            allMembers: [globalOwnerID, authID3],
+        })
     });
 })
 
 describe('ERRORS: Reinviting users', () => {
     test ('Owner reinvites themselves', () => {     
-        expect(channelInviteV1(authID2, channelID2, authID2)).toEqual({error: 'error'})
-        expect(chanelDetailsV1(authID2, channelID2)).toEqual(
-            ["Channel 2", true, [authID2], [authID2]]
-        )
+        expect(channelInviteV1(authID2, channelID2, authID2)).toEqual({error: expect.any(String)})
+        expect(chanelDetailsV1(authID2, channelID2)).toEqual({
+            name: "Channel 2",
+            isPublic: true,
+            ownerMembers: authID2,
+            allMembers: [authID2],
+        })
     });
 
     test ('Owner reinvites another user', () => {
         expect(channelInviteV1(authID2, channelID2, authID3)).toEqual('')   
-        expect(channelInviteV1(authID2, channelID2, authID3)).toEqual({error: 'error'})
-        expect(chanelDetailsV1(authID2, channelID2)).toEqual(
-            ["Channel 2", true, [authID2], [authID2, authID3]]
-        )
+        expect(channelInviteV1(authID2, channelID2, authID3)).toEqual({error: expect.any(String)})
+        expect(chanelDetailsV1(authID2, channelID2)).toEqual({
+            name: "Channel 2",
+            isPublic: true,
+            ownerMembers: authID2,
+            allMembers: [authID2, authID3],
+        })
     });
 })
 
 
 describe('Miscallaneous errors', () => {
     test ('Invalid Channel ID', () => {
-        expect(channelInviteV1(authID2, 'a', authID2)).toEqual({error: 'error'}) 
+        expect(channelInviteV1(authID2, 'a', authID2)).toEqual({error: expect.any(String)}) 
     });
 
     test ('Valid channel ID but user not a member', () => {
-        expect(channelInviteV1(authID3, channelID2, authID3)).toEqual({error: 'error'}) 
+        expect(channelInviteV1(authID3, channelID2, authID3)).toEqual({error: expect.any(String)}) 
     });
 
     test ('Invalid UserID', () => {
-        expect(channelInviteV1(authID2, channelID2, 'abc')).toEqual({error: 'error'})
+        expect(channelInviteV1(authID2, channelID2, 'abc')).toEqual({error: expect.any(String)})
     });
 
     test ('Invalid authUserID', () => {
-        expect(channelInviteV1('abc', channelID2, authID2)).toEqual({error: 'error'})
+        expect(channelInviteV1('abc', channelID2, authID2)).toEqual({error: expect.any(String)})
     });
 
 });
