@@ -1,7 +1,7 @@
-import { channelJoinV1 } from '../channel.js'
-import { authRegisterV1 } from '../auth.js'
-import { channelsCreateV1 } from '../channels.js'
-import { clearV1 } from '../other.js'
+import { channelJoinV1 } from './../channel.js'
+import { authRegisterV1 } from './../auth.js'
+import { channelsCreateV1 } from './../channels.js'
+import { clearV1 } from './../other.js'
 
 
 beforeEach(() => {
