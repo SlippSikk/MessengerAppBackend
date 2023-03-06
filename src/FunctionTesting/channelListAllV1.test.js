@@ -12,26 +12,21 @@ import { clearV1 } from './other.js'
  * 
  */
 
-
+const ERROR = { error: expect.any(String) };
 
 describe('test channelsListAllV1', () => {
      //Check authUserId
      //  uses an invalid authUserId
-     beforeEach(() => clearV1());
-
-     test('Test for Invalid user ID', () => {
-          let invalidUserId = 12345;
-          expect(channelsListAllV1(invalidUserId)).toBe({ error: 'error' });
-     });
-     test('Test for valid user ID', () => {
+     beforeEach(() => {
+          clearV1();
           let authUserId = authRegisterV1('duck@gmail.com', 1234, 'duck', 'dash');
-          expect(channelsListAllV1(authUserId)).toBe({});
      });
+
+     test('Test for Invalid user ID', () => expect(channelsListAllV1(authUserId + 1)).toBe(ERROR));
+     test('Test for valid user ID', () => expect(channelsListAllV1(authUserId)).toBe({ channels: [] }));
      //  function parameter  reminder
      //  channelsCreateV1((authUserId, name, isPublic));
-     test('Creating channels', () => {
-          let authUserId = authRegisterV1('duck@gmail.com', 1234, 'duck', dash);
-          //let authUserId = authLoginV1('duck@gmail.com', 123);
+     test('Test return value after creating multiple Public channels', () => {
           let firstId = channelsCreateV1((authUserId, 'first', true));
           let secondId = channelsCreateV1((authUserId, 'second', true));
           let thirdId = channelsCreateV1((authUserId, 'third', true));
@@ -52,6 +47,47 @@ describe('test channelsListAllV1', () => {
                ],
           });
      });
-
+     test('Test return value after creating multiple Non Public channels', () => {
+          let firstId = channelsCreateV1((authUserId, 'first', false));
+          let secondId = channelsCreateV1((authUserId, 'second', false));
+          let thirdId = channelsCreateV1((authUserId, 'third', false));
+          expect(channelsListAllV1(authUserId)).toBe({
+               channels: [
+                    {
+                         channelId: firstId,
+                         name: 'first',
+                    },
+                    {
+                         channelId: secondId,
+                         name: 'second',
+                    },
+                    {
+                         channelId: thirdId,
+                         name: 'thrid',
+                    },
+               ],
+          });
+     });
+     test('Test return value after creating multiple mix public channels', () => {
+          let firstId = channelsCreateV1((authUserId, 'first', false));
+          let secondId = channelsCreateV1((authUserId, 'second', true));
+          let thirdId = channelsCreateV1((authUserId, 'third', false));
+          expect(channelsListAllV1(authUserId)).toBe({
+               channels: [
+                    {
+                         channelId: firstId,
+                         name: 'first',
+                    },
+                    {
+                         channelId: secondId,
+                         name: 'second',
+                    },
+                    {
+                         channelId: thirdId,
+                         name: 'thrid',
+                    },
+               ],
+          });
+     });
 });
 
