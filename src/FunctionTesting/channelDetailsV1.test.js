@@ -1,7 +1,7 @@
-import { authRegisterV1, authLoginV1 } from '../auth.js'
-import { channelMessagesV1, channelInviteV1, channelJoinV1, channelDetailsV1 } from '../auth.js'
-import { channelsListV1, channelsCreateV1, channelsListAllV1 } from '../channels.js'
-import { clearV1 } from './other.js'
+import { authRegisterV1, authLoginV1 } from './../auth.js'
+import { channelMessagesV1, channelInviteV1, channelJoinV1, channelDetailsV1 } from './../auth.js'
+import { channelsListV1, channelsCreateV1, channelsListAllV1 } from './../channels.js'
+import { clearV1 } from './../other.js'
 
 /**
  * 
