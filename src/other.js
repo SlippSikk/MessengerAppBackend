@@ -3,12 +3,13 @@
  * @param none
  * @returns {{}}
  */
-import { setData } from './../dataStore.js'
+import {setData, getData} from './../dataStore.js'
 export function clearV1(){
-    setData( {
+    let ini_data = {
         userMembers: [],
         channelDetails: [],
-    }) 
+    }
+    setData(ini_data)
     
       return {};
     
