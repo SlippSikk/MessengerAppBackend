@@ -30,7 +30,7 @@ describe('Members with different permissions inviting once', () => {
         expect(chanelDetailsV1(globalOwnerID, globalChannelID)).toEqual({
             name: "Channel 1",
             isPublic: true,
-            ownerMembers: globalOwnerID,
+            ownerMembers: [globalOwnerID],
             allMembers: [globalOwnerID, authID2],
         })
     });
@@ -40,7 +40,7 @@ describe('Members with different permissions inviting once', () => {
         expect(chanelDetailsV1(globalOwnerID, channelID2)).toEqual({
             name: "Channel 2",
             isPublic: true,
-            ownerMembers: authID2,
+            ownerMembers: [authID2],
             allMembers: [authID2, authID3],
         })
     });
@@ -50,7 +50,7 @@ describe('Members with different permissions inviting once', () => {
         expect(chanelDetailsV1(authID2, channelID2)).toEqual({
             name: "Channel 2",
             isPublic: true,
-            ownerMembers: authID2,
+            ownerMembers: [authID2],
             allMembers: [authID2, globalOwnerID],
         })
     });
@@ -60,7 +60,7 @@ describe('Members with different permissions inviting once', () => {
         expect(chanelDetailsV1(authID2, channelID2)).toEqual({
             name: "Channel 2",
             isPublic: true,
-            ownerMembers: authID2,
+            ownerMembers: [authID2],
             allMembers: [authID2, authID3],
         })
     });
@@ -74,7 +74,7 @@ describe('Members with different permissions inviting once', () => {
         expect(chanelDetailsV1(authID2, channelID2)).toEqual({
             name: "Channel 2",
             isPublic: true,
-            ownerMembers: authID2,
+            ownerMembers: [authID2],
             allMembers: [authID2, authID3, authID4, authID5],
         })
     });
@@ -86,7 +86,7 @@ describe('Members with different permissions inviting once', () => {
         expect(chanelDetailsV1(authID3, channelID2)).toEqual({
             name: "Channel 2",
             isPublic: true,
-            ownerMembers: authID2,
+            ownerMembers: [authID2],
             allMembers: [authID2, authID3, authID4],
         })
     });
@@ -102,7 +102,7 @@ describe('Multiple invites', () => {
         expect(chanelDetailsV1(authID3, channelID2)).toEqual({
             name: "Channel 2",
             isPublic: true,
-            ownerMembers: authID2,
+            ownerMembers: [authID2],
             allMembers: [authID2, authID3, authID4, authID5],
         })
     });
@@ -114,13 +114,13 @@ describe('Multiple invites', () => {
         expect(chanelDetailsV1(authID3, channelID2)).toEqual({
             name: "Channel 2",
             isPublic: true,
-            ownerMembers: authID2,
+            ownerMembers: [authID2],
             allMembers: [authID2, authID3, globalOwnerID],
         })
         expect(chanelDetailsV1(globalOwnerID, globalChannelID)).toEqual({
             name: "Channel 1",
             isPublic: true,
-            ownerMembers: globalOwnerID,
+            ownerMembers: [globalOwnerID],
             allMembers: [globalOwnerID, authID3],
         })
     });
@@ -132,7 +132,7 @@ describe('ERRORS: Reinviting users', () => {
         expect(chanelDetailsV1(authID2, channelID2)).toEqual({
             name: "Channel 2",
             isPublic: true,
-            ownerMembers: authID2,
+            ownerMembers: [authID2],
             allMembers: [authID2],
         })
     });
@@ -143,7 +143,7 @@ describe('ERRORS: Reinviting users', () => {
         expect(chanelDetailsV1(authID2, channelID2)).toEqual({
             name: "Channel 2",
             isPublic: true,
-            ownerMembers: authID2,
+            ownerMembers: [authID2],
             allMembers: [authID2, authID3],
         })
     });
