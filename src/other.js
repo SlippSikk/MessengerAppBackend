@@ -5,10 +5,8 @@
  */
 import {setData, getData} from './../dataStore.js'
 export function clearV1(){
-    let ini_data = {
-        userMembers: [],
-        channelDetails: [],
-    }
+    
+    let ini_data = {}
     setData(ini_data)
     
       return {};
