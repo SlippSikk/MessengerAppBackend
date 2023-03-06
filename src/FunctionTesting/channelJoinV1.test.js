@@ -24,7 +24,7 @@ describe('Valid joining sequences', () => {
         expect(chanelDetailsV1(regularUserIDID, privateChannelID)).toEqual({
             name: "Private Channel",
             isPublic: false,
-            ownerMembers: regularOwnerID,
+            ownerMembers: [regularOwnerID],
             allMembers: [regularOwnerID, globalOwnerID],
         })
     });
@@ -34,7 +34,7 @@ describe('Valid joining sequences', () => {
         expect(chanelDetailsV1(regularUserID, publicChannelID)).toEqual({
             name: "Public Channel",
             isPublic: true,
-            ownerMembers: regularOwnerID,
+            ownerMembers: [regularOwnerID],
             allMembers: [regularOwnerID, regularUserID],
         })
     });
@@ -45,13 +45,13 @@ describe('Valid joining sequences', () => {
         expect(chanelDetailsV1(regularUserID, publicChannelID)).toEqual({
             name: "Public Channel",
             isPublic: true,
-            ownerMembers: regularOwnerID,
+            ownerMembers: [regularOwnerID],
             allMembers: [regularOwnerID, regularUserID],
         })
         expect(chanelDetailsV1(regularUserID, globalChannelID)).toEqual({
             name: "Global Channel",
             isPublic: true,
-            ownerMembers: globalOwnerID,
+            ownerMembers: [globalOwnerID],
             allMembers: [globalOwnerID, regularUserID],
         })
     });
@@ -64,7 +64,7 @@ describe('Invalid joining sequences', () => {
         expect(chanelDetailsV1(regularOwnerID, privateChannelID)).toEqual({
             name: "Private Channel",
             isPublic: false,
-            ownerMembers: regularOwnerID,
+            ownerMembers: [regularOwnerID],
             allMembers: [regularOwnerID],
         })
     });
@@ -75,7 +75,7 @@ describe('Invalid joining sequences', () => {
         expect(chanelDetailsV1(regularUserID, publicChannelID)).toEqual({
             name: "Public Channel",
             isPublic: true,
-            ownerMembers: regularOwnerID,
+            ownerMembers: [regularOwnerID],
             allMembers: [regularOwnerID, regularUserID],
         })
     });
@@ -85,7 +85,7 @@ describe('Invalid joining sequences', () => {
         expect(chanelDetailsV1(regularUserID, publicChannelID)).toEqual({
             name: "Public Channel",
             isPublic: true,
-            ownerMembers: regularOwnerID,
+            ownerMembers: [regularOwnerID],
             allMembers: [regularOwnerID],
         })
     });
@@ -95,7 +95,7 @@ describe('Invalid joining sequences', () => {
         expect(chanelDetailsV1(regularOwnerID, publicChannelID)).toEqual({
             name: "Public Channel",
             isPublic: true,
-            ownerMembers: regularOwnerID,
+            ownerMembers: [regularOwnerID],
             allMembers: [regularOwnerID],
         })
     });
@@ -105,7 +105,7 @@ describe('Invalid joining sequences', () => {
         expect(chanelDetailsV1(regularOwnerID, publicChannelID)).toEqual({
             name: "Public Channel",
             isPublic: true,
-            ownerMembers: regularOwnerID,
+            ownerMembers: [regularOwnerID],
             allMembers: [regularOwnerID],
         })
     });
