@@ -3,7 +3,7 @@
  * @param none
  * @returns {{}}
  */
-import {setData, getData} from './../dataStore.js'
+import {setData, getData} from './dataStore.js'
 export function clearV1(){
     
     let ini_data = {}
