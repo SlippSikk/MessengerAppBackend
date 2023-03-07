@@ -1,7 +1,7 @@
-import { authRegisterV1, authLoginV1 } from '../auth.js'
-import { channelMessagesV1, channelInviteV1, channelJoinV1, channelDetailsV1 } from '../auth.js'
-import { channelsListV1, channelsCreateV1, channelsListAllV1 } from '../channels.js'
-import { clearV1 } from './other.js'
+import { authRegisterV1, authLoginV1 } from './../auth.js'
+import { channelMessagesV1, channelInviteV1, channelJoinV1, channelDetailsV1 } from './../auth.js'
+import { channelsListV1, channelsCreateV1, channelsListAllV1 } from './../channels.js'
+import { clearV1 } from './../other.js'
 
 /**
  * 
@@ -13,43 +13,65 @@ import { clearV1 } from './other.js'
  */
 
 
-
+const ERROR = { error: expect.any(String) };
 describe('test channelDetailsV1', () => {
-    //Check authUserId
-    //  uses an invalid authUserId
-    beforeEach(() => clearV1());
+     //Check authUserId
+     //  uses an invalid authUserId
+     beforeEach(() => {
+          clearV1();
+          let authUserId = authRegisterV1('duck@gmail.com', 1234, 'duck', 'dash');
+          let authUserId2 = authRegisterV1('dog@gmail.com', 1234, 'dog', 'drown');
+          let courseId1Public = channelsCreateV1((authUserId, 'first', true));
+          let courseId2Public = channelsCreateV1((authUserId, 'second', true));
+          let courseId3NotPublic = channelsCreateV1((authUserId, 'third', false));
 
-    test('Test for Invalid user ID', () => {
-        let invalidUserId = 12345;
-        expect(channelDetailsV1(invalidUserId)).toBe({ error: 'error' });
-    });
-    //  function parameter  reminder
-    //  channelsCreateV1((authUserId, name, isPublic));
-    test('Creating channels', () => {
-        let authUserId = authRegisterV1('duck@gmail.com', 1234, 'duck', 'dash');
-        //let authUserId = authLoginV1('duck@gmail.com', 123);
-        let firstId = channelsCreateV1((authUserId, 'first', true));
-        let secondId = channelsCreateV1((authUserId, 'second', true));
-        let thirdId = channelsCreateV1((authUserId, 'third', true));
-        expect(channelDetailsV1(authUserId, firstId)).toBe({
-            name: 'duck dash',
-            isPublic: true,
-            ownerMembers: authUserId,
-            allMembers: [authUserId],
-        });
-    });
-    // * CONFUSION IN CHANNLJOIN AND CHANNEL INV FUNCTION
-    test('Creating channels', () => {
-        let authUserId = authRegisterV1('duck@gmail.com', 1234, 'duck', 'dash');
-        let authUserId2 = authRegisterV1('chicken@gmail.com', 1234, 'chicken', 'swim');
-        //let authUserId = authLoginV1('duck@gmail.com', 123);
-        let firstId = channelsCreateV1((authUserId, 'first', true));
-        channelJoinV1(authUserId2, firstId);
-        expect(channelDetailsV1(authUserId, firstId)).toBe({
-            name: 'duck dash',
-            isPublic: true,
-            ownerMembers: authUserId,
-            allMembers: [authUserId, authUserId2],
-        });
-    });
+     });
+     test('Test for Invalid authUserId', () => expect(channelDetailsV1(authUserId + 1, courseId1Public)).toBe(ERROR));
+     test('Test for Invalid courseId', () => expect(channelDetailsV1(authUserId, courseId1Public)).toBe(ERROR));
+     test('Test for not a member', () => expect(channelDetailsV1(authUserId2, courseId1Public)).toBe(ERROR));
+
+     test('Test: call function -> public courseId ', () => {
+          expect(channelDetailsV1(authUserId, courseId1Public)).toBe({
+               name: 'first',
+               isPublic: true,
+               ownerMembers: [authUserId],
+               allMembers: [authUserId],
+          });
+     });
+     test('Test: call function -> non public courseId', () => {
+          expect(channelDetailsV1(authUserId, courseId1Public)).toBe({
+               name: 'third',
+               isPublic: false,
+               ownerMembers: [authUserId],
+               allMembers: [authUserId],
+          });
+     });
+     // * CONFUSION IN CHANNLJOIN AND CHANNEL INV FUNCTION
+     test('Test: call function -> channelJoin, and public courseId', () => {
+          channelJoinV1(authUserId2, courseId1Public);
+          expect(channelDetailsV1(authUserId, courseId1Public)).toBe({
+               name: 'first',
+               isPublic: true,
+               ownerMembers: [authUserId],
+               allMembers: [authUserId, authUserId2],
+          });
+     });
+     test('Test: call function -> channelInvite, mix public courseId', () => {
+          let uId = authUserId;
+          channelInviteV1(authUserId2, courseId1Public, uId);
+          expect(channelDetailsV1(authUserId, courseId1Public)).toBe({
+               name: 'first',
+               isPublic: true,
+               ownerMembers: [authUserId],
+               allMembers: [authUserId, authUserId2],
+          });
+          channelInviteV1(authUserId2, courseId3NotPublic, uId);
+          expect(channelDetailsV1(authUserId, courseId1Public)).toBe({
+               name: 'third',
+               isPublic: false,
+               ownerMembers: [authUserId],
+               allMembers: [authUserId, authUserId2],
+          });
+     });
 });
+
