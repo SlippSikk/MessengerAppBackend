@@ -23,7 +23,7 @@ function channelsListAllV1(authUserId) {
         if (a.allMembers.includes(authUserId)) {
             channelsObject.push({
                 channelId: a.channelId,
-                name: a.name
+                name: a.name,
             });
         }
     }
