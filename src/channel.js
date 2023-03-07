@@ -1,16 +1,37 @@
-function channelMessagesV1(authUserId, channelId, start) {
+import { getData } from "./dataStore"
+
+
+/**
+ * Given a channel with ID channelId that t
+ * he authorised user is a member of
+ * return up to 50 messages information
+ * between index "start" and "start + 50"
+ * i.e  the start and its previous message
+ * @param {string} authUserId
+ * @param {string} channelId
+ * @param {string} start
+ * @returns {messages,start,end}
+ */
+
+export function channelMessagesV1(authUserId, channelId, start) {
+     let data = getData();
+     const authUser = data.userMembers.find(object => object.userId === authUserId);
+    const channel = data.channelDetails.find(object => object.channelID === channelId);
+
+    if (authUser === undefined) {
+        return { error: 'authUserId is invaild' };
+    } else if (channel === undefined) {
+        return { error: 'channelId is invaild' };
+    }
+    if (start > 0){
+     return {error: 'start is greater than the total number of messages in the channel'}
+    }
+    let end = -1
      return {
           
-               messages: [
-                 {
-                   messageId: 1,
-                   uId: 1,
-                   message: 'Hello world',
-                   timeSent: 1582426789,
-                 }
-               ],
+               messages: [],
                start: 0,
-               end: 50,
+               end: 50
              
 }      
 }
