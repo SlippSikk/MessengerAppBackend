@@ -4,8 +4,8 @@ import { authRegisterV1 } from './../auth.js';
 
 beforeEach(() => {
     clearV1();
-    const authUserId = authRegisterV1("albert.kim@gmail.com", "albert123", "Albert", "Kim");
-    const invalidUserId = authUserId + 1;
+    let authUserId = authRegisterV1("albert.kim@gmail.com", "albert123", "Albert", "Kim");
+    let invalidUserId = authUserId + 1;
 });
 
 
@@ -29,22 +29,22 @@ describe('channelsCreateV1 Success Test', () => {
     });
 
     test('Test 5', () => {
-        authUserId_2 = authRegisterV1("adam.baqaie@gmail.com", "adam123", "Adam", "Baqaie");
+        let authUserId_2 = authRegisterV1("adam.baqaie@gmail.com", "adam123", "Adam", "Baqaie");
         expect(channelsCreateV1(authUserId_2, 'chat', true)).toEqual({ channelId: expect.any(Number) });
     });
 
     test('Test 6', () => {
-        authUserId_2 = authRegisterV1("adam.baqaie@gmail.com", "adam123", "Adam", "Baqaie");
+        let authUserId_2 = authRegisterV1("adam.baqaie@gmail.com", "adam123", "Adam", "Baqaie");
         expect(channelsCreateV1(authUserId_2, 'chat123CHAT', true)).toEqual({ channelId: expect.any(Number) });
     });
 
     test('Test 7', () => {
-        authUserId_2 = authRegisterV1("adam.baqaie@gmail.com", "adam123", "Adam", "Baqaie");
+        let authUserId_2 = authRegisterV1("adam.baqaie@gmail.com", "adam123", "Adam", "Baqaie");
         expect(channelsCreateV1(authUserId_2, 'chat', false)).toEqual({ channelId: expect.any(Number) });
     });
 
     test('Test 8', () => {
-        authUserId_2 = authRegisterV1("adam.baqaie@gmail.com", "adam123", "Adam", "Baqaie");
+        let authUserId_2 = authRegisterV1("adam.baqaie@gmail.com", "adam123", "Adam", "Baqaie");
         expect(channelsCreateV1(authUserId_2, 'chat123CHAT', false)).toEqual({ channelId: expect.any(Number) });
     });
 
