@@ -1,7 +1,7 @@
 
 import { authRegisterV1 } from '../auth.js'
 import { clearV1 } from '../other.js'
-import { userProfileV1 } from '../other.js'
+import { userProfileV1 } from '../users.js'
 
 const authID1 = authRegisterV1('gura@gmail.com', '114514810', 'huaizhi', 'li');
 const authID2 = authRegisterV1('Ina@outlook.com', 'asdgf8', 'me', 'vasdui');
