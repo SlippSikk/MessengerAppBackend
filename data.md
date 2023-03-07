@@ -34,7 +34,7 @@ let data = {
                 time: "10:47",
                 content: "Hi my name is Chris",
                 reacts: {},
-            },],
+            }],
         }
     ],
 
