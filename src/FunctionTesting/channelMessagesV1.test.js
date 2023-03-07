@@ -1,7 +1,7 @@
 import { authRegisterV1 } from '../auth.js'
 import { clearV1 } from '../other.js'
 import { channelsCreateV1 } from '../channels.js'
-import{channelInviteV1} from '../channel'
+import{channelInviteV1,channelJoinV1} from '../channel'
 
 const authID1 = authRegisterV1('gura@gmail.com', '114514810', 'huaizhi', 'li');
 const authID2 = authRegisterV1('Ina@outlook.com', 'asdgf8', 'me', 'vasdui');
