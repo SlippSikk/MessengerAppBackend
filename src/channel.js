@@ -15,8 +15,8 @@ import { getData } from "./dataStore"
 
 export function channelMessagesV1(authUserId, channelId, start) {
      let data = getData();
-     const authUser = data.userMembers.find(object => object.userId === authUserId);
-    const channel = data.channelDetails.find(object => object.channelID === channelId);
+     const authUser = data.users.find(object => object.userId === authUserId);
+    const channel = data.channels.find(object => object.channelID === channelId);
 
     if (authUser === undefined) {
         return { error: 'authUserId is invaild' };
