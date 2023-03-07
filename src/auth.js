@@ -64,7 +64,7 @@ function authLoginV1(email, password) {
 
     // Error Block & find Object with details
     const found = data.users.find(element => element.email === email);
-    const foundPass = data.users.find(element => element.password === password); 
+    const foundPass = data.users.find(element => element.password === password);
     if (found === undefined) {
         return { error: 'Email does not belong to a user' };
     } else if (foundPass === undefined) {
