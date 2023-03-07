@@ -70,19 +70,19 @@ describe('channelsCreateV1 Error Test', () => {
     });
 
     test('Test 5: Invalid userId', () => {
-        expect(channelsCreateV1(invalidUserId, '', true)).toEqual({ error: expect.any(String) });
+        expect(channelsCreateV1(invalidUserId + 1, '', true)).toEqual({ error: expect.any(String) });
     });
 
     test('Test 6: Invalid userId', () => {
-        expect(channelsCreateV1(invalidUserId, '', false)).toEqual({ error: expect.any(String) });
+        expect(channelsCreateV1(invalidUserId + 1, '', false)).toEqual({ error: expect.any(String) });
     });
 
     test('Test 7: Invalid userId', () => {
-        expect(channelsCreateV1(invalidUserId, 'asdflaskdjfhakjhflkasjhdl', true)).toEqual({ error: expect.any(String) });
+        expect(channelsCreateV1(invalidUserId + 1, 'asdflaskdjfhakjhflkasjhdl', true)).toEqual({ error: expect.any(String) });
     });
 
     test('Test 8: Invalid userId', () => {
-        expect(channelsCreateV1(invalidUserId, 'asdflaskdjfhakjhflkasjhdl', false)).toEqual({ error: expect.any(String) });
+        expect(channelsCreateV1(invalidUserId + 1, 'asdflaskdjfhakjhflkasjhdl', false)).toEqual({ error: expect.any(String) });
     });
 
 });
