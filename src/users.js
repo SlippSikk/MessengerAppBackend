@@ -11,8 +11,8 @@
 import { getData } from "./dataStore";
 export function userProfileV1(authUserId, uId){
     let data = getData();
-    const authUser = data.userMembers.find(object => object.userId === authUserId);
-    const idToView = data.userMembers.find(object => object.userId === uId); 
+    const authUser = data.users.find(object => object.userId === authUserId);
+    const idToView = data.users.find(object => object.userId === uId); 
     if (authUser === undefined) {
         return { error: 'authUserId is invaild' };
     } else if (idToView === undefined) {
@@ -22,10 +22,10 @@ export function userProfileV1(authUserId, uId){
 
     return {
         user: {
-          uId: idToView.userID,
+          userID: idToView.userID,
           email: idToView.email,
-          firstName: idToView.firstName,
-          lastName: idToView.lastName,
+          nameFirst: idToView.nameFirst,
+          nameLast: idToView.nameLast,
           handleStr: idToView.handleStr,
         }
       }
