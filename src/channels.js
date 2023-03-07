@@ -30,34 +30,27 @@ function channelsCreateV1(authUserId, name, isPublic) {
     }
 
     // authUserId is invalid
-    if (!getData().userMembers.userID.includes(authUserId)) {
+    if (!getData().users.userId.includes(authUserId)) {
         return { error: 'authUserId is invalid' }
     }
 
-    if (getData().channelDetails.length === 0) {
+    if (getData().channels.length === 0) {
         let channelId = 1;
-    } else if (getData().channelDetails.length > 0) {
-        let channelId = getData().channelDetails[getData().channelDetails.length - 1].channelId + 1;
+    } else if (getData().channels.length > 0) {
+        let channelId = getData().channels[getData().channels.length - 1].channelId + 1;
     }
 
     let newChannel = {
-        channelID: channelId,
-        ownerID: authUserId,
-        adminIDs: [authUserId],
-        memberIDs: [authUserId],
+        channelI: channelId,
+        ownerId: authUserId,
+        adminIds: [authUserId],
+        memberIds: [authUserId],
         channelName: name,
         isPublic: isPublic,
-        Messages: [{
-            messagdID: typeof (Number),
-            SenderID: typeof (Number),
-            responseID: [],
-            Time: typeof (String),
-            Content: typeof (String),
-            reacts: {}
-        }]
+        messages: []
     };
 
-    getData.channelDetails.push(newChannel);
+    getData.channels.push(newChannel);
 
     return {
         channelId
