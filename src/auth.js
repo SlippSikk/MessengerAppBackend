@@ -1,6 +1,18 @@
 import { getData, setData } from "./dataStore";
 import validator from 'validator';
 
+/**
+ * 
+ * 
+ * @param {*} email 
+ * @param {*} password 
+ * @param {*} nameFirst 
+ * @param {*} nameLast 
+ * 
+ * @returns {authUserId: Number}
+ * @returns {error: 'string'}
+ **/
+
 function authRegisterV1(email, password, nameFirst, nameLast) {
     let data = getData();
 
@@ -58,6 +70,14 @@ function authRegisterV1(email, password, nameFirst, nameLast) {
     };
 }
 
+/**
+ * 
+ * @param {*} email 
+ * @param {*} password 
+ * 
+ * @returns {authUserId: Number}
+ * @returns {error: 'string'}
+ */
 function authLoginV1(email, password) {
 
     let data = getData();
