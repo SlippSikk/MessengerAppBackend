@@ -2,17 +2,17 @@ import { getData } from "./dataStore";
 
 function channelsListV1(authUserId) {
     // Error: invalid user ID
-    if (!getData().userMembers.userID.includes(authUserId)) {
+    if (!getData().users.userID.includes(authUserId)) {
         return { error: 'authUserId is invalid' };
     }
 
     let channels = [];
 
-    for (let i = 0; i < getData().channelDetails.length; i++) {
-        if (getData().channelDetails[i].memberIDs.includes(authUserId) == true) {
+    for (let i = 0; i < getData().channels.length; i++) {
+        if (getData().channels[i].memberIds.includes(authUserId) == true) {
             let curr_channel = {
-                channelId: getData().channelDetails[i].channelID,
-                name: getData().channelDetails[i].channelName
+                channelId: getData().channels[i].channelId,
+                name: getData().channels[i].channelName
             }
 
             channels.push(curr_channel);
@@ -31,16 +31,6 @@ function channelsCreateV1(authUserId, name, isPublic) {
 }
 
 function channelsListAllV1(authUserId) {
-<<<<<<< HEAD
-    return {
-        channels: [
-            {
-                channelId: 1,
-                name: 'My Channel',
-            }
-        ],
-    };
-=======
     let dataStore = getData();
     if (isValid(authUserId)) return { error: 'authUserId not valid' };
     const channelsObject = { channels: [] };
@@ -69,5 +59,4 @@ function isValid(authUserId) {
     return false;
 }
 
->>>>>>> master
 
