@@ -5,11 +5,11 @@ let data = {
     // users + channels here
 
     // User object:
-    userMembers: [
+    users: [
         {
-            userID: 1,
-            firstName: 'Rani',
-            lastName: 'Jiang',
+            userId: 1,
+            nameFirst: 'Rani',
+            nameLast: 'Jiang',
             email: 'ranivorous@gmail.com',
             password: 'abc123',
             handleStr: 'ranivorous',
@@ -19,14 +19,22 @@ let data = {
     
 
     // Channel object:
-    channelDetails: [
+    channels: [
         {
-            channelID: 6,
-            memberIDs: {1, 2, 3, 6, 8},
+            channelId: 6,
+            ownerId: 3,
+            adminIds : [2, 3],
+            memberIds: [1, 2, 3, 6, 8],
             channelName: 'General',
             isPublic: true,
-            adminIDs : {2, 3},
-            messageIDs: {342, 234, 8442}
+            messages: [{
+                messageID: 342, 
+                senderId: 234, 
+                responseId: [8442, 65, 764],
+                time: "10:47",
+                content: "Hi my name is Chris",
+                reacts: {},
+            }],
         }
     ],
 

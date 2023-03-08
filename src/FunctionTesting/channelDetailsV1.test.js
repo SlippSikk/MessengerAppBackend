@@ -74,4 +74,4 @@ describe('test channelDetailsV1', () => {
           });
      });
 });
-
+
