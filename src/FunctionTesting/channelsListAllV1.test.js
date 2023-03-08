@@ -3,14 +3,6 @@ import { channelMessagesV1, channelInviteV1, channelJoinV1, channelDetailsV1 } f
 import { channelsListV1, channelsCreateV1, channelsListAllV1 } from './../channels.js'
 import { clearV1 } from './../other.js'
 
-/**
- * 
- * 
- *  ChannelsListAllV1 Testing
- * 
- * 
- * 
- */
 
 const ERROR = { error: expect.any(String) };
 
@@ -34,15 +26,15 @@ describe('test channelsListAllV1', () => {
                channels: [
                     {
                          channelId: firstId,
-                         name: 'first',
+                         channelName: 'first',
                     },
                     {
                          channelId: secondId,
-                         name: 'second',
+                         channelName: 'second',
                     },
                     {
                          channelId: thirdId,
-                         name: 'thrid',
+                         channelName: 'thrid',
                     },
                ],
           });
@@ -55,15 +47,15 @@ describe('test channelsListAllV1', () => {
                channels: [
                     {
                          channelId: firstId,
-                         name: 'first',
+                         channelName: 'first',
                     },
                     {
                          channelId: secondId,
-                         name: 'second',
+                         channelName: 'second',
                     },
                     {
                          channelId: thirdId,
-                         name: 'thrid',
+                         channelName: 'thrid',
                     },
                ],
           });
@@ -76,18 +68,18 @@ describe('test channelsListAllV1', () => {
                channels: [
                     {
                          channelId: firstId,
-                         name: 'first',
+                         channelName: 'first',
                     },
                     {
                          channelId: secondId,
-                         name: 'second',
+                         channelName: 'second',
                     },
                     {
                          channelId: thirdId,
-                         name: 'thrid',
+                         channelName: 'thrid',
                     },
                ],
           });
      });
 });
-
+
