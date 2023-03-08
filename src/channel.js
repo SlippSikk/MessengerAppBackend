@@ -1,4 +1,5 @@
 import { getData, setData } from './dataStore.js'
+import { checkExists } from './helper.js'
 
 function channelMessagesV1(authUserId, channelId, start) {
      return {
@@ -17,21 +18,6 @@ function channelMessagesV1(authUserId, channelId, start) {
      }
 }
 
-// check if an object exists in an array of objects based on searchID
-// returns the index of that object if it exists, otherwise returns false
-function checkExists(searchID, array) {
-     let i = 0;
-     for (const element of array) {
-          // the ID of a channel or user is always the first value in both objects
-          const currentID = Object.values(element)[0];
-          if (currentID === searchID) {
-               return i;
-          }
-          i++
-     }
-     
-     return false;
-}
 
 function channelInviteV1(authUserID, channelID, uID) {
      if (typeof(authUserID) != "number") {
@@ -69,21 +55,7 @@ function channelInviteV1(authUserID, channelID, uID) {
      return {}
 }
 
-// check if an object exists in an array of objects based on searchID
-// returns the index of that object if it exists, otherwise returns false
-function checkExists(searchID, array) {
-     let i = 0;
-     for (const element of array) {
-          // the ID of a channel or user is always the first value in both objects
-          const currentID = Object.values(element)[0];
-          if (currentID === searchID) {
-               return i;
-          }
-          i++
-     }
-     
-     return false;
-}
+
 
 function channelJoinV1(authUserID, channelID) {
      if (typeof(authUserID) != "number") {
