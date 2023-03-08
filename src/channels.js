@@ -1,13 +1,26 @@
 import { getData, setData } from "./dataStore";
 
 function channelsListV1(authUserId) {
-    return {
-        channels: [
-            {
-                channelId: 1,
-                name: 'My Channel',
+    // Error: invalid user ID
+    if (!getData().users.userID.includes(authUserId)) {
+        return { error: 'authUserId is invalid' };
+    }
+
+    let channels = [];
+
+    for (let i = 0; i < getData().channels.length; i++) {
+        if (getData().channels[i].memberIds.includes(authUserId) == true) {
+            let curr_channel = {
+                channelId: getData().channels[i].channelId,
+                name: getData().channels[i].channelName
             }
-        ],
+
+            channels.push(curr_channel);
+        }
+    }
+
+    return {
+        channels
     };
 }
 
