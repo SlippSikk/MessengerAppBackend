@@ -3,16 +3,6 @@ import { channelMessagesV1, channelInviteV1, channelJoinV1, channelDetailsV1 } f
 import { channelsListV1, channelsCreateV1, channelsListAllV1 } from './../channels.js'
 import { clearV1 } from './../other.js'
 
-/**
- * 
- * 
- *  ChannelsListAllV1 Testing
- * 
- * 
- * 
- */
-
-
 const ERROR = { error: expect.any(String) };
 describe('test channelDetailsV1', () => {
      //Check authUserId
@@ -32,46 +22,46 @@ describe('test channelDetailsV1', () => {
 
      test('Test: call function -> public courseId ', () => {
           expect(channelDetailsV1(authUserId, courseId1Public)).toBe({
-               name: 'first',
+               channelName: 'first',
                isPublic: true,
-               ownerMembers: [authUserId],
-               allMembers: [authUserId],
+               ownerId: authUserId,
+               memberIds: [authUserId],
           });
      });
      test('Test: call function -> non public courseId', () => {
           expect(channelDetailsV1(authUserId, courseId1Public)).toBe({
-               name: 'third',
+               channelName: 'third',
                isPublic: false,
-               ownerMembers: [authUserId],
-               allMembers: [authUserId],
+               ownerId: authUserId,
+               memberIds: [authUserId],
           });
      });
      // * CONFUSION IN CHANNLJOIN AND CHANNEL INV FUNCTION
      test('Test: call function -> channelJoin, and public courseId', () => {
           channelJoinV1(authUserId2, courseId1Public);
           expect(channelDetailsV1(authUserId, courseId1Public)).toBe({
-               name: 'first',
+               channelName: 'first',
                isPublic: true,
-               ownerMembers: [authUserId],
-               allMembers: [authUserId, authUserId2],
+               ownerId: authUserId,
+               memberIds: [authUserId, authUserId2],
           });
      });
      test('Test: call function -> channelInvite, mix public courseId', () => {
           let uId = authUserId;
           channelInviteV1(authUserId2, courseId1Public, uId);
           expect(channelDetailsV1(authUserId, courseId1Public)).toBe({
-               name: 'first',
+               channelName: 'first',
                isPublic: true,
-               ownerMembers: [authUserId],
-               allMembers: [authUserId, authUserId2],
+               ownerId: authUserId,
+               memberIds: [authUserId, authUserId2],
           });
           channelInviteV1(authUserId2, courseId3NotPublic, uId);
           expect(channelDetailsV1(authUserId, courseId1Public)).toBe({
-               name: 'third',
+               channelName: 'third',
                isPublic: false,
-               ownerMembers: [authUserId],
-               allMembers: [authUserId, authUserId2],
+               ownerId: authUserId,
+               memberIds: [authUserId, authUserId2],
           });
      });
 });
-
+
