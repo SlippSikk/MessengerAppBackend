@@ -99,4 +99,5 @@ function isValid(authUserId) {
     return false;
 }
 
+export { channelsCreateV1 };
 
