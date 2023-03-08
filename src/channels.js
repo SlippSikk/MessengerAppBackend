@@ -1,4 +1,4 @@
-import { getData } from "./dataStore";
+import { getData, setData } from "./dataStore";
 
 function channelsListV1(authUserId) {
     // Error: invalid user ID
@@ -25,9 +25,50 @@ function channelsListV1(authUserId) {
 }
 
 function channelsCreateV1(authUserId, name, isPublic) {
-    return {
-        channelId: 1
+    let data = getData();
+
+    // Error cases:
+    // name is less than 1 character
+    if (name.length < 1) {
+        return { error: 'name is less than 1 character' };
+    }
+
+    // name is more than 20 characters
+    if (name.length > 20) {
+        return { error: 'name is more than 20 characters' };
+    }
+
+    // authUserId is invalid
+    const find = data.users.find(element => element.userId === authUserId);
+    if (find === undefined) {
+        return { error: 'authuserId is invalid' };
+    }
+
+
+    // Find and assign a suitable channelId
+    let channelId = typeof (Number);
+
+    if (data.channels.length == 0) {
+        channelId = 1;
+    } else if (data.channels.length > 0) {
+        channelId = data.channels[data.channels.length - 1].channelId + 1;
+    }
+
+    let newChannel = {
+        channelId: channelId,
+        ownerId: authUserId,
+        adminIds: [authUserId],
+        memberIds: [authUserId],
+        channelName: name,
+        isPublic: isPublic,
+        messages: []
     };
+
+    data.channels.push(newChannel);
+
+    setData(data);
+
+    return { channelId: channelId };
 }
 
 function channelsListAllV1(authUserId) {
@@ -59,4 +100,5 @@ function isValid(authUserId) {
     return false;
 }
 
+export { channelsCreateV1 };
 
