@@ -71,15 +71,20 @@ function channelsCreateV1(authUserId, name, isPublic) {
     return { channelId: channelId };
 }
 
+/**
+ * @param {int} authUserId 
+ * @returns { channels: [{ channelId: integer, channelName: string}] }
+ * 
+ */
 function channelsListAllV1(authUserId) {
     let dataStore = getData();
     if (isValid(authUserId)) return { error: 'authUserId not valid' };
     const channelsObject = { channels: [] };
     for (let a of dataStore.channels) {
-        if (a.allMembers.includes(authUserId)) {
+        if (a.memberIds.includes(authUserId)) {
             channelsObject.push({
                 channelId: a.channelId,
-                name: a.name,
+                channelName: a.channelName,
             });
         }
     }
@@ -87,15 +92,15 @@ function channelsListAllV1(authUserId) {
 
 }
 /**
- *  
+ *  o
  * @param {integer} authUserId 
- * @returns {boolean} 
+ * @returns {bolean} 
  * note: check  if authUserId is valid/notValid
  */
 function isValid(authUserId) {
     let dataStore = getData();
     for (let a of dataStore.users) {
-        if (a.id === authUserId) return true;
+        if (a.userId === authUserId) return true;
     }
     return false;
 }
