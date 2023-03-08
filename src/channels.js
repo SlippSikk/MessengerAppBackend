@@ -1,26 +1,37 @@
 import { getData, setData } from "./dataStore";
 
 function channelsListV1(authUserId) {
+    let data = getData();
+
     // Error: invalid user ID
-    if (!getData().users.userID.includes(authUserId)) {
-        return { error: 'authUserId is invalid' };
+    const find = data.users.find(element => element.userId === authUserId);
+    if (find === undefined) {
+        return { error: 'authuserId is invalid' };
     }
 
     let channels = [];
+    let curr_channel = {};
 
-    for (let i = 0; i < getData().channels.length; i++) {
-        if (getData().channels[i].memberIds.includes(authUserId) == true) {
-            let curr_channel = {
-                channelId: getData().channels[i].channelId,
-                name: getData().channels[i].channelName
-            }
-
-            channels.push(curr_channel);
-        }
+    curr_channel = {
+        channelId: data.channels[0].channelId,
+        name: data.channels[0].channelName
     }
 
+    channels.push(curr_channel);
+
+    // for (let i = 0; i < data.channels.length; i++) {
+    //     if (data.channels[i].memberIds.includes(authUserId) === true) {
+    //         curr_channel = {
+    //             channelId: data.channels[i].channelId,
+    //             name: data.channels[i].channelName
+    //         }
+
+    //         channels.push(curr_channel);
+    //     }
+    // }
+
     return {
-        channels
+        channels: channels
     };
 }
 
@@ -100,5 +111,6 @@ function isValid(authUserId) {
     return false;
 }
 
+export { channelsListV1 };
 export { channelsCreateV1 };
 
