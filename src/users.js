@@ -22,7 +22,7 @@ export function userProfileV1(authUserId, uId){
 
     return {
         user: {
-          userID: idToView.userID,
+          userId: idToView.userId,
           email: idToView.email,
           nameFirst: idToView.nameFirst,
           nameLast: idToView.nameLast,
