@@ -21,7 +21,7 @@ describe("Invaild input", () => {
 describe('vaild input', () => {
     test ('check someone himself profile', () => {     
         expect(userProfileV1(authID1, authID1)).toEqual( {user: {
-            uId: authID1,
+            userId: authID1,
             email: 'gura@gmail.com',
             nameFirst: 'huaizhi',
             nameLast: 'li',
@@ -29,7 +29,7 @@ describe('vaild input', () => {
           }})
         expect(chanelDetailsV1(authID2, authID2)).toEqual(
             {user: {
-                uId: authID2,
+                userId: authID2,
                 email: 'Ina@outlook.com',
                 nameFirst: 'me',
                 nameLast: 'vasdui',
@@ -40,7 +40,7 @@ describe('vaild input', () => {
 
     test ('see others profile', () => {
         expect(userProfileV1(authID3, authID1)).toEqual( {user: {
-            uId: authID1,
+            userId: authID1,
             email: 'gura@gmail.com',
             nameFirst: 'huaizhi',
             nameLast: 'li',
