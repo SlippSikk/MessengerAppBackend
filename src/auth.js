@@ -4,12 +4,6 @@ import validator from 'validator';
 function authRegisterV1(email, password, nameFirst, nameLast) {
     let data = getData();
 
-    // Create Users array
-    if (data.users === undefined) {
-        data.users = [];
-    }
-
-
     // Error Block
     const found = data.users.find(element => element.email === email);
     if (!(validator.isEmail(email))) {
@@ -41,7 +35,7 @@ function authRegisterV1(email, password, nameFirst, nameLast) {
     const Id = data.users.length + 1;
 
     const user = {
-        uId: Id,
+        userId: Id,
         email: email,
         nameFirst: nameFirst,
         nameLast: nameLast,
@@ -64,7 +58,7 @@ function authLoginV1(email, password) {
 
     // Error Block & find Object with details
     const found = data.users.find(element => element.email === email);
-    const foundPass = data.users.find(element => element.password === password); 
+    const foundPass = data.users.find(element => element.password === password);
     if (found === undefined) {
         return { error: 'Email does not belong to a user' };
     } else if (foundPass === undefined) {
@@ -73,7 +67,7 @@ function authLoginV1(email, password) {
 
 
     return {
-        authUserId: found.uId,
+        authUserId: found.userId,
     };
 }
 
