@@ -23,6 +23,15 @@ function channelJoinV1(authUserID, channelID) {
      return {}
 }
 
+/**
+ * 
+ * @param {integer} authUserId 
+ * @param {integer} channelId 
+ * @returns {{channelName: string,
+ * isPublic: boolean,
+ * ownerId: string,
+ * memberIds: [integer]}}
+ */
 function channelDetailsV1(authUserId, channelId) {
      // ERROR HANDLING 
      let dataStore = getData();
@@ -31,22 +40,20 @@ function channelDetailsV1(authUserId, channelId) {
      // error handle for channelId is valid and the authorised user is not a member of the channel
      for (let a of dataStore.channels) {
           if (a.channelId === channelId) {
-               if (!(a.allMembers.includes(authUserId))) return { error: 'authUserId is not a member of channelId' };
+               if (!(a.memberIds.includes(authUserId))) return { error: 'authUserId is not a member of channelId' };
           }
      }
 
      const returnObject = {};
      //NOTE: global owner is also  ownerMembers? or no  or what ?
      for (let a of dataStore.channels) {
-          if (a.allMembers.includes(authUserId) && a.channelId === channelId) {
-               returnObject.name = a.name;
+          if (a.memberIds.includes(authUserId) && a.channelId === channelId) {
+               returnObject.channelName = a.channelName;
                returnObject.isPublic = a.isPublic;
-               returnObject.ownerMembers = a.ownerMembers;
-               returnObject.allMembers = a.allMembers;
-
+               returnObject.ownerId = a.ownerId;
+               returnObject.memberIds = a.memberIds;
           }
      }
-
      return returnObject;
 }
 /**
@@ -59,10 +66,10 @@ function channelDetailsV1(authUserId, channelId) {
 function isValid(id) {
      let dataStore = getData();
      for (let a of dataStore.users) {
-          if (a.id === id) return true;
+          if (a.userID === id) return true;
      }
      for (let a of dataStore.channels) {
-          if (a.id === id) return true;
+          if (a.channelId === id) return true;
      }
      return false;
 }
