@@ -99,7 +99,7 @@ function channelsListAllV1(authUserId) {
 function isValid(authUserId) {
     let dataStore = getData();
     for (let a of dataStore.users) {
-        if (a.userID === authUserId) return true;
+        if (a.userId === authUserId) return true;
     }
     return false;
 }
