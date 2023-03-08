@@ -2,6 +2,7 @@ import { channelInviteV1 } from './../channel.js'
 import { authRegisterV1 } from './../auth.js'
 import { channelsCreateV1 } from './../channels.js'
 import { clearV1 } from './../other.js'
+import { checkExists } from '../helper.js';
 
 /*const authID2 = authRegisterV1('bob@gmail.com', 'efk289', 'Bob', 'Smith')
     const authID3 = authRegisterV1('susan@outlook.com', 'hello321', 'Susan', 'Miller')
