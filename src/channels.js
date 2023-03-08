@@ -25,36 +25,37 @@ function channelsListV1(authUserId) {
 }
 
 function channelsCreateV1(authUserId, name, isPublic) {
-    // Error cases
+    let data = getData();
 
-    // ASSUMPTION: that we will always recieve the correct data type
-    // if (typeof name !== 'string') {
-    //     return { error: 'name is not a string' };
-    // }
-
+    // Error cases:
     // name is less than 1 character
     if (name.length < 1) {
-        return { error: 'name is less than 1 character' }
+        return { error: 'name is less than 1 character' };
     }
 
     // name is more than 20 characters
     if (name.length > 20) {
-        return { error: 'name is more than 20 characters' }
+        return { error: 'name is more than 20 characters' };
     }
 
     // authUserId is invalid
-    if (!getData().users.userId.includes(authUserId)) {
-        return { error: 'authUserId is invalid' }
+    const find = data.users.find(element => element.userId === authUserId);
+    if (find === undefined) {
+        return { error: 'authuserId is invalid' };
     }
 
-    if (getData().channels.length === 0) {
-        let channelId = 1;
-    } else if (getData().channels.length > 0) {
-        let channelId = getData().channels[getData().channels.length - 1].channelId + 1;
+
+    // Find and assign a suitable channelId
+    let channelId = typeof (Number);
+
+    if (data.channels.length == 0) {
+        channelId = 1;
+    } else if (data.channels.length > 0) {
+        channelId = data.channels[data.channels.length - 1].channelId + 1;
     }
 
     let newChannel = {
-        channelI: channelId,
+        channelId: channelId,
         ownerId: authUserId,
         adminIds: [authUserId],
         memberIds: [authUserId],
@@ -63,11 +64,11 @@ function channelsCreateV1(authUserId, name, isPublic) {
         messages: []
     };
 
-    getData.channels.push(newChannel);
+    data.channels.push(newChannel);
 
-    return {
-        channelId
-    };
+    setData(data);
+
+    return { channelId: channelId };
 }
 
 function channelsListAllV1(authUserId) {
