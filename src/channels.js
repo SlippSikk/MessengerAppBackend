@@ -1,4 +1,5 @@
 import { getData, setData } from "./dataStore";
+import { authRegisterV1 } from "./auth"
 
 function channelsListV1(authUserId) {
     // Error: invalid user ID
