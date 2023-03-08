@@ -3,16 +3,6 @@ import { channelMessagesV1, channelInviteV1, channelJoinV1, channelDetailsV1 } f
 import { channelsListV1, channelsCreateV1, channelsListAllV1 } from './../channels.js'
 import { clearV1 } from './../other.js'
 
-/**
- * 
- * 
- *  ChannelsListAllV1 Testing
- * 
- * 
- * 
- */
-
-
 const ERROR = { error: expect.any(String) };
 describe('test channelDetailsV1', () => {
      //Check authUserId
@@ -74,4 +64,4 @@ describe('test channelDetailsV1', () => {
           });
      });
 });
-
+
