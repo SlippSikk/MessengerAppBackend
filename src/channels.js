@@ -78,7 +78,7 @@ function channelsCreateV1(authUserId, name, isPublic) {
  */
 function channelsListAllV1(authUserId) {
     let dataStore = getData();
-    if (isValid(authUserId)) return { error: 'authUserId not valid' };
+    if (!isValid(authUserId)) return { error: 'authUserId not valid' };
     const channelsObject = { channels: [] };
     for (let a of dataStore.channels) {
         if (a.memberIds.includes(authUserId)) {
