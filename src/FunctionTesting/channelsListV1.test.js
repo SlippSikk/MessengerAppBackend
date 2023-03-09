@@ -78,7 +78,7 @@ describe('channelsListV1 Success Test', () => {
         });
     });
 
-    test('Test 4', () => {
+    test('Test 5', () => {
         const authUserId_1 = authRegisterV1("albert.kim@gmail.com", "albert123", "Albert", "Kim").authUserId;
         const authUserId_2 = authRegisterV1("adam.baqaie@gmail.com", "adam123", "Adam", "Baqaie").authUserId;
         const channelId = channelsCreateV1(authUserId_2, "testChannel", false).channelId;
@@ -101,14 +101,14 @@ describe('channelsListV1 Success Test', () => {
 
 
 // test Error cases
-// describe('channelsListV1 Error Test', () => {
+describe('channelsListV1 Error Test', () => {
 
-//     test('Test 1: Invalid authUserID', () => {
-//         const authUserId_1 = authRegisterV1("albert.kim@gmail.com", "albert123", "Albert", "Kim").authUserId;
-//         const authUserId_2 = authRegisterV1("adam.baqaie@gmail.com", "adam123", "Adam", "Baqaie").authUserId;
-//         const invalidUserId = (authUserId_1 + authUserId_2) * 2;
-//         const channelId = channelsCreateV1(authUserId_1, "testChannel", true).channelId;
-//         expect(channelsListV1(invalidUserId)).toEqual({ error: expect.any(String) });
-//     });
+    test('Test 1: Invalid authUserID', () => {
+        const authUserId_1 = authRegisterV1("albert.kim@gmail.com", "albert123", "Albert", "Kim").authUserId;
+        const authUserId_2 = authRegisterV1("adam.baqaie@gmail.com", "adam123", "Adam", "Baqaie").authUserId;
+        const invalidUserId = (authUserId_1 + authUserId_2) * 2;
+        const channelId = channelsCreateV1(authUserId_1, "testChannel", true).channelId;
+        expect(channelsListV1(invalidUserId)).toEqual({ error: expect.any(String) });
+    });
 
-// });
+});
