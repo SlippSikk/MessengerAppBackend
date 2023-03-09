@@ -1,12 +1,8 @@
-<<<<<<< HEAD
-=======
 
-import { checkExists } from './helper.js'
 import { channelsCreateV1 } from './channels.js'
 import { getData, setData } from './dataStore.js'
->>>>>>> 0d3ebbde4bd96ea8e9ff3a70be3d6d6e54bfdcd1
+import { checkExists, isChannelIdValid, isUserIdValid } from './helper.js'
 
-import { getData } from "./dataStore"
 
 
 /**
@@ -21,25 +17,35 @@ import { getData } from "./dataStore"
  * @returns {messages,start,end}
  */
 
-export function channelMessagesV1(authUserId, channelId, start) {
+function channelMessagesV1(authUserId, channelId, start) {
      let data = getData();
+     let end
      const authUser = data.users.find(object => object.userId === authUserId);
-    const channel = data.channels.find(object => object.channelID === channelId);
-
+    const channel = data.channels.find(object => object.channelId === channelId);
+     const member = data.channels.find(object => object.memberIds === channelId);
+     let channelExists = checkExists(channelId, data.channels)
     if (authUser === undefined) {
         return { error: 'authUserId is invaild' };
     } else if (channel === undefined) {
         return { error: 'channelId is invaild' };
     }
-    if (start > 0){
-     return {error: 'start is greater than the total number of messages in the channel'}
+    if( channelExists == false){
+     return {error: 'user is not in the channel'}
+}
+
+    if (start > channel.messages.length){
+     return {error: 'start is greater than the total number of messages in the channel'}  //assumption: messages array is always[]
     }
-    let end = -1
+    if(channel.messages.length > start + 50){
+     end = start + 50
+    }else{
+     end = -1
+    }
      return {
-          
-               messages: [],
-               start: 0,
-               end: 50
+           
+               messages: channel.messages.slice(start,end),
+               start: start,
+               end: end
              
 }      
 
@@ -148,10 +154,9 @@ function channelJoinV1(authUserID, channelID) {
  * memberIds: [number]}}
  */
 function channelDetailsV1(authUserId, channelId) {
-     // ERROR HANDLING 
-     let dataStore = getData();
-     if (!isValid(authUserId)) return { error: 'authUserId not valid' };
-     if (!isValid(channelId)) return { error: 'channelId not valid' };
+     let dataStore = getData(); 
+     if (!isUserIdValid(authUserId)) return { error: 'authUserId not valid' };
+     if (!isChannelIdValid(channelId)) return { error: 'channelId not valid' };
      // error handle for channelId is valid and the authorised user is not a member of the channel
      for (let a of dataStore.channels) {
           if (a.channelId === channelId) {
@@ -161,32 +166,18 @@ function channelDetailsV1(authUserId, channelId) {
 
      const returnObject = {};
      //NOTE: global owner is also  ownerMembers? or no  or what ?
+     // for future use global owner = dataStore.users[0].userId 
      for (let a of dataStore.channels) {
-          if (a.memberIds.includes(authUserId) && a.channelId === channelId) {
+          if (a.channelId === channelId && (a.memberIds.includes(authUserId) || authUserId === 1)) {
                returnObject.channelName = a.channelName;
                returnObject.isPublic = a.isPublic;
                returnObject.ownerId = a.ownerId;
                returnObject.memberIds = a.memberIds;
+               break;
           }
      }
      return returnObject;
 }
-/**
- *  
- * @param {number} authUserId 
- * @returns {boolean} 
- * note: check  if authUserId is valid/notValid
- * NOTE ****** data store a.id // the structure of the object is unknown
- */
-function isValid(id) {
-     let dataStore = getData();
-     for (let a of dataStore.users) {
-          if (a.userId === id) return true;
-     }
-     for (let a of dataStore.channels) {
-          if (a.channelId === id) return true;
-     }
-     return false;
 
-}
-export { channelMessagesV1, channelInviteV1, channelJoinV1, channelDetailsV1, isValid };
+
+export { channelMessagesV1, channelInviteV1, channelJoinV1, channelDetailsV1 };

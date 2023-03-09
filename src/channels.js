@@ -1,4 +1,4 @@
-import { getData, setData } from "./dataStore";
+import { getData, setData } from './dataStore.js';
 
 function channelsListV1(authUserId) {
     let data = getData();
@@ -111,5 +111,5 @@ function isValid(authUserId) {
     return false;
 }
 
-export { channelsCreateV1, channelsListV1, channelsListAllV1, isValid };
 
+export { channelsCreateV1, channelsListV1, channelsListAllV1 };
