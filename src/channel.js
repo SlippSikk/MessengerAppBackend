@@ -20,32 +20,32 @@ function channelMessagesV1(authUserId, channelId, start) {
 
 
 function channelInviteV1(authUserID, channelID, uID) {
-     if (typeof(authUserID) != "number") {
-          return {error: "authUserID is invalid"}
-     } else if (typeof(channelID) != "number") {
-          return {error: "channelID is invalid"}
-     } else if (typeof(uID) != "number") {
-          return {error: "userID is invalid"}
+     if (typeof (authUserID) != "number") {
+          return { error: "authUserID is invalid" }
+     } else if (typeof (channelID) != "number") {
+          return { error: "channelID is invalid" }
+     } else if (typeof (uID) != "number") {
+          return { error: "userID is invalid" }
      }
 
      let data = getData()
      let channelExists = checkExists(channelID, data.channelDetails)
      if (channelExists === false) {
-          return {error: 'This channel does not exist'}
+          return { error: 'This channel does not exist' }
      }
 
      if (checkExists(authUserID, data.userMembers) === false) {
-          return {error: 'The inviter does not exist'}
+          return { error: 'The inviter does not exist' }
      }
 
      if (checkExists(uID, data.userMembers) === false) {
-          return {error: 'The invitee does not exist'}
+          return { error: 'The invitee does not exist' }
      }
 
      // checks if that user is already in the channel
      let channelMembers = data.channelDetails[channelExists].memberIDs
      if (channelMembers.includes(uID)) {
-          return {error: "This user is already in this channel"}
+          return { error: "This user is already in this channel" }
      }
 
      // finally adds user to channel
@@ -58,35 +58,35 @@ function channelInviteV1(authUserID, channelID, uID) {
 
 
 function channelJoinV1(authUserID, channelID) {
-     if (typeof(authUserID) != "number") {
-          return {error: "authUserID is invalid"}
-     } else if (typeof(channelID) != "number") {
-          return {error: "channelID is invalid"}
+     if (typeof (authUserID) != "number") {
+          return { error: "authUserID is invalid" }
+     } else if (typeof (channelID) != "number") {
+          return { error: "channelID is invalid" }
      }
 
      let data = getData()
      let channelExists = checkExists(channelID, data.channelDetails)
-     
+
      if (channelExists === false) {
-          return {error: 'This channel does not exist'}
+          return { error: 'This channel does not exist' }
      }
 
      if (checkExists(authUserID, data.userMembers) === false) {
-          return {error: 'This user does not exist'}
+          return { error: 'This user does not exist' }
      }
 
      // checks if a non-global owner is joining a private channel
      const globalOwnerID = data.userMembers[0].userID
-     if (data.channelDetails[channelExists].isPublic === false && 
+     if (data.channelDetails[channelExists].isPublic === false &&
           authUserID != globalOwnerID) {
-               return {error: "Regular users cannot join private channels"}
-          }
+          return { error: "Regular users cannot join private channels" }
+     }
 
      // checks if that user is already in the channel
      let channelMembers = data.channelDetails[channelExists].memberIDs
      if (channelMembers.includes(authUserID)) {
           console.log('user is in channel already')
-          return {error: "This user is already in this channel"}
+          return { error: "This user is already in this channel" }
      }
 
      // finally adds user to channel
@@ -95,6 +95,15 @@ function channelJoinV1(authUserID, channelID) {
      return {}
 }
 
+/**
+ * 
+ * @param {integer} authUserId 
+ * @param {integer} channelId 
+ * @returns {{channelName: string,
+ * isPublic: boolean,
+ * ownerId: string,
+ * memberIds: [integer]}}
+ */
 function channelDetailsV1(authUserId, channelId) {
      // ERROR HANDLING 
      let dataStore = getData();
@@ -103,22 +112,20 @@ function channelDetailsV1(authUserId, channelId) {
      // error handle for channelId is valid and the authorised user is not a member of the channel
      for (let a of dataStore.channels) {
           if (a.channelId === channelId) {
-               if (!(a.allMembers.includes(authUserId))) return { error: 'authUserId is not a member of channelId' };
+               if (!(a.memberIds.includes(authUserId))) return { error: 'authUserId is not a member of channelId' };
           }
      }
 
      const returnObject = {};
      //NOTE: global owner is also  ownerMembers? or no  or what ?
      for (let a of dataStore.channels) {
-          if (a.allMembers.includes(authUserId) && a.channelId === channelId) {
-               returnObject.name = a.name;
+          if (a.memberIds.includes(authUserId) && a.channelId === channelId) {
+               returnObject.channelName = a.channelName;
                returnObject.isPublic = a.isPublic;
-               returnObject.ownerMembers = a.ownerMembers;
-               returnObject.allMembers = a.allMembers;
-
+               returnObject.ownerId = a.ownerId;
+               returnObject.memberIds = a.memberIds;
           }
      }
-
      return returnObject;
 }
 /**
@@ -131,10 +138,11 @@ function channelDetailsV1(authUserId, channelId) {
 function isValid(id) {
      let dataStore = getData();
      for (let a of dataStore.users) {
-          if (a.id === id) return true;
+          if (a.userId === id) return true;
      }
      for (let a of dataStore.channels) {
-          if (a.id === id) return true;
+          if (a.channelId === id) return true;
      }
      return false;
 }
+export { channelMessagesV1, channelInviteV1, channelJoinV1, channelDetailsV1, isValid };
