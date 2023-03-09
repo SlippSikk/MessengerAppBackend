@@ -14,10 +14,10 @@ import validator from 'validator';
  * and last name.
  * Finally the userId is returned
  * 
- * @param {*} email - Email address of the user
- * @param {*} password - password of the user
- * @param {*} nameFirst - first name of the user
- * @param {*} nameLast - last name of the user
+ * @param {Number} email - Email address of the user
+ * @param {Number} password - password of the user
+ * @param {Number} nameFirst - first name of the user
+ * @param {Number} nameLast - last name of the user
  * 
  * @returns {authUserId: Number} authUserId - Unqiue ID of the user created
  * @returns {error: 'string'} Error Message - Error message describing the error cause
