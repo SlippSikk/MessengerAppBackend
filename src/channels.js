@@ -82,7 +82,7 @@ function channelsListAllV1(authUserId) {
     const channelsObject = { channels: [] };
     for (let a of dataStore.channels) {
         if (a.memberIds.includes(authUserId)) {
-            channelsObject.push({
+            channelsObject.channels.push({
                 channelId: a.channelId,
                 channelName: a.channelName,
             });
@@ -105,5 +105,5 @@ function isValid(authUserId) {
     return false;
 }
 
-export { channelsCreateV1 };
+export { channelsCreateV1, channelsListV1, channelsListAllV1, isValid };
 
