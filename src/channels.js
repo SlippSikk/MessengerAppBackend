@@ -1,5 +1,5 @@
 import { getData, setData } from "./dataStore";
-
+import { isChannelIdValid } from "./helper.js"
 function channelsListV1(authUserId) {
     // Error: invalid user ID
     if (!getData().users.userID.includes(authUserId)) {
@@ -75,10 +75,12 @@ function channelsCreateV1(authUserId, name, isPublic) {
  * @param {int} authUserId 
  * @returns { channels: [{ channelId: integer, channelName: string}] }
  * 
+ * @summary 
+ *  from a userId -> returns all channels which user is a member of
  */
 function channelsListAllV1(authUserId) {
     let dataStore = getData();
-    if (!isValid(authUserId)) return { error: 'authUserId not valid' };
+    if (!isChannelIdValid(authUserId)) return { error: 'authUserId not valid' };
     const channelsObject = { channels: [] };
     for (let a of dataStore.channels) {
         if (a.memberIds.includes(authUserId)) {
@@ -89,21 +91,8 @@ function channelsListAllV1(authUserId) {
         }
     }
     return channelsObject;
-
-}
-/**
- *  o
- * @param {integer} authUserId 
- * @returns {bolean} 
- * note: check  if authUserId is valid/notValid
- */
-function isValid(authUserId) {
-    let dataStore = getData();
-    for (let a of dataStore.users) {
-        if (a.userId === authUserId) return true;
-    }
-    return false;
 }
 
-export { channelsCreateV1, channelsListV1, channelsListAllV1, isValid };
+
+export { channelsCreateV1, channelsListV1, channelsListAllV1 };
 
