@@ -1,7 +1,5 @@
-
-import { checkExists } from './helper.js'
-import { channelsCreateV1 } from './channels.js'
 import { getData, setData } from './dataStore.js'
+import { checkExists, isChannelIdValid, isUserIdValid } from './helper.js'
 
 function channelMessagesV1(authUserId, channelId, start) {
      return {
@@ -121,10 +119,9 @@ function channelJoinV1(authUserID, channelID) {
  * memberIds: [number]}}
  */
 function channelDetailsV1(authUserId, channelId) {
-     // ERROR HANDLING 
-     let dataStore = getData();
-     if (!isValid(authUserId)) return { error: 'authUserId not valid' };
-     if (!isValid(channelId)) return { error: 'channelId not valid' };
+     let dataStore = getData(); 
+     if (!isUserIdValid(authUserId)) return { error: 'authUserId not valid' };
+     if (!isChannelIdValid(channelId)) return { error: 'channelId not valid' };
      // error handle for channelId is valid and the authorised user is not a member of the channel
      for (let a of dataStore.channels) {
           if (a.channelId === channelId) {
@@ -134,32 +131,18 @@ function channelDetailsV1(authUserId, channelId) {
 
      const returnObject = {};
      //NOTE: global owner is also  ownerMembers? or no  or what ?
+     // for future use global owner = dataStore.users[0].userId 
      for (let a of dataStore.channels) {
-          if (a.memberIds.includes(authUserId) && a.channelId === channelId) {
+          if (a.channelId === channelId && (a.memberIds.includes(authUserId) || authUserId === 1)) {
                returnObject.channelName = a.channelName;
                returnObject.isPublic = a.isPublic;
                returnObject.ownerId = a.ownerId;
                returnObject.memberIds = a.memberIds;
+               break;
           }
      }
      return returnObject;
 }
-/**
- *  
- * @param {number} authUserId 
- * @returns {boolean} 
- * note: check  if authUserId is valid/notValid
- * NOTE ****** data store a.id // the structure of the object is unknown
- */
-function isValid(id) {
-     let dataStore = getData();
-     for (let a of dataStore.users) {
-          if (a.userId === id) return true;
-     }
-     for (let a of dataStore.channels) {
-          if (a.channelId === id) return true;
-     }
-     return false;
 
-}
-export { channelMessagesV1, channelInviteV1, channelJoinV1, channelDetailsV1, isValid };
+
+export { channelMessagesV1, channelInviteV1, channelJoinV1, channelDetailsV1 };
