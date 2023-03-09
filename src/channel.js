@@ -107,8 +107,8 @@ function channelJoinV1(authUserID, channelID) {
 function channelDetailsV1(authUserId, channelId) {
      // ERROR HANDLING 
      let dataStore = getData();
-     if (isValid(authUserId)) return { error: 'authUserId not valid' };
-     if (isValid(channelId)) return { error: 'channelId not valid' };
+     if (!isValid(authUserId)) return { error: 'authUserId not valid' };
+     if (!isValid(channelId)) return { error: 'channelId not valid' };
      // error handle for channelId is valid and the authorised user is not a member of the channel
      for (let a of dataStore.channels) {
           if (a.channelId === channelId) {
@@ -145,3 +145,5 @@ function isValid(id) {
      }
      return false;
 }
+
+export { channelMessagesV1, channelInviteV1, channelJoinV1, channelDetailsV1, isValid };

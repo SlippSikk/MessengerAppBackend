@@ -9,18 +9,44 @@ describe('test channelDetailsV1', () => {
      //  uses an invalid authUserId
      beforeEach(() => {
           clearV1();
-          let authUserId = authRegisterV1('duck@gmail.com', 1234, 'duck', 'dash');
-          let authUserId2 = authRegisterV1('dog@gmail.com', 1234, 'dog', 'drown');
-          let courseId1Public = channelsCreateV1(authUserId, 'first', true);
-          let courseId2Public = channelsCreateV1(authUserId, 'second', true);
-          let courseId3NotPublic = channelsCreateV1(authUserId, 'third', false);
-
      });
-     test('Test for Invalid authUserId', () => expect(channelDetailsV1(authUserId + 1, courseId1Public)).toBe(ERROR));
-     test('Test for Invalid courseId', () => expect(channelDetailsV1(authUserId, courseId1Public + 1)).toBe(ERROR));
-     test('Test for not a member', () => expect(channelDetailsV1(authUserId2, courseId1Public)).toBe(ERROR));
+     test('Test for Invalid authUserId', () => {
+          let authUserId = authRegisterV1('duck@gmail.com', 1234, 'duck', 'dash').authUserId;
+          let authUserId2 = authRegisterV1('dog@gmail.com', 1234, 'dog', 'drown').authUserId;
+          console.log(authUserId);
+          console.log(authUserId2);
+          let courseId1Public = channelsCreateV1(authUserId, 'first', true).channelId;
+          let courseId2Public = channelsCreateV1(authUserId, 'second', true).channelId;
+          let courseId3NotPublic = channelsCreateV1(authUserId, 'third', false).channelId;
+
+          console.log(courseId1Public);
+          console.log(courseId3NotPublic);
+
+          expect(channelDetailsV1(authUserId + 1, courseId1Public)).toBe(ERROR)
+     });
+     test('Test for Invalid courseId', () => {
+          let authUserId = authRegisterV1('duck@gmail.com', 1234, 'duck', 'dash').authUserId;
+          let authUserId2 = authRegisterV1('dog@gmail.com', 1234, 'dog', 'drown').authUserId;
+          let courseId1Public = channelsCreateV1(authUserId, 'first', true).channelId;
+          let courseId2Public = channelsCreateV1(authUserId, 'second', true).channelId;
+          let courseId3NotPublic = channelsCreateV1(authUserId, 'third', false).channelId;
+          expect(channelDetailsV1(authUserId, courseId1Public + 1)).toBe(ERROR)
+     });
+     test('Test for not a member', () => {
+          let authUserId = authRegisterV1('duck@gmail.com', 1234, 'duck', 'dash').authUserId;
+          let authUserId2 = authRegisterV1('dog@gmail.com', 1234, 'dog', 'drown').authUserId;
+          let courseId1Public = channelsCreateV1(authUserId, 'first', true).channelId;
+          let courseId2Public = channelsCreateV1(authUserId, 'second', true).channelId;
+          let courseId3NotPublic = channelsCreateV1(authUserId, 'third', false).channelId;
+          expect(channelDetailsV1(authUserId2, courseId1Public)).toBe(ERROR)
+     });
 
      test('Test: call function -> public courseId ', () => {
+          let authUserId = authRegisterV1('duck@gmail.com', 1234, 'duck', 'dash').authUserId;
+          let authUserId2 = authRegisterV1('dog@gmail.com', 1234, 'dog', 'drown').authUserId;
+          let courseId1Public = channelsCreateV1(authUserId, 'first', true).channelId;
+          let courseId2Public = channelsCreateV1(authUserId, 'second', true).channelId;
+          let courseId3NotPublic = channelsCreateV1(authUserId, 'third', false).channelId;
           expect(channelDetailsV1(authUserId, courseId1Public)).toBe({
                channelName: 'first',
                isPublic: true,
@@ -29,6 +55,11 @@ describe('test channelDetailsV1', () => {
           });
      });
      test('Test: call function -> non public courseId', () => {
+          let authUserId = authRegisterV1('duck@gmail.com', 1234, 'duck', 'dash').authUserId;
+          let authUserId2 = authRegisterV1('dog@gmail.com', 1234, 'dog', 'drown').authUserId;
+          let courseId1Public = channelsCreateV1(authUserId, 'first', true).channelId;
+          let courseId2Public = channelsCreateV1(authUserId, 'second', true).channelId;
+          let courseId3NotPublic = channelsCreateV1(authUserId, 'third', false).channelId;
           expect(channelDetailsV1(authUserId, courseId1Public)).toBe({
                channelName: 'third',
                isPublic: false,
@@ -38,6 +69,11 @@ describe('test channelDetailsV1', () => {
      });
      // * CONFUSION IN CHANNLJOIN AND CHANNEL INV FUNCTION
      test('Test: call function -> channelJoin, and public courseId', () => {
+          let authUserId = authRegisterV1('duck@gmail.com', 1234, 'duck', 'dash').authUserId;
+          let authUserId2 = authRegisterV1('dog@gmail.com', 1234, 'dog', 'drown').authUserId;
+          let courseId1Public = channelsCreateV1(authUserId, 'first', true).channelId;
+          let courseId2Public = channelsCreateV1(authUserId, 'second', true).channelId;
+          let courseId3NotPublic = channelsCreateV1(authUserId, 'third', false).channelId;
           channelJoinV1(authUserId2, courseId1Public);
           expect(channelDetailsV1(authUserId, courseId1Public)).toBe({
                channelName: 'first',
@@ -47,6 +83,11 @@ describe('test channelDetailsV1', () => {
           });
      });
      test('Test: call function -> channelInvite, mix public courseId', () => {
+          let authUserId = authRegisterV1('duck@gmail.com', 1234, 'duck', 'dash').authUserId;
+          let authUserId2 = authRegisterV1('dog@gmail.com', 1234, 'dog', 'drown').authUserId;
+          let courseId1Public = channelsCreateV1(authUserId, 'first', true).channelId;
+          let courseId2Public = channelsCreateV1(authUserId, 'second', true).channelId;
+          let courseId3NotPublic = channelsCreateV1(authUserId, 'third', false).channelId;
           let uId = authUserId;
           channelInviteV1(authUserId2, courseId1Public, uId);
           expect(channelDetailsV1(authUserId, courseId1Public)).toBe({
