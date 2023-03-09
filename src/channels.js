@@ -30,6 +30,25 @@ function channelsListV1(authUserId) {
     };
 }
 
+/**
+ * Summary:
+ * When given a valid authUserId, name, and privacy setting,
+ * this function will create a new channel
+ * 
+ * Description:
+ * When given a valid name and authUserId, the function will create a unique
+ * channelId, and after it will create a new object containing; channelId, ownerId,
+ * adminIds, memberIds, channelName, isPublic, messages. Then will set this new object into
+ * the array named "channels", in the dataStore.js file using the setData function
+ * 
+ * @param {number} authUserId - Unique Id of a user
+ * @param {string} name - Desired name for a new channel
+ * @param {boolean} isPublic - Desired setting for the channel's privacy
+ * 
+ * @returns {error: 'string'} - Error Message - Error message describing the error cause
+ * @returns {channelId: number} - The unique channelId that gets created upon creating a new channel
+ */
+
 function channelsCreateV1(authUserId, name, isPublic) {
     let data = getData();
 
