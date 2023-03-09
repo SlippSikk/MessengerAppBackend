@@ -162,5 +162,4 @@ function isValid(id) {
      return false;
 
 }
-
-export { channelInviteV1, channelJoinV1, channelDetailsV1 };
+export { channelMessagesV1, channelInviteV1, channelJoinV1, channelDetailsV1, isValid };

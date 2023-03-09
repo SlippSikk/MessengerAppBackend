@@ -78,11 +78,11 @@ function channelsCreateV1(authUserId, name, isPublic) {
  */
 function channelsListAllV1(authUserId) {
     let dataStore = getData();
-    if (isValid(authUserId)) return { error: 'authUserId not valid' };
+    if (!isValid(authUserId)) return { error: 'authUserId not valid' };
     const channelsObject = { channels: [] };
     for (let a of dataStore.channels) {
         if (a.memberIds.includes(authUserId)) {
-            channelsObject.push({
+            channelsObject.channels.push({
                 channelId: a.channelId,
                 channelName: a.channelName,
             });
@@ -105,5 +105,5 @@ function isValid(authUserId) {
     return false;
 }
 
-export { channelsCreateV1 };
+export { channelsCreateV1, channelsListV1, channelsListAllV1, isValid };
 
