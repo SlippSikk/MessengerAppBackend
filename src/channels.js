@@ -1,19 +1,24 @@
-import { getData, setData } from "./dataStore";
-import { authRegisterV1 } from "./auth"
+import { getData, setData } from './dataStore.js';
 
 function channelsListV1(authUserId) {
+    let data = getData();
+
     // Error: invalid user ID
-    if (!getData().users.userID.includes(authUserId)) {
-        return { error: 'authUserId is invalid' };
+    const find = data.users.find(element => element.userId === authUserId);
+    if (find === undefined) {
+        return { error: 'authuserId is invalid' };
     }
 
     let channels = [];
+    let curr_channel = {};
 
-    for (let i = 0; i < getData().channels.length; i++) {
-        if (getData().channels[i].memberIds.includes(authUserId) == true) {
-            let curr_channel = {
-                channelId: getData().channels[i].channelId,
-                name: getData().channels[i].channelName
+    for (let i = 0; i < data.channels.length; i++) {
+        const temp_channel = data.channels[i];
+
+        if (temp_channel.memberIds.includes(authUserId)) {
+            curr_channel = {
+                channelId: temp_channel.channelId,
+                name: temp_channel.channelName
             }
 
             channels.push(curr_channel);
@@ -21,7 +26,7 @@ function channelsListV1(authUserId) {
     }
 
     return {
-        channels
+        channels: channels
     };
 }
 
@@ -106,5 +111,5 @@ function isValid(authUserId) {
     return false;
 }
 
-export { channelsCreateV1, channelsListV1, channelsListAllV1, isValid };
 
+export { channelsCreateV1, channelsListV1, channelsListAllV1 };
