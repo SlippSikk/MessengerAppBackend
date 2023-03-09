@@ -18,7 +18,15 @@ function channelMessagesV1(authUserId, channelId, start) {
      }
 }
 
-
+/**
+ * Allows members of a channel to invite someone else to that channel, provided
+ * they aren't already a member.
+ * 
+ * @param {number} authUserID 
+ * @param {number} channelID 
+ * @param {number} uID 
+ * @returns 
+ */
 function channelInviteV1(authUserID, channelID, uID) {
      if (typeof (authUserID) != "number") {
           return { error: "authUserID is invalid" }
@@ -29,34 +37,40 @@ function channelInviteV1(authUserID, channelID, uID) {
      }
 
      let data = getData()
-     let channelExists = checkExists(channelID, data.channelDetails)
+     let channelExists = checkExists(channelID, data.channels)
      if (channelExists === false) {
           return { error: 'This channel does not exist' }
      }
 
-     if (checkExists(authUserID, data.userMembers) === false) {
+     if (checkExists(authUserID, data.users) === false) {
           return { error: 'The inviter does not exist' }
      }
 
-     if (checkExists(uID, data.userMembers) === false) {
+     if (checkExists(uID, data.users) === false) {
           return { error: 'The invitee does not exist' }
      }
 
      // checks if that user is already in the channel
-     let channelMembers = data.channelDetails[channelExists].memberIDs
+     let channelMembers = data.channels[channelExists].memberIds
      if (channelMembers.includes(uID)) {
           return { error: "This user is already in this channel" }
      }
 
      // finally adds user to channel
-     data.channelDetails[channelExists].memberIDs.push(uID)
+     data.channels[channelExists].memberIds.push(uID)
      setData(data)
 
      return {}
 }
 
-
-
+/**
+ * Allows regular users to join public channels. If the user is a global owner,
+ * they can join any channel.
+ * 
+ * @param {number} authUserID 
+ * @param {number} channelID 
+ * @returns 
+ */
 function channelJoinV1(authUserID, channelID) {
      if (typeof (authUserID) != "number") {
           return { error: "authUserID is invalid" }
@@ -65,44 +79,44 @@ function channelJoinV1(authUserID, channelID) {
      }
 
      let data = getData()
-     let channelExists = checkExists(channelID, data.channelDetails)
+     let channelExists = checkExists(channelID, data.channels)
 
      if (channelExists === false) {
           return { error: 'This channel does not exist' }
      }
 
-     if (checkExists(authUserID, data.userMembers) === false) {
+     if (checkExists(authUserID, data.users) === false) {
           return { error: 'This user does not exist' }
      }
 
      // checks if a non-global owner is joining a private channel
-     const globalOwnerID = data.userMembers[0].userID
-     if (data.channelDetails[channelExists].isPublic === false &&
-          authUserID != globalOwnerID) {
+
+     if (data.channels[channelExists].isPublic === false &&
+          authUserID != 1) {
           return { error: "Regular users cannot join private channels" }
      }
 
      // checks if that user is already in the channel
-     let channelMembers = data.channelDetails[channelExists].memberIDs
+     let channelMembers = data.channels[channelExists].memberIds
      if (channelMembers.includes(authUserID)) {
           console.log('user is in channel already')
           return { error: "This user is already in this channel" }
      }
 
      // finally adds user to channel
-     data.channelDetails[channelExists].memberIDs.push(authUserID)
+     data.channels[channelExists].memberIds.push(authUserID)
      setData(data)
      return {}
 }
 
 /**
  * 
- * @param {integer} authUserId 
- * @param {integer} channelId 
+ * @param {number} authUserId 
+ * @param {number} channelId 
  * @returns {{channelName: string,
  * isPublic: boolean,
  * ownerId: string,
- * memberIds: [integer]}}
+ * memberIds: [number]}}
  */
 function channelDetailsV1(authUserId, channelId) {
      let dataStore = getData(); 
