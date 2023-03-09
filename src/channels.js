@@ -12,23 +12,18 @@ function channelsListV1(authUserId) {
     let channels = [];
     let curr_channel = {};
 
-    curr_channel = {
-        channelId: data.channels[0].channelId,
-        name: data.channels[0].channelName
+    for (let i = 0; i < data.channels.length; i++) {
+        const temp_channel = data.channels[i];
+
+        if (temp_channel.memberIds.includes(authUserId)) {
+            curr_channel = {
+                channelId: temp_channel.channelId,
+                name: temp_channel.channelName
+            }
+
+            channels.push(curr_channel);
+        }
     }
-
-    channels.push(curr_channel);
-
-    // for (let i = 0; i < data.channels.length; i++) {
-    //     if (data.channels[i].memberIds.includes(authUserId) === true) {
-    //         curr_channel = {
-    //             channelId: data.channels[i].channelId,
-    //             name: data.channels[i].channelName
-    //         }
-
-    //         channels.push(curr_channel);
-    //     }
-    // }
 
     return {
         channels: channels
