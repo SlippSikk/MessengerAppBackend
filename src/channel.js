@@ -22,10 +22,10 @@ function channelMessagesV1(authUserId, channelId, start) {
  * Allows members of a channel to invite someone else to that channel, provided
  * they aren't already a member.
  * 
- * @param {number} authUserID 
- * @param {number} channelID 
- * @param {number} uID 
- * @returns 
+ * @param {number} authUserID - The ID of the inviter
+ * @param {number} channelID  - The ID of the channel to be invited into
+ * @param {number} uID        - The ID of the invitee
+ * @returns {error: 'string'} - The explanation for the error, otherwise {}
  */
 function channelInviteV1(authUserID, channelID, uID) {
      if (typeof (authUserID) != "number") {
@@ -67,9 +67,9 @@ function channelInviteV1(authUserID, channelID, uID) {
  * Allows regular users to join public channels. If the user is a global owner,
  * they can join any channel.
  * 
- * @param {number} authUserID 
- * @param {number} channelID 
- * @returns 
+ * @param {number} authUserID - The ID of the user joining a channel
+ * @param {number} channelID  - The ID of the channel to be joined
+ * @returns {error: 'string'} - The explanation for the error, otherwise {}
  */
 function channelJoinV1(authUserID, channelID) {
      if (typeof (authUserID) != "number") {
