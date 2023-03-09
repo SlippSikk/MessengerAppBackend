@@ -1,4 +1,4 @@
-import { getData, setData } from "./dataStore";
+import { getData, setData } from './dataStore.js';
 
 function channelsListV1(authUserId) {
     // Error: invalid user ID
@@ -105,6 +105,5 @@ function isValid(authUserId) {
     return false;
 }
 
-export { channelsCreateV1 };
 
 export { channelsCreateV1, channelsListV1, channelsListAllV1 };
