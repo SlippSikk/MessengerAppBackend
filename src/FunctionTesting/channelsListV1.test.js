@@ -62,9 +62,8 @@ describe('channelsListV1 Success Test', () => {
     test('Test 4', () => {
         const authUserId_1 = authRegisterV1("albert.kim@gmail.com", "albert123", "Albert", "Kim").authUserId;
         const authUserId_2 = authRegisterV1("adam.baqaie@gmail.com", "adam123", "Adam", "Baqaie").authUserId;
-        const invalidUserId = (authUserId_1 + authUserId_2) * 2;
-        const channelId = channelsCreateV1(authUserId_1, "testChannel", false).channelId;
-        const channelId_2 = channelsCreateV1(authUserId_1, "testChannel_2", false).channelId;
+        const channelId = channelsCreateV1(authUserId_2, "testChannel", false).channelId;
+        const channelId_2 = channelsCreateV1(authUserId_2, "testChannel_2", false).channelId;
         expect(channelsListV1(authUserId_2)).toEqual({
             channels: [
                 {
@@ -79,6 +78,25 @@ describe('channelsListV1 Success Test', () => {
         });
     });
 
+    test('Test 4', () => {
+        const authUserId_1 = authRegisterV1("albert.kim@gmail.com", "albert123", "Albert", "Kim").authUserId;
+        const authUserId_2 = authRegisterV1("adam.baqaie@gmail.com", "adam123", "Adam", "Baqaie").authUserId;
+        const channelId = channelsCreateV1(authUserId_2, "testChannel", false).channelId;
+        const channelId_2 = channelsCreateV1(authUserId_2, "testChannel_2", false).channelId;
+        const channelId_3 = channelsCreateV1(authUserId_1, "testChannel_2", false).channelId;
+        expect(channelsListV1(authUserId_2)).toEqual({
+            channels: [
+                {
+                    channelId: channelId,
+                    name: 'testChannel',
+                },
+                {
+                    channelId: channelId_2,
+                    name: 'testChannel_2',
+                },
+            ],
+        });
+    });
 });
 
 
