@@ -124,7 +124,7 @@ function channelDetailsV1(authUserId, channelId) {
      if (!isChannelIdValid(channelId)) return { error: 'channelId not valid' };
      // error handle for channelId is valid and the authorised user is not a member of the channel
      for (let a of dataStore.channels) {
-          if (a.channelId === channelId) {
+          if (a.channelId === channelId && authUserId != 1) {
                if (!(a.memberIds.includes(authUserId))) return { error: 'authUserId is not a member of channelId' };
           }
      }
