@@ -1,21 +1,56 @@
+
+import { channelsCreateV1 } from './channels.js'
 import { getData, setData } from './dataStore.js'
 import { checkExists, isChannelIdValid, isUserIdValid } from './helper.js'
 
+
+
+/**
+ * Given a channel with ID channelId that t
+ * he authorised user is a member of
+ * return up to 50 messages information
+ * between index "start" and "start + 50"
+ * i.e  the start and its previous message
+ * @param {string} authUserId
+ * @param {string} channelId
+ * @param {string} start
+ * @returns {messages,start,end}
+ */
+
 function channelMessagesV1(authUserId, channelId, start) {
+     let data = getData();
+     let end
+     const authUser = data.users.find(object => object.userId === authUserId);
+    const channel = data.channels.find(object => object.channelId === channelId);
+     const member = data.channels.find(object => object.memberIds === channelId);
+     let channelExists = checkExists(channelId, data.channels)
+    if (authUser === undefined) {
+        return { error: 'authUserId is invaild' };
+    } else if (channel === undefined) {
+        return { error: 'channelId is invaild' };
+    }
+    if( channelExists == false){
+     return {error: 'user is not in the channel'}
+}
+
+    if (start > channel.messages.length){
+     return {error: 'start is greater than the total number of messages in the channel'}  //assumption: messages array is always[]
+    }
+    if(channel.messages.length > start + 50){
+     end = start + 50
+    }else{
+     end = -1
+    }
      return {
+           
+               messages: channel.messages.slice(start,end),
+               start: start,
+               end: end
+             
+}      
 
-          messages: [
-               {
-                    messageId: 1,
-                    uId: 1,
-                    message: 'Hello world',
-                    timeSent: 1582426789,
-               }
-          ],
-          start: 0,
-          end: 50,
 
-     }
+
 }
 
 /**
