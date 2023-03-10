@@ -52,9 +52,8 @@ describe('Test : channelDetailsV1', () => {
           });
      });
 
-     /* awaits channelInvite function */
-     /* Note: 1.what happens when u join to a closed channel
-               2. when global owner join channel
+     //Note: 1.what happens when u join to a closed channel
+     //          2. when global owner join channel
      test('Test: channelJoin -> public courseId', () => {
           let authUserId = authRegisterV1('duck@gmail.com', '123456', 'duck', 'dash').authUserId;
           let authUserId2 = authRegisterV1('dog@gmail.com', '123456', 'dog', 'drown').authUserId;
@@ -67,7 +66,7 @@ describe('Test : channelDetailsV1', () => {
                ownerId: authUserId,
                memberIds: [authUserId, authUserId2],
           });
-          channelJoinV1(authUserId3, courseIdPublic);
+          channelJoinV1(authUserId3, courseId1Public);
           expect(channelDetailsV1(authUserId, courseId1Public)).toStrictEqual({
                channelName: 'first',
                isPublic: true,
@@ -76,26 +75,26 @@ describe('Test : channelDetailsV1', () => {
           });
      });
 
-     test('Test: channelInvite -> public courseId', () => {
+     test('Test: channelInvite ->2 public courseId', () => {
           let authUserId = authRegisterV1('duck@gmail.com', '123456', 'duck', 'dash').authUserId;
           let authUserId2 = authRegisterV1('dog@gmail.com', '123456', 'dog', 'drown').authUserId;
           let courseId1Public = channelsCreateV1(authUserId, 'first', true).channelId;
           let courseId2Public = channelsCreateV1(authUserId, 'second', true).channelId;
           let courseId3NotPublic = channelsCreateV1(authUserId, 'third', false).channelId;
-          channelInviteV1(authUserId2, courseId1Public, authUserId);
+          channelInviteV1(authUserId, courseId1Public, authUserId2);
           expect(channelDetailsV1(authUserId, courseId1Public)).toStrictEqual({
                channelName: 'first',
                isPublic: true,
                ownerId: authUserId,
                memberIds: [authUserId, authUserId2],
           });
-          channelInviteV1(authUserId2, courseId3NotPublic, uId);
-          expect(channelDetailsV1(authUserId, courseId1Public)).toStrictEqual({
+          channelInviteV1(authUserId, courseId3NotPublic, authUserId2);
+          expect(channelDetailsV1(authUserId, courseId3NotPublic)).toStrictEqual({
                channelName: 'third',
                isPublic: false,
                ownerId: authUserId,
                memberIds: [authUserId, authUserId2],
           });
-     });*/
+     });
 });
 

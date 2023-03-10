@@ -1,45 +1,65 @@
 import { clearV1 } from '../other.js';
 
 import { authRegisterV1 } from '../auth.js';
-import { channelsCreateV1 } from '../channels.js';
 
+import { channelsListV1, channelsCreateV1, channelsListAllV1 } from './../channels.js'
 
+import {channelJoinV1} from './../channel.js'
 
+import { userProfileV1 } from '../users.js'
 
-
-
-
-const userA = authRegisterV1('gura@gmail.com', '114514810', 'huaizhi', 'li');
-
-const channelID1 = channelsCreateV1(userA, 'Channel 1', true);
-
-const authID2 = authRegisterV1('Ina@outlook.com', 'asdgf8', 'me', 'vasdui');
-
-const channelID2 = channelsCreateV1(authID2, 'Channel 2', true);
-
-const authID3 = authRegisterV1('lion@qq.com', 'asduif8195', 'agsdfoj', 'antman');
 
 
 
 describe("three tests", () => {
-  test('Correct return value', () => {
-
-    expect(clearV1()).toStrictEqual({});
-  });
-
-  /*  two test should be added
-    test('clear the userMember', () => {
-        
+    test('Empty dataStore object', () => {
+      const authId1 = authRegisterV1('gura@gmail.com', '114514810', 'huaizhi', 'li').authUserId;
       expect(clearV1()).toStrictEqual({});
+      expect(channelsListAllV1(authId1)).toStrictEqual({error: expect.any(String)})
+      expect(userProfileV1(authId1, authId1)).toStrictEqual({error: expect.any(String)})
+    });
+  
+    test('clear the userMember', () => {
+      const authId1 = authRegisterV1('gura@gmail.com', '114514810', 'huaizhi', 'li').authUserId;
+      const channelId1 = channelsCreateV1(authId1, 'Channel 1', true).channelId;
+      const authId2 = authRegisterV1('Ina@outlook.com', 'asdgf8', 'me', 'vasdui').authUserId;
+      const channelId2 = channelsCreateV1(authId2, 'Channel 2', true).channelId;
+      const authId3 = authRegisterV1('lion@qq.com', 'asduif8195', 'agsdfoj', 'antman').authUserId;
+
+      channelJoinV1(authId1, channelId1)
+      expect(userProfileV1(authId2, authId2)).toEqual({
+      user: {
+      userId: authId2,
+      email: 'Ina@outlook.com',
+      nameFirst: 'me',
+      nameLast: 'vasdui',
+      handleStr: 'mevasdui',
+      }})
+      clearV1()
+      expect(userProfileV1(authId2,authId3)).toStrictEqual({ error: expect.any(String) });
+      expect(channelsListAllV1(authId1)).toStrictEqual({error: expect.any(String)});
+    });
+
+  
+  
+  
+  test('clear all channels', () => {
+    const authId1 = authRegisterV1('gura@gmail.com', '114514810', 'huaizhi', 'li').authUserId;
+    const channelId1 = channelsCreateV1(authId1, 'Channel 1', true).channelId;
+    const authId2 = authRegisterV1('Ina@outlook.com', 'asdgf8', 'me', 'vasdui').authUserId;
+    const channelId2 = channelsCreateV1(authId2, 'Channel 2', true).channelId;
+    const authId3 = authRegisterV1('lion@qq.com', 'asduif8195', 'agsdfoj', 'antman').authUserId;
+    channelJoinV1(authId1, channelId1)
+    expect(channelsListAllV1(authId1)).toStrictEqual({channels: [{
+        channelId: authId1,
+        channelName: 'Channel 1',
+      }]
+    });
+  
+    clearV1()
+    expect(channelsListAllV1(authId1)).toStrictEqual({error: expect.any(String)});
+    expect(userProfileV1(authId1, authId1)).toStrictEqual({error: expect.any(String)});
   });
-  
-  
-  test('clear the channelDetails', () => {
-        
-    expect(clearV1()).toStrictEqual({});
-  });*/
-
-
 });
 
 

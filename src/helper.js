@@ -2,9 +2,10 @@
 import { getData, setData } from './dataStore.js'
 /**
  * 
- * @param {*} searchID 
- * @param {*} array 
- * @returns 
+ * @param {number} searchID      - the unique ID to search for in the array
+ * @param {integer} array        - an array of IDS
+ * @returns {integer | boolean}  - either the index of search ID, or false if unfound
+ * 
  */
 // check if an object exists in an array of objects based on searchID
 // returns the index of that object if it exists, otherwise returns false
