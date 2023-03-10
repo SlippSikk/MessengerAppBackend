@@ -112,13 +112,17 @@ function channelJoinV1(authUserID, channelID) {
  * 
  * @param {number} authUserId 
  * @param {number} channelId 
- * @returns {{channelName: string,
- * isPublic: boolean,
- * ownerId: string,
- * memberIds: [number]}}
+ * @returns {{
+ *   channelName: string,
+ *   isPublic: boolean,
+ *   ownerId: string,
+ *   memberIds: [number]
+ * }}
+ * @summary
+ *   provides basic details about the channel.
  */
 function channelDetailsV1(authUserId, channelId) {
-     let dataStore = getData(); 
+     let dataStore = getData();
      if (!isUserIdValid(authUserId)) return { error: 'authUserId not valid' };
      if (!isChannelIdValid(channelId)) return { error: 'channelId not valid' };
      // error handle for channelId is valid and the authorised user is not a member of the channel

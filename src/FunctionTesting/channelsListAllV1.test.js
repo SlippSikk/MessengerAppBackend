@@ -17,6 +17,7 @@ describe('test channelsListAllV1', () => {
      });
      test('Test for valid user ID', () => {
           let authUserId = authRegisterV1('duck@gmail.com', '123456', 'duck', 'dash').authUserId;
+          console.log(authUserId);
           expect(channelsListAllV1(authUserId)).toStrictEqual({ channels: [] })
      });
      test('Test return value after creating multiple Public channels', () => {
@@ -64,7 +65,7 @@ describe('test channelsListAllV1', () => {
           });
      });
      test('Test return value after creating multiple mix public channels', () => {
-          let authUserId = authRegisterV1('duck@gmail.com', '123456', 'duck', 'dash').authUserId; 
+          let authUserId = authRegisterV1('duck@gmail.com', '123456', 'duck', 'dash').authUserId;
           let firstId = channelsCreateV1(authUserId, 'first', false).channelId;
           let secondId = channelsCreateV1(authUserId, 'second', true).channelId;
           let thirdId = channelsCreateV1(authUserId, 'third', false).channelId;

@@ -1,14 +1,9 @@
-import { getData, setData } from './dataStore.js';
+import { getData, setData } from "./dataStore.js";
+import { isUserIdValid } from "./helper.js"
 
 function channelsListV1(authUserId) {
     let data = getData();
-
-    // Error: invalid user ID
-    const find = data.users.find(element => element.userId === authUserId);
-    if (find === undefined) {
-        return { error: 'authuserId is invalid' };
-    }
-
+    if (!isUserIdValid(authUserId)) return { error: 'authUserId not valid' };
     let channels = [];
     let curr_channel = {};
 
@@ -45,11 +40,7 @@ function channelsCreateV1(authUserId, name, isPublic) {
     }
 
     // authUserId is invalid
-    const find = data.users.find(element => element.userId === authUserId);
-    if (find === undefined) {
-        return { error: 'authuserId is invalid' };
-    }
-
+    if (!isUserIdValid(authUserId)) return { error: 'authUserId not valid' };
 
     // Find and assign a suitable channelId
     let channelId = typeof (Number);
@@ -81,10 +72,12 @@ function channelsCreateV1(authUserId, name, isPublic) {
  * @param {int} authUserId 
  * @returns { channels: [{ channelId: integer, channelName: string}] }
  * 
+ * @summary 
+ *  from a userId -> returns all channels which user is a member of
  */
 function channelsListAllV1(authUserId) {
     let dataStore = getData();
-    if (!isValid(authUserId)) return { error: 'authUserId not valid' };
+    if (!isUserIdValid(authUserId)) return { error: 'authUserId not valid' };
     const channelsObject = { channels: [] };
     for (let a of dataStore.channels) {
         if (a.memberIds.includes(authUserId)) {
@@ -95,21 +88,6 @@ function channelsListAllV1(authUserId) {
         }
     }
     return channelsObject;
-
 }
-/**
- *  o
- * @param {integer} authUserId 
- * @returns {bolean} 
- * note: check  if authUserId is valid/notValid
- */
-function isValid(authUserId) {
-    let dataStore = getData();
-    for (let a of dataStore.users) {
-        if (a.userId === authUserId) return true;
-    }
-    return false;
-}
-
 
 export { channelsCreateV1, channelsListV1, channelsListAllV1 };
