@@ -20,12 +20,20 @@ beforeEach(() => {
 
 describe("Incorrect input", () => {
     test.each([
-        { testName: 'invaild authUserId', authUserId: 810, channelId: channelId1, start: 0 },
+        { testName: 'invaild authUserId', authUserId: authId1 + 1, channelId: channelId1, start: 0 },
         { testName: 'start that greater than the total number of messages', authUserId: authId1, channelId: channelId1, start: 250 },
-        { testName: 'invaild channelId', authUserId: authId2, channelId: channelId1 + 1, start: 0 },
+        { testName: 'invaild channelId', authUserId: authId1, channelId: channelId1 + 1, start: 0 },
         { testName: 'channelId is vaild but the authorised user is not a member of the channel', authUserId: authId1, channelId: channelId2, start: 0 },
-        { testName: 'invaild channelId and authUserId ', authUserId: 810, channelId: 233, start: 0 },
+        { testName: 'invaild channelId and authUserId ', authUserId: authId1 + 1, channelId: (channelId1 + channelId2) / 2, start: 0 },
     ])('Input has $testName', ({ authUserId, channelId, start }) => {
+
+        const authId1 = authRegisterV1('gura@gmail.com', '114514810', 'huaizhi', 'li').authUserId;
+        const channelId1 = channelsCreateV1(authId1, 'Channel 1', true).channelId;
+        const channelId2 = channelsCreateV1(authId1, 'Channel 2', true).channelId;
+        channelJoinV1(authId1, channelId1)
+        channelJoinV1(authId2, channelId2)
+        channelJoinV1(authId3, channelId3)
+
         expect(channelMessagesV1(authUserId, channelId, start)).toStrictEqual({ error: expect.any(String) });
     });
 });
