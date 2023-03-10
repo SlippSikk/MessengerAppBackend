@@ -106,7 +106,7 @@ function channelsCreateV1(authUserId, name, isPublic) {
 }
 
 /**
- * @param {int} authUserId 
+ * @param {number} authUserId 
  * @returns { channels: [{ channelId: integer, channelName: string}] }
  * 
  * @summary 
