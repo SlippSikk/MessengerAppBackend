@@ -1,14 +1,27 @@
-import { getData, setData } from './dataStore.js';
+import { getData, setData } from "./dataStore.js";
+import { isUserIdValid } from "./helper.js"
+
+/** 
+ * Summary: Shows all the channels that the member is in, depending on the input user Id
+ * 
+ * Description:
+ * If the inputted authUserId is valid, as in it exists in the array of users,
+ * then this function will traverse through all existing channels using a for loop
+ * and if this member is a part of that channel then it will add it to a new array containing 
+ * that channel's Id and name.
+ * Once the for loop is complete, then the function will return an array of objects
+ * where the objects have the channel's Ids and names.
+ * 
+ * @param {number} authUserId - Unique Id of the user
+ * 
+ * @returns {error: 'string'} - Error Message - Error message describing the error cause
+ * @returns {channels: [{channelId: number}, {name: 'string'}]} - Array of channels that the user is a part of
+ */
+
 
 function channelsListV1(authUserId) {
     let data = getData();
-
-    // Error: invalid user ID
-    const find = data.users.find(element => element.userId === authUserId);
-    if (find === undefined) {
-        return { error: 'authuserId is invalid' };
-    }
-
+    if (!isUserIdValid(authUserId)) return { error: 'authUserId not valid' };
     let channels = [];
     let curr_channel = {};
 
@@ -30,6 +43,25 @@ function channelsListV1(authUserId) {
     };
 }
 
+/**
+ * Summary:
+ * When given a valid authUserId, name, and privacy setting,
+ * this function will create a new channel
+ * 
+ * Description:
+ * When given a valid name and authUserId, the function will create a unique
+ * channelId, and after it will create a new object containing; channelId, ownerId,
+ * adminIds, memberIds, channelName, isPublic, messages. Then will set this new object into
+ * the array named "channels", in the dataStore.js file using the setData function
+ * 
+ * @param {number} authUserId - Unique Id of a user
+ * @param {string} name - Desired name for a new channel
+ * @param {boolean} isPublic - Desired setting for the channel's privacy
+ * 
+ * @returns {error: 'string'} - Error Message - Error message describing the error cause
+ * @returns {channelId: number} - The unique channelId that gets created upon creating a new channel
+ */
+
 function channelsCreateV1(authUserId, name, isPublic) {
     let data = getData();
 
@@ -45,11 +77,7 @@ function channelsCreateV1(authUserId, name, isPublic) {
     }
 
     // authUserId is invalid
-    const find = data.users.find(element => element.userId === authUserId);
-    if (find === undefined) {
-        return { error: 'authuserId is invalid' };
-    }
-
+    if (!isUserIdValid(authUserId)) return { error: 'authUserId not valid' };
 
     // Find and assign a suitable channelId
     let channelId = typeof (Number);
@@ -81,10 +109,12 @@ function channelsCreateV1(authUserId, name, isPublic) {
  * @param {int} authUserId 
  * @returns { channels: [{ channelId: integer, channelName: string}] }
  * 
+ * @summary 
+ *  from a userId -> returns all channels which user is a member of
  */
 function channelsListAllV1(authUserId) {
     let dataStore = getData();
-    if (!isValid(authUserId)) return { error: 'authUserId not valid' };
+    if (!isUserIdValid(authUserId)) return { error: 'authUserId not valid' };
     const channelsObject = { channels: [] };
     for (let a of dataStore.channels) {
         if (a.memberIds.includes(authUserId)) {
@@ -95,21 +125,6 @@ function channelsListAllV1(authUserId) {
         }
     }
     return channelsObject;
-
 }
-/**
- *  o
- * @param {integer} authUserId 
- * @returns {bolean} 
- * note: check  if authUserId is valid/notValid
- */
-function isValid(authUserId) {
-    let dataStore = getData();
-    for (let a of dataStore.users) {
-        if (a.userId === authUserId) return true;
-    }
-    return false;
-}
-
 
 export { channelsCreateV1, channelsListV1, channelsListAllV1 };

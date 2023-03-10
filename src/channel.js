@@ -1,31 +1,66 @@
+
+import { channelsCreateV1 } from './channels.js'
 import { getData, setData } from './dataStore.js'
 import { checkExists, isChannelIdValid, isUserIdValid } from './helper.js'
 
+
+
+/**
+ * Given a channel with ID channelId that t
+ * he authorised user is a member of
+ * return up to 50 messages information
+ * between index "start" and "start + 50"
+ * i.e  the start and its previous message
+ * @param {string} authUserId
+ * @param {string} channelId
+ * @param {string} start
+ * @returns {messages,start,end}
+ */
+
 function channelMessagesV1(authUserId, channelId, start) {
+     let data = getData();
+     let end
+     const authUser = data.users.find(object => object.userId === authUserId);
+    const channel = data.channels.find(object => object.channelId === channelId);
+     const member = data.channels.find(object => object.memberIds === channelId);
+     let channelExists = checkExists(channelId, data.channels)
+    if (authUser === undefined) {
+        return { error: 'authUserId is invaild' };
+    } else if (channel === undefined) {
+        return { error: 'channelId is invaild' };
+    }
+    if( channelExists == false){
+     return {error: 'user is not in the channel'}
+}
+
+    if (start > channel.messages.length){
+     return {error: 'start is greater than the total number of messages in the channel'}  //assumption: messages array is always[]
+    }
+    if(channel.messages.length > start + 50){
+     end = start + 50
+    }else{
+     end = -1
+    }
      return {
+           
+               messages: channel.messages.slice(start,end),
+               start: start,
+               end: end
+             
+}      
 
-          messages: [
-               {
-                    messageId: 1,
-                    uId: 1,
-                    message: 'Hello world',
-                    timeSent: 1582426789,
-               }
-          ],
-          start: 0,
-          end: 50,
 
-     }
+
 }
 
 /**
  * Allows members of a channel to invite someone else to that channel, provided
  * they aren't already a member.
  * 
- * @param {number} authUserID 
- * @param {number} channelID 
- * @param {number} uID 
- * @returns 
+ * @param {number} authUserID - The ID of the inviter
+ * @param {number} channelID  - The ID of the channel to be invited into
+ * @param {number} uID        - The ID of the invitee
+ * @returns {error: 'string'} - The explanation for the error, otherwise {}
  */
 function channelInviteV1(authUserID, channelID, uID) {
      if (typeof (authUserID) != "number") {
@@ -67,9 +102,9 @@ function channelInviteV1(authUserID, channelID, uID) {
  * Allows regular users to join public channels. If the user is a global owner,
  * they can join any channel.
  * 
- * @param {number} authUserID 
- * @param {number} channelID 
- * @returns 
+ * @param {number} authUserID - The ID of the user joining a channel
+ * @param {number} channelID  - The ID of the channel to be joined
+ * @returns {error: 'string'} - The explanation for the error, otherwise {}
  */
 function channelJoinV1(authUserID, channelID) {
      if (typeof (authUserID) != "number") {
@@ -99,7 +134,6 @@ function channelJoinV1(authUserID, channelID) {
      // checks if that user is already in the channel
      let channelMembers = data.channels[channelExists].memberIds
      if (channelMembers.includes(authUserID)) {
-          console.log('user is in channel already')
           return { error: "This user is already in this channel" }
      }
 
@@ -113,13 +147,17 @@ function channelJoinV1(authUserID, channelID) {
  * 
  * @param {number} authUserId 
  * @param {number} channelId 
- * @returns {{channelName: string,
- * isPublic: boolean,
- * ownerId: string,
- * memberIds: [number]}}
+ * @returns {{
+ *   channelName: string,
+ *   isPublic: boolean,
+ *   ownerId: string,
+ *   memberIds: [number]
+ * }}
+ * @summary
+ *   provides basic details about the channel.
  */
 function channelDetailsV1(authUserId, channelId) {
-     let dataStore = getData(); 
+     let dataStore = getData();
      if (!isUserIdValid(authUserId)) return { error: 'authUserId not valid' };
      if (!isChannelIdValid(channelId)) return { error: 'channelId not valid' };
      // error handle for channelId is valid and the authorised user is not a member of the channel

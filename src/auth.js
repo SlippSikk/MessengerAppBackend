@@ -1,4 +1,4 @@
-import { getData, setData } from "./dataStore";
+import { getData, setData } from "./dataStore.js";
 import validator from 'validator';
 
 /**
@@ -14,10 +14,10 @@ import validator from 'validator';
  * and last name.
  * Finally the userId is returned
  * 
- * @param {Number} email - Email address of the user
- * @param {Number} password - password of the user
- * @param {Number} nameFirst - first name of the user
- * @param {Number} nameLast - last name of the user
+ * @param {string} email - Email address of the user
+ * @param {string} password - password of the user
+ * @param {string} nameFirst - first name of the user
+ * @param {string} nameLast - last name of the user
  * 
  * @returns {authUserId: Number} authUserId - Unqiue ID of the user created
  * @returns {error: 'string'} Error Message - Error message describing the error cause
@@ -81,8 +81,8 @@ function authRegisterV1(email, password, nameFirst, nameLast) {
  * that the user exists and then proceeds to return the userId of the user if their 
  * email and password match up together.
  * 
- * @param {*} email - Email address of the user
- * @param {*} password - password of the user
+ * @param {string} email - Email address of the user
+ * @param {string} password - password of the user
  * 
  * @returns {authUserId: Number} authUserId - Unqiue ID of the user created
  * @returns {error: 'string'} Error Message - Error message describing the error caus
