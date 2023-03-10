@@ -99,7 +99,6 @@ function channelJoinV1(authUserID, channelID) {
      // checks if that user is already in the channel
      let channelMembers = data.channels[channelExists].memberIds
      if (channelMembers.includes(authUserID)) {
-          console.log('user is in channel already')
           return { error: "This user is already in this channel" }
      }
 
