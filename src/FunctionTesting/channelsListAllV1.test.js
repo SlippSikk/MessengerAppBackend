@@ -17,7 +17,6 @@ describe('test channelsListAllV1', () => {
      });
      test('Test for valid user ID', () => {
           let authUserId = authRegisterV1('duck@gmail.com', '123456', 'duck', 'dash').authUserId;
-          console.log(authUserId);
           expect(channelsListAllV1(authUserId)).toStrictEqual({ channels: [] })
      });
      test('Test return value after creating multiple Public channels', () => {
