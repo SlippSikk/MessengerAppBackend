@@ -7,230 +7,230 @@ import { checkExists } from '../helper.js';
 
 
 describe('Members with different permissions inviting once', () => {
-    let globalOwnerID;
-    let globalChannelID;
-    let authID2;
-    let channelID2;
-    let authID3;
+    let globalOwnerId;
+    let globalChannelId;
+    let authId2;
+    let channelId2;
+    let authId3;
 
     beforeEach(() => {
         clearV1();
-        // note that globalOwnerID is the first ID and hence a global owner
-        globalOwnerID = authRegisterV1('anna@gmail.com', 'aaa123', 'Anna', 'Adams').authUserId;
-        // globalChannelID corresponds to the first channel, owned by the global owner
-        globalChannelID = channelsCreateV1(globalOwnerID, 'Channel 1', true).channelId;
-        // authID2 is the ID of a regular user
-        authID2 = authRegisterV1('bob@outlook.com', 'bbb123', 'Bob', 'Biggums').authUserId;
+        // note that globalOwnerId is the first Id and hence a global owner
+        globalOwnerId = authRegisterV1('anna@gmail.com', 'aaa123', 'Anna', 'Adams').authUserId;
+        // globalChannelId corresponds to the first channel, owned by the global owner
+        globalChannelId = channelsCreateV1(globalOwnerId, 'Channel 1', true).channelId;
+        // authId2 is the Id of a regular user
+        authId2 = authRegisterV1('bob@outlook.com', 'bbb123', 'Bob', 'Biggums').authUserId;
         // channel2 is a regular channel
-        channelID2 = channelsCreateV1(authID2, 'Channel 2', true).channelId;
-    
-        authID3 = authRegisterV1('chris@outlook.com', 'ccc123', 'Chris', 'Catman').authUserId;
+        channelId2 = channelsCreateV1(authId2, 'Channel 2', true).channelId;
+
+        authId3 = authRegisterV1('chris@outlook.com', 'ccc123', 'Chris', 'Catman').authUserId;
     });
-    test ('Global owner invites regular user', () => {      
-        expect(channelInviteV1(globalOwnerID, globalChannelID, authID2)).toEqual({})
-        expect(channelDetailsV1(globalOwnerID, globalChannelID)).toEqual({
+    test('Global owner invites regular user', () => {
+        expect(channelInviteV1(globalOwnerId, globalChannelId, authId2)).toEqual({})
+        expect(channelDetailsV1(globalOwnerId, globalChannelId)).toEqual({
             channelName: "Channel 1",
             isPublic: true,
-            ownerId: globalOwnerID,
-            memberIds: [globalOwnerID, authID2],
+            ownerId: globalOwnerId,
+            memberIds: [globalOwnerId, authId2],
         })
     });
 
-    test ('Global owner invites user to a channel they do not own', () => {        
-        expect(channelInviteV1(globalOwnerID, channelID2, authID3)).toEqual({})
-        expect(channelDetailsV1(globalOwnerID, channelID2)).toEqual({
+    test('Global owner invites user to a channel they do not own', () => {
+        expect(channelInviteV1(globalOwnerId, channelId2, authId3)).toEqual({})
+        expect(channelDetailsV1(globalOwnerId, channelId2)).toEqual({
             channelName: "Channel 2",
             isPublic: true,
-            ownerId: authID2,
-            memberIds: [authID2, authID3],
+            ownerId: authId2,
+            memberIds: [authId2, authId3],
         })
     });
 
-    test ('Regular owner invites global owner', () => {        
-        expect(channelInviteV1(authID2, channelID2, globalOwnerID)).toEqual({})
-        expect(channelDetailsV1(authID2, channelID2)).toEqual({
+    test('Regular owner invites global owner', () => {
+        expect(channelInviteV1(authId2, channelId2, globalOwnerId)).toEqual({})
+        expect(channelDetailsV1(authId2, channelId2)).toEqual({
             channelName: "Channel 2",
             isPublic: true,
-            ownerId: authID2,
-            memberIds: [authID2, globalOwnerID],
+            ownerId: authId2,
+            memberIds: [authId2, globalOwnerId],
         })
     });
 
-    test ('Regular owner invites another regular user', () => {
-        expect(channelInviteV1(authID2, channelID2, authID3)).toEqual({})
-        expect(channelDetailsV1(authID2, channelID2)).toEqual({
+    test('Regular owner invites another regular user', () => {
+        expect(channelInviteV1(authId2, channelId2, authId3)).toEqual({})
+        expect(channelDetailsV1(authId2, channelId2)).toEqual({
             channelName: "Channel 2",
             isPublic: true,
-            ownerId: authID2,
-            memberIds: [authID2, authID3],
+            ownerId: authId2,
+            memberIds: [authId2, authId3],
         })
     });
 
-    test ('Owner invites multiple users', () => {
-        const authID4 = authRegisterV1('dora@outlook.com', 'ddd123', 'Dora', 'DeeExplora').authUserId;
-        const authID5 = authRegisterV1('eugene@outlook.com', 'eee123', 'Eugene', 'Ew').authUserId;
-        
-        expect(channelInviteV1(authID2, channelID2, authID3)).toEqual({})
-        expect(channelInviteV1(authID2, channelID2, authID4)).toEqual({})
-        expect(channelInviteV1(authID2, channelID2, authID5)).toEqual({})
-        expect(channelDetailsV1(authID2, channelID2)).toEqual({
+    test('Owner invites multiple users', () => {
+        const authId4 = authRegisterV1('dora@outlook.com', 'ddd123', 'Dora', 'DeeExplora').authUserId;
+        const authId5 = authRegisterV1('eugene@outlook.com', 'eee123', 'Eugene', 'Ew').authUserId;
+
+        expect(channelInviteV1(authId2, channelId2, authId3)).toEqual({})
+        expect(channelInviteV1(authId2, channelId2, authId4)).toEqual({})
+        expect(channelInviteV1(authId2, channelId2, authId5)).toEqual({})
+        expect(channelDetailsV1(authId2, channelId2)).toEqual({
             channelName: "Channel 2",
             isPublic: true,
-            ownerId: authID2,
-            memberIds: [authID2, authID3, authID4, authID5],
+            ownerId: authId2,
+            memberIds: [authId2, authId3, authId4, authId5],
         })
     });
 
-    test ('Regular member invites others', () => {
-        const authID4 = authRegisterV1('dora@outlook.com', 'ddd123', 'Dora', 'DeeExplora').authUserId;
-   
-        expect(channelInviteV1(authID2, channelID2, authID3)).toEqual({})
-        expect(channelInviteV1(authID3, channelID2, authID4)).toEqual({})
-        expect(channelDetailsV1(authID3, channelID2)).toEqual({
+    test('Regular member invites others', () => {
+        const authId4 = authRegisterV1('dora@outlook.com', 'ddd123', 'Dora', 'DeeExplora').authUserId;
+
+        expect(channelInviteV1(authId2, channelId2, authId3)).toEqual({})
+        expect(channelInviteV1(authId3, channelId2, authId4)).toEqual({})
+        expect(channelDetailsV1(authId3, channelId2)).toEqual({
             channelName: "Channel 2",
             isPublic: true,
-            ownerId: authID2,
-            memberIds: [authID2, authID3, authID4],
+            ownerId: authId2,
+            memberIds: [authId2, authId3, authId4],
         })
     });
 });
 
 describe('Multiple invites', () => {
-    let globalOwnerID;
-    let globalChannelID;
-    let authID2;
-    let channelID2;
-    let authID3;
+    let globalOwnerId;
+    let globalChannelId;
+    let authId2;
+    let channelId2;
+    let authId3;
 
     beforeEach(() => {
         clearV1();
-        // note that globalOwnerID is the first ID and hence a global owner
-        globalOwnerID = authRegisterV1('anna@gmail.com', 'aaa123', 'Anna', 'Adams').authUserId;
-        // globalChannelID corresponds to the first channel, owned by the global owner
-        globalChannelID = channelsCreateV1(globalOwnerID, 'Channel 1', true).channelId;
-        // authID2 is the ID of a regular user
-        authID2 = authRegisterV1('bob@outlook.com', 'bbb123', 'Bob', 'Biggums').authUserId;
+        // note that globalOwnerId is the first Id and hence a global owner
+        globalOwnerId = authRegisterV1('anna@gmail.com', 'aaa123', 'Anna', 'Adams').authUserId;
+        // globalChannelId corresponds to the first channel, owned by the global owner
+        globalChannelId = channelsCreateV1(globalOwnerId, 'Channel 1', true).channelId;
+        // authId2 is the Id of a regular user
+        authId2 = authRegisterV1('bob@outlook.com', 'bbb123', 'Bob', 'Biggums').authUserId;
         // channel2 is a regular channel
-        channelID2 = channelsCreateV1(authID2, 'Channel 2', true).channelId;
-    
-        authID3 = authRegisterV1('chris@outlook.com', 'ccc123', 'Chris', 'Catman').authUserId;
+        channelId2 = channelsCreateV1(authId2, 'Channel 2', true).channelId;
+
+        authId3 = authRegisterV1('chris@outlook.com', 'ccc123', 'Chris', 'Catman').authUserId;
     });
-    test ('Member invites multiple others', () => {
-        const authID4 = authRegisterV1('dora@outlook.com', 'ddd123', 'Dora', 'DeeExplora').authUserId
-        const authID5 = authRegisterV1('eugene@outlook.com', 'eee123', 'Eugene', 'Eggbert').authUserId
-        expect(channelInviteV1(authID2, channelID2, authID3)).toEqual({})
-        expect(channelInviteV1(authID3, channelID2, authID4)).toEqual({})
-        expect(channelInviteV1(authID3, channelID2, authID5)).toEqual({})
-        expect(channelDetailsV1(authID3, channelID2)).toEqual({
+    test('Member invites multiple others', () => {
+        const authId4 = authRegisterV1('dora@outlook.com', 'ddd123', 'Dora', 'DeeExplora').authUserId
+        const authId5 = authRegisterV1('eugene@outlook.com', 'eee123', 'Eugene', 'Eggbert').authUserId
+        expect(channelInviteV1(authId2, channelId2, authId3)).toEqual({})
+        expect(channelInviteV1(authId3, channelId2, authId4)).toEqual({})
+        expect(channelInviteV1(authId3, channelId2, authId5)).toEqual({})
+        expect(channelDetailsV1(authId3, channelId2)).toEqual({
             channelName: "Channel 2",
             isPublic: true,
-            ownerId: authID2,
-            memberIds: [authID2, authID3, authID4, authID5],
+            ownerId: authId2,
+            memberIds: [authId2, authId3, authId4, authId5],
         })
     });
 
-    test ('Member part of multiple channels', () => {
-        expect(channelInviteV1(globalChannelID, globalOwnerID, authID3)).toEqual({})
-        expect(channelInviteV1(authID2, channelID2, authID3)).toEqual({})
-        expect(channelInviteV1(globalOwnerID, channelID2, globalOwnerID)).toEqual({})
-        expect(channelDetailsV1(authID3, channelID2)).toEqual({
+    test('Member part of multiple channels', () => {
+        expect(channelInviteV1(globalChannelId, globalOwnerId, authId3)).toEqual({})
+        expect(channelInviteV1(authId2, channelId2, authId3)).toEqual({})
+        expect(channelInviteV1(globalOwnerId, channelId2, globalOwnerId)).toEqual({})
+        expect(channelDetailsV1(authId3, channelId2)).toEqual({
             channelName: "Channel 2",
             isPublic: true,
-            ownerId: authID2,
-            memberIds: [authID2, authID3, globalOwnerID],
+            ownerId: authId2,
+            memberIds: [authId2, authId3, globalOwnerId],
         })
-        expect(channelDetailsV1(globalOwnerID, globalChannelID)).toEqual({
+        expect(channelDetailsV1(globalOwnerId, globalChannelId)).toEqual({
             channelName: "Channel 1",
             isPublic: true,
-            ownerId: globalOwnerID,
-            memberIds: [globalOwnerID, authID3],
+            ownerId: globalOwnerId,
+            memberIds: [globalOwnerId, authId3],
         })
     });
 })
 
-describe('ERRORS: Reinviting users', () => {    
-    let globalOwnerID;
-    let globalChannelID;
-    let authID2;
-    let channelID2;
-    let authID3;
+describe('ERRORS: Reinviting users', () => {
+    let globalOwnerId;
+    let globalChannelId;
+    let authId2;
+    let channelId2;
+    let authId3;
 
     beforeEach(() => {
         clearV1();
-        // note that globalOwnerID is the first ID and hence a global owner
-        globalOwnerID = authRegisterV1('anna@gmail.com', 'aaa123', 'Anna', 'Adams').authUserId;
-        // globalChannelID corresponds to the first channel, owned by the global owner
-        globalChannelID = channelsCreateV1(globalOwnerID, 'Channel 1', true).channelId;
-        // authID2 is the ID of a regular user
-        authID2 = authRegisterV1('bob@outlook.com', 'bbb123', 'Bob', 'Biggums').authUserId;
+        // note that globalOwnerId is the first Id and hence a global owner
+        globalOwnerId = authRegisterV1('anna@gmail.com', 'aaa123', 'Anna', 'Adams').authUserId;
+        // globalChannelId corresponds to the first channel, owned by the global owner
+        globalChannelId = channelsCreateV1(globalOwnerId, 'Channel 1', true).channelId;
+        // authId2 is the Id of a regular user
+        authId2 = authRegisterV1('bob@outlook.com', 'bbb123', 'Bob', 'Biggums').authUserId;
         // channel2 is a regular channel
-        channelID2 = channelsCreateV1(authID2, 'Channel 2', true).channelId;
-    
-        authID3 = authRegisterV1('chris@outlook.com', 'ccc123', 'Chris', 'Catman').authUserId;
+        channelId2 = channelsCreateV1(authId2, 'Channel 2', true).channelId;
+
+        authId3 = authRegisterV1('chris@outlook.com', 'ccc123', 'Chris', 'Catman').authUserId;
     });
 
-    test ('Owner reinvites themselves', () => {     
-        expect(channelInviteV1(authID2, channelID2, authID2)).toEqual({error: expect.any(String)})
-        expect(channelDetailsV1(authID2, channelID2)).toEqual({
+    test('Owner reinvites themselves', () => {
+        expect(channelInviteV1(authId2, channelId2, authId2)).toEqual({ error: expect.any(String) })
+        expect(channelDetailsV1(authId2, channelId2)).toEqual({
             channelName: "Channel 2",
             isPublic: true,
-            ownerId: authID2,
-            memberIds: [authID2],
+            ownerId: authId2,
+            memberIds: [authId2],
         })
     });
 
-    test ('Owner reinvites another user', () => {
-        
-        expect(channelInviteV1(authID2, channelID2, authID3)).toEqual({})   
-        expect(channelInviteV1(authID2, channelID2, authID3)).toEqual({error: expect.any(String)})
-        expect(channelDetailsV1(authID2, channelID2)).toEqual({
+    test('Owner reinvites another user', () => {
+
+        expect(channelInviteV1(authId2, channelId2, authId3)).toEqual({})
+        expect(channelInviteV1(authId2, channelId2, authId3)).toEqual({ error: expect.any(String) })
+        expect(channelDetailsV1(authId2, channelId2)).toEqual({
             channelName: "Channel 2",
             isPublic: true,
-            ownerId: authID2,
-            memberIds: [authID2, authID3],
+            ownerId: authId2,
+            memberIds: [authId2, authId3],
         })
     });
 })
 
 
 describe('Miscallaneous errors', () => {
-    let globalOwnerID;
-    let globalChannelID;
-    let authID2;
-    let channelID2;
-    let authID3;
+    let globalOwnerId;
+    let globalChannelId;
+    let authId2;
+    let channelId2;
+    let authId3;
 
     beforeEach(() => {
         clearV1();
-        // note that globalOwnerID is the first ID and hence a global owner
-        globalOwnerID = authRegisterV1('anna@gmail.com', 'aaa123', 'Anna', 'Adams');
-        // globalChannelID corresponds to the first channel, owned by the global owner
-        globalChannelID = channelsCreateV1(globalOwnerID, 'Channel 1', true);
-        // authID2 is the ID of a regular user
-        authID2 = authRegisterV1('bob@outlook.com', 'bbb123', 'Bob', 'Biggums');
+        // note that globalOwnerId is the first Id and hence a global owner
+        globalOwnerId = authRegisterV1('anna@gmail.com', 'aaa123', 'Anna', 'Adams');
+        // globalChannelId corresponds to the first channel, owned by the global owner
+        globalChannelId = channelsCreateV1(globalOwnerId, 'Channel 1', true);
+        // authId2 is the Id of a regular user
+        authId2 = authRegisterV1('bob@outlook.com', 'bbb123', 'Bob', 'Biggums');
         // channel2 is a regular channel
-        channelID2 = channelsCreateV1(authID2, 'Channel 2', true);
-    
-        authID3 = authRegisterV1('chris@outlook.com', 'ccc123', 'Chris', 'Catman');
+        channelId2 = channelsCreateV1(authId2, 'Channel 2', true);
+
+        authId3 = authRegisterV1('chris@outlook.com', 'ccc123', 'Chris', 'Catman');
     });
 
 
-    test ('Invalid Channel ID', () => {
+    test('InvalId Channel Id', () => {
         clearV1();
-        expect(channelInviteV1(authID2, 'a', authID2)).toEqual({error: expect.any(String)}) 
+        expect(channelInviteV1(authId2, 'a', authId2)).toEqual({ error: expect.any(String) })
     });
 
-    test ('Valid channel ID but user not a member', () => {
-        expect(channelInviteV1(authID3, channelID2, authID3)).toEqual({error: expect.any(String)}) 
+    test('ValId channel Id but user not a member', () => {
+        expect(channelInviteV1(authId3, channelId2, authId3)).toEqual({ error: expect.any(String) })
     });
 
-    test ('Invalid UserID', () => {
-        expect(channelInviteV1(authID2, channelID2, 'abc')).toEqual({error: expect.any(String)})
+    test('InvalId UserId', () => {
+        expect(channelInviteV1(authId2, channelId2, 'abc')).toEqual({ error: expect.any(String) })
     });
 
-    test ('Invalid authUserID', () => {
+    test('InvalId authUserId', () => {
         clearV1()
-        expect(channelInviteV1('abc', channelID2, authID2)).toEqual({error: expect.any(String)})
+        expect(channelInviteV1('abc', channelId2, authId2)).toEqual({ error: expect.any(String) })
     });
 
 });
