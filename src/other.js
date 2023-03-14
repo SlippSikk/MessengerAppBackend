@@ -6,7 +6,11 @@
 import {setData, getData} from './dataStore.js'
 export function clearV1(){
     
-    let ini_data = {}
+    let ini_data = {
+        users: [],
+        channels: [],
+    
+    }
     setData(ini_data)
     
       return {};
