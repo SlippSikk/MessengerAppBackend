@@ -16,7 +16,8 @@ tests:
     - kill -SIGINT %1
     - sleep 2
     - cat $SERVER_LOG
-  stage: linting
+linting:
+  stage: checks
   script:
     - npm run lint-fix
     - npm run lint
