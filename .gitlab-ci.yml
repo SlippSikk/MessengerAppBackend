@@ -7,7 +7,7 @@ before_script:
   - npm install
 
 linting:
-  stage: linting
+  stage: checks
   script:
     - npm run lint-fix
     - npm run lint
