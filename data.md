@@ -26,15 +26,12 @@ let data = {
             channelId: typeof(number),
             ownerMembers: user[]
             allMembers: user[]
-            adminIds : typeof(number)[],
-            memberIds: typeof(number)[],
             messages: [{
                 messageId: 342, 
-                senderId: 234, 
-                responseId: [8442, 65, 764],
-                time: "10:47",
-                content: "Hi my name is Chris",
-                reacts: {},
+                uId: 234, 
+                message: string
+                timeSent: number (seconds)
+
             }],
         }
     ],
