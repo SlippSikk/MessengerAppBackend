@@ -6,6 +6,12 @@ stages:
 before_script:
   - npm install
 
+linting:
+  stage: checks
+  script:
+    - npm run lint-fix
+    - npm run lint
+
 tests:
   stage: checks
   script:
@@ -16,3 +22,6 @@ tests:
     - kill -SIGINT %1
     - sleep 2
     - cat $SERVER_LOG
+
+
+
