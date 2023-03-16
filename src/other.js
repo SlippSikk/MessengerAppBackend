@@ -3,7 +3,7 @@
  * @param none
  * @returns {{}}
  */
-import {setData, getData} from './dataStore.js'
+import { setData } from './dataStore.js'
 export function clearV1(){
     
     let ini_data = {
@@ -13,6 +13,6 @@ export function clearV1(){
     }
     setData(ini_data)
     
-      return {};
+    return {};
     
 }

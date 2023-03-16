@@ -26,20 +26,58 @@ describe('ValId joining sequences', () => {
     test('Global owner joins private channel', () => {
         expect(channelJoinV1(globalOwnerId, privateChannelId)).toEqual({})
         expect(channelDetailsV1(globalOwnerId, privateChannelId)).toEqual({
-            channelName: "Private Channel",
+            name: 'Private Channel',
             isPublic: false,
-            ownerId: regularOwnerId,
-            memberIds: [regularOwnerId, globalOwnerId],
+            ownerMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            }],
+            allMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            },
+            {
+                uId: globalOwnerId,
+                email: 'anna@gmail.com',
+                nameFirst: 'Anna',
+                nameLast: 'Adams',
+                handleStr: expect.any(String),
+            }]
         })
     });
 
     test('Regular user joins public channel', () => {
         expect(channelJoinV1(regularUserId, publicChannelId)).toEqual({})
         expect(channelDetailsV1(regularUserId, publicChannelId)).toEqual({
-            channelName: "Public Channel",
+            name: 'Public Channel',
             isPublic: true,
-            ownerId: regularOwnerId,
-            memberIds: [regularOwnerId, regularUserId],
+            ownerMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            }],
+            allMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            },
+            {
+                uId: regularUserId,
+                email: 'chris@outlook.com',
+                nameFirst: 'Chris',
+                nameLast: 'Catman',
+                handleStr: expect.any(String),
+            }]
         })
     });
 
@@ -47,16 +85,54 @@ describe('ValId joining sequences', () => {
         expect(channelJoinV1(regularUserId, globalChannelId)).toEqual({})
         expect(channelJoinV1(regularUserId, publicChannelId)).toEqual({})
         expect(channelDetailsV1(regularUserId, publicChannelId)).toEqual({
-            channelName: "Public Channel",
+            name: 'Public Channel',
             isPublic: true,
-            ownerId: regularOwnerId,
-            memberIds: [regularOwnerId, regularUserId],
+            ownerMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            }],
+            allMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            },
+            {
+                uId: regularUserId,
+                email: 'chris@outlook.com',
+                nameFirst: 'Chris',
+                nameLast: 'Catman',
+                handleStr: expect.any(String),
+            }]
         })
         expect(channelDetailsV1(regularUserId, globalChannelId)).toEqual({
-            channelName: "Global Channel",
+            name: 'Global Channel',
             isPublic: true,
-            ownerId: globalOwnerId,
-            memberIds: [globalOwnerId, regularUserId],
+            ownerMembers: [{
+                uId: globalOwnerId,
+                email: 'anna@gmail.com',
+                nameFirst: 'Anna',
+                nameLast: 'Adams',
+                handleStr: expect.any(String),
+            }],
+            allMembers: [{
+                uId: globalOwnerId,
+                email: 'anna@gmail.com',
+                nameFirst: 'Anna',
+                nameLast: 'Adams',
+                handleStr: expect.any(String),
+            },
+            {
+                uId: regularUserId,
+                email: 'chris@outlook.com',
+                nameFirst: 'Chris',
+                nameLast: 'Catman',
+                handleStr: expect.any(String),
+            }]
         })
     });
 
@@ -82,10 +158,22 @@ describe('InvalId joining sequences', () => {
     test('Regular user joins private channel', () => {
         expect(channelJoinV1(regularUserId, privateChannelId)).toEqual({ error: expect.any(String) })
         expect(channelDetailsV1(regularOwnerId, privateChannelId)).toEqual({
-            channelName: "Private Channel",
+            name: 'Private Channel',
             isPublic: false,
-            ownerId: regularOwnerId,
-            memberIds: [regularOwnerId],
+            ownerMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            }],
+            allMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            }]
         })
     });
 
@@ -93,40 +181,95 @@ describe('InvalId joining sequences', () => {
         expect(channelJoinV1(regularUserId, publicChannelId)).toEqual({})
         expect(channelJoinV1(regularUserId, publicChannelId)).toEqual({ error: expect.any(String) })
         expect(channelDetailsV1(regularUserId, publicChannelId)).toEqual({
-            channelName: "Public Channel",
+            name: 'Public Channel',
             isPublic: true,
-            ownerId: regularOwnerId,
-            memberIds: [regularOwnerId, regularUserId],
+            ownerMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            }],
+            allMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            },
+            {
+                uId: regularUserId,
+                email: 'chris@outlook.com',
+                nameFirst: 'Chris',
+                nameLast: 'Catman',
+                handleStr: expect.any(String),
+            }]
         })
     });
 
     test('Owner rejoins channel', () => {
         expect(channelJoinV1(regularOwnerId, publicChannelId)).toEqual({ error: expect.any(String) })
         expect(channelDetailsV1(regularOwnerId, publicChannelId)).toEqual({
-            channelName: "Public Channel",
+            name: 'Public Channel',
             isPublic: true,
-            ownerId: regularOwnerId,
-            memberIds: [regularOwnerId],
+            ownerMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            }],
+            allMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            }],
         })
     });
 
     test('InvalId userId', () => {
         expect(channelJoinV1('abc', publicChannelId)).toEqual({ error: expect.any(String) })
         expect(channelDetailsV1(regularOwnerId, publicChannelId)).toEqual({
-            channelName: "Public Channel",
+            name: 'Public Channel',
             isPublic: true,
-            ownerId: regularOwnerId,
-            memberIds: [regularOwnerId],
+            ownerMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            }],
+            allMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            }]
         })
     });
 
     test('InvalId channelId', () => {
         expect(channelJoinV1(regularUserId, 'abc')).toEqual({ error: expect.any(String) })
         expect(channelDetailsV1(regularOwnerId, publicChannelId)).toEqual({
-            channelName: "Public Channel",
+            name: 'Public Channel',
             isPublic: true,
-            ownerId: regularOwnerId,
-            memberIds: [regularOwnerId],
+            ownerMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            }],
+            allMembers: [{
+                uId: regularOwnerId,
+                email: 'bob@outlook.com',
+                nameFirst: 'Bob',
+                nameLast: 'Biggums',
+                handleStr: expect.any(String),
+            }]
         })
     });
 })

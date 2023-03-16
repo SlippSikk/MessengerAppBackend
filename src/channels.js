@@ -19,19 +19,18 @@ import { isUserIdValid } from "./helper.js"
  */
 
 
-function channelsListV1(authUserId) {
+export function channelsListV1(authUserId) {
     let data = getData();
     if (!isUserIdValid(authUserId)) return { error: 'authUserId not valid' };
     let channels = [];
     let curr_channel = {};
 
-    for (let i = 0; i < data.channels.length; i++) {
-        const temp_channel = data.channels[i];
-
-        if (temp_channel.memberIds.includes(authUserId)) {
+    for (const channel of data.channels) {
+        const hasAuthUser = channel.allMembers.find(member => member.uId === authUserId);
+        if (hasAuthUser != undefined) {
             curr_channel = {
-                channelId: temp_channel.channelId,
-                name: temp_channel.channelName
+                channelId: channel.channelId,
+                name: channel.name
             }
 
             channels.push(curr_channel);
@@ -62,7 +61,7 @@ function channelsListV1(authUserId) {
  * @returns {channelId: number} - The unique channelId that gets created upon creating a new channel
  */
 
-function channelsCreateV1(authUserId, name, isPublic) {
+export function channelsCreateV1(authUserId, name, isPublic) {
     let data = getData();
 
     // Error cases:
@@ -88,13 +87,26 @@ function channelsCreateV1(authUserId, name, isPublic) {
         channelId = data.channels[data.channels.length - 1].channelId + 1;
     }
 
+    const userIndex = data.users.findIndex(user => user.uId === authUserId)
+
     let newChannel = {
-        channelId: channelId,
-        ownerId: authUserId,
-        adminIds: [authUserId],
-        memberIds: [authUserId],
-        channelName: name,
+        channelId: channelId,        
+        name: name,
         isPublic: isPublic,
+        ownerMembers: [{
+            uId: authUserId,
+            email: data.users[userIndex].email,
+            nameFirst: data.users[userIndex].nameFirst,
+            nameLast: data.users[userIndex].nameLast,
+            handleStr: data.users[userIndex].handleStr
+        }],
+        allMembers: [{
+            uId: authUserId,
+            email: data.users[userIndex].email,
+            nameFirst: data.users[userIndex].nameFirst,
+            nameLast: data.users[userIndex].nameLast,
+            handleStr: data.users[userIndex].handleStr
+        }],
         messages: []
     };
 
@@ -112,19 +124,20 @@ function channelsCreateV1(authUserId, name, isPublic) {
  * @summary 
  *  from a userId -> returns all channels which user is a member of
  */
-function channelsListAllV1(authUserId) {
-    let dataStore = getData();
-    if (!isUserIdValid(authUserId)) return { error: 'authUserId not valid' };
-    const channelsObject = { channels: [] };
-    for (let a of dataStore.channels) {
-        if (a.memberIds.includes(authUserId)) {
-            channelsObject.channels.push({
-                channelId: a.channelId,
-                channelName: a.channelName,
-            });
-        }
+export function channelsListAllV1(authUserId) {
+    const data = getData();
+    
+    if (!isUserIdValid(authUserId, data.users)) {
+        return { error: 'authUserId not valid' };
+    } 
+    
+    const allChannels = { channels: [] };
+    
+    for (let a of data.channels) {
+     allChannels.channels.push({
+         channelId: a.channelId,
+         name: a.name,
+     });
     }
-    return channelsObject;
+    return allChannels;
 }
-
-export { channelsCreateV1, channelsListV1, channelsListAllV1 };

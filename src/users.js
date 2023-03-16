@@ -9,10 +9,10 @@
  */
 
 import { getData } from "./dataStore";
-export function userProfileV1(authUserId, uId){
+export function userProfileV1(authUserId, uId){   //here
     let data = getData();
-    const authUser = data.users.find(object => object.userId === authUserId);
-    const idToView = data.users.find(object => object.userId === uId); 
+    const authUser = data.users.find(object => object.uId === authUserId);
+    const idToView = data.users.find(object => object.uId === uId); 
     if (authUser === undefined) {
         return { error: 'authUserId is invaild' };
     } else if (idToView === undefined) {
@@ -22,7 +22,7 @@ export function userProfileV1(authUserId, uId){
 
     return {
         user: {
-          userId: idToView.userId,
+          uId: idToView.uId,
           email: idToView.email,
           nameFirst: idToView.nameFirst,
           nameLast: idToView.nameLast,

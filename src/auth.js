@@ -50,14 +50,14 @@ function authRegisterV1(email, password, nameFirst, nameLast) {
     // Check for duplicate and if found add numbers till unique
     let foundHandle = data.users.find(element => element.handleStr === nameConcat);
     for (let i = 0; foundHandle !== undefined; i++) {
-        nameConcat = nameConcat + 'i';
+        nameConcat = nameConcat + i;
         foundHandle = data.users.find(element => element.handleStr === nameConcat);
     }
 
     const Id = data.users.length + 1;
 
     const user = {
-        userId: Id,
+        uId: Id,
         email: email,
         nameFirst: nameFirst,
         nameLast: nameLast,
@@ -106,7 +106,7 @@ function authLoginV1(email, password) {
 
 
     return {
-        authUserId: found.userId,
+        authUserId: found.uId,
     };
 }
 

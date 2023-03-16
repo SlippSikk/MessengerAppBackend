@@ -27,15 +27,15 @@ describe('test channelsListAllV1', () => {
                channels: [
                     {
                          channelId: firstId,
-                         channelName: 'first',
+                         name: 'first',
                     },
                     {
                          channelId: secondId,
-                         channelName: 'second',
+                         name: 'second',
                     },
                     {
                          channelId: thirdId,
-                         channelName: 'third',
+                         name: 'third',
                     },
                ],
           });
@@ -49,15 +49,15 @@ describe('test channelsListAllV1', () => {
                channels: [
                     {
                          channelId: firstId,
-                         channelName: 'first',
+                         name: 'first',
                     },
                     {
                          channelId: secondId,
-                         channelName: 'second',
+                         name: 'second',
                     },
                     {
                          channelId: thirdId,
-                         channelName: 'third',
+                         name: 'third',
                     },
                ],
           });
@@ -71,15 +71,15 @@ describe('test channelsListAllV1', () => {
                channels: [
                     {
                          channelId: firstId,
-                         channelName: 'first',
+                         name: 'first',
                     },
                     {
                          channelId: secondId,
-                         channelName: 'second',
+                         name: 'second',
                     },
                     {
                          channelId: thirdId,
-                         channelName: 'third',
+                         name: 'third',
                     },
                ],
           });
@@ -95,15 +95,15 @@ describe('test channelsListAllV1', () => {
                channels: [
                     {
                          channelId: firstId,
-                         channelName: 'first',
+                         name: 'first',
                     },
                     {
                          channelId: secondId,
-                         channelName: 'second',
+                         name: 'second',
                     },
                     {
                          channelId: thirdId,
-                         channelName: 'third',
+                         name: 'third',
                     },
                ],
           });
@@ -119,7 +119,15 @@ describe('test channelsListAllV1', () => {
                channels: [
                     {
                          channelId: firstId,
-                         channelName: 'first',
+                         name: 'first',
+                    },
+                    {
+                         channelId: secondId,
+                         name: 'second',
+                    },
+                    {
+                         channelId: thirdId,
+                         name: 'third',
                     },
                ],
           });
@@ -128,11 +136,15 @@ describe('test channelsListAllV1', () => {
                channels: [
                     {
                          channelId: firstId,
-                         channelName: 'first',
+                         name: 'first',
+                    },
+                    {
+                         channelId: secondId,
+                         name: 'second',
                     },
                     {
                          channelId: thirdId,
-                         channelName: 'third',
+                         name: 'third',
                     },
                ],
           });
