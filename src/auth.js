@@ -41,16 +41,17 @@ function authRegisterV1(email, password, nameFirst, nameLast) {
     }
 
     // Create handleStr
-    let nameConcat = nameFirst.toLowerCase() + nameLast.toLowerCase();
+    let nameConcats = nameFirst.toLowerCase() + nameLast.toLowerCase();
 
-    if (nameConcat.length > 20) {
-        nameConcat = nameConcat.slice(0, 20);
+    if (nameConcats.length > 20) {
+        nameConcats = nameConcats.slice(0, 20);
     }
 
+    let nameConcat;
     // Check for duplicate and if found add numbers till unique
-    let foundHandle = data.users.find(element => element.handleStr === nameConcat);
+    let foundHandle = data.users.find(element => element.handleStr === nameConcats);
     for (let i = 0; foundHandle !== undefined; i++) {
-        nameConcat = nameConcat + i;
+        nameConcat = nameConcats.slice(0, nameConcats.length) + i;
         foundHandle = data.users.find(element => element.handleStr === nameConcat);
     }
 
