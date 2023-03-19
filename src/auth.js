@@ -43,6 +43,10 @@ function authRegisterV1(email, password, nameFirst, nameLast) {
     // Create handleStr
     let nameConcats = nameFirst.toLowerCase() + nameLast.toLowerCase();
 
+    const regex = /[^a-z0-9]/g;
+    // Remove all non-alphanumeric characters and convert to lowercase
+    nameConcats = nameConcats.replace(regex, '').toLowerCase(); 
+
     if (nameConcats.length > 20) {
         nameConcats = nameConcats.slice(0, 20);
     }
