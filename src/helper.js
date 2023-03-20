@@ -1,5 +1,5 @@
 
-import { getData, setData } from './dataStore.js'
+import { getData } from './dataStore.js'
 /**
  * 
  * @param {number} searchID      - the unique ID to search for in the array
@@ -33,7 +33,7 @@ export function checkExists(searchID, array) {
 export function isUserIdValid(userId) {
      let dataStore = getData();
      for (let a of dataStore.users) {
-          if (a.userId === userId) return true;
+          if (a.uId === userId) return true;
      }
      return false;
 }

@@ -1,9 +1,6 @@
-
 import { authRegisterV1 } from '../auth.js'
-import { getData,setData } from '../dataStore.js';
 import { clearV1 } from '../other.js'
 import { userProfileV1 } from '../users.js'
-import { channelDetailsV1 } from '../channel.js'
 beforeEach(() => {
     clearV1();
     
@@ -23,14 +20,14 @@ describe("Invaild input", () => {
     });
 });
 
-describe('vaild input', () => {
+describe('valid input', () => {
 
     test('check someone himself profile', () => {   
         const authID1 = authRegisterV1('gura@gmail.com', '114514810', 'huaizhi', 'li');
         const authID2 = authRegisterV1('Ina@outlook.com', 'asdgf8', 'me', 'vasdui');
         const authID3 = authRegisterV1('ichiru@qq.com', 'asduif8195', 'ichiru', 'shirase');  
         expect(userProfileV1(authID1.authUserId, authID1.authUserId)).toEqual( {user: {
-            userId: authID1.authUserId,
+            uId: authID1.authUserId,
             email: 'gura@gmail.com',
             nameFirst: 'huaizhi',
             nameLast: 'li',
@@ -38,7 +35,7 @@ describe('vaild input', () => {
           }});
         expect(userProfileV1(authID2.authUserId, authID2.authUserId)).toEqual(
             {user: {
-                userId: authID2.authUserId,
+                uId: authID2.authUserId,
                 email: 'Ina@outlook.com',
                 nameFirst: 'me',
                 nameLast: 'vasdui',
@@ -52,7 +49,7 @@ describe('vaild input', () => {
         const authID2 = authRegisterV1('Ina@outlook.com', 'asdgf8', 'me', 'vasdui');
         const authID3 = authRegisterV1('ichiru@qq.com', 'asduif8195', 'ichiru', 'shirase');
         expect(userProfileV1(authID3.authUserId, authID1.authUserId)).toEqual( {user: {
-            userId: authID1.authUserId,
+            uId: authID1.authUserId,
             email: 'gura@gmail.com',
             nameFirst: 'huaizhi',
             nameLast: 'li',
@@ -60,6 +57,3 @@ describe('vaild input', () => {
           }})
     });
 })
-
-
-

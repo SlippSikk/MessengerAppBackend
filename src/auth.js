@@ -41,23 +41,28 @@ function authRegisterV1(email, password, nameFirst, nameLast) {
     }
 
     // Create handleStr
-    let nameConcat = nameFirst.toLowerCase() + nameLast.toLowerCase();
+    let nameConcats = nameFirst.toLowerCase() + nameLast.toLowerCase();
 
-    if (nameConcat.length > 20) {
-        nameConcat = nameConcat.slice(0, 20);
+    const regex = /[^a-z0-9]/g;
+    // Remove all non-alphanumeric characters and convert to lowercase
+    nameConcats = nameConcats.replace(regex, '').toLowerCase(); 
+
+    if (nameConcats.length > 20) {
+        nameConcats = nameConcats.slice(0, 20);
     }
 
+    let nameConcat = nameConcats;
     // Check for duplicate and if found add numbers till unique
-    let foundHandle = data.users.find(element => element.handleStr === nameConcat);
+    let foundHandle = data.users.find(element => element.handleStr === nameConcats);
     for (let i = 0; foundHandle !== undefined; i++) {
-        nameConcat = nameConcat + 'i';
+        nameConcat = nameConcats + i;
         foundHandle = data.users.find(element => element.handleStr === nameConcat);
     }
 
     const Id = data.users.length + 1;
 
     const user = {
-        userId: Id,
+        uId: Id,
         email: email,
         nameFirst: nameFirst,
         nameLast: nameLast,
@@ -106,7 +111,7 @@ function authLoginV1(email, password) {
 
 
     return {
-        authUserId: found.userId,
+        authUserId: found.uId,
     };
 }
 
