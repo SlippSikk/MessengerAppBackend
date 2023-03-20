@@ -39,11 +39,11 @@ interface channel {
 
 interface dataTs {
     users: users[]
-    channels: channels[]
+    channels: channel[]
 };
 
 type authUserId = { token: string, authUserId: number } | { error: string };
 
 type error = { error: string };
 
-export { users, channels, user, messages, dataTs, authUserId, error }
+export { users, channels, user, messages, dataTs, authUserId, error, channel }
