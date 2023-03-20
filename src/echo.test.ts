@@ -12,12 +12,12 @@ describe('HTTP tests using Jest', () => {
   test('Test successful echo', () => {
     const res = request(
       'GET',
-            `${url}:${port}/echo`,
-            {
-              qs: {
-                echo: 'Hello',
-              }
-            }
+      `${url}:${port}/echo`,
+      {
+        qs: {
+          echo: 'Hello',
+        }
+      }
     );
     const bodyObj = JSON.parse(res.body as string);
     expect(res.statusCode).toBe(OK);
@@ -26,12 +26,12 @@ describe('HTTP tests using Jest', () => {
   test('Test invalid echo', () => {
     const res = request(
       'GET',
-            `${url}:${port}/echo`,
-            {
-              qs: {
-                echo: 'echo',
-              }
-            }
+      `${url}:${port}/echo`,
+      {
+        qs: {
+          echo: 'echo',
+        }
+      }
     );
     const bodyObj = JSON.parse(res.body as string);
     expect(res.statusCode).toBe(OK);

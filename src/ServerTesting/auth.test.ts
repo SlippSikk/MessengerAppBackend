@@ -20,7 +20,7 @@ function requestAuthRegister(email: string, password: string, nameFirst: string,
     }
   );
 
-  return JSON.parse(res.body as string);
+  return JSON.parse(res.getBody() as string);
 }
 
 describe('Correct Registration', () => {
