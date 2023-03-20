@@ -73,6 +73,7 @@ function authRegisterV1(email: string, password: string, nameFirst: string, name
         nameLast: nameLast,
         handleStr: nameConcat,
         password: password,
+        token: [nameConcat]
     };
 
     data.users.push(user);
@@ -108,6 +109,7 @@ function authLoginV1(email: string, password: string): authUserId {
     }
 
     const found = data.users.find(element => element.email === email);
+    const indexUser = data.users.findIndex(element => element.email === email);
     const foundPass = data.users.find(element => element.password === password);
     if (found === undefined) {
         return { error: 'Email does not belong to a user' };
@@ -115,9 +117,26 @@ function authLoginV1(email: string, password: string): authUserId {
         return { error: 'Password Incorrect' };
     }
 
+    let randNum = Math.floor(Math.random() * 1001);
+    let randToken = randNum.toString();
+
+    let foundToken = found.token.includes(randToken)
+    while (true) {
+        if (foundToken === true) {
+            randNum = Math.floor(Math.random() * 1001);
+            randToken = randNum.toString();
+            foundToken = found.token.includes(randToken)
+        } else {
+            break;
+        }
+    }
+
+    data.users[indexUser].token.push(randToken);
+
+    setData(data);
 
     return {
-        token: found.handleStr,
+        token: randToken,
         authUserId: found.uId,
     };
 }
