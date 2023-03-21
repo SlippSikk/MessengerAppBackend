@@ -1,7 +1,7 @@
 import { getData, setData } from "./dataStore";
 import validator from 'validator';
-import { users, authUserId } from './interfaces'
-export { authUserId }
+import { users, authUserId, error } from './interfaces'
+
 
 
 /**
@@ -26,7 +26,7 @@ export { authUserId }
  * @returns {error: 'string'} Error Message - Error message describing the error cause
  **/
 
-function authRegisterV1(email: string, password: string, nameFirst: string, nameLast: string): authUserId {
+function authRegisterV1(email: string, password: string, nameFirst: string, nameLast: string): authUserId | error {
     let data = getData();
 
     // Error Block
@@ -99,7 +99,7 @@ function authRegisterV1(email: string, password: string, nameFirst: string, name
  * @returns {authUserId: Number} authUserId - Unqiue ID of the user created
  * @returns {error: 'string'} Error Message - Error message describing the error caus
  */
-function authLoginV1(email: string, password: string): authUserId {
+function authLoginV1(email: string, password: string): authUserId | error {
 
     let data = getData();
 

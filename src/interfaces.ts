@@ -42,7 +42,7 @@ interface dataTs {
     channels: channel[]
 };
 
-type authUserId = { token: string, authUserId: number } | { error: string };
+type authUserId = { token: string, authUserId: number };
 
 type error = { error: string };
 
