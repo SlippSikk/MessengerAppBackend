@@ -26,7 +26,7 @@ import { users, authUserId, error } from './interfaces'
  * @returns {error: 'string'} Error Message - Error message describing the error cause
  **/
 
-function authRegisterV1(email: string, password: string, nameFirst: string, nameLast: string): authUserId | error {
+function authRegisterV2(email: string, password: string, nameFirst: string, nameLast: string): authUserId | error {
     let data = getData();
 
     // Error Block
@@ -99,7 +99,7 @@ function authRegisterV1(email: string, password: string, nameFirst: string, name
  * @returns {authUserId: Number} authUserId - Unqiue ID of the user created
  * @returns {error: 'string'} Error Message - Error message describing the error caus
  */
-function authLoginV1(email: string, password: string): authUserId | error {
+function authLoginV2(email: string, password: string): authUserId | error {
 
     let data = getData();
 
@@ -141,4 +141,4 @@ function authLoginV1(email: string, password: string): authUserId | error {
     };
 }
 
-export { authRegisterV1, authLoginV1 };
+export { authRegisterV2, authLoginV2 };
