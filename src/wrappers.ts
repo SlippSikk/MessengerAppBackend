@@ -37,7 +37,7 @@ function requestAuthLogin(email: string, password: string): authUserId {
     return JSON.parse(res.getBody() as string);
 };
 
-function requestClear(): {} {
+function requestClear() {
     const res = request(
         'DELETE',
         `${url}:${port}/clear/v1`,
