@@ -1,34 +1,15 @@
-import request from 'sync-request';
-import config from '../config.json';
+import { requestAuthRegister, requestClear } from '../wrappers';
 import { authUserId } from '../interfaces';
 
-// const OK = 200;
-const port = config.port;
-const url = config.url;
-
-function requestAuthRegister(email: string, password: string, nameFirst: string, nameLast: string): authUserId {
-  const res = request(
-    'POST',
-    `${url}:${port}/auth/register/v2`,
-    {
-      json: {
-        email,
-        password,
-        nameFirst,
-        nameLast
-      }
-    }
-  );
-
-  return JSON.parse(res.getBody() as string);
-}
+// Global
+let registered: authUserId;
+beforeEach(() => {
+  requestClear();
+  registered = requestAuthRegister('adam.baqaie@gmail.com', 'adam123', 'Adam', 'Baqaie');
+});
 
 describe('Correct Registration', () => {
-  beforeEach(() => {
-    // requestClear
-  });
   test('Correct Inputs', () => {
-    const registered = requestAuthRegister('adam.baqaie@gmail.com', 'adam123', 'Adam', 'Baqaie');
     expect(registered).toStrictEqual({ token: expect.any(String), authUserId: expect.any(Number) });
   });
 });
