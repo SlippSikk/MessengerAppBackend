@@ -9,24 +9,27 @@ const url = config.url;
 function requestAuthRegister(email: string, password: string, nameFirst: string, nameLast: string): authUserId {
   const res = request(
     'POST',
-        `${url}:${port}/auth/register/v2`,
-        {
-          json: {
-            email,
-            password,
-            nameFirst,
-            nameLast
-          }
-        }
+    `${url}:${port}/auth/register/v2`,
+    {
+      json: {
+        email,
+        password,
+        nameFirst,
+        nameLast
+      }
+    }
   );
 
-  return JSON.parse(res.getBody as unknown as string);
+  return JSON.parse(res.body as string);
 }
 
 describe('Correct Registration', () => {
+  beforeEach(() => {
+    // requestClear
+  });
   test('Correct Inputs', () => {
     const registered = requestAuthRegister('adam.baqaie@gmail.com', 'adam123', 'Adam', 'Baqaie');
-    expect(registered).toStrictEqual({ authUserId: expect.any(Number) });
+    expect(registered).toStrictEqual({ token: expect.any(String), authUserId: expect.any(Number) });
   });
 });
 

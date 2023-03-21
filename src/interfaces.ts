@@ -1,4 +1,3 @@
-export { users, channels, user, messages, dataTs, authUserId, error }
 interface users {
     uId: number,
     email: string,
@@ -46,3 +45,5 @@ interface dataTs {
 type authUserId = { token: string, authUserId: number } | { error: string };
 
 type error = { error: string };
+
+export { users, channels, user, messages, dataTs, authUserId, error }
