@@ -3,7 +3,7 @@
  * @param none
  * @returns {{}}
  */
-import { setData } from './dataStore.js';
+import { setData } from './dataStore';
 export function clearV1() {
   const iniData = {
     users: [],
