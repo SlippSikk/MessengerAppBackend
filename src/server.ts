@@ -29,7 +29,12 @@ app.post('/message/send/v1', (req: Request, res: Response) => {
   res.json(messageSend(token, parseInt(channelId), message));
 });
 */
-
+/*
+app.post('/channel/addowner/v1', (req: Request, res: Response) => {
+  const { token, channelId, uId } = req.body;
+  res.json(addownerV1(token, parseInt(channelId), parseInt(uId)));
+});
+*/
 app.post('/auth/register/v2', (req: Request, res: Response) => {
   const { email, password, nameFirst, nameLast } = req.body;
 
