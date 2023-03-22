@@ -5,12 +5,11 @@
  */
 import { setData } from './dataStore.js';
 export function clearV1() {
-  const ini_data = {
+  const iniData = {
     users: [],
     channels: [],
 
   };
-  setData(ini_data);
-
+  setData(iniData);
   return {};
 }

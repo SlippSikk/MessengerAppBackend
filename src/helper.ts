@@ -1,3 +1,5 @@
+import { getData } from './dataStore';
+import { users } from './interfaces';
 // HELPER FUNCTION
 /**
  *

@@ -19,7 +19,7 @@ export function channelMessagesV1(authUserId, channelId, start) {
   const authUser = data.users.find(object => object.uId === authUserId);
 
   const channelExists = isChannelIdValid(channelId);
-  if (channelExists == false) {
+  if (channelExists === false) {
     return { error: 'user is not in the channel' };
   }
 
@@ -84,7 +84,7 @@ export function channelInviteV1(authUserId, channelId, uId) {
   }
 
   // checks if that user is already in the channel
-  if (authUserId === uId && authUserId != 1) {
+  if (authUserId === uId && authUserId !== 1) {
     return { error: 'A user cannot invite themselves' };
   }
 
@@ -94,7 +94,7 @@ export function channelInviteV1(authUserId, channelId, uId) {
   const hasAuthUser = channel.allMembers.find(member => member.uId === authUserId);
   if (hasUser !== undefined) {
     return { error: 'This user is already in this channel' };
-  } else if (hasAuthUser === undefined && authUserId != 1) {
+  } else if (hasAuthUser === undefined && authUserId !== 1) {
     return { error: 'This auth user is not in the channel' };
   }
 
@@ -141,8 +141,7 @@ export function channelJoinV1(authUserId, channelId) {
 
   const channelIndex = data.channels.findIndex(channel => channel.channelId === channelId);
   // checks if a non-global owner is joining a private channel
-
-  if (!data.channels[channelIndex].isPublic && authUserId != 1) {
+  if (!data.channels[channelIndex].isPublic && authUserId !== 1) {
     return { error: 'Regular users cannot join private channels' };
   }
 
@@ -187,7 +186,7 @@ export function channelDetailsV1(authUserId, channelId) {
   const channel = data.channels.find(channel => channel.channelId === channelId);
 
   const hasUser = channel.allMembers.find(member => member.uId === authUserId);
-  if (hasUser === undefined && authUserId != 1) {
+  if (hasUser === undefined && authUserId !== 1) {
     return { error: 'authUserId is not a member of channelId' };
   }
 

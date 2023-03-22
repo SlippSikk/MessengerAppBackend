@@ -20,7 +20,6 @@ describe('three tests', () => {
     const authId1 = authRegisterV1('gura@gmail.com', '114514810', 'huaizhi', 'li').authUserId;
     const channelId1 = channelsCreateV1(authId1, 'Channel 1', true).channelId;
     const authId2 = authRegisterV1('Ina@outlook.com', 'asdgf8', 'me', 'vasdui').authUserId;
-    const channelId2 = channelsCreateV1(authId2, 'Channel 2', true).channelId;
     const authId3 = authRegisterV1('lion@qq.com', 'asduif8195', 'agsdfoj', 'antman').authUserId;
 
     channelJoinV1(authId1, channelId1);

@@ -3,7 +3,7 @@ import { echo } from './echo';
 import morgan from 'morgan';
 import config from './config.json';
 import cors from 'cors';
-
+import { messageSend } from './messageSend';
 // Set up web app
 const app = express();
 // Use middleware that allows us to access the JSON body of requests

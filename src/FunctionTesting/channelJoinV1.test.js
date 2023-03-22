@@ -138,7 +138,6 @@ describe('ValId joining sequences', () => {
 
 describe('InvalId joining sequences', () => {
   let globalOwnerId;
-  let globalChannelId;
   let regularOwnerId;
   let publicChannelId;
   let privateChannelId;
@@ -147,13 +146,13 @@ describe('InvalId joining sequences', () => {
   beforeEach(() => {
     clearV1();
     globalOwnerId = authRegisterV1('anna@gmail.com', 'aaa123', 'Anna', 'Adams').authUserId;
-    globalChannelId = channelsCreateV1(globalOwnerId, 'Global Channel', true).channelId;
     regularOwnerId = authRegisterV1('bob@outlook.com', 'bbb123', 'Bob', 'Biggums').authUserId;
     publicChannelId = channelsCreateV1(regularOwnerId, 'Public Channel', true).channelId;
     privateChannelId = channelsCreateV1(regularOwnerId, 'Private Channel', false).channelId;
     regularUserId = authRegisterV1('chris@outlook.com', 'ccc123', 'Chris', 'Catman').authUserId;
   });
   test('Regular user joins private channel', () => {
+    expect(channelJoinV1(globalOwnerId, publicChannelId)).toEqual({});
     expect(channelJoinV1(regularUserId, privateChannelId)).toEqual({ error: expect.any(String) });
     expect(channelDetailsV1(regularOwnerId, privateChannelId)).toEqual({
       name: 'Private Channel',

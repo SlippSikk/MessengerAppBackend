@@ -21,7 +21,6 @@ describe('valid input', () => {
   test('check someone himself profile', () => {
     const authID1 = authRegisterV1('gura@gmail.com', '114514810', 'huaizhi', 'li');
     const authID2 = authRegisterV1('Ina@outlook.com', 'asdgf8', 'me', 'vasdui');
-    const authID3 = authRegisterV1('ichiru@qq.com', 'asduif8195', 'ichiru', 'shirase');
     expect(userProfileV1(authID1.authUserId, authID1.authUserId)).toEqual({
       user: {
         uId: authID1.authUserId,
@@ -46,7 +45,6 @@ describe('valid input', () => {
 
   test('see others profile', () => {
     const authID1 = authRegisterV1('gura@gmail.com', '114514810', 'huaizhi', 'li');
-    const authID2 = authRegisterV1('Ina@outlook.com', 'asdgf8', 'me', 'vasdui');
     const authID3 = authRegisterV1('ichiru@qq.com', 'asduif8195', 'ichiru', 'shirase');
     expect(userProfileV1(authID3.authUserId, authID1.authUserId)).toEqual({
       user: {

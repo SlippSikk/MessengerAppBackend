@@ -2,7 +2,6 @@ import { channelDetailsV1, channelInviteV1 } from './../channel.js';
 import { authRegisterV1 } from './../auth.js';
 import { channelsCreateV1 } from './../channels.js';
 import { clearV1 } from './../other.js';
-import { checkExists } from '../helper.js';
 
 describe('Members with different permissions inviting once', () => {
   let globalOwnerId;
@@ -361,7 +360,6 @@ describe('Multiple invites', () => {
 
 describe('ERRORS: Reinviting users', () => {
   let globalOwnerId;
-  let globalChannelId;
   let authId2;
   let channelId2;
   let authId3;
@@ -370,8 +368,6 @@ describe('ERRORS: Reinviting users', () => {
     clearV1();
     // note that globalOwnerId is the first Id and hence a global owner
     globalOwnerId = authRegisterV1('anna@gmail.com', 'aaa123', 'Anna', 'Adams').authUserId;
-    // globalChannelId corresponds to the first channel, owned by the global owner
-    globalChannelId = channelsCreateV1(globalOwnerId, 'Channel 1', true).channelId;
     // authId2 is the Id of a regular user
     authId2 = authRegisterV1('bob@outlook.com', 'bbb123', 'Bob', 'Biggums').authUserId;
     // channel2 is a regular channel
@@ -430,12 +426,12 @@ describe('ERRORS: Reinviting users', () => {
         handleStr: expect.any(String),
       }],
     });
+    expect(channelInviteV1(authId2, channelId2, globalOwnerId)).toEqual({});
   });
 });
 
 describe('Miscallaneous errors', () => {
   let globalOwnerId;
-  let globalChannelId;
   let authId2;
   let channelId2;
   let authId3;
@@ -444,8 +440,6 @@ describe('Miscallaneous errors', () => {
     clearV1();
     // note that globalOwnerId is the first Id and hence a global owner
     globalOwnerId = authRegisterV1('anna@gmail.com', 'aaa123', 'Anna', 'Adams');
-    // globalChannelId corresponds to the first channel, owned by the global owner
-    globalChannelId = channelsCreateV1(globalOwnerId, 'Channel 1', true);
     // authId2 is the Id of a regular user
     authId2 = authRegisterV1('bob@outlook.com', 'bbb123', 'Bob', 'Biggums');
     // channel2 is a regular channel
@@ -469,6 +463,7 @@ describe('Miscallaneous errors', () => {
 
   test('InvalId authUserId', () => {
     clearV1();
+    expect(channelInviteV1(authId2, channelId2, globalOwnerId)).toEqual({});
     expect(channelInviteV1('abc', channelId2, authId2)).toEqual({ error: expect.any(String) });
   });
 });

@@ -29,27 +29,23 @@ describe('channelsCreateV1 Success Test', () => {
   });
 
   test('Test 5', () => {
-    const authUserId = authRegisterV1('albert.kim@gmail.com', 'albert123', 'Albert', 'Kim').authUserId;
-    const authUserId_2 = authRegisterV1('adam.baqaie@gmail.com', 'adam123', 'Adam', 'Baqaie').authUserId;
-    expect(channelsCreateV1(authUserId_2, 'chat', true)).toEqual({ channelId: expect.any(Number) });
+    const authUserId2 = authRegisterV1('adam.baqaie@gmail.com', 'adam123', 'Adam', 'Baqaie').authUserId;
+    expect(channelsCreateV1(authUserId2, 'chat', true)).toEqual({ channelId: expect.any(Number) });
   });
 
   test('Test 6', () => {
-    const authUserId = authRegisterV1('albert.kim@gmail.com', 'albert123', 'Albert', 'Kim').authUserId;
-    const authUserId_2 = authRegisterV1('adam.baqaie@gmail.com', 'adam123', 'Adam', 'Baqaie').authUserId;
-    expect(channelsCreateV1(authUserId_2, 'chat123CHAT', true)).toEqual({ channelId: expect.any(Number) });
+    const authUserId2 = authRegisterV1('adam.baqaie@gmail.com', 'adam123', 'Adam', 'Baqaie').authUserId;
+    expect(channelsCreateV1(authUserId2, 'chat123CHAT', true)).toEqual({ channelId: expect.any(Number) });
   });
 
   test('Test 7', () => {
-    const authUserId = authRegisterV1('albert.kim@gmail.com', 'albert123', 'Albert', 'Kim').authUserId;
-    const authUserId_2 = authRegisterV1('adam.baqaie@gmail.com', 'adam123', 'Adam', 'Baqaie').authUserId;
-    expect(channelsCreateV1(authUserId_2, 'chat', false)).toEqual({ channelId: expect.any(Number) });
+    const authUserId2 = authRegisterV1('adam.baqaie@gmail.com', 'adam123', 'Adam', 'Baqaie').authUserId;
+    expect(channelsCreateV1(authUserId2, 'chat', false)).toEqual({ channelId: expect.any(Number) });
   });
 
   test('Test 8', () => {
-    const authUserId = authRegisterV1('albert.kim@gmail.com', 'albert123', 'Albert', 'Kim').authUserId;
-    const authUserId_2 = authRegisterV1('adam.baqaie@gmail.com', 'adam123', 'Adam', 'Baqaie').authUserId;
-    expect(channelsCreateV1(authUserId_2, 'chat123CHAT', false)).toEqual({ channelId: expect.any(Number) });
+    const authUserId2 = authRegisterV1('adam.baqaie@gmail.com', 'adam123', 'Adam', 'Baqaie').authUserId;
+    expect(channelsCreateV1(authUserId2, 'chat123CHAT', false)).toEqual({ channelId: expect.any(Number) });
   });
 });
 
@@ -57,25 +53,21 @@ describe('channelsCreateV1 Success Test', () => {
 describe('channelsCreateV1 Error Test', () => {
   test('Test 1: Invalid name', () => {
     const authUserId = authRegisterV1('albert.kim@gmail.com', 'albert123', 'Albert', 'Kim').authUserId;
-    const invalidUserId = authUserId + 1;
     expect(channelsCreateV1(authUserId, '', true)).toEqual({ error: expect.any(String) });
   });
 
   test('Test 2: Invalid name', () => {
     const authUserId = authRegisterV1('albert.kim@gmail.com', 'albert123', 'Albert', 'Kim').authUserId;
-    const invalidUserId = authUserId + 1;
     expect(channelsCreateV1(authUserId, '', false)).toEqual({ error: expect.any(String) });
   });
 
   test('Test 3: Invalid name', () => {
     const authUserId = authRegisterV1('albert.kim@gmail.com', 'albert123', 'Albert', 'Kim').authUserId;
-    const invalidUserId = authUserId + 1;
     expect(channelsCreateV1(authUserId, 'asdflaskdjfhakjhflkasjhdl', true)).toEqual({ error: expect.any(String) });
   });
 
   test('Test 4: Invalid name', () => {
     const authUserId = authRegisterV1('albert.kim@gmail.com', 'albert123', 'Albert', 'Kim').authUserId;
-    const invalidUserId = authUserId + 1;
     expect(channelsCreateV1(authUserId, 'asdflaskdjfhakjhflkasjhdl', false)).toEqual({ error: expect.any(String) });
   });
 

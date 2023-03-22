@@ -23,15 +23,12 @@ describe('Test : channelDetailsV1', () => {
     const authUserId = authRegisterV1('duck@gmail.com', 1234, 'duck', 'dash').authUserId;
     const authUserId2 = authRegisterV1('dog@gmail.com', 1234, 'dog', 'drown').authUserId;
     const channelIdPublic1 = channelsCreateV1(authUserId, 'first', true).channelId;
-    const channelIdPublic2 = channelsCreateV1(authUserId, 'second', true).channelId;
-    const channelIdPrivate = channelsCreateV1(authUserId, 'third', false).channelId;
     expect(channelDetailsV1(authUserId2, channelIdPublic1)).toStrictEqual(ERROR);
   });
 
   test('Test: call function -> public courseId ', () => {
     const authUserId = authRegisterV1('duck@gmail.com', 1234, 'duck', 'dash').authUserId;
     const channelIdPublic1 = channelsCreateV1(authUserId, 'first', true).channelId;
-    const channelIdPrivate = channelsCreateV1(authUserId, 'third', false).channelId;
     expect(channelDetailsV1(authUserId, channelIdPublic1)).toStrictEqual({
       name: 'first',
       isPublic: true,
@@ -53,9 +50,6 @@ describe('Test : channelDetailsV1', () => {
   });
   test('Test: call function -> non public courseId', () => {
     const authUserId = authRegisterV1('duck@gmail.com', '123456', 'duck', 'dash').authUserId;
-    const authUserId2 = authRegisterV1('dog@gmail.com', '123456', 'dog', 'drown').authUserId;
-    const channelIdPublic1 = channelsCreateV1(authUserId, 'first', true).channelId;
-    const channelIdPublic2 = channelsCreateV1(authUserId, 'second', true).channelId;
     const channelIdPrivate = channelsCreateV1(authUserId, 'third', false).channelId;
     expect(channelDetailsV1(authUserId, channelIdPrivate)).toStrictEqual({
       name: 'third',
@@ -149,7 +143,6 @@ describe('Test : channelDetailsV1', () => {
     const authUserId = authRegisterV1('duck@gmail.com', '123456', 'duck', 'dash').authUserId;
     const authUserId2 = authRegisterV1('dog@gmail.com', '123456', 'dog', 'drown').authUserId;
     const channelIdPublic1 = channelsCreateV1(authUserId, 'first', true).channelId;
-    const channelIdPublic2 = channelsCreateV1(authUserId, 'second', true).channelId;
     const channelIdPrivate = channelsCreateV1(authUserId, 'third', false).channelId;
     channelInviteV1(authUserId, channelIdPublic1, authUserId2);
     expect(channelDetailsV1(authUserId, channelIdPublic1)).toStrictEqual({
