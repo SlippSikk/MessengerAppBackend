@@ -37,7 +37,7 @@ app.post('/auth/register/v2', (req: Request, res: Response) => {
   return res.json(authRegisterV2(email, password, nameFirst, nameLast))
 });
 
-app.post('/auth/register/v2', (req: Request, res: Response) => {
+app.post('/auth/login/v2', (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   return res.json(authLoginV2(email, password))
