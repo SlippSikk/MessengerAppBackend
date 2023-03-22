@@ -1,19 +1,13 @@
-import { ischannelIdValid, isMember, isTokenValid, createMessageId, getUidFromToken } from './helper'
+// import { ischannelIdValid, isMember, isTokenValid, createMessageId, getUidFromToken } from './helper';
 
 /**
- * Notes: 
- * 1. Get Date
- * 2. some functions need to be transfered
- * 3. some functions need to actually work
+ *
+ * @param token
+ * @param channelId
+ * @param message
+ * @returns
  */
-
-/**
- * 
- * @param token 
- * @param channelId 
- * @param message 
- * @returns 
- */
+/*
 const messageSend = (token: string, channelId: number, message: string) => {
   if (!isChannelIdValid(channelId)) {
     return { error: 'Invalid channelId' };
@@ -39,3 +33,4 @@ const messageSend = (token: string, channelId: number, message: string) => {
   })
   return { messageId: messageId }
 };
+*/

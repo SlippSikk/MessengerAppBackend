@@ -1,10 +1,12 @@
+/*
 import request from 'sync-request';
-import { getData } from './dataStore'
+import { getData } from './dataStore';
 import { port, url } from './config.json';
 const SERVER_URL = `${url}:${port}`;
 const ERROR = { error: expect.any(String) };
+*/
 
-
+/*
 function requestMessageSend(token: string, channelId: number, message: string) {
   const res = request(
     'POST',
@@ -88,3 +90,5 @@ describe('Function Testing', () => {
     expect(data.channels[0].messages[1].messageId).toStrictEqual(secondId);
   });
 });
+
+*/

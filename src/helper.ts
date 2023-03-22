@@ -1,21 +1,20 @@
-//HELPER FUNCTION 
+// HELPER FUNCTION
 /**
- * 
+ *
  * @returns messageId thats unique
- * 
+ *
  */
 export const createMessageId = (): number => {
-  let data = getData();
+  const data = getData();
   let id = Math.floor(Math.random() * 10000);
   const findId = (n) => {
-    return n.messages.find(mId => mId.messageId === id) !== undefined ? true : false;
-  }
-
+    return n.messages.find(mId => mId.messageId === id) !== undefined;
+  };
   while (data.channels.find(findId) !== undefined) {
     id = Math.floor(Math.random() * 10000);
   }
   return id;
-}
+};
 /*
 const data = {
   channels: [
@@ -40,24 +39,24 @@ while (data.channels.find(findId) !== undefined) {
   console.log(id);
 }
 console.log(id);
- */
+*/
 
 /**
- * 
- * @param token 
- * @returns returns the uId from a token 
+ *
+ * @param token
+ * @returns returns the uId from a token
  * , or returns false
  */
 export const getUidFromToken = (token: string): users => {
   const data = getData();
   const findToken = (a) => {
-    return a.token.find(n => n === token) ? true : false;
-  }
+    return !!a.token.find(n => n === token);
+  };
   const uId = data.users.find(findToken).uId; // smtng wriong
-  return uId ? uId : false;
-}
+  return uId || false;
+};
 
-/////////////////////////////////////////////////////////////////////////////////////
+/// //////////////////////////////////////////////////////////////////////////////////
 /*   Test in terminal
 const data = {
   users: [
