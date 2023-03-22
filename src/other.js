@@ -11,6 +11,5 @@ export function clearV1() {
 
   };
   setData(iniData);
-
   return {};
 }

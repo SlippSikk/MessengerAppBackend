@@ -141,7 +141,6 @@ export function channelJoinV1(authUserId, channelId) {
 
   const channelIndex = data.channels.findIndex(channel => channel.channelId === channelId);
   // checks if a non-global owner is joining a private channel
-
   if (!data.channels[channelIndex].isPublic && authUserId !== 1) {
     return { error: 'Regular users cannot join private channels' };
   }

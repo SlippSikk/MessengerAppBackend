@@ -5,7 +5,7 @@ import { clearV1 } from './other.js';
 import morgan from 'morgan';
 import config from './config.json';
 import cors from 'cors';
-
+// import { messageSend } from './messageSend';
 // Set up web app
 const app = express();
 // Use middleware that allows us to access the JSON body of requests
@@ -23,6 +23,12 @@ app.get('/echo', (req: Request, res: Response, next) => {
   const data = req.query.echo as string;
   return res.json(echo(data));
 });
+/*
+app.post('/message/send/v1', (req: Request, res: Response) => {
+  const { token, channelId, message } = req.body;
+  res.json(messageSend(token, parseInt(channelId), message));
+});
+*/
 
 app.post('/auth/register/v2', (req: Request, res: Response) => {
   const { email, password, nameFirst, nameLast } = req.body;
@@ -34,7 +40,6 @@ app.delete('/clear/v1', (req: Request, res: Response) => {
 
   return res.json(clearV1())
 });
-
 // start server
 const server = app.listen(PORT, HOST, () => {
   // DO NOT CHANGE THIS LINE

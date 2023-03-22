@@ -23,7 +23,6 @@ export function channelsListV1(authUserId) {
   if (!isUserIdValid(authUserId)) return { error: 'authUserId not valid' };
   const channels = [];
   let currChannel = {};
-
   for (const channel of data.channels) {
     const hasAuthUser = channel.allMembers.find(member => member.uId === authUserId);
     if (hasAuthUser !== undefined) {
@@ -31,7 +30,6 @@ export function channelsListV1(authUserId) {
         channelId: channel.channelId,
         name: channel.name
       };
-
       channels.push(currChannel);
     }
   }
@@ -79,7 +77,6 @@ export function channelsCreateV1(authUserId, name, isPublic) {
 
   // Find and assign a suitable channelId
   let channelId = typeof (Number);
-
   if (data.channels.length === 0) {
     channelId = 1;
   } else if (data.channels.length > 0) {
