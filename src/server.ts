@@ -1,6 +1,6 @@
 import express, { json, Request, Response } from 'express';
 import { echo } from './echo';
-import { authRegisterV2, authLoginV2 } from './auth';
+import { authRegisterV2, authLoginV2, authLogoutV1 } from './auth';
 import { clearV1 } from './other.js';
 import morgan from 'morgan';
 import config from './config.json';
@@ -52,6 +52,12 @@ app.post('/auth/login/v2', (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   return res.json(authLoginV2(email, password));
+});
+
+app.post('/auth/logout/v1', (req: Request, res: Response) => {
+  const token = req.body;
+
+  return res.json(authLogoutV1(token))
 });
 
 app.delete('/clear/v1', (req: Request, res: Response) => {

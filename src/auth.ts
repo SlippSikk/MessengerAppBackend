@@ -128,4 +128,21 @@ function authLoginV2(email: string, password: string): authUserId | error {
   };
 }
 
-export { authRegisterV2, authLoginV2 };
+function authLogoutV1(token: string) {
+
+  let data = getData();
+  const userIndex = data.users.findIndex(user => user.token.includes(token));
+
+  if (userIndex !== -1) {
+    const tokenIndex = data.users[userIndex].token.findIndex(element => element === token);
+    data.users[userIndex].token.splice(tokenIndex, 1);
+    setData(data);
+  } else {
+    return { error: "Incorrect token" };
+  }
+
+
+  return {}
+}
+
+export { authRegisterV2, authLoginV2, authLogoutV1 };
