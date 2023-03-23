@@ -1,6 +1,6 @@
 import { getData, setData } from './dataStore';
 import validator from 'validator';
-import { users, authUserId, error } from './interfaces';
+import { users, authUserId, error } from './interfaces'
 
 /**
  * Summary: Registers a user returning their unique Id
@@ -25,7 +25,7 @@ import { users, authUserId, error } from './interfaces';
  **/
 
 function authRegisterV2(email: string, password: string, nameFirst: string, nameLast: string): authUserId | error {
-  const data = getData();
+  let data = getData();
 
   // Error Block
   const found = data.users.find(element => element.email === email);
@@ -34,7 +34,7 @@ function authRegisterV2(email: string, password: string, nameFirst: string, name
   } else if (found !== undefined) {
     return { error: 'Email in use' };
   } else if (password.length < 6) {
-    return { error: 'Password too short' };
+    return { error: 'Password too short' }
   } else if (nameFirst.length < 1 || nameFirst.length > 50) {
     return { error: 'Incorrect nameFirst length' };
   } else if (nameLast.length < 1 || nameLast.length > 50) {
@@ -60,6 +60,7 @@ function authRegisterV2(email: string, password: string, nameFirst: string, name
     nameConcat = nameConcats + i;
     foundHandle = data.users.find(element => element.handleStr === nameConcat);
   }
+
 
   const Id = data.users.length + 1;
 
@@ -97,7 +98,8 @@ function authRegisterV2(email: string, password: string, nameFirst: string, name
  * @returns {error: 'string'} Error Message - Error message describing the error caus
  */
 function authLoginV2(email: string, password: string): authUserId | error {
-  const data = getData();
+
+  let data = getData();
 
   // Error Block & find Object with details
   if (data.users === undefined) {
@@ -113,19 +115,10 @@ function authLoginV2(email: string, password: string): authUserId | error {
     return { error: 'Password Incorrect' };
   }
 
-  let randNum = Math.floor(Math.random() * 1001);
+  let randNum = Math.floor(Math.random() * Date.now())
   let randToken = randNum.toString();
 
-  let foundToken = found.token.includes(randToken);
-  while (true) {
-    if (foundToken === true) {
-      randNum = Math.floor(Math.random() * 1001);
-      randToken = randNum.toString();
-      foundToken = found.token.includes(randToken);
-    } else {
-      break;
-    }
-  }
+  //let foundToken = data.users.find(element => element.token.find(element => element === randToken))
 
   data.users[indexUser].token.push(randToken);
 
