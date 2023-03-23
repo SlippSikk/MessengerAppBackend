@@ -38,12 +38,11 @@ app.post('/channel/addowner/v1', (req: Request, res: Response) => {
 app.post('/auth/register/v2', (req: Request, res: Response) => {
   const { email, password, nameFirst, nameLast } = req.body;
 
-  return res.json(authRegisterV2(email, password, nameFirst, nameLast))
+  return res.json(authRegisterV2(email, password, nameFirst, nameLast));
 });
 
 app.delete('/clear/v1', (req: Request, res: Response) => {
-
-  return res.json(clearV1())
+  return res.json(clearV1());
 });
 // start server
 const server = app.listen(PORT, HOST, () => {

@@ -1,10 +1,57 @@
 import { getData } from './dataStore';
 import { users } from './interfaces';
 // HELPER FUNCTION
+
 /**
- *
+ * @param channelId
+ * @returns the channel object or false
+ * @sum get the channel object of channelId
+ */
+export const getChannel = (channelId: number) => {
+  const data = getData();
+  const channel = data.channels.find(a => a.channelId === channelId);
+  return channel !== undefined ? channel : false;
+};
+
+/**
+ * @param channelId
+ * @param uId
+ * @returns  true/false
+ * @summary check if uId is member of channelId
+ */
+export const isMember = (channelId: number, uId: number): boolean => {
+  const channel = getChannel(channelId);
+  const value = channel.allMembers.find(a => a === uId);
+  return value !== undefined ? value : false;
+};
+
+/**
+ * @param channelId
+ * @param uId
+ * @returns  true/false
+ * @summary checks if uId is Owner of channelId
+ */
+export const isOwner = (channelId: number, uId: number): boolean => {
+  const channel = getChannel(channelId);
+  const value = channel.ownerMembers.find(a => a === uId);
+  return value !== undefined;
+};
+
+// idk how this works yet, feel free to fill if u know
+export const hasOwnerPermission = () => {
+  console.log('finish this');
+};
+
+/**
+ * @param {token:string}
+ * @return {true/false}
+ */
+export const isTokenValid = (token: string): boolean => {
+  return !!getUidFromToken(token);
+};
+
+/**
  * @returns messageId thats unique
- *
  */
 export const createMessageId = (): number => {
   const data = getData();
@@ -17,34 +64,8 @@ export const createMessageId = (): number => {
   }
   return id;
 };
-/*
-const data = {
-  channels: [
-    {
-      messages: [{ messageId: 1 }, { messageId: 2}]
-    },
-    {
-      messages: [{ messageId: 3}, { messageId: 4}]
-    },
-    {
-      messages: [{ messageId: 5}, { messageId: 6}]
-    },
-  ]
-}
-let id = Math.floor(Math.random() * 10);
-const findId = (n) => {
-    return n.messages.find(mId => mId.messageId === id)!==undefined ? true : false;
-}
-console.log(id);
-while (data.channels.find(findId) !== undefined) {
-  id = Math.floor(Math.random() * 10);
-  console.log(id);
-}
-console.log(id);
-*/
 
 /**
- *
  * @param token
  * @returns returns the uId from a token
  * , or returns false
@@ -52,36 +73,8 @@ console.log(id);
 export const getUidFromToken = (token: string): users => {
   const data = getData();
   const findToken = (a) => {
-    return !!a.token.find(n => n === token);
+    return a.token.find(n => n === token) !== undefined;
   };
-  const uId = data.users.find(findToken).uId; // smtng wriong
+  const uId = data.users.find(findToken).uId;
   return uId || false;
 };
-
-/// //////////////////////////////////////////////////////////////////////////////////
-/*   Test in terminal
-const data = {
-  users: [
-
-    {
-      uId: 3,
-      token: ['a', 'b']
-    },
-    {
-      uId: 4,
-      token: ['c', 'd']
-    },
-    {
-      uId: 7,
-      token: ['e', 'f']
-    },
-  ]
-}
-const findToken = (a) => {
-  return a.token.find(n => n === token) ? true : false;
-}
-const token = 'c';
-const uId = data.users.find(findToken).uId;
-console.log(uId);
-
-*/
