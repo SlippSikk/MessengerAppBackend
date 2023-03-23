@@ -90,7 +90,7 @@ export const isOwner = (channelId: number, uId: number): boolean => {
  * @summary Not Global owner permission , checks if uId is an owner (?);
  */
 export const isOwnerByToken = (channelId: number, token: string): boolean => {
-  const uId = getUidFromToken(token);
+  const uId = getUIdFromToken(token);
   return isOwner(channelId, uId);
 };
 
@@ -99,7 +99,7 @@ export const isOwnerByToken = (channelId: number, token: string): boolean => {
  * @return {true/false}
  */
 export const isTokenValid = (token: string): boolean => {
-  return !!getUidFromToken(token);
+  return !!getUIdFromToken(token);
 };
 
 /**
@@ -122,7 +122,7 @@ export const createMessageId = (): number => {
  * @returns returns the uId from a token
  * , or returns false
  */
-export const getUidFromToken = (token: string): number | boolean => {
+export const getUIdFromToken = (token: string): number | boolean => {
   const data = getData();
   const findToken = (a) => {
     return a.token.find(n => n === token) !== undefined;
