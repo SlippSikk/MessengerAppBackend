@@ -1,31 +1,32 @@
-import { isChannelIdValid, isUserIdValid, isMember, isOwner, hasOwnerPermission, isTokenValid, getChannel } from './helper';
+// import { isChannelIdValid, isUserIdValid, isMember, isOwner, isOwnerByToken, isTokenValid, getChannel } from './helper';
 /**
  *
  * @param uId
  * @sum Makes uId owner of channelId
  */
-export const channelAddowner = (uId: number, channelId: number) => {
+/*
+export const channelAddowner = (token: string, channelId: number, uId: number) => {
   // Error handle
-  // 1. channelId invalid
-  if (!isChannelIdValid()) {
+  if (!isChannelIdValid(channelId)) {
     return { error: 'channelId invalid' };
   }
-  if (!isUserIdValid()) {
+  if (!isUserIdValid(uId)) {
     return { error: 'Invalid uId' };
   }
-  if (!isMember()) {
+  if (!isMember(channelId, uId)) {
     return { error: 'uId is not a member of channelId' };
   }
-  if (!isOwner()) {
+  if (!isOwner(channelId, uId)) {
     return { error: 'uId is already owner' };
   }
-  if (!hasOwnerPermission()) {
+  if (!isOwnerByToken(channelId, token)) {
     return { error: 'uId does not have owner permissions' };
   }
-  if (!isTokenValid()) {
+  if (!isTokenValid(token)) {
     return { error: 'invalid token' };
   }
   const channel = getChannel(channelId);
   channel.ownerMembers.push(uId);
   return {};
 };
+*/

@@ -1,6 +1,53 @@
 import { getData } from './dataStore';
 import { users } from './interfaces';
+
+// NOTE: checkExsists param "array" needs attention
+
 // HELPER FUNCTION
+/**
+ * @param {number} searchID      - the unique ID to search for in the array
+ * @param {integer} array        - an array of IDS
+ * @returns {integer | boolean}  - either the index of search ID, or false if unfound
+ * @summary check if an object exists in an array of objects based on searchID ,
+ *  returns the index of that object if it exists, otherwise returns false
+ */
+export const checkExists = (searchID: number, array): number => {
+  let i = 0;
+  for (const element of array) {
+    // the ID of a channel or user is always the first value in both objects
+    const currentID = Object.values(element)[0];
+    if (currentID === searchID) {
+      return i;
+    }
+    i++;
+  }
+  return false;
+};
+
+/**
+ * @param {integer} authUserId
+ * @returns {boolean}
+ * @summary check  if authUserId is valid/notValid
+ */
+export const isUserIdValid = (userId: number): boolean => {
+  const dataStore = getData();
+  for (const a of dataStore.users) {
+    if (a.uId === userId) return true;
+  }
+  return false;
+};
+/**
+ * @param {integer} channelId
+ * @returns {boolean}
+ * @summary check  if channelId is valid/notValid
+ */
+export const isChannelIdValid = (channelId: number): boolean => {
+  const dataStore = getData();
+  for (const a of dataStore.channels) {
+    if (a.channelId === channelId) return true;
+  }
+  return false;
+};
 
 /**
  * @param channelId
@@ -37,9 +84,14 @@ export const isOwner = (channelId: number, uId: number): boolean => {
   return value !== undefined;
 };
 
-// idk how this works yet, feel free to fill if u know
-export const hasOwnerPermission = () => {
-  console.log('finish this');
+/**
+ * @param channelId
+ * @param uId
+ * @summary Not Global owner permission , checks if uId is an owner (?);
+ */
+export const isOwnerByToken = (channelId: number, token: string): boolean => {
+  const uId = getUidFromToken(token);
+  return isOwner(channelId, uId);
 };
 
 /**
