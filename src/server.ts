@@ -36,6 +36,12 @@ app.post('/channel/addowner/v1', (req: Request, res: Response) => {
   res.json(addownerV1(token, parseInt(channelId), parseInt(uId)));
 });
 */
+/*
+app.post('/channel/leave/v1', (req: Request, res: Response) => {
+  const { token, channelId } = req.body;
+  res.json(channelLeaveV1(token, parseInt(channelId)));
+});
+*/
 app.post('/auth/register/v2', (req: Request, res: Response) => {
   const { email, password, nameFirst, nameLast } = req.body;
 
