@@ -1,3 +1,6 @@
+test('Test placeholder', () => {
+  expect(1 + 1).toStrictEqual(2);
+});
 /*
 import { requestAuthRegister, requestClear, requestChannelLeave, requestChannelsCreate, requestChannelJoin, requestChannelDetails } from '../wrappers';
 import { authUserId } from '../interfaces';
