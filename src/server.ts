@@ -30,11 +30,16 @@ app.post('/message/send/v1', (req: Request, res: Response) => {
   res.json(messageSend(token, parseInt(channelId), message));
 });
 */
-
+/*
+app.post('/channel/addowner/v1', (req: Request, res: Response) => {
+  const { token, channelId, uId } = req.body;
+  res.json(addownerV1(token, parseInt(channelId), parseInt(uId)));
+});
+*/
 app.post('/auth/register/v2', (req: Request, res: Response) => {
   const { email, password, nameFirst, nameLast } = req.body;
 
-  return res.json(authRegisterV2(email, password, nameFirst, nameLast))
+  return res.json(authRegisterV2(email, password, nameFirst, nameLast));
 });
 
 app.post('/auth/login/v2', (req: Request, res: Response) => {
@@ -44,8 +49,7 @@ app.post('/auth/login/v2', (req: Request, res: Response) => {
 });
 
 app.delete('/clear/v1', (req: Request, res: Response) => {
-
-  return res.json(clearV1())
+  return res.json(clearV1());
 });
 // start server
 const server = app.listen(PORT, HOST, () => {

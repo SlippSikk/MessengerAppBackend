@@ -1,5 +1,5 @@
 // YOU SHOULD MODIFY THIS OBJECT BELOW
-import { dataTs } from './interfaces'
+import { dataTs } from './interfaces';
 let data: dataTs = {
   users: [],
   channels: [],
