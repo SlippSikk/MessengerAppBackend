@@ -78,6 +78,6 @@ export function requestChannelLeave(token: string, channelId: number) {
     }
   );
   return JSON.parse(res.getBody() as string);
-};
+}
 
 export { requestAuthRegister, requestAuthLogin, requestClear };

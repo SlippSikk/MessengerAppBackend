@@ -51,7 +51,7 @@ app.post('/auth/register/v2', (req: Request, res: Response) => {
 app.post('/auth/login/v2', (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  return res.json(authLoginV2(email, password))
+  return res.json(authLoginV2(email, password));
 });
 
 app.delete('/clear/v1', (req: Request, res: Response) => {
