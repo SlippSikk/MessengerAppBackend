@@ -1,5 +1,5 @@
 import { getData } from './dataStore';
-import { users } from './interfaces';
+import { channel } from './interfaces';
 
 // NOTE: checkExsists param "array" needs attention
 
@@ -54,7 +54,7 @@ export const isChannelIdValid = (channelId: number): boolean => {
  * @returns the channel object or false
  * @sum get the channel object of channelId
  */
-export const getChannel = (channelId: number) => {
+export const getChannel = (channelId: number): channel | boolean => {
   const data = getData();
   const channel = data.channels.find(a => a.channelId === channelId);
   return channel !== undefined ? channel : false;
@@ -69,7 +69,7 @@ export const getChannel = (channelId: number) => {
 export const isMember = (channelId: number, uId: number): boolean => {
   const channel = getChannel(channelId);
   const value = channel.allMembers.find(a => a === uId);
-  return value !== undefined ? value : false;
+  return value !== undefined;
 };
 
 /**
@@ -122,7 +122,7 @@ export const createMessageId = (): number => {
  * @returns returns the uId from a token
  * , or returns false
  */
-export const getUidFromToken = (token: string): users => {
+export const getUidFromToken = (token: string): number | boolean => {
   const data = getData();
   const findToken = (a) => {
     return a.token.find(n => n === token) !== undefined;
