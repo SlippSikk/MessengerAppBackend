@@ -1,6 +1,6 @@
 
 import { error, dmId, user, dms } from './interfaces'
-import { isTokenValid, isUserIdValid, getHandle, getUser } from './helper'
+import { isTokenValid, isUserIdValid, getHandle, getUser, getUIdFromToken } from './helper'
 import { getData, setData } from './dataStore';
 
 
@@ -70,4 +70,61 @@ function dmCreateV1(token: string, uIds: number[]): dmId | error {
 
 }
 
-export { dmCreateV1 }
+function dmLeaveV1(token: string, dmId: number) {
+    let data = getData();
+    // Error Cases
+    const foundDm = data.dms.find(element => element.dmId === dmId);
+    if (foundDm === undefined) {
+        return { error: 'dmId does not exist' };
+    }
+    if (isTokenValid(token) !== true) {
+        return { error: 'Token is not valid' };
+    }
+    const authId = getUIdFromToken(token)
+    const foundAuth = foundDm.members.find(element => element.uId === authId);
+    if (foundAuth === undefined) {
+        return { error: 'authorised user no longer in the DM' };
+    }
+
+    // remove authorised user
+    const dmIndex = data.dms.findIndex(element => element.dmId === dmId);
+    const authIndex = data.dms[dmIndex].members.findIndex(element => element.uId === authId)
+    data.dms[dmIndex].members.splice(authIndex, 1);
+
+    setData(data);
+
+    return {};
+}
+
+function dmRemoveV1(token: string, dmId: number) {
+    let data = getData();
+
+    // Error Cases
+    const foundDm = data.dms.find(element => element.dmId === dmId);
+    if (foundDm === undefined) {
+        return { error: 'dmId does not exist' };
+    }
+    if (isTokenValid(token) !== true) {
+        return { error: 'Token is not valid' };
+    }
+    const creatorId = getUIdFromToken(token)
+    if (creatorId !== foundDm.creator.uId) {
+        return { error: 'authorised user is not the creator' };
+    }
+    const foundCreator = foundDm.members.find(element => element.uId === creatorId);
+    if (foundCreator === undefined) {
+        return { error: 'authorised user no longer in the DM' };
+    }
+
+    // Removing dm
+
+    const dmIndex = data.dms.findIndex(element => element.dmId === dmId);
+    data.dms.splice(dmIndex, 1);
+
+    setData(data);
+
+    return {};
+
+}
+
+export { dmCreateV1, dmLeaveV1, dmRemoveV1 }

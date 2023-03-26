@@ -109,4 +109,34 @@ export function requestDmCreate(token: string, uIds: number[]): dmId {
     return JSON.parse(res.getBody() as string);
 };
 
+export function requestDmLeave(token: string, dmId: number) {
+    const res = request(
+        'POST',
+        `${url}:${port}/dm/leave/v1`,
+        {
+            json: {
+                token,
+                dmId
+            }
+        }
+    );
+
+    return JSON.parse(res.getBody() as string);
+};
+
+export function requestDmRemove(token: string, dmId: number) {
+    const res = request(
+        'DELETE',
+        `${url}:${port}/dm/remove/v1`,
+        {
+            qs: {
+                token,
+                dmId
+            }
+        }
+    );
+
+    return JSON.parse(res.getBody() as string);
+};
+
 export { requestAuthRegister, requestAuthLogin, requestClear };
