@@ -123,12 +123,19 @@ export const createMessageId = (): number => {
  * , or returns false
  */
 export const getUIdFromToken = (token: string): number | boolean => {
+  // const data = getData();
+  // const findToken = (a) => {
+  //   return a.token.find(n => n === token) !== undefined;
+  // };
+  // const uId = data.users.find(findToken).uId;
+  // return uId || false;
   const data = getData();
-  const findToken = (a) => {
-    return a.token.find((n: string) => n === token) !== undefined;
-  };
-  const uId = data.users.find(findToken).uId;
-  return uId || false;
+  const foundToken = data.users.find(element => element.token.find(element => element === token))
+
+  if (foundToken === undefined) {
+    return false;
+  }
+  return foundToken.uId;
 };
 
 export const getHandle = (uId: number): string => {
