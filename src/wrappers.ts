@@ -139,4 +139,22 @@ export function requestDmRemove(token: string, dmId: number) {
     return JSON.parse(res.getBody() as string);
 };
 
+/*
+export function requestChannelJoin(token: string, channelId: number) {
+  const res = request(
+    'POST',
+        `${url}:${port}/channel/join/v2`,
+        {
+          json: {
+            token: token,
+            channelId: channelId
+          }
+        }
+  );
+
+  return JSON.parse(res.getBody() as string);
+}
+
+*/
+
 export { requestAuthRegister, requestAuthLogin, requestClear };

@@ -90,7 +90,7 @@ export const isOwner = (channelId: number, uId: number): boolean => {
  * @summary Not Global owner permission , checks if uId is an owner (?);
  */
 export const isOwnerByToken = (channelId: number, token: string): boolean => {
-  const uId = getUIdFromToken(token);
+  const uId = getUIdFromToken(token) as number;
   return isOwner(channelId, uId);
 };
 

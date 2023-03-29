@@ -87,6 +87,15 @@ app.delete('/clear/v1', (req: Request, res: Response) => {
   return res.json(clearV1());
 });
 
+
+/*
+app.post('/channel/join/v2', (req: Request, res: Response) => {
+  const { token, channelId } = req.body;
+
+  return res.json(channelJoinV2(token, channelId));
+});
+
+*/
 // start server
 const server = app.listen(PORT, HOST, () => {
   // DO NOT CHANGE THIS LINE
