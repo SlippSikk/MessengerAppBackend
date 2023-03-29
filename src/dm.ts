@@ -8,7 +8,7 @@ function dmCreateV1(token: string, uIds: number[]): dmId | error {
     let data = getData();
 
     // Error Cases
-    if (isTokenValid(token) !== true) {
+    if (isTokenValid(token) === false) {
         return { error: 'Token is not valid' };
     }
 
@@ -22,7 +22,7 @@ function dmCreateV1(token: string, uIds: number[]): dmId | error {
         return new Set(arr).size !== arr.length;
     }
 
-    if (!hasDuplicates(uIds)) {
+    if (hasDuplicates(uIds)) {
         return { error: 'uIds contains duplicates' };
     }
 

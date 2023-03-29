@@ -8,6 +8,7 @@ export function clearV1() {
   const iniData = {
     users: [],
     channels: [],
+    dms: []
 
   };
   setData(iniData);
