@@ -1,5 +1,5 @@
 import { getData } from './dataStore';
-import { channel } from './interfaces';
+import { channel, user } from './interfaces';
 
 // NOTE: checkExsists param "array" needs attention
 
@@ -11,7 +11,7 @@ import { channel } from './interfaces';
  * @summary check if an object exists in an array of objects based on searchID ,
  *  returns the index of that object if it exists, otherwise returns false
  */
-export const checkExists = (searchID: number, array): number => {
+export const checkExists = (searchID: number, array: number[]): number | boolean => {
   let i = 0;
   for (const element of array) {
     // the ID of a channel or user is always the first value in both objects
@@ -123,10 +123,40 @@ export const createMessageId = (): number => {
  * , or returns false
  */
 export const getUIdFromToken = (token: string): number | boolean => {
+  // const data = getData();
+  // const findToken = (a) => {
+  //   return a.token.find(n => n === token) !== undefined;
+  // };
+  // const uId = data.users.find(findToken).uId;
+  // return uId || false;
   const data = getData();
-  const findToken = (a) => {
-    return a.token.find(n => n === token) !== undefined;
-  };
-  const uId = data.users.find(findToken).uId;
-  return uId || false;
+  const foundToken = data.users.find(element => element.token.find(element => element === token))
+
+  if (foundToken === undefined) {
+    return false;
+  }
+  return foundToken.uId;
 };
+
+export const getHandle = (uId: number): string => {
+  const data = getData();
+
+  const user = data.users.find(element => element.uId === uId);
+
+  return user.handleStr;
+
+}
+
+export const getUser = (uId: number): user => {
+  const data = getData();
+  const user = data.users.find(element => element.uId === uId);
+  const member: user = {
+    uId: user.uId,
+    email: user.email,
+    nameFirst: user.nameFirst,
+    nameLast: user.nameLast,
+    handleStr: user.handleStr
+  }
+
+  return member;
+}

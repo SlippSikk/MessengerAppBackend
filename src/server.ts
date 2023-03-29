@@ -1,6 +1,7 @@
 import express, { json, Request, Response } from 'express';
 import { echo } from './echo';
 import { authRegisterV2, authLoginV2, authLogoutV1 } from './auth';
+import { dmCreateV1, dmLeaveV1, dmRemoveV1 } from './dm'
 import { clearV1 } from './other.js';
 import morgan from 'morgan';
 import config from './config.json';
@@ -60,9 +61,32 @@ app.post('/auth/logout/v1', (req: Request, res: Response) => {
   return res.json(authLogoutV1(token))
 });
 
+app.post('/dm/create/v1', (req: Request, res: Response) => {
+  const { token, uIds } = req.body;
+  const Ids = uIds.map(function (x: string) {
+    return parseInt(x, 10)
+  })
+
+  return res.json(dmCreateV1(token, Ids))
+});
+
+app.delete('/dm/remove/v1', (req: Request, res: Response) => {
+  const token = req.query.token as string
+  const dmId = req.query.dmId as string
+
+  return res.json(dmRemoveV1(token, parseInt(dmId)))
+});
+
+app.post('/dm/leave/v1', (req: Request, res: Response) => {
+  const { token, dmId } = req.body;
+
+  return res.json(dmLeaveV1(token, parseInt(dmId)))
+});
+
 app.delete('/clear/v1', (req: Request, res: Response) => {
   return res.json(clearV1());
 });
+
 // start server
 const server = app.listen(PORT, HOST, () => {
   // DO NOT CHANGE THIS LINE
