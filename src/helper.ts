@@ -90,7 +90,7 @@ export const isOwner = (channelId: number, uId: number): boolean => {
  * @summary Not Global owner permission , checks if uId is an owner (?);
  */
 export const isOwnerByToken = (channelId: number, token: string): boolean => {
-  const uId = getUIdFromToken(token);
+  const uId = getUIdFromToken(token) as number;
   return isOwner(channelId, uId);
 };
 
@@ -130,7 +130,7 @@ export const getUIdFromToken = (token: string): number | boolean => {
   // const uId = data.users.find(findToken).uId;
   // return uId || false;
   const data = getData();
-  const foundToken = data.users.find(element => element.token.find(element => element === token))
+  const foundToken = data.users.find(element => element.token.find(element => element === token));
 
   if (foundToken === undefined) {
     return false;
@@ -144,19 +144,20 @@ export const getHandle = (uId: number): string => {
   const user = data.users.find(element => element.uId === uId);
 
   return user.handleStr;
+};
 
-}
-
-export const getUser = (uId: number): user => {
+export const getUser = (uId: number): typeof user => {
   const data = getData();
   const user = data.users.find(element => element.uId === uId);
-  const member: user = {
+  const member: typeof user = {
     uId: user.uId,
     email: user.email,
     nameFirst: user.nameFirst,
     nameLast: user.nameLast,
-    handleStr: user.handleStr
-  }
+    handleStr: user.handleStr,
+    password: user.password,
+    token: user.token
+  };
 
   return member;
-}
+};

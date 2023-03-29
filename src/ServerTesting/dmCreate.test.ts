@@ -1,4 +1,4 @@
-//import { requestAuthRegister, requestClear, requestDmCreate, requestDmDetails, requestDmList } from '../wrappers';
+// import { requestAuthRegister, requestClear, requestDmCreate, requestDmDetails, requestDmList } from '../wrappers';
 import { requestAuthRegister, requestClear, requestDmCreate } from '../wrappers';
 import { authUserId } from '../interfaces';
 
@@ -12,16 +12,15 @@ let uIds: number[];
 // let dmId: number;
 // let dmId2: number;
 beforeEach(() => {
-    requestClear();
-    registered = requestAuthRegister('adam.baqaie@gmail.com', 'adam123', 'Adam', 'B');
-    registered2 = requestAuthRegister('adam.@gmail.com', 'adam123', 'C', 'B');
-    registered3 = requestAuthRegister('baqaie@gmail.com', 'adam123', 'E', 'B');
-    registered4 = requestAuthRegister('a@gmail.com', 'adam123', 'F', 'B');
-    uIds = [registered2.authUserId, registered3.authUserId, registered4.authUserId];
-    // dmId = requestDmCreate(registered.token, uIds).dmId;
-    // uIds2 = [registered2.authUserId];
-    // dmId2 = requestDmCreate(registered.token, uIds2).dmId;
-
+  requestClear();
+  registered = requestAuthRegister('adam.baqaie@gmail.com', 'adam123', 'Adam', 'B');
+  registered2 = requestAuthRegister('adam.@gmail.com', 'adam123', 'C', 'B');
+  registered3 = requestAuthRegister('baqaie@gmail.com', 'adam123', 'E', 'B');
+  registered4 = requestAuthRegister('a@gmail.com', 'adam123', 'F', 'B');
+  uIds = [registered2.authUserId, registered3.authUserId, registered4.authUserId];
+  // dmId = requestDmCreate(registered.token, uIds).dmId;
+  // uIds2 = [registered2.authUserId];
+  // dmId2 = requestDmCreate(registered.token, uIds2).dmId;
 });
 
 // describe('Correct Dm Create', () => {
@@ -59,19 +58,16 @@ beforeEach(() => {
 // });
 
 describe('Incorrect Dm Create', () => {
-
-    test('Invalid uId', () => {
-        expect(requestDmCreate(registered.token, [registered2.authUserId, (registered.authUserId + Date.now()) * 2])).toStrictEqual({ error: expect.any(String) });
-    })
-    test('Duplicate uId', () => {
-        expect(requestDmCreate(registered.token, [registered2.authUserId, registered2.authUserId])).toStrictEqual({ error: expect.any(String) });
-    })
-    test('authorised user in uIds', () => {
-        expect(requestDmCreate(registered.token, [registered2.authUserId, registered.authUserId])).toStrictEqual({ error: expect.any(String) });
-    })
-    test('Invalid token', () => {
-        expect(requestDmCreate((registered2.token + registered.token + Date.now()), uIds)).toStrictEqual({ error: expect.any(String) });
-    })
-
-
+  test('Invalid uId', () => {
+    expect(requestDmCreate(registered.token, [registered2.authUserId, (registered.authUserId + Date.now()) * 2])).toStrictEqual({ error: expect.any(String) });
+  });
+  test('Duplicate uId', () => {
+    expect(requestDmCreate(registered.token, [registered2.authUserId, registered2.authUserId])).toStrictEqual({ error: expect.any(String) });
+  });
+  test('authorised user in uIds', () => {
+    expect(requestDmCreate(registered.token, [registered2.authUserId, registered.authUserId])).toStrictEqual({ error: expect.any(String) });
+  });
+  test('Invalid token', () => {
+    expect(requestDmCreate((registered2.token + registered.token + Date.now()), uIds)).toStrictEqual({ error: expect.any(String) });
+  });
 });
