@@ -1,7 +1,7 @@
 import express, { json, Request, Response } from 'express';
 import { echo } from './echo';
 import { authRegisterV2, authLoginV2, authLogoutV1 } from './auth';
-import { dmCreateV1, dmLeaveV1, dmRemoveV1 } from './dm';
+import { dmCreateV1, dmLeaveV1, dmRemoveV1, dmDetailsV1 } from './dm';
 // import { channelDetailsV2, channelLeaveV1, channelAddownerV1 } from './channel';
 import { clearV1 } from './other.js';
 import morgan from 'morgan';
@@ -83,6 +83,13 @@ app.post('/dm/create/v1', (req: Request, res: Response) => {
   });
 
   return res.json(dmCreateV1(token, Ids));
+});
+
+app.get('/dm/details/v1', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+  const dmId = req.query.dmId as string;
+
+  return res.json(dmDetailsV1(token, parseInt(dmId)));
 });
 
 app.delete('/dm/remove/v1', (req: Request, res: Response) => {

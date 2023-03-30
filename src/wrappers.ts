@@ -124,6 +124,19 @@ export function requestDmLeave(token: string, dmId: number) {
   return JSON.parse(res.getBody() as string);
 }
 
+export function requestDmDetails(token: string, dmId: number) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/dm/details/v1',
+    {
+      qs: {
+        token, dmId
+      }
+    }
+  );
+  return JSON.parse(res.getBody() as string);
+}
+
 export function requestDmRemove(token: string, dmId: number) {
   const res = request(
     'DELETE',
