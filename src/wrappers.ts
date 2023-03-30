@@ -174,4 +174,23 @@ export function requestChannelInvite(token: string, channelId: number, uId: numb
   return JSON.parse(res.getBody() as string);
 }
 */
+
+/*
+export function requestChannelRemoveOwner(token: string, channelId: number, uId: number) {
+  const res = request(
+    'DELETE',
+        `${url}:${port}/channel/removeowner/v1`,
+        {
+          qs: {
+            token: token,
+            channelId: channelId,
+            uId: uId,
+          }
+        }
+  );
+
+  return JSON.parse(res.getBody() as string);
+}
+
+*/
 export { requestAuthRegister, requestAuthLogin, requestClear };

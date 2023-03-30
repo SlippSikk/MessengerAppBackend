@@ -77,3 +77,71 @@ function channelInviteV2(token: string, channelId: number, uId: number) {
     return {};
   }
   */
+
+/*
+export function channelRemoveOwnerV1(token: string, channelId: number, uId: number) {
+  const data: dataTs = getData();
+  if (!isChannelIdValid(channelId)) {
+    return { error: 'This channel does not exist' };
+  }
+
+  if (!isTokenValid(token)) {
+    return { error: 'Invalid token' };
+  }
+
+  if (!isUserIdValid(uId)) {
+    return { error: 'The invitee does not exist' };
+  }
+
+  if (!isOwner(channelId, uId)) {
+    return { error: 'This user is not an owner' };
+  }
+
+  const channel: channel = getChannel(channelId) as channel;
+  if (channel.ownerMembers.length === 1) {
+    return { error: 'This channel only has one owner' };
+  }
+
+  const authUserId: number = getUIdFromToken(token) as number;
+  if (!isOwner(channelId, authUserId) && authUserId !== 1) {
+    return { error: 'This authUser does not have owner permissions' };
+  }
+
+  const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);
+  data.channels[channelIndex].ownerMembers = channel.ownerMembers.filter(owner => owner.uId !== uId);
+  setData(data);
+  return {};
+} export function channelRemoveOwnerV1(token: string, channelId: number, uId: number) {
+  const data: dataTs = getData();
+  if (!isChannelIdValid(channelId)) {
+    return { error: 'This channel does not exist' };
+  }
+
+  if (!isTokenValid(token)) {
+    return { error: 'Invalid token' };
+  }
+
+  if (!isUserIdValid(uId)) {
+    return { error: 'The invitee does not exist' };
+  }
+
+  if (!isOwner(channelId, uId)) {
+    return { error: 'This user is not an owner' };
+  }
+
+  const channel: channel = getChannel(channelId) as channel;
+  if (channel.ownerMembers.length === 1) {
+    return { error: 'This channel only has one owner' };
+  }
+
+  const authUserId: number = getUIdFromToken(token) as number;
+  if (!isOwner(channelId, authUserId) && authUserId !== 1) {
+    return { error: 'This authUser does not have owner permissions' };
+  }
+
+  const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);
+  data.channels[channelIndex].ownerMembers = channel.ownerMembers.filter(owner => owner.uId !== uId);
+  setData(data);
+  return {};
+}
+  */

@@ -104,6 +104,15 @@ app.post('/channel/invite/v2', (req: Request, res: Response) => {
 
 */
 
+/*
+app.delete('/channel/removeowner/v1', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+  const channelId = parseInt(req.query.channelId as string);
+  const uId = parseInt(req.query.uId as string);
+  return res.json(channelRemoveOwnerV1(token, channelId, uId));
+});
+
+*/
 // start server
 const server = app.listen(PORT, HOST, () => {
   // DO NOT CHANGE THIS LINE
