@@ -1,6 +1,6 @@
 /*
 import { getData, setData } from './dataStore';
-import { isChannelIdValid, isTokenValid, isUserIdValid, getUIdFromToken, isOwner, getChannel } from './helper';
+import { isChannelIdValid, isTokenValid, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember } from './helper';
 import { user, channel, dataTs } from './interfaces';
 
 function channelJoinV2(token: string, channelId: number) {
@@ -220,5 +220,33 @@ export const channelAddownerV1 = (token: string, channelId: number, uId: number)
   const user = getUser(uId);
   channel.ownerMembers.push(user);
   return {};
+};
+*/
+/*
+*/
+/**
+ * @param {number} authUserId
+ * @param {number} channelId
+ * @returns {name, isPublic, ownerMembers, allMembers}
+ */
+/*
+export const channelDetailsV2 = (token: string, channelId: number): channelDetails => {
+  if (!isChannelIdValid(channelId)) {
+    return { error: 'channelId not valid' };
+  }
+  if (!isTokenValid(token)) {
+    return { error: 'authUserId not valid' };
+  }
+  const uId = getUIdFromToken(token);
+  if (!isMember(channelId, uId)) {
+    return { error: 'authUserId is not a member of channelId' };
+  }
+  const channel = getChannel(channelId);
+  const returnObject = {};
+  returnObject.name = channel.name;
+  returnObject.isPublic = channel.isPublic;
+  returnObject.ownerMembers = channel.ownerMembers;
+  returnObject.allMembers = channel.allMembers;
+  return returnObject;
 };
 */
