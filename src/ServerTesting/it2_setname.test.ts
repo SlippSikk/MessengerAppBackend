@@ -9,31 +9,9 @@ test('PlaceHolder', () => {
  * @param {string} uID
  * @returns {{user: object}}
  */
-/*
-import { getData } from './dataStore';
 
-export function userProfileV1(authUserId, uId) { // here
-  const data = getData();
-  const authUser = data.users.find(object => object.uId === authUserId);
-  const idToView = data.users.find(object => object.uId === uId);
-  if (authUser === undefined) {
-    return { error: 'authUserId is invaild' };
-  } else if (idToView === undefined) {
-    return { error: 'uId is invaild' };
-  }
-
-  return {
-    user: {
-      uId: idToView.uId,
-      email: idToView.email,
-      nameFirst: idToView.nameFirst,
-      nameLast: idToView.nameLast,
-      handleStr: idToView.handleStr,
-    }
-  };
-}
-*/
-import request, { HttpVerb } from 'sync-request';
+  /*
+  import request, { HttpVerb } from 'sync-request';
 
 import { port, url } from '../config.json';
 
@@ -75,7 +53,6 @@ beforeEach(() => {
   
 describe('/user/profile/setname/v1', () => {
     describe('error', () => {
-        requestClear();
         const tokenA = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
         test.each([
             { token: tokenA, nameFirst: 'ILoveAnimationGirlAndTheyAreMyWaifuHeiHeiHeiHeiHeiHei',nameLast:'IchiRu' },
@@ -89,8 +66,8 @@ describe('/user/profile/setname/v1', () => {
     });
   
     test('return value', () => {
-        requestClear();
         const tokenA = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
         expect(requestSetNameV1(tokenA, 'DeathLoop','ABCD')).toStrictEqual({});//more tests needed when other function finished
     });
   });
+*/
