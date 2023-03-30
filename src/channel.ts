@@ -3,7 +3,6 @@ import { getData, setData } from './dataStore';
 import { isChannelIdValid, isTokenValid, isUserIdValid, getUIdFromToken, isOwner, getChannel } from './helper';
 import { user, channel, dataTs } from './interfaces';
 
-
 function channelJoinWhitebox(token: string, channelId: number) {
   const data: dataTs = getData();
 

@@ -130,7 +130,7 @@ export const getUIdFromToken = (token: string): number | boolean => {
   // const uId = data.users.find(findToken).uId;
   // return uId || false;
   const data = getData();
-  const foundToken = data.users.find(element => element.token.find(element => element === token))
+  const foundToken = data.users.find(element => element.token.find(element => element === token));
 
   if (foundToken === undefined) {
     return false;
@@ -144,8 +144,7 @@ export const getHandle = (uId: number): string => {
   const user = data.users.find(element => element.uId === uId);
 
   return user.handleStr;
-
-}
+};
 
 export const getUser = (uId: number): user => {
   const data = getData();
@@ -156,7 +155,7 @@ export const getUser = (uId: number): user => {
     nameFirst: user.nameFirst,
     nameLast: user.nameLast,
     handleStr: user.handleStr
-  }
+  };
 
   return member;
-}
+};
