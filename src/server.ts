@@ -32,6 +32,13 @@ app.post('/message/send/v1', (req: Request, res: Response) => {
 });
 */
 /*
+app.post('/message/senddm/v1', (req: Request, res: Response) => {
+  const { token, dmId, message } = req.body;
+
+  res.json(messageSenddm(token, parseInt(dmId), message));
+});
+*/
+/*
 app.post('/channel/addowner/v1', (req: Request, res: Response) => {
   const { token, channelId, uId } = req.body;
   res.json(addownerV1(token, parseInt(channelId), parseInt(uId)));

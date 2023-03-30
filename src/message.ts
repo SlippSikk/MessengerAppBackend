@@ -2,6 +2,7 @@
 /*
 import { getData, setData } from './dataStore';
 import { isTokenValid, isMessageInChannel, getDm, getUser, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage } from './helper';
+import { isDmIdValid, createMessageId } from './helper';
 import { dataTs, channel, dms } from './interfaces';
 
 const isDmMember = (dmId: number, token: string): boolean => {
@@ -76,4 +77,40 @@ export function messageRemoveV1(token: string, messageId: number) {
 return messageEditV1(token, messageId, '');
 }
 
+*/
+
+/**
+ *
+ * @param token
+ * @param dmId
+ * @param message
+ * @returns
+ */
+/*
+export const messageSenddm = (token: string, dmId: number, message: string) => {
+  if (!isDmIdValid(dmId)) {
+    return { error: 'Invalid dmId' };
+  }
+  if (!(message.length >= 1 && message.length <= 1000)) {
+    return { error: 'message must be between 1 to 1000 letters' };
+  }
+  if (!isTokenValid(token)) {
+    return { error: 'invalid token' };
+  }
+  if (!isDmMember(dmId, token)) {
+    return { error: 'user is not member of channel' };
+  }
+  const messageId = createMessageId();
+  const uId = getUidFromToken(token);
+  //   should I put time stamp ??
+  const dm = getDm();
+  dm.push({
+    messageId: messageId,
+    uId: uId,
+    message: message,
+    timeSent: new Date().getTime()
+  });
+
+  return { messageId: messageId };
+};
 */
