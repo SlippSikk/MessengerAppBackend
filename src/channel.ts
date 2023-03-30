@@ -30,7 +30,8 @@ function channelJoinV2(token: string, channelId: number) {
   }
 
   // finally adds user to channel
-  data.channels[channelIndex].allMembers.push(getUser(authUserId));
+  const userObj : users = data.users.find(user => user.uId = authUserId)
+  data.channels[channelIndex].allMembers.push(userObj);
   setData(data);
 
   return {};
@@ -69,7 +70,9 @@ function channelInviteV2(token: string, channelId: number, uId: number) {
     }
 
     // finally adds user to channel
-    data.channels[channelIndex].allMembers.push(getUser(uId));
+
+    const userObj : users = data.users.find(user => user.uId = authUserId)
+    data.channels[channelIndex].allMembers.push(userObj);
     setData(data);
     return {};
   }

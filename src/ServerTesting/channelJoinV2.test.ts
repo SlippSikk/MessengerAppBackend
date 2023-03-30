@@ -1,6 +1,6 @@
 test('Global owner joins private channel', () => {
-  expect(1+1).toEqual(2);
-})
+  expect(1 + 1).toEqual(2);
+});
 
 /*
 import { requestAuthRegister, requestChannelDetails, requestChannelsCreate, requestClear, requestChannelJoin } from '../wrappers';
