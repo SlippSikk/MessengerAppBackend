@@ -250,6 +250,7 @@ export const channelDetailsV2 = (token: string, channelId: number): channelDetai
   return returnObject;
 };
 */
+
 /*
 export const channelLeaveV1 = (token: string, channelId: number) => {
   if (!isChannelIdValid(channelId)) {
