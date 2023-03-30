@@ -211,6 +211,5 @@ export function requestChannelMessages(token: string, channelId: number, start: 
   return JSON.parse(res.getBody() as string);
 }
 
-
 */
 export { requestAuthRegister, requestAuthLogin, requestClear };
