@@ -56,7 +56,7 @@ app.post('/auth/login/v2', (req: Request, res: Response) => {
 });
 
 app.post('/auth/logout/v1', (req: Request, res: Response) => {
-  const token = req.body;
+  const { token } = req.body;
 
   return res.json(authLogoutV1(token));
 });
@@ -95,6 +95,15 @@ app.post('/channel/join/v2', (req: Request, res: Response) => {
 });
 
 */
+/*
+app.post('/channel/invite/v2', (req: Request, res: Response) => {
+  const { token, channelId, uId } = req.body;
+
+  return res.json(channelInviteV2(token, channelId, uId));
+});
+
+*/
+
 // start server
 const server = app.listen(PORT, HOST, () => {
   // DO NOT CHANGE THIS LINE
