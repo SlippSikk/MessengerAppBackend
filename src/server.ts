@@ -2,6 +2,7 @@ import express, { json, Request, Response } from 'express';
 import { echo } from './echo';
 import { authRegisterV2, authLoginV2, authLogoutV1 } from './auth';
 import { dmCreateV1, dmLeaveV1, dmRemoveV1 } from './dm';
+// import { channelDetailsV2, channelLeaveV1, channelAddownerV1 } from './channel';
 import { clearV1 } from './other.js';
 import morgan from 'morgan';
 import config from './config.json';
@@ -41,13 +42,20 @@ app.post('/message/senddm/v1', (req: Request, res: Response) => {
 /*
 app.post('/channel/addowner/v1', (req: Request, res: Response) => {
   const { token, channelId, uId } = req.body;
-  res.json(addownerV1(token, parseInt(channelId), parseInt(uId)));
+  res.json(channelAddownerV1(token, parseInt(channelId), parseInt(uId)));
 });
 */
 /*
 app.post('/channel/leave/v1', (req: Request, res: Response) => {
   const { token, channelId } = req.body;
   res.json(channelLeaveV1(token, parseInt(channelId)));
+});
+*/
+/*
+app.get('/channel/details/v2', (req: Request, res: Response, next) => {
+  const token = req.query.token as string;
+  const channelId = parseInt(req.query.channelId as string);
+  res.json(channelDetailsV2(token, channelId));
 });
 */
 app.post('/auth/register/v2', (req: Request, res: Response) => {
