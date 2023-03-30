@@ -1,6 +1,8 @@
 import express, { json, Request, Response } from 'express';
 import { echo } from './echo';
-import { authRegisterV2, authLoginV2 } from './auth';
+import { authRegisterV2, authLoginV2, authLogoutV1 } from './auth';
+import { dmCreateV1, dmLeaveV1, dmRemoveV1 } from './dm';
+// import { channelDetailsV2, channelLeaveV1, channelAddownerV1 } from './channel';
 import { clearV1 } from './other.js';
 import morgan from 'morgan';
 import config from './config.json';
@@ -31,15 +33,29 @@ app.post('/message/send/v1', (req: Request, res: Response) => {
 });
 */
 /*
+app.post('/message/senddm/v1', (req: Request, res: Response) => {
+  const { token, dmId, message } = req.body;
+
+  res.json(messageSenddm(token, parseInt(dmId), message));
+});
+*/
+/*
 app.post('/channel/addowner/v1', (req: Request, res: Response) => {
   const { token, channelId, uId } = req.body;
-  res.json(addownerV1(token, parseInt(channelId), parseInt(uId)));
+  res.json(channelAddownerV1(token, parseInt(channelId), parseInt(uId)));
 });
 */
 /*
 app.post('/channel/leave/v1', (req: Request, res: Response) => {
   const { token, channelId } = req.body;
   res.json(channelLeaveV1(token, parseInt(channelId)));
+});
+*/
+/*
+app.get('/channel/details/v2', (req: Request, res: Response, next) => {
+  const token = req.query.token as string;
+  const channelId = parseInt(req.query.channelId as string);
+  res.json(channelDetailsV2(token, channelId));
 });
 */
 app.post('/auth/register/v2', (req: Request, res: Response) => {
@@ -54,9 +70,93 @@ app.post('/auth/login/v2', (req: Request, res: Response) => {
   return res.json(authLoginV2(email, password));
 });
 
+app.post('/auth/logout/v1', (req: Request, res: Response) => {
+  const { token } = req.body;
+
+  return res.json(authLogoutV1(token));
+});
+
+app.post('/dm/create/v1', (req: Request, res: Response) => {
+  const { token, uIds } = req.body;
+  const Ids = uIds.map(function (x: string) {
+    return parseInt(x, 10);
+  });
+
+  return res.json(dmCreateV1(token, Ids));
+});
+
+app.delete('/dm/remove/v1', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+  const dmId = req.query.dmId as string;
+
+  return res.json(dmRemoveV1(token, parseInt(dmId)));
+});
+
+app.post('/dm/leave/v1', (req: Request, res: Response) => {
+  const { token, dmId } = req.body;
+
+  return res.json(dmLeaveV1(token, parseInt(dmId)));
+});
+
 app.delete('/clear/v1', (req: Request, res: Response) => {
   return res.json(clearV1());
 });
+
+/*
+app.post('/channel/join/v2', (req: Request, res: Response) => {
+  const { token, channelId } = req.body;
+
+  return res.json(channelJoinV2(token, channelId));
+});
+
+*/
+/*
+app.post('/channel/invite/v2', (req: Request, res: Response) => {
+  const { token, channelId, uId } = req.body;
+
+  return res.json(channelInviteV2(token, channelId, uId));
+});
+
+*/
+
+/*
+app.delete('/channel/removeowner/v1', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+  const channelId = parseInt(req.query.channelId as string);
+  const uId = parseInt(req.query.uId as string);
+  return res.json(channelRemoveOwnerV1(token, channelId, uId));
+});
+
+*/
+
+/*
+app.get('/channel/messages/v2', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+  const channelId = parseInt(req.query.channelId as string);
+  const start = parseInt(req.query.start as string);
+  return res.json(channelMessagesV2(token, channelId, start));
+});
+
+*/
+
+/*
+app.post('/message/edit/v1', (req: Request, res: Response) => {
+  const { token, messageId, message } = req.body;
+
+  return res.json(messageEditV1(token, messageId, message));
+});
+
+*/
+
+/*
+
+app.delete('/message/remove/v1', (req: Request, res: Response) => {
+  const { token, messageId } = req.body;
+
+  return res.json(messageRemoveV1(token, messageId));
+});
+
+*/
 // start server
 const server = app.listen(PORT, HOST, () => {
   // DO NOT CHANGE THIS LINE

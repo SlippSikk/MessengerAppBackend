@@ -3,6 +3,7 @@ import { dataTs } from './interfaces';
 let data: dataTs = {
   users: [],
   channels: [],
+  dms: []
 };
 // YOU SHOULDNT NEED TO MODIFY THE FUNCTIONS BELOW IN ITERATION 1
 

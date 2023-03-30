@@ -37,13 +37,42 @@ interface channel {
     messages: messages[]
 }
 
+type dmId = { dmId: number }
+
+interface dms {
+    dmId: number,
+    name: string,
+    creator: user,
+    members: user[]
+    messages: messages[]
+}
+
+interface dmsOutput {
+    dmId: number,
+    name: string,
+}
+
+interface dmDetails {
+    name: string,
+    members: user[],
+}
+
+interface dmMessages {
+    messages: messages[],
+    start: number,
+    end: number
+}
 interface dataTs {
     users: users[]
     channels: channel[]
+    dms: dms[]
 }
 
 type authUserId = { token: string, authUserId: number };
 
 type error = { error: string };
 
-export { users, channels, user, messages, dataTs, authUserId, error, channel };
+export {
+  users, channels, user, messages, dataTs, authUserId, error, channel,
+  dmMessages, dmDetails, dmsOutput, dmId, dms
+};
