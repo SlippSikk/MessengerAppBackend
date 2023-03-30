@@ -66,13 +66,13 @@ interface dataTs {
     users: users[]
     channels: channel[]
     dms: dms[]
-};
+}
 
 type authUserId = { token: string, authUserId: number };
 
 type error = { error: string };
 
 export {
-    users, channels, user, messages, dataTs, authUserId, error, channel,
-    dmMessages, dmDetails, dmsOutput, dmId, dms
+  users, channels, user, messages, dataTs, authUserId, error, channel,
+  dmMessages, dmDetails, dmsOutput, dmId, dms
 };
