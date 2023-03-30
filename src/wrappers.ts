@@ -193,4 +193,24 @@ export function requestChannelRemoveOwner(token: string, channelId: number, uId:
 }
 
 */
+
+/*
+export function requestChannelMessages(token: string, channelId: number, start: number): error | channelMessages {
+  const res = request(
+    'GET',
+        `${url}:${port}/channel/messages/v2`,
+        {
+          qs: {
+            token: token,
+            channelId: channelId,
+            start: start
+          }
+        }
+  );
+
+  return JSON.parse(res.getBody() as string);
+}
+
+
+*/
 export { requestAuthRegister, requestAuthLogin, requestClear };

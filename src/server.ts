@@ -113,6 +113,16 @@ app.delete('/channel/removeowner/v1', (req: Request, res: Response) => {
 });
 
 */
+
+/*
+app.get('/channel/messages/v2', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+  const channelId = parseInt(req.query.channelId as string);
+  const start = parseInt(req.query.start as string);
+  return res.json(channelMessagesV2(token, channelId, start));
+});
+
+*/
 // start server
 const server = app.listen(PORT, HOST, () => {
   // DO NOT CHANGE THIS LINE

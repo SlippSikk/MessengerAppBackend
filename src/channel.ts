@@ -145,3 +145,48 @@ export function channelRemoveOwnerV1(token: string, channelId: number, uId: numb
   return {};
 }
   */
+
+/*
+export function channelMessagesV2(token: string, channelId: number, start: number) {
+  const data: dataTs = getData();
+  if (!isChannelIdValid(channelId)) {
+    return { error: 'This channel does not exist' };
+  }
+
+  if (!isTokenValid(token)) {
+    return { error: 'Invalid token' };
+  }
+
+  // can safely assume authUserId is a number as token must be valid from above
+  const authUserId: number = getUIdFromToken(token) as number;
+
+  const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);
+  const channel: channel = data.channels[channelIndex];
+  const hasAuthUser: user = channel.allMembers.find(member => member.uId === authUserId);
+
+  if (hasAuthUser === undefined && authUserId !== 1) {
+    return { error: 'This user is not in the channel' };
+  }
+
+  if (start > channel.messages.length) {
+    return { error: 'Start is greater than the total number of messages in the channel' };
+  }
+
+  let end: number;
+  let endrange: number;
+  if (channel.messages.length > start + 50) {
+    end = start + 50;
+    endrange = end;
+  } else {
+    end = -1;
+    endrange = channel.messages.length;
+  }
+  return {
+
+    messages: channel.messages.slice(start, endrange),
+    start: start,
+    end: end
+
+  };
+}
+*/
