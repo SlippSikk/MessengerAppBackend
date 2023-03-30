@@ -148,12 +148,10 @@ export const getHandle = (uId: number): string => {
 };
 
 export const getUser = (uId: number): user => {
-=======
   return user.handleStr;
 };
 
 export const getUser = (uId: number): typeof user => {
->>>>>>> src/helper.ts
   const data = getData();
   const user = data.users.find(element => element.uId === uId);
   const member: typeof user = {
@@ -161,13 +159,7 @@ export const getUser = (uId: number): typeof user => {
     email: user.email,
     nameFirst: user.nameFirst,
     nameLast: user.nameLast,
-<<<<<<< src/helper.ts
-    handleStr: user.handleStr
-=======
     handleStr: user.handleStr,
-    password: user.password,
-    token: user.token
->>>>>>> src/helper.ts
   };
 
   return member;
