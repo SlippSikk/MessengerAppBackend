@@ -10,15 +10,15 @@ const SERVER_URL = `${url}:${port}`;
 function requestAuthRegister(email: string, password: string, nameFirst: string, nameLast: string) {
   const res = request(
     'POST',
-        `${url}:${port}/auth/register/v2`,
-        {
-          json: {
-            email,
-            password,
-            nameFirst,
-            nameLast
-          }
-        }
+    `${url}:${port}/auth/register/v2`,
+    {
+      json: {
+        email,
+        password,
+        nameFirst,
+        nameLast
+      }
+    }
   );
 
   return JSON.parse(res.getBody() as string);
@@ -27,13 +27,13 @@ function requestAuthRegister(email: string, password: string, nameFirst: string,
 function requestAuthLogin(email: string, password: string) {
   const res = request(
     'POST',
-        `${url}:${port}/auth/login/v2`,
-        {
-          json: {
-            email,
-            password
-          }
-        }
+    `${url}:${port}/auth/login/v2`,
+    {
+      json: {
+        email,
+        password
+      }
+    }
   );
 
   return JSON.parse(res.getBody() as string);
@@ -42,10 +42,10 @@ function requestAuthLogin(email: string, password: string) {
 function requestClear() {
   const res = request(
     'DELETE',
-        `${url}:${port}/clear/v1`,
-        {
+    `${url}:${port}/clear/v1`,
+    {
 
-        }
+    }
   );
 
   return JSON.parse(res.getBody() as string);
@@ -69,12 +69,12 @@ export function requestAddowner(token: string, channelId: number, uId: number) {
 export function requestAuthLogout(token: string) {
   const res = request(
     'POST',
-        `${url}:${port}/auth/logout/v1`,
-        {
-          json: {
-            token
-          }
-        }
+    `${url}:${port}/auth/logout/v1`,
+    {
+      json: {
+        token
+      }
+    }
   );
 
   return JSON.parse(res.getBody() as string);
@@ -97,13 +97,13 @@ export function requestChannelLeave(token: string, channelId: number) {
 export function requestDmCreate(token: string, uIds: number[]): dmId {
   const res = request(
     'POST',
-        `${url}:${port}/dm/create/v1`,
-        {
-          json: {
-            token,
-            uIds
-          }
-        }
+    `${url}:${port}/dm/create/v1`,
+    {
+      json: {
+        token,
+        uIds
+      }
+    }
   );
 
   return JSON.parse(res.getBody() as string);
@@ -112,13 +112,13 @@ export function requestDmCreate(token: string, uIds: number[]): dmId {
 export function requestDmLeave(token: string, dmId: number) {
   const res = request(
     'POST',
-        `${url}:${port}/dm/leave/v1`,
-        {
-          json: {
-            token,
-            dmId
-          }
-        }
+    `${url}:${port}/dm/leave/v1`,
+    {
+      json: {
+        token,
+        dmId
+      }
+    }
   );
 
   return JSON.parse(res.getBody() as string);
@@ -127,13 +127,13 @@ export function requestDmLeave(token: string, dmId: number) {
 export function requestDmRemove(token: string, dmId: number) {
   const res = request(
     'DELETE',
-        `${url}:${port}/dm/remove/v1`,
-        {
-          qs: {
-            token,
-            dmId
-          }
-        }
+    `${url}:${port}/dm/remove/v1`,
+    {
+      qs: {
+        token,
+        dmId
+      }
+    }
   );
 
   return JSON.parse(res.getBody() as string);
@@ -245,6 +245,23 @@ export function requestMessageRemove(token: string, messageId: number) {
         }
   );
 
+  return JSON.parse(res.getBody() as string);
+}
+
+*/
+/*
+export function requestMessageSenddm(token: string, dmId: number, message: string) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/message/senddm/v1',
+    {
+      json: {
+        token: token,
+        dmId: dmId,
+        message: message
+      }
+    }
+  );
   return JSON.parse(res.getBody() as string);
 }
 
