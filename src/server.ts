@@ -123,6 +123,15 @@ app.get('/channel/messages/v2', (req: Request, res: Response) => {
 });
 
 */
+
+/*
+app.post('/message/edit/v1', (req: Request, res: Response) => {
+  const { token, messageId, message } = req.body;
+
+  return res.json(messageEditV1(token, messageId, message));
+});
+
+*/
 // start server
 const server = app.listen(PORT, HOST, () => {
   // DO NOT CHANGE THIS LINE
