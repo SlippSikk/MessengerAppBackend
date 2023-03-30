@@ -212,4 +212,23 @@ export function requestChannelMessages(token: string, channelId: number, start: 
 }
 
 */
+
+/*
+export function requestMessageEdit(token: string, messageId: number, message: string) {
+  const res = request(
+    'POST',
+        `${url}:${port}/message/edit/v1`,
+        {
+          json: {
+            token: token,
+            messageId: messageId,
+            message: message,
+          }
+        }
+  );
+
+  return JSON.parse(res.getBody() as string);
+}
+
+*/
 export { requestAuthRegister, requestAuthLogin, requestClear };
