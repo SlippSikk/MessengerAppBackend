@@ -70,3 +70,10 @@ export function messageEditV1(token: string, messageId: number, message: string)
   }
 
 */
+
+/*
+export function messageRemoveV1(token: string, messageId: number) {
+return messageEditV1(token, messageId, '');
+}
+
+*/

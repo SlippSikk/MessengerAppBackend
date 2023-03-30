@@ -132,6 +132,16 @@ app.post('/message/edit/v1', (req: Request, res: Response) => {
 });
 
 */
+
+/*
+
+app.delete('/message/remove/v1', (req: Request, res: Response) => {
+  const { token, messageId } = req.body;
+
+  return res.json(messageRemoveV1(token, messageId));
+});
+
+*/
 // start server
 const server = app.listen(PORT, HOST, () => {
   // DO NOT CHANGE THIS LINE
