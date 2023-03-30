@@ -190,3 +190,35 @@ export function channelMessagesV2(token: string, channelId: number, start: numbe
   };
 }
 */
+/**
+ *
+ * @param uId
+ * @sum Makes uId owner of channelId
+ */
+/*
+export const channelAddownerV1 = (token: string, channelId: number, uId: number): `{}` | error => {
+  // Error handle
+  if (!isTokenValid(token)) {
+    return { error: 'invalid token' };
+  }
+  if (!isChannelIdValid(channelId)) {
+    return { error: 'channelId invalid' };
+  }
+  if (!isUserIdValid(uId)) {
+    return { error: 'Invalid uId' };
+  }
+  if (!isMember(channelId, uId)) {
+    return { error: 'uId is not a member of channelId' };
+  }
+  if (!isOwnerByToken(channelId, token)) {
+    return { error: 'User(token) does not have owner permissions' };
+  }
+  if (isOwner(channelId, uId)) {
+    return { error: 'uId is already owner' };
+  }
+  const channel = getChannel(channelId);
+  const user = getUser(uId);
+  channel.ownerMembers.push(user);
+  return {};
+};
+*/

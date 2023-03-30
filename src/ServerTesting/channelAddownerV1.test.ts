@@ -1,10 +1,9 @@
-test('Test placeholder', () => {
+test('PlaceHolder', () => {
   expect(1 + 1).toStrictEqual(2);
 });
 /*
 import { requestAuthRegister, requestClear, requestAddowner, requestChannelsCreate, requestChannelJoin } from '../wrappers';
 import { authUserId } from '../interfaces';
-import { getData } from './dataStore';
 const ERROR = { error: expect.any(String) };
 
 let registered1: authUserId;
@@ -21,30 +20,28 @@ beforeEach(() => {
   channelId1 = requestChannelsCreate(registered1.token, 'nest', true).channelId;
   channelId2 = requestChannelsCreate(registered2.token, 'shed', true).channelId;
 });
-
+// This Testing uses eucledian algorithm to assert that
+// the inputed auth userId is always unique and non exsisting
 describe('Error Cases', () => {
   test('Invalid channelId', () => {
-    expect(requestAddowner(registered1.token, channelId1 + 1, registered1.authUserId)).toStrictEqual(ERROR);
+    expect(requestAddowner(registered1.token, channelId1 * channelId2 + 1, registered1.authUserId)).toStrictEqual(ERROR);
   });
   test('Invalid uId', () => {
-    // White box testing
-    expect(requestAddowner(registered1.token, channelId1, registered1.authUserId + registered2.authUserId)).toStrictEqual(ERROR);
+    expect(requestAddowner(registered1.token, channelId1, registered1.authUserId * registered2.authUserId * registered3.authUserId + 1)).toStrictEqual(ERROR);
   });
   test('UId is not a member of channel', () => {
     expect(requestAddowner(registered1.token, channelId1, registered2.authUserId)).toStrictEqual(ERROR);
   });
   test('UId is already an owner', () => {
-    // white box testing
     expect(requestAddowner(registered1.token, channelId1, registered1.authUserId)).toStrictEqual(ERROR);
   });
   test('UId does not have owner permissions in the channel', () => {
-    // white box testing
-    // registered3.token is a member of channelId1, but not an owner, thus cann not addsomeone to owner
+    // Registered3.token is a member of channelId1->can't addsomeone to owner
     requestChannelJoin(registered3.token, channelId1);
+    requestChannelJoin(registered2.token, channelId1);
     expect(requestAddowner(registered3.token, channelId1, registered2.authUserId)).toStrictEqual(ERROR);
   });
   test('Invalid token', () => {
-    // white box testing
     expect(requestAddowner(registered1.token + 'p', channelId2, registered1.authUserId)).toStrictEqual(ERROR);
   });
 });
@@ -52,31 +49,26 @@ describe('Error Cases', () => {
 describe('Function Testing', () => {
   // Every test has a mix of whitebox testing
   test('Add an owner', () => {
+    requestChannelJoin(registered2.token, channelId1);
     expect(requestAddowner(registered1.token, channelId1, registered2.authUserId)).toStrictEqual({});
   });
+
   test('Add multiple owner in the first channel', () => {
     requestChannelJoin(registered2.token, channelId1);
     requestChannelJoin(registered3.token, channelId1);
     expect(requestAddowner(registered1.token, channelId1, registered2.authUserId)).toStrictEqual({});
-    expect(requestAddowner(registered1.token, channelId1, registered3.authUserId)).toStrictEqual({});
-    // white box testing
-    const data = getData();
-    expect(data.channels[0].ownerMembers[0]).toStrictEqual(registered1.authUserId);
-    expect(data.channels[0].ownerMembers[1]).toStrictEqual(registered2.authUserId);
-    expect(data.channels[0].ownerMembers[2]).toStrictEqual(registered3.authUserId);
+    expect(requestAddowner(registered2.token, channelId1, registered3.authUserId)).toStrictEqual({});
   });
-  test('Checks if new owner has owner permissions', () => {
-    // Makes registered 1,3 as an owner
+
+  test('Checks if new owner has owner permissions in another channel', () => {
+    // Makes registered 1,3 as an owner of channelId2
     requestChannelJoin(registered3.token, channelId2);
     expect(requestAddowner(registered2.token, channelId2, registered3.authUserId)).toStrictEqual({});
-    // white box testing
-    const data = getData();
-    expect(data.channels[0].ownerMembers[0]).toStrictEqual(registered1.authUserId);
-    expect(data.channels[1].ownerMembers[0]).toStrictEqual(registered2.authUserId);
-    expect(data.channels[1].ownerMembers[1]).toStrictEqual(registered3.authUserId);
-    // Test new owner permission by adding registered1
+
+    // Test owner permission by adding registered1 to channelId2
     requestChannelJoin(registered1.token, channelId2);
     expect(requestAddowner(registered3.token, channelId2, registered1.authUserId)).toStrictEqual({});
+
     // Test if registered 3 has no acces S
     expect(requestAddowner(registered3.token, channelId1, registered2.authUserId)).toStrictEqual(ERROR);
   });
