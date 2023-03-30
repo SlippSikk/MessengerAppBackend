@@ -231,4 +231,22 @@ export function requestMessageEdit(token: string, messageId: number, message: st
 }
 
 */
+
+/*
+export function requestMessageRemove(token: string, messageId: number) {
+  const res = request(
+    'POST',
+        `${url}:${port}/message/remove/v1`,
+        {
+          json: {
+            token: token,
+            messageId: messageId,
+          }
+        }
+  );
+
+  return JSON.parse(res.getBody() as string);
+}
+
+*/
 export { requestAuthRegister, requestAuthLogin, requestClear };
