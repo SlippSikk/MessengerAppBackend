@@ -88,6 +88,14 @@ app.delete('/clear/v1', (req: Request, res: Response) => {
 });
 
 /*
+app.post('/channel/join/v2', (req: Request, res: Response) => {
+  const { token, channelId } = req.body;
+
+  return res.json(channelJoinV2(token, channelId));
+});
+
+*/
+/*
 app.post('/channel/invite/v2', (req: Request, res: Response) => {
   const { token, channelId, uId } = req.body;
 

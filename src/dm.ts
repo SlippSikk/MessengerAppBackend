@@ -6,10 +6,10 @@ import { getData, setData } from './dataStore';
 function dmCreateV1(token: string, uIds: number[]): dmId | error {
   const data = getData();
 
-    // Error Cases
-    if (isTokenValid(token) === false) {
-        return { error: 'Token is not valid' };
-    }
+  // Error Cases
+  if (isTokenValid(token) === false) {
+    return { error: 'Token is not valid' };
+  }
 
   for (const Id of uIds) {
     if (isUserIdValid(Id) === false) {
@@ -21,9 +21,9 @@ function dmCreateV1(token: string, uIds: number[]): dmId | error {
     return new Set(arr).size !== arr.length;
   }
 
-    if (hasDuplicates(uIds)) {
-        return { error: 'uIds contains duplicates' };
-    }
+  if (hasDuplicates(uIds)) {
+    return { error: 'uIds contains duplicates' };
+  }
 
   const creatorId = data.users.find(element => element.token.find(element => element === token)).uId;
 

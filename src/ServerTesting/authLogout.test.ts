@@ -9,7 +9,6 @@ beforeEach(() => {
 });
 
 describe('Correct token', () => {
-
   test('Correct Inputs', () => {
     const registered = requestAuthLogin('adam.baqaie@gmail.com', 'adam123').token;
     const registered2 = requestAuthLogin('adam.baqaie@gmail.com', 'adam123').token;
@@ -23,9 +22,7 @@ describe('Correct token', () => {
 });
 
 describe('Incorrect token', () => {
-
   test('incorrect token', () => {
     expect(requestAuthLogout((token1 + token2 + Date.now()))).toStrictEqual({ error: expect.any(String) });
-  })
-
+  });
 });
