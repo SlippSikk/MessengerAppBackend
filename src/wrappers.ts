@@ -262,6 +262,23 @@ export function requestMessageSenddm(token: string, dmId: number, message: strin
 
 */
 /*
+function requestMessageSend(token: string, channelId: number, message: string) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/message/send/v1',
+    {
+      json: {
+        token: token,
+        channelId: channelId,
+        message: message
+      }
+    }
+  );
+  return JSON.parse(res.getBody() as string);
+}
+
+*/
+/*
 export function requestChannelDetails(token: string, channelId: number) {
   const res = request(
     'GET',
