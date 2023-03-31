@@ -1,7 +1,37 @@
 
-import { error, dmId, user, dms, dmDetails } from './interfaces';
+
+import { error, dmId, user, dms, dmDetails, dmsOutput } from './interfaces';
 import { isTokenValid, isUserIdValid, getHandle, getUser, getUIdFromToken } from './helper';
 import { getData, setData } from './dataStore';
+
+export function dmListV1(token: string): { dms: dmsOutput[] } | error {
+  // error case: invalid token
+  if (isTokenValid(token) !== true) {
+    return { error: 'Token is not valid' };
+  }
+
+  // get data from dataStore
+  const data = getData();
+
+  // get the user's uId with the given token
+  const uId = data.users.find(element => element.token.includes(token)).uId;
+
+  // Go through all dms and filter the ones this user is a member of
+  const userDms = [];
+
+  for (const currDms of data.dms) {
+    if ((currDms.members.find(element => element.uId === uId)) !== undefined) {
+      userDms.push({
+        dmId: currDms.dmId,
+        name: currDms.name
+      });
+    }
+  }
+
+  // return
+  return { dms: userDms };
+}
+
 
 function dmCreateV1(token: string, uIds: number[]): dmId | error {
   const data = getData();
