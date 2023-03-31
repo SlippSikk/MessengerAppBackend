@@ -58,7 +58,6 @@ describe('correct return value', () => {
 });
 */
 
-
 /*  old version
 import { clearV1 } from '../other.js';
 

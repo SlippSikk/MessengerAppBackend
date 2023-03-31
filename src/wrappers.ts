@@ -94,6 +94,20 @@ export function requestChannelLeave(token: string, channelId: number) {
   return JSON.parse(res.getBody() as string);
 }
 
+export function requestDmList(token: string) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/dm/list/v1',
+    {
+      qs: {
+        token
+      }
+    }
+  );
+  return JSON.parse(res.getBody() as string);
+}
+
+
 export function requestDmCreate(token: string, uIds: number[]): dmId {
   const res = request(
     'POST',
@@ -139,41 +153,36 @@ export function requestDmRemove(token: string, dmId: number) {
   return JSON.parse(res.getBody() as string);
 }
 
-/*
-export function requestChannelJoin(token: string, channelId: number) {
-  const res = request(
-    'POST',
-        `${url}:${port}/channel/join/v2`,
-        {
-          json: {
-            token: token,
-            channelId: channelId
-          }
-        }
-  );
+// export function requestChannelJoin(token: string, channelId: number) {
+//   const res = request(
+//     'POST',
+//         `${url}:${port}/channel/join/v2`,
+//         {
+//           json: {
+//             token: token,
+//             channelId: channelId
+//           }
+//         }
+//   );
 
-  return JSON.parse(res.getBody() as string);
-}
+//   return JSON.parse(res.getBody() as string);
+// }
 
-*/
+// export function requestChannelInvite(token: string, channelId: number, uId: number) {
+//   const res = request(
+//     'POST',
+//         `${url}:${port}/channel/join/v2`,
+//         {
+//           json: {
+//             token: token,
+//             channelId: channelId,
+//             uId: uId
+//           }
+//         }
+//   );
 
-/*
-export function requestChannelInvite(token: string, channelId: number, uId: number) {
-  const res = request(
-    'POST',
-        `${url}:${port}/channel/join/v2`,
-        {
-          json: {
-            token: token,
-            channelId: channelId,
-            uId: uId
-          }
-        }
-  );
-
-  return JSON.parse(res.getBody() as string);
-}
-*/
+//   return JSON.parse(res.getBody() as string);
+// }
 
 /*
 export function requestChannelRemoveOwner(token: string, channelId: number, uId: number) {
@@ -267,6 +276,23 @@ export function requestMessageSenddm(token: string, dmId: number, message: strin
 
 */
 /*
+function requestMessageSend(token: string, channelId: number, message: string) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/message/send/v1',
+    {
+      json: {
+        token: token,
+        channelId: channelId,
+        message: message
+      }
+    }
+  );
+  return JSON.parse(res.getBody() as string);
+}
+
+*/
+/*
 export function requestChannelDetails(token: string, channelId: number) {
   const res = request(
     'GET',
@@ -281,4 +307,49 @@ export function requestChannelDetails(token: string, channelId: number) {
   return JSON.parse(res.getBody() as string);
 }
 */
+export function requestChannelsCreate(token: string, name: string, isPublic: boolean) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/channels/create/v2',
+    {
+      // Note that for PUT/POST requests, you should
+      // use the key 'json' instead of the query string 'qs'
+      qs: {
+        token, name, isPublic
+      }
+    }
+  );
+  return JSON.parse(res.getBody() as string);
+}
+
+export function requestChannelsListAll(token: string) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/channels/listall/v2',
+    {
+      // Note that for PUT/POST requests, you should
+      // use the key 'json' instead of the query string 'qs'
+      qs: {
+        token
+      }
+    }
+  );
+  return JSON.parse(res.getBody() as string);
+}
+
+export function requestChannelsList(token: string) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/channels/list/v2',
+    {
+      // Note that for PUT/POST requests, you should
+      // use the key 'json' instead of the query string 'qs'
+      qs: {
+        token
+      }
+    }
+  );
+  return JSON.parse(res.getBody() as string);
+}
+
 export { requestAuthRegister, requestAuthLogin, requestClear };

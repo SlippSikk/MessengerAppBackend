@@ -2,13 +2,20 @@ import express, { json, Request, Response } from 'express';
 import { echo } from './echo';
 import { authRegisterV2, authLoginV2, authLogoutV1 } from './auth';
 import { dmCreateV1, dmLeaveV1, dmRemoveV1 } from './dm';
+import { channelsCreateV2 } from './channels';
+import { channelsListV2 } from './channels';
+import { channelsListAllV2 } from './channels';
+
+// import { channelInviteV2, channelJoinV2 } from './channel';
 // import { channelDetailsV2, channelLeaveV1, channelAddownerV1 } from './channel';
 // import { userProfileSethandleV1, userProfileSetemailV1, userProfileSetnameV1, usersAllV1, userProfileV2 } from './users';
+// import { messageSenddmV1, messaggeSendV1 } from './message';
+
 import { clearV1 } from './other';
 import morgan from 'morgan';
 import config from './config.json';
 import cors from 'cors';
-// import { messageSend } from './messageSend';
+
 // Set up web app
 const app = express();
 // Use middleware that allows us to access the JSON body of requests
@@ -27,17 +34,17 @@ app.get('/echo', (req: Request, res: Response, next) => {
   return res.json(echo(data));
 });
 /*
-Import function messageSend
+
 app.post('/message/send/v1', (req: Request, res: Response) => {
   const { token, channelId, message } = req.body;
-  res.json(messageSend(token, parseInt(channelId), message));
+  res.json(messageSendV1(token, parseInt(channelId), message));
 });
 */
 /*
 app.post('/message/senddm/v1', (req: Request, res: Response) => {
   const { token, dmId, message } = req.body;
 
-  res.json(messageSenddm(token, parseInt(dmId), message));
+  res.json(messageSenddmV1(token, parseInt(dmId), message));
 });
 */
 /*
@@ -102,6 +109,27 @@ app.post('/dm/leave/v1', (req: Request, res: Response) => {
 app.delete('/clear/v1', (req: Request, res: Response) => {
   return res.json(clearV1());
 });
+
+app.get('/channels/create/v2', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+  const name = req.query.name as string;
+  const isPublic = req.query.isPublic as string;
+
+  return res.json(channelsCreateV2(token, name, Boolean(isPublic)));
+});
+
+app.get('/channels/list/v2', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+
+  return res.json(channelsListV2(token));
+});
+
+app.get('/channels/listall/v2', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+
+  return res.json(channelsListAllV2(token));
+});
+
 /*
 app.put('/user/profile/sethandle/v1', (req: Request, res: Response) => {
   const { token, handleStr } = req.body;
@@ -133,18 +161,26 @@ app.get('/user/profile/v2', (req: Request, res: Response) => {
 app.post('/channel/join/v2', (req: Request, res: Response) => {
   const { token, channelId } = req.body;
 
-  return res.json(channelJoinV2(token, channelId));
+  return res.json(channelsCreateV2(token, name, Boolean(isPublic)));
 });
 
-*/
-/*
-app.post('/channel/invite/v2', (req: Request, res: Response) => {
-  const { token, channelId, uId } = req.body;
+// app.get('/channels/list/v2', (req: Request, res: Response) => {
+//   const token = req.query.token as string;
 
-  return res.json(channelInviteV2(token, channelId, uId));
-});
+//   return res.json(channelsListV2(token));
+// });
 
-*/
+// app.post('/channel/join/v2', (req: Request, res: Response) => {
+//   const { token, channelId } = req.body;
+
+//   return res.json(channelJoinV2(token, channelId));
+// });
+
+// app.post('/channel/invite/v2', (req: Request, res: Response) => {
+//   const { token, channelId, uId } = req.body;
+
+//   return res.json(channelInviteV2(token, channelId, uId));
+// });
 
 /*
 app.delete('/channel/removeowner/v1', (req: Request, res: Response) => {
