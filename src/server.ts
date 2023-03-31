@@ -4,7 +4,8 @@ import { authRegisterV2, authLoginV2, authLogoutV1 } from './auth';
 import { dmCreateV1, dmLeaveV1, dmRemoveV1 } from './dm';
 import { channelsCreateV2 } from './channels';
 import { channelsListV2 } from './channels';
-// import { channelsListAllV2, channelsListV2 } from './channels';
+import { channelsListAllV2 } from './channels';
+
 // import { channelInviteV2, channelJoinV2 } from './channel';
 // import { channelDetailsV2, channelLeaveV1, channelAddownerV1 } from './channel';
 import { clearV1 } from './other';
@@ -120,6 +121,12 @@ app.get('/channels/list/v2', (req: Request, res: Response) => {
   return res.json(channelsListV2(token));
 });
 
+app.get('/channels/listall/v2', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+
+  return res.json(channelsListAllV2(token));
+});
+
 /*
 
 app.put('/user/profile/sethandle/v1', (req: Request, res: Response) => {
@@ -159,12 +166,6 @@ app.post('/channel/join/v2', (req: Request, res: Response) => {
 //   const token = req.query.token as string;
 
 //   return res.json(channelsListV2(token));
-// });
-
-// app.get('/channels/listall/v2', (req: Request, res: Response) => {
-//   const token = req.query.token as string;
-
-//   return res.json(channelsListAllV2(token));
 // });
 
 // app.post('/channel/join/v2', (req: Request, res: Response) => {
