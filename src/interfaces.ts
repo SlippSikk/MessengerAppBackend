@@ -32,8 +32,8 @@ interface channel {
     channelId: number
     name: string
     isPublic: boolean
-    ownerMembers: users[]
-    allMembers: users[]
+    ownerMembers: user[]
+    allMembers: user[]
     messages: messages[]
 }
 
