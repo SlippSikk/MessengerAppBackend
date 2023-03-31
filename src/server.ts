@@ -6,7 +6,7 @@ import { channelsCreateV2 } from './channels';
 // import { channelsListAllV2, channelsCreateV2, channelsListV2 } from './channels';
 // import { channelInviteV2, channelJoinV2 } from './channel';
 // import { channelDetailsV2, channelLeaveV1, channelAddownerV1 } from './channel';
-import { clearV1 } from './other.js';
+import { clearV1 } from './other';
 import morgan from 'morgan';
 import config from './config.json';
 import cors from 'cors';
@@ -105,10 +105,43 @@ app.delete('/clear/v1', (req: Request, res: Response) => {
   return res.json(clearV1());
 });
 
+
 app.get('/channels/create/v2', (req: Request, res: Response) => {
   const token = req.query.token as string;
   const name = req.query.name as string;
   const isPublic = req.query.isPublic as string;
+
+/*
+
+app.put('/user/profile/sethandle/v1', (req: Request, res: Response) => {
+  const { token, handleStr } = req.body;
+  return res.json(userProfileSethandleV1(token, handleStr));
+});
+
+app.put('/user/profile/setemail/v1', (req: Request, res: Response) => {  //
+  const { token, email } = req.body;
+  return res.json(userProfileSetemailV1(token, email));
+});
+
+app.put('/user/profile/setname/v1', (req: Request, res: Response) => {    //everything about setname is fine... weird
+  const { token, nameFirst, nameLast } = req.body;
+  return res.json(userProfileSetnameV1(token, nameFirst, nameLast));
+});
+
+app.get('/users/all/v1', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+  return res.json(usersAllV1(token));
+});
+
+app.get('/user/profile/v2', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+  const uId = parseInt(req.query.uId as string);
+  return res.json(userProfileV2(token, uId));
+});
+*/
+/*
+app.post('/channel/join/v2', (req: Request, res: Response) => {
+  const { token, channelId } = req.body;
 
   return res.json(channelsCreateV2(token, name, Boolean(isPublic)));
 });
