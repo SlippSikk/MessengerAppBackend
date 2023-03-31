@@ -1,6 +1,6 @@
 test('PlaceHolder', () => {
-    expect(1 + 1).toStrictEqual(2);
-  });
+  expect(1 + 1).toStrictEqual(2);
+});
 /*
 import request, { HttpVerb } from 'sync-request';
 
@@ -22,8 +22,6 @@ function requestHelper(method: HttpVerb, path: string, payload: object) {
   return JSON.parse(res.getBody('utf-8'));
 }
 
-
-
 function requestUserAllV1(token: string) {
     return requestHelper('GET', '/users/all/v1', { token });
 }
@@ -39,43 +37,43 @@ function requestRegister(email: string, password: string, nameFirst: string, nam
 beforeEach(() => {
     requestClear();
 });
-  
+
 describe('/users/all/v1', () => {
     describe('basic tests', () => {
         test('token invaild', () => {
             const tokenA = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
             expect(requestUserAllV1(tokenA + 'a')).toStrictEqual(ERROR);
         });
-    
+
         test('three users', () => {
-            
+
             const registerObjectA = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
             const registerObjectB = requestRegister('csgogo@gmail.com', 'counterStrike2', 'john', 'cena');
             const registerObjectC = requestRegister('csgogogo@gmail.com', 'counterStrike3', 'long', 'short');
             expect(requestUserAllV1(registerObjectA.token )).toStrictEqual({ users: [
                 {
-                    uId:registerObjectA.authUserId, 
-                    email:'csgo@gmail.com', 
-                    nameFirst:'Ab', 
-                    nameLast:'CDE', 
+                    uId:registerObjectA.authUserId,
+                    email:'csgo@gmail.com',
+                    nameFirst:'Ab',
+                    nameLast:'CDE',
                     handleStr:'abcde'
                 },
                 {
-                    uId:registerObjectB.authUserId, 
-                    email:'csgogo@gmail.com', 
-                    nameFirst:'john', 
-                    nameLast:'cena', 
+                    uId:registerObjectB.authUserId,
+                    email:'csgogo@gmail.com',
+                    nameFirst:'john',
+                    nameLast:'cena',
                     handleStr:'johncena'
                 },
                 {
-                    uId:registerObjectC.authUserId, 
-                    email:'csgogogo@gmail.com', 
-                    nameFirst:'long', 
-                    nameLast:'short', 
+                    uId:registerObjectC.authUserId,
+                    email:'csgogogo@gmail.com',
+                    nameFirst:'long',
+                    nameLast:'short',
                     handleStr:'longshort'
                 }
-                ] 
+                ]
             });
         });
     });
-});*/
+}); */

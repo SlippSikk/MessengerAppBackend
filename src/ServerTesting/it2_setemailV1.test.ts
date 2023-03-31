@@ -1,8 +1,8 @@
 
 test('I hate pipeline', () => {
-    expect(1 + 1).toStrictEqual(2);
-  });
-  
+  expect(1 + 1).toStrictEqual(2);
+});
+
 /*
 import request, { HttpVerb } from 'sync-request';
 
@@ -24,8 +24,6 @@ function requestHelper(method: HttpVerb, path: string, payload: object) {
   return JSON.parse(res.getBody('utf-8'));
 }
 
-
-
 function requestuserSetemail(token: string, email: string) {
     return requestHelper('PUT', '/user/profile/setemail/v1', { token, email });
 }
@@ -45,20 +43,20 @@ function requestRegister(email: string, password: string, nameFirst: string, nam
 beforeEach(() => {
     requestClear();
 });
-  
+
 describe('/user/profile/setemail/v1', () => {
     describe('error', () => {
         const tokenA = requestRegister('csgo3@gmail.com', 'counterStrike', 'de', 'bug').token;
         const tokenB = requestRegister('Waifu@gmail.com', 'counterStrike', 'dejie', 'yun').token;
         test.each([
             { token: tokenA+'A', email: 'Unsw1531@gamil.com' },
-            { token: tokenA, email: 'Waifu@gmail.com' }, 
-            { token: tokenA, email: 'AI' },     
+            { token: tokenA, email: 'Waifu@gmail.com' },
+            { token: tokenA, email: 'AI' },
         ])('token=$token, email=$email', ({ token, email }) => {
         expect(requestuserSetemail(token, email)).toStrictEqual(ERROR);
         });
     });
-  
+
     test('return value', () => {
         requestClear();
         const tokenA = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
@@ -69,10 +67,10 @@ describe('/user/profile/setemail/v1', () => {
         const registerObject = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
         requestuserSetemail(registerObject.token, 'Ehentai@gmail.com')
         expect(requestUserProfileV2(registerObject.token,registerObject.authUserId)).toStrictEqual({user:{
-            uId:registerObject.authUserId, 
-            email:'Ehentai@gmail.com', 
-            nameFirst:'Ab', 
-            nameLast:'CDE', 
+            uId:registerObject.authUserId,
+            email:'Ehentai@gmail.com',
+            nameFirst:'Ab',
+            nameLast:'CDE',
             handleStr:'abcde'}});//more tests needed when other function finished
     });
 

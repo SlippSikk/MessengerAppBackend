@@ -43,7 +43,7 @@ export function userProfileSetemailV1(token:string, email:string){
  * @param {string} handleStr
  * @returns {}
  */
-/*---------------delete this line-----------------------
+/* ---------------delete this line-----------------------
 export function userProfileSethandleV1(token:string, handleStr:string){
   let data = getData();
   if (isTokenValid(token) !== true) {
@@ -76,7 +76,7 @@ export function userProfileSethandleV1(token:string, handleStr:string){
  * @param {string} nameLast
  * @returns {}
  */
-/*---------------delete this line-----------------------
+/* ---------------delete this line-----------------------
 export function userProfileSetnameV1(token:string, nameFirst:string, nameLast:string){
   let data = getData();
   if (isTokenValid(token) !== true) {
@@ -99,7 +99,7 @@ export function userProfileSetnameV1(token:string, nameFirst:string, nameLast:st
  * @param {string} token
  * @returns {{users}}
  */
-/*---------------delete this line-----------------------
+/* ---------------delete this line-----------------------
 export function usersAllV1(token:string){
   let data = getData();
   if (isTokenValid(token) !== true) {
@@ -107,10 +107,10 @@ export function usersAllV1(token:string){
   }
   const users = data.users
     .map(p =>({
-      uId: p.uId, 
-      email: p.email, 
-      nameFirst: p.nameFirst, 
-      nameLast: p.nameLast, 
+      uId: p.uId,
+      email: p.email,
+      nameFirst: p.nameFirst,
+      nameLast: p.nameLast,
       handleStr: p.handleStr
     }))
   return {users}
@@ -121,7 +121,7 @@ export function usersAllV1(token:string){
  * @param {string} uId
  * @returns {user}
  */
-/*---------------delete this line-----------------------
+/* ---------------delete this line-----------------------
 export function userProfileV2(token:string, uId:number){
   let data = getData();
   if (isTokenValid(token) !== true) {
@@ -139,6 +139,5 @@ export function userProfileV2(token:string, uId:number){
     handleStr: idToView.handleStr
   }}
 
-
 }
-------------------delete me-----------------*/
+------------------delete me----------------- */
