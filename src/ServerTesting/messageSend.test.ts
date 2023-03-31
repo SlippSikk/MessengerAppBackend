@@ -5,7 +5,7 @@ import { port, url } from './config.json';
 const SERVER_URL = `${url}:${port}`;
 const ERROR = { error: expect.any(String) };
 */
-//delete below
+// delete below
 test('Test placeholder', () => {
   expect(1 + 1).toStrictEqual(2);
 });

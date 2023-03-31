@@ -4,13 +4,14 @@
  * @returns {{}}
  */
 import { setData } from './dataStore';
+import { dataTs } from './interfaces';
 export function clearV1() {
-  const iniData = {
+  const iniData:dataTs = {
     users: [],
     channels: [],
-    dms: []
-
+    dms: [],
   };
   setData(iniData);
+
   return {};
 }
