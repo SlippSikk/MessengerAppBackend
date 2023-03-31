@@ -2,6 +2,7 @@ import express, { json, Request, Response } from 'express';
 import { echo } from './echo';
 import { authRegisterV2, authLoginV2, authLogoutV1 } from './auth';
 import { dmCreateV1, dmLeaveV1, dmRemoveV1 } from './dm';
+import { dmListV1 } from './dm';
 import { channelsCreateV2 } from './channels';
 import { channelsListV2 } from './channels';
 import { channelsListAllV2 } from './channels';
@@ -91,6 +92,12 @@ app.post('/dm/create/v1', (req: Request, res: Response) => {
   });
 
   return res.json(dmCreateV1(token, Ids));
+});
+
+app.get('/dm/list/v1', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+
+  return res.json(dmListV1(token));
 });
 
 app.delete('/dm/remove/v1', (req: Request, res: Response) => {
