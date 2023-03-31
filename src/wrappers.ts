@@ -1,13 +1,9 @@
 import request from 'sync-request';
-import config from './config.json';
 import { dmId } from './interfaces';
-
-const port = config.port;
-const url = config.url;
-// import { port, url } from './config.json';
+import { port, url } from './config.json';
 const SERVER_URL = `${url}:${port}`;
 
-function requestAuthRegister(email: string, password: string, nameFirst: string, nameLast: string) {
+export function requestAuthRegister(email: string, password: string, nameFirst: string, nameLast: string) {
   const res = request(
     'POST',
     `${url}:${port}/auth/register/v2`,
@@ -24,7 +20,7 @@ function requestAuthRegister(email: string, password: string, nameFirst: string,
   return JSON.parse(res.getBody() as string);
 }
 
-function requestAuthLogin(email: string, password: string) {
+export function requestAuthLogin(email: string, password: string) {
   const res = request(
     'POST',
     `${url}:${port}/auth/login/v2`,
@@ -39,19 +35,7 @@ function requestAuthLogin(email: string, password: string) {
   return JSON.parse(res.getBody() as string);
 }
 
-function requestClear() {
-  const res = request(
-    'DELETE',
-    `${url}:${port}/clear/v1`,
-    {
-
-    }
-  );
-
-  return JSON.parse(res.getBody() as string);
-}
-
-export function requestAddowner(token: string, channelId: number, uId: number) {
+export function requestChannelAddowner(token: string, channelId: number, uId: number) {
   const res = request(
     'POST',
     SERVER_URL + '/channel/addowner/v1',
@@ -178,112 +162,100 @@ export function requestDmRemove(token: string, dmId: number) {
   return JSON.parse(res.getBody() as string);
 }
 
-// export function requestChannelJoin(token: string, channelId: number) {
-//   const res = request(
-//     'POST',
-//         `${url}:${port}/channel/join/v2`,
-//         {
-//           json: {
-//             token: token,
-//             channelId: channelId
-//           }
-//         }
-//   );
+export function requestChannelJoin(token: string, channelId: number) {
+  const res = request(
+    'POST',
+    `${url}:${port}/channel/join/v2`,
+    {
+      json: {
+        token: token,
+        channelId: channelId
+      }
+    }
+  );
 
-//   return JSON.parse(res.getBody() as string);
-// }
+  return JSON.parse(res.getBody() as string);
+}
 
-// export function requestChannelInvite(token: string, channelId: number, uId: number) {
-//   const res = request(
-//     'POST',
-//         `${url}:${port}/channel/join/v2`,
-//         {
-//           json: {
-//             token: token,
-//             channelId: channelId,
-//             uId: uId
-//           }
-//         }
-//   );
+export function requestChannelInvite(token: string, channelId: number, uId: number) {
+  const res = request(
+    'POST',
+    `${url}:${port}/channel/invite/v2`,
+    {
+      json: {
+        token: token,
+        channelId: channelId,
+        uId: uId
+      }
+    }
+  );
 
-//   return JSON.parse(res.getBody() as string);
-// }
+  return JSON.parse(res.getBody() as string);
+}
 
-/*
 export function requestChannelRemoveOwner(token: string, channelId: number, uId: number) {
   const res = request(
-    'DELETE',
-        `${url}:${port}/channel/removeowner/v1`,
-        {
-          qs: {
-            token: token,
-            channelId: channelId,
-            uId: uId,
-          }
-        }
+    'POST',
+    `${url}:${port}/channel/removeowner/v1`,
+    {
+      json: {
+        token: token,
+        channelId: channelId,
+        uId: uId,
+      }
+    }
   );
 
   return JSON.parse(res.getBody() as string);
 }
 
-*/
-
-/*
-export function requestChannelMessages(token: string, channelId: number, start: number): error | channelMessages {
+export function requestChannelMessages(token: string, channelId: number, start: number) {
   const res = request(
     'GET',
-        `${url}:${port}/channel/messages/v2`,
-        {
-          qs: {
-            token: token,
-            channelId: channelId,
-            start: start
-          }
-        }
+    `${url}:${port}/channel/messages/v2`,
+    {
+      qs: {
+        token: token,
+        channelId: channelId,
+        start: start
+      }
+    }
   );
 
   return JSON.parse(res.getBody() as string);
 }
 
-*/
-
-/*
 export function requestMessageEdit(token: string, messageId: number, message: string) {
   const res = request(
-    'POST',
-        `${url}:${port}/message/edit/v1`,
-        {
-          json: {
-            token: token,
-            messageId: messageId,
-            message: message,
-          }
-        }
+    'PUT',
+    `${url}:${port}/message/edit/v1`,
+    {
+      json: {
+        token: token,
+        messageId: messageId,
+        message: message,
+      }
+    }
   );
 
   return JSON.parse(res.getBody() as string);
 }
 
-*/
-
-/*
 export function requestMessageRemove(token: string, messageId: number) {
   const res = request(
-    'POST',
-        `${url}:${port}/message/remove/v1`,
-        {
-          json: {
-            token: token,
-            messageId: messageId,
-          }
-        }
+    'DELETE',
+    `${url}:${port}/message/remove/v1`,
+    {
+      json: {
+        token: token,
+        messageId: messageId,
+      }
+    }
   );
 
   return JSON.parse(res.getBody() as string);
 }
 
-*/
-/*
 export function requestMessageSenddm(token: string, dmId: number, message: string) {
   const res = request(
     'POST',
@@ -299,9 +271,7 @@ export function requestMessageSenddm(token: string, dmId: number, message: strin
   return JSON.parse(res.getBody() as string);
 }
 
-*/
-/*
-function requestMessageSend(token: string, channelId: number, message: string) {
+export function requestMessageSend(token: string, channelId: number, message: string) {
   const res = request(
     'POST',
     SERVER_URL + '/message/send/v1',
@@ -316,14 +286,12 @@ function requestMessageSend(token: string, channelId: number, message: string) {
   return JSON.parse(res.getBody() as string);
 }
 
-*/
-/*
 export function requestChannelDetails(token: string, channelId: number) {
   const res = request(
     'GET',
     SERVER_URL + '/channel/details/v2',
     {
-      json: {
+      qs: {
         token: token,
         channelId: channelId,
       }
@@ -331,15 +299,13 @@ export function requestChannelDetails(token: string, channelId: number) {
   );
   return JSON.parse(res.getBody() as string);
 }
-*/
+
 export function requestChannelsCreate(token: string, name: string, isPublic: boolean) {
   const res = request(
-    'GET',
+    'POST',
     SERVER_URL + '/channels/create/v2',
     {
-      // Note that for PUT/POST requests, you should
-      // use the key 'json' instead of the query string 'qs'
-      qs: {
+      json: {
         token, name, isPublic
       }
     }
@@ -352,8 +318,6 @@ export function requestChannelsListAll(token: string) {
     'GET',
     SERVER_URL + '/channels/listall/v2',
     {
-      // Note that for PUT/POST requests, you should
-      // use the key 'json' instead of the query string 'qs'
       qs: {
         token
       }
@@ -367,8 +331,6 @@ export function requestChannelsList(token: string) {
     'GET',
     SERVER_URL + '/channels/list/v2',
     {
-      // Note that for PUT/POST requests, you should
-      // use the key 'json' instead of the query string 'qs'
       qs: {
         token
       }
@@ -377,4 +339,14 @@ export function requestChannelsList(token: string) {
   return JSON.parse(res.getBody() as string);
 }
 
-export { requestAuthRegister, requestAuthLogin, requestClear };
+export function requestClear() {
+  const res = request(
+    'DELETE',
+    `${url}:${port}/clear/v1`,
+    {
+
+    }
+  );
+
+  return JSON.parse(res.getBody() as string);
+}

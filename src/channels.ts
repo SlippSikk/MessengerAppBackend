@@ -2,7 +2,6 @@
 import { getData, setData } from './dataStore';
 import { getUIdFromToken, isTokenValid } from './helper';
 import { error, channel, channelId, channels } from './interfaces';
-// import { channels } from './interfaces'
 
 /**
  * Summary:
@@ -96,7 +95,7 @@ export function channelsCreateV2(token: string, name: string, isPublic: boolean)
  * @returns {channels: [{channelId: number}, {name: 'string'}]} - Array of channels that the user is a part of
  */
 
-export function channelsListV2(token: string): {channels: channels[]} | error {
+export function channelsListV2(token: string): { channels: channels[] } | error {
   const data = getData();
 
   // Error if invalid
@@ -131,7 +130,7 @@ export function channelsListV2(token: string): {channels: channels[]} | error {
  * @summary
  *  from a userId -> returns all channels which user is a member of
  */
-export function channelsListAllV2(token: string): {channels: channels[]} | error {
+export function channelsListAllV2(token: string): { channels: channels[] } | error {
   const data = getData();
 
   const userIndex = data.users.findIndex(element => element.token.includes(token));
