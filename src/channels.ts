@@ -1,6 +1,6 @@
 //import { isToken } from 'typescript';
 import { getData, setData } from './dataStore';
-import { isTokenValid } from './helper';
+import { getUIdFromToken, isTokenValid } from './helper';
 import { error, channels, channel, channelId } from './interfaces'
 
 /**
@@ -26,11 +26,13 @@ export function channelsListV2(token: string): {channels: channels[]} | error {
 	// Error if invalid
   	if (!isTokenValid(token)) return { error: 'token not valid' };
 
+	const userId = getUIdFromToken(token);
+
   	const channels: channels[] = [];
   	
   	for (const channel of data.channels) {
 
-    	const hasToken = channel.allMembers.find(member => member.token.includes(token));
+    	const hasToken = channel.allMembers.find(member => member.uId === userId);
 
     	if (hasToken !== undefined) {
 			const currChannel = {
@@ -89,7 +91,8 @@ export function channelsCreateV2(token: string, name: string, isPublic: boolean)
     channelId = data.channels[data.channels.length - 1].channelId + 1;
   }
 
-  const userIndex = data.users.findIndex(user => user.token.includes(token));
+  const userId = getUIdFromToken(token);
+  const userIndex = data.users.findIndex(user => user.uId === userId);
 
   const newChannel: channel = {
     channelId: channelId,
@@ -101,8 +104,6 @@ export function channelsCreateV2(token: string, name: string, isPublic: boolean)
       	nameFirst: data.users[userIndex].nameFirst,
       	nameLast: data.users[userIndex].nameLast,
       	handleStr: data.users[userIndex].handleStr,
-		password: data.users[userIndex].password,
-	  	token: data.users[userIndex].token
     }],
     allMembers: [{
 		uId: data.users[userIndex].uId,
@@ -110,8 +111,6 @@ export function channelsCreateV2(token: string, name: string, isPublic: boolean)
       	nameFirst: data.users[userIndex].nameFirst,
      	nameLast: data.users[userIndex].nameLast,
      	handleStr: data.users[userIndex].handleStr,
-	 	password: data.users[userIndex].password,
-		token: data.users[userIndex].token
     }],
     messages: []
   };
