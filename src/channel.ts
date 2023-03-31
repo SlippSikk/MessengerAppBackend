@@ -1,4 +1,4 @@
-/*
+
 import { getData, setData } from './dataStore';
 import { isChannelIdValid, isTokenValid, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember } from './helper';
 import { user, channel, dataTs } from './interfaces';
@@ -36,8 +36,7 @@ function channelJoinV2(token: string, channelId: number) {
 
   return {};
 }
-*/
-/*
+
 function channelInviteV2(token: string, channelId: number, uId: number) {
     const data: dataTs = getData();
     if (!isChannelIdValid(channelId)) {
@@ -76,7 +75,7 @@ function channelInviteV2(token: string, channelId: number, uId: number) {
     setData(data);
     return {};
   }
-  */
+
 
 /*
 export function channelRemoveOwnerV1(token: string, channelId: number, uId: number) {
