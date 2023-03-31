@@ -78,3 +78,46 @@ export function channelsCreateV2(token: string, name: string, isPublic: boolean)
 
   return { channelId: channelId };
 }
+
+
+/**
+ * Summary: Shows all the channels that the member is in, depending on the input user Id
+ *
+ * Description:
+ * If the inputted token is valid, as in it exists in the array of users,
+ * then this function will traverse through all existing channels using a for loop
+ * and if this member is a part of that channel then it will add it to a new array containing
+ * that channel's Id and name.
+ * Once the for loop is complete, then the function will return an array of objects
+ * where the objects have the channel's Ids and names.
+ *
+ * @param {string} token - Unique Id of the user
+ *
+ * @returns {error: 'string'} - Error Message - Error message describing the error cause
+ * @returns {channels: [{channelId: number}, {name: 'string'}]} - Array of channels that the user is a part of
+ */
+
+// function channelsListV2(token: string): {channels: channels[]} | error {
+// 	const data = getData();
+
+// 	// Error if invalid
+//   	if (!isTokenValid(token)) return { error: 'token not valid' };
+
+//   	const channels: channels[] = [];
+  	
+//   	for (const channel of data.channels) {
+
+//     	const hasToken = channel.allMembers.find(member => member.token.includes(token));
+
+//     	if (hasToken !== undefined) {
+// 			const currChannel = {
+//         		channelId: channel.channelId,
+//         		name: channel.name
+//       		};
+
+//       	channels.push(currChannel);
+//     	}
+//   	}
+
+//   return { channels: channels }; 
+// }

@@ -112,6 +112,13 @@ app.get('/channels/create/v2', (req: Request, res: Response) => {
 
   return res.json(channelsCreateV2(token, name, Boolean(isPublic)));
 });
+
+// app.get('/channels/list/v2', (req: Request, res: Response) => {
+//   const token = req.query.token as string;
+
+//   return res.json(channelsListV2(token));
+// });
+
 /*
 
 app.put('/user/profile/sethandle/v1', (req: Request, res: Response) => {
