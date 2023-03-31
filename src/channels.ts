@@ -123,3 +123,30 @@ export function channelsListV2(token: string): {channels: channels[]} | error {
   }
   return { channels: channels };
 }
+
+/**
+ * @param {string} token
+ * @returns { channels: [{ channelId: integer, channelName: string}] }
+ *
+ * @summary
+ *  from a userId -> returns all channels which user is a member of
+ */
+export function channelsListAllV2(token: string): {channels: channels[]} | error {
+  const data = getData();
+
+  const userIndex = data.users.findIndex(element => element.token.includes(token));
+  if (userIndex === -1) {
+    return { error: 'token is invalid' };
+  }
+
+  const allChannels: channels[] = [];
+
+  for (const a of data.channels) {
+    allChannels.push({
+      channelId: a.channelId,
+      name: a.name,
+    });
+  }
+
+  return { channels: allChannels };
+}
