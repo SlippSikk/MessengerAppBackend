@@ -105,11 +105,12 @@ app.delete('/clear/v1', (req: Request, res: Response) => {
   return res.json(clearV1());
 });
 
-
 app.get('/channels/create/v2', (req: Request, res: Response) => {
   const token = req.query.token as string;
   const name = req.query.name as string;
   const isPublic = req.query.isPublic as string;
+
+  return res.json(channelsCreateV2(token, name, Boolean(isPublic)));
 });
 /*
 
