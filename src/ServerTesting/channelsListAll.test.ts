@@ -1,8 +1,8 @@
 test('Test placeholder', () => {
-    expect(1 + 1).toStrictEqual(2);
-  });
-  
-import { requestChannelsListAll, requestAuthRegister, requestChannelsCreate, requestClear } from './../wrappers'
+  expect(1 + 1).toStrictEqual(2);
+});
+
+import { requestChannelsListAll, requestAuthRegister, requestChannelsCreate, requestClear } from './../wrappers';
 
 const ERROR = { error: expect.any(String) };
 
@@ -87,7 +87,6 @@ describe('test requestChannelsListAll', () => {
   });
   test('test output with channel inv ', () => {
     const token = requestAuthRegister('duck@gmail.com', '123456', 'duck', 'dash').token;
-    const token2 = requestAuthRegister('dog@gmail.com', '123456', 'dog', 'drown').token;
     const firstId = requestChannelsCreate(token, 'first', false).channelId;
     const secondId = requestChannelsCreate(token, 'second', true).channelId;
     const thirdId = requestChannelsCreate(token, 'third', false).channelId;

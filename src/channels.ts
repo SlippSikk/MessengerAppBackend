@@ -143,10 +143,10 @@ export function channelsListAllV2(token: string): {channels: channels[]} | error
 
   for (const a of data.channels) {
     allChannels.push({
-        channelId: a.channelId,
-        name: a.name,
+      channelId: a.channelId,
+      name: a.name,
     });
   }
 
-return { channels: allChannels};
+  return { channels: allChannels };
 }

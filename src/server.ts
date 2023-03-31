@@ -168,7 +168,6 @@ app.post('/channel/join/v2', (req: Request, res: Response) => {
 //   return res.json(channelsListV2(token));
 // });
 
-
 // app.post('/channel/join/v2', (req: Request, res: Response) => {
 //   const { token, channelId } = req.body;
 
