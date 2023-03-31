@@ -2,17 +2,21 @@ import express, { json, Request, Response } from 'express';
 import { echo } from './echo';
 import { authRegisterV2, authLoginV2, authLogoutV1 } from './auth';
 import { dmCreateV1, dmLeaveV1, dmRemoveV1 } from './dm';
+import { dmListV1 } from './dm';
 import { channelsCreateV2 } from './channels';
 import { channelsListV2 } from './channels';
 
 import { dmDetailsV1 } from './dm';
+import { dmMessagesV1 } from './dm';
 // import { channelsListAllV2, channelsListV2 } from './channels';
 import { channelsListAllV2 } from './channels';
 import { dmListV1 } from './dm';
 
 // import { channelInviteV2, channelJoinV2 } from './channel';
 // import { channelDetailsV2, channelLeaveV1, channelAddownerV1 } from './channel';
+// import { userProfileSethandleV1, userProfileSetemailV1, userProfileSetnameV1, usersAllV1, userProfileV2 } from './users';
 // import { messageSenddmV1, messaggeSendV1 } from './message';
+
 import { clearV1 } from './other';
 import morgan from 'morgan';
 import config from './config.json';
@@ -95,6 +99,12 @@ app.post('/dm/create/v1', (req: Request, res: Response) => {
   return res.json(dmCreateV1(token, Ids));
 });
 
+app.get('/dm/list/v1', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+
+  return res.json(dmListV1(token));
+});
+
 app.get('/dm/details/v1', (req: Request, res: Response) => {
   const token = req.query.token as string;
   const dmId = req.query.dmId as string;
@@ -119,6 +129,14 @@ app.get('/dm/list/v1', (req: Request, res: Response) => {
   const token = req.query.token as string;
 
   return res.json(dmListV1(token));
+});
+
+app.get('/dm/messages/v1', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+  const dmId = req.query.dmId as string;
+  const start = req.query.start as string;
+
+  return res.json(dmMessagesV1(token, parseInt(dmId), parseInt(start)));
 });
 
 app.delete('/clear/v1', (req: Request, res: Response) => {
@@ -146,18 +164,17 @@ app.get('/channels/listall/v2', (req: Request, res: Response) => {
 });
 
 /*
-
 app.put('/user/profile/sethandle/v1', (req: Request, res: Response) => {
   const { token, handleStr } = req.body;
   return res.json(userProfileSethandleV1(token, handleStr));
 });
 
-app.put('/user/profile/setemail/v1', (req: Request, res: Response) => {  //
+app.put('/user/profile/setemail/v1', (req: Request, res: Response) => { //
   const { token, email } = req.body;
   return res.json(userProfileSetemailV1(token, email));
 });
 
-app.put('/user/profile/setname/v1', (req: Request, res: Response) => {    //everything about setname is fine... weird
+app.put('/user/profile/setname/v1', (req: Request, res: Response) => { // everything about setname is fine... weird
   const { token, nameFirst, nameLast } = req.body;
   return res.json(userProfileSetnameV1(token, nameFirst, nameLast));
 });
@@ -171,8 +188,8 @@ app.get('/user/profile/v2', (req: Request, res: Response) => {
   const token = req.query.token as string;
   const uId = parseInt(req.query.uId as string);
   return res.json(userProfileV2(token, uId));
-});
-*/
+});*/
+
 /*
 app.post('/channel/join/v2', (req: Request, res: Response) => {
   const { token, channelId } = req.body;
