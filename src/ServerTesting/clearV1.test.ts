@@ -1,14 +1,13 @@
 test('PlaceHolder', () => {
-    expect(1 + 1).toStrictEqual(2);
-  });
-
+  expect(1 + 1).toStrictEqual(2);
+});
 /*
 import request, { HttpVerb } from 'sync-request';
 
 import { port, url } from '../config.json';
 
 const SERVER_URL = `${url}:${port}`;
-const ERROR = { error: expect.any(String) };
+
 
 function requestHelper(method: HttpVerb, path: string, payload: object) {
   let qs = {};
@@ -28,7 +27,7 @@ function requestClear() {
 }
 
 function requestRegister(email: string, password: string, nameFirst: string, nameLast: string) {
-  return requestHelper('POST', '/auth/register/v2', {email,password,nameFirst,nameLast});
+  return requestHelper('POST', '/auth/register/v2', { email, password, nameFirst, nameLast });
 }
 
 function requestUserAllV1(token: string) {
@@ -42,19 +41,22 @@ describe('correct return value', () => {
   test('delete all users', () => {
     const registerObjectA = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
     const registerObjectB = requestRegister('csgogo@gmail.com', 'counterStrike2', 'john', 'cena');
-    requestClear()
+    requestClear();
     const registerObjectC = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
-    expect(requestUserAllV1(registerObjectA.token)).toStrictEqual({users:[
-      {
-        uId:registerObjectC.authUserId, 
-        email:'csgo@gmail.com', 
-        nameFirst:'Ab', 
-        nameLast:'CDE', 
-        handleStr:'abcde'
-    }
-    ]})
+    expect(requestUserAllV1(registerObjectA.token)).toStrictEqual({
+      users: [
+        {
+          uId: registerObjectC.authUserId,
+          email: 'csgo@gmail.com',
+          nameFirst: 'Ab',
+          nameLast: 'CDE',
+          handleStr: 'abcde'
+        }
+      ]
+    });
   });
 });
+*/
 
 
 /*  old version
