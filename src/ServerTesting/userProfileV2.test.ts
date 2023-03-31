@@ -77,4 +77,4 @@ describe('/user/profile/v2', () => {
       }
     });// more tests needed when other function finished
   });
-});*/
+}); */

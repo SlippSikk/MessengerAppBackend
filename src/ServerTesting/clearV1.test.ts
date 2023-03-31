@@ -8,7 +8,6 @@ import { port, url } from '../config.json';
 
 const SERVER_URL = `${url}:${port}`;
 
-
 function requestHelper(method: HttpVerb, path: string, payload: object) {
   let qs = {};
   let json = {};
