@@ -4,6 +4,7 @@ import { authRegisterV2, authLoginV2, authLogoutV1 } from './auth';
 import { dmCreateV1, dmLeaveV1, dmRemoveV1 } from './dm';
 import { channelsCreateV2 } from './channels';
 import { channelsListV2 } from './channels';
+import { dmDetailsV1 } from './dm';
 // import { channelsListAllV2, channelsListV2 } from './channels';
 // import { channelInviteV2, channelJoinV2 } from './channel';
 // import { channelDetailsV2, channelLeaveV1, channelAddownerV1 } from './channel';
