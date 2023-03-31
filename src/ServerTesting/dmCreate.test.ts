@@ -1,5 +1,7 @@
 // import { requestAuthRegister, requestClear, requestDmCreate, requestDmDetails, requestDmList } from '../wrappers';
 import { requestAuthRegister, requestClear, requestDmCreate } from '../wrappers';
+// import { requestDmDetails } from '../wrappers';
+
 import { authUserId } from '../interfaces';
 
 // Global
@@ -37,26 +39,26 @@ describe('Correct Dm Create', () => {
   //     });
   //   });
 
-  //   test('Correct Output DmDetails', () => {
+  // test('Correct Output DmDetails', () => {
 
-  //     expect(requestDmDetails(registered2.token, dmId2)).toStrictEqual({
-  //       name: 'adamb, cb',
-  //       members: [{
-  //         uId: registered.authUserId,
-  //         email: 'adam.baqaie@gmail.com',
-  //         nameFirst: 'Adam',
-  //         nameLast: 'B',
-  //         handleStr: 'adamb'
-  //       },
-  //       {
-  //         uId: registered.authUserId,
-  //         email: 'adam.@gmail.com',
-  //         nameFirst: 'C',
-  //         nameLast: 'B',
-  //         handleStr: 'cb'
-  //       }]
-  //     })
+  //   expect(requestDmDetails(registered2.token, dmId2)).toStrictEqual({
+  //     name: 'adamb, cb',
+  //     members: [{
+  //       uId: registered.authUserId,
+  //       email: 'adam.baqaie@gmail.com',
+  //       nameFirst: 'Adam',
+  //       nameLast: 'B',
+  //       handleStr: 'adamb'
+  //     },
+  //     {
+  //       uId: registered2.authUserId,
+  //       email: 'adam@gmail.com',
+  //       nameFirst: 'C',
+  //       nameLast: 'B',
+  //       handleStr: 'cb'
+  //     }]
   //   })
+  // })
 });
 
 describe('Incorrect Dm Create', () => {

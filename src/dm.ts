@@ -1,5 +1,6 @@
 
-import { error, dmId, user, dms, dmsOutput } from './interfaces';
+
+import { error, dmId, user, dms, dmDetails, dmsOutput } from './interfaces';
 import { isTokenValid, isUserIdValid, getHandle, getUser, getUIdFromToken } from './helper';
 import { getData, setData } from './dataStore';
 
@@ -150,6 +151,43 @@ function dmRemoveV1(token: string, dmId: number) {
   setData(data);
 
   return {};
+}
+
+export function dmDetailsV1 (token: string, dmId: number): error | dmDetails {
+  // get data from dataStore
+  const data = getData();
+
+  // errors:
+  // case: token is invalid
+  if (isTokenValid(token) === false) {
+    return { error: 'Token is not valid1' };
+  }
+
+  if (data.users.findIndex(element => element.token.includes(token)) === -1) {
+    return { error: 'token is invalid2' };
+  }
+
+  // case: dmId does not refer to a valid DM
+  const findDm = data.dms.find(dm => dm.dmId === dmId);
+  if (findDm === undefined) {
+    return { error: 'dmId is not valid' };
+  }
+
+  // get the user's details with the given token
+  const currUser = data.users.find(users => users.token.includes(token));
+
+  // case: dmId is valid and the authorised user is not a member of the DM
+  const hasToken = findDm.members.find(user => user.uId === currUser.uId);
+  // const hasToken = findDm.members.find(currUser);
+  if (hasToken === undefined) {
+    return { error: 'User is not a member of the DM' };
+  }
+
+  // return
+  return {
+    name: findDm.name,
+    members: findDm.members
+  };
 }
 
 export { dmCreateV1, dmLeaveV1, dmRemoveV1 };
