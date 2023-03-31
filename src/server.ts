@@ -6,11 +6,11 @@ import { channelsCreateV2 } from './channels';
 import { channelsListV2 } from './channels';
 
 import { dmDetailsV1 } from './dm';
+import { dmMessagesV1 } from './dm';
 // import { channelsListAllV2, channelsListV2 } from './channels';
 
 import { channelsListAllV2 } from './channels';
 import { dmListV1 } from './dm';
-
 
 // import { channelInviteV2, channelJoinV2 } from './channel';
 // import { channelDetailsV2, channelLeaveV1, channelAddownerV1 } from './channel';
@@ -123,6 +123,13 @@ app.get('/dm/list/v1', (req: Request, res: Response) => {
   return res.json(dmListV1(token));
 });
 
+app.get('/dm/messages/v1', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+  const dmId = req.query.dmId as string;
+  const start = req.query.start as string;
+
+  return res.json(dmMessagesV1(token, parseInt(dmId), parseInt(start)));
+});
 
 app.delete('/clear/v1', (req: Request, res: Response) => {
   return res.json(clearV1());

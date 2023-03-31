@@ -1,8 +1,54 @@
 
-
-import { error, dmId, user, dms, dmDetails, dmsOutput } from './interfaces';
+import { error, dmId, user, dms, dmDetails, dmsOutput, dmMessages } from './interfaces';
 import { isTokenValid, isUserIdValid, getHandle, getUser, getUIdFromToken } from './helper';
 import { getData, setData } from './dataStore';
+
+export function dmMessagesV1 (token: string, dmId: number, start: number): error | dmMessages {
+  // get data from dataStore
+  const data = getData();
+
+  // errors:
+  // case: token is invalid
+  if (isTokenValid(token) !== true) {
+    return { error: 'Token is not valid' };
+  }
+
+  // case: dmId does not refer to a valid DM
+  const findDm = data.dms.find(dm => dm.dmId === dmId);
+  if (findDm === undefined) {
+    return { error: 'dmId is not valid' };
+  }
+
+  // case: start is greater than the total number of messages in the channel
+  if (start > findDm.messages.length) {
+    return { error: 'Start is greater than the total number of messages in the channel' };
+  }
+
+  // get the user's details with the given token
+  const currUser = data.users.find(users => users.token.includes(token));
+
+  // case: dmId is valid and the authorised user is not a member of the DM
+  const hasToken = findDm.members.find(user => user.uId === currUser.uId);
+  // const hasToken = findDm.members.find(currUser);
+  if (hasToken === undefined) {
+    return { error: 'User is not a member of the DM' };
+  }
+
+  // set end
+  let end;
+  if (findDm.messages.length > start + 50) {
+    end = start + 50;
+  } else {
+    end = -1;
+  }
+
+  // return
+  return {
+    messages: findDm.messages.slice(start, end),
+    start: start,
+    end: end
+  };
+}
 
 export function dmListV1(token: string): { dms: dmsOutput[] } | error {
   // error case: invalid token
@@ -31,7 +77,6 @@ export function dmListV1(token: string): { dms: dmsOutput[] } | error {
   // return
   return { dms: userDms };
 }
-
 
 function dmCreateV1(token: string, uIds: number[]): dmId | error {
   const data = getData();
