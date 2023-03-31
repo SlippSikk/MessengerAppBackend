@@ -306,19 +306,19 @@ export function requestChannelsCreate(token: string, name: string, isPublic: boo
 //   return JSON.parse(res.getBody() as string);
 // }
 
-// export function requestChannelsList(token: string) {
-//   const res = request(
-//     'GET',
-//     SERVER_URL + '/channels/list/v2',
-//     {
-//       // Note that for PUT/POST requests, you should
-//       // use the key 'json' instead of the query string 'qs'
-//       qs: {
-//         token
-//       }
-//     }
-//   );
-//   return JSON.parse(res.getBody() as string);
-// }
+export function requestChannelsList(token: string) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/channels/list/v2',
+    {
+      // Note that for PUT/POST requests, you should
+      // use the key 'json' instead of the query string 'qs'
+      qs: {
+        token
+      }
+    }
+  );
+  return JSON.parse(res.getBody() as string);
+}
 
 export { requestAuthRegister, requestAuthLogin, requestClear };

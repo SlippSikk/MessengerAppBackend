@@ -1,7 +1,7 @@
 // import { isToken } from 'typescript';
 import { getData, setData } from './dataStore';
 import { getUIdFromToken, isTokenValid } from './helper';
-import { error, channel, channelId } from './interfaces';
+import { error, channel, channelId, channels } from './interfaces';
 // import { channels } from './interfaces'
 
 /**
@@ -79,7 +79,6 @@ export function channelsCreateV2(token: string, name: string, isPublic: boolean)
   return { channelId: channelId };
 }
 
-
 /**
  * Summary: Shows all the channels that the member is in, depending on the input user Id
  *
@@ -97,27 +96,30 @@ export function channelsCreateV2(token: string, name: string, isPublic: boolean)
  * @returns {channels: [{channelId: number}, {name: 'string'}]} - Array of channels that the user is a part of
  */
 
-// function channelsListV2(token: string): {channels: channels[]} | error {
-// 	const data = getData();
+export function channelsListV2(token: string): {channels: channels[]} | error {
+  const data = getData();
 
-// 	// Error if invalid
-//   	if (!isTokenValid(token)) return { error: 'token not valid' };
+  // Error if invalid
+  const userIndex = data.users.findIndex(element => element.token.includes(token));
+  if (userIndex === -1) {
+    return { error: 'token is invalid' };
+  }
 
-//   	const channels: channels[] = [];
-  	
-//   	for (const channel of data.channels) {
+  const userId = data.users[userIndex].uId;
 
-//     	const hasToken = channel.allMembers.find(member => member.token.includes(token));
+  const channels: channels[] = [];
 
-//     	if (hasToken !== undefined) {
-// 			const currChannel = {
-//         		channelId: channel.channelId,
-//         		name: channel.name
-//       		};
+  for (const channel of data.channels) {
+    const hasToken = channel.allMembers.find(member => member.uId === userId);
 
-//       	channels.push(currChannel);
-//     	}
-//   	}
+    if (hasToken !== undefined) {
+      const currChannel = {
+        channelId: channel.channelId,
+        name: channel.name
+      };
 
-//   return { channels: channels }; 
-// }
+      channels.push(currChannel);
+    }
+  }
+  return { channels: channels };
+}
