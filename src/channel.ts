@@ -1,7 +1,7 @@
 
-import { getData, setData } from './dataStore';
-import { isChannelIdValid, isTokenValid, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser } from './helper';
-import { user, channel, dataTs, users } from './interfaces';
+// import { getData, setData } from './dataStore';
+// import { isChannelIdValid, isTokenValid, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser } from './helper';
+// import { user, channel, dataTs, users } from './interfaces';
 
 // export function channelJoinV2(token: string, channelId: number) {
 //   const data: dataTs = getData();
@@ -71,13 +71,11 @@ import { user, channel, dataTs, users } from './interfaces';
 //     // finally adds user to channel
 //     const userObj = getUser(authUserId);
 
-
 //     // const userObj : user = data.users.find(user => user.uId = authUserId)
 //     data.channels[channelIndex].allMembers.push(userObj);
 //     setData(data);
 //     return {};
 //   }
-
 
 /*
 export function channelRemoveOwnerV1(token: string, channelId: number, uId: number) {

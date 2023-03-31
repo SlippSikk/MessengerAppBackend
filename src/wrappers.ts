@@ -139,7 +139,6 @@ export function requestDmRemove(token: string, dmId: number) {
   return JSON.parse(res.getBody() as string);
 }
 
-
 // export function requestChannelJoin(token: string, channelId: number) {
 //   const res = request(
 //     'POST',
@@ -154,9 +153,6 @@ export function requestDmRemove(token: string, dmId: number) {
 
 //   return JSON.parse(res.getBody() as string);
 // }
-
-
-
 
 // export function requestChannelInvite(token: string, channelId: number, uId: number) {
 //   const res = request(
@@ -173,7 +169,6 @@ export function requestDmRemove(token: string, dmId: number) {
 
 //   return JSON.parse(res.getBody() as string);
 // }
-
 
 /*
 export function requestChannelRemoveOwner(token: string, channelId: number, uId: number) {

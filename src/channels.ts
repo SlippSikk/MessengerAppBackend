@@ -1,7 +1,8 @@
-//import { isToken } from 'typescript';
+// import { isToken } from 'typescript';
 import { getData, setData } from './dataStore';
 import { getUIdFromToken, isTokenValid } from './helper';
-import { error, channels, channel, channelId } from './interfaces'
+import { error, channel, channelId } from './interfaces';
+// import { channels } from './interfaces'
 
 /**
  * Summary:
@@ -55,18 +56,18 @@ export function channelsCreateV2(token: string, name: string, isPublic: boolean)
     name: name,
     isPublic: isPublic,
     ownerMembers: [{
-      	uId: data.users[userIndex].uId,
-      	email: data.users[userIndex].email,
-      	nameFirst: data.users[userIndex].nameFirst,
-      	nameLast: data.users[userIndex].nameLast,
-      	handleStr: data.users[userIndex].handleStr,
+      uId: data.users[userIndex].uId,
+      email: data.users[userIndex].email,
+      nameFirst: data.users[userIndex].nameFirst,
+      nameLast: data.users[userIndex].nameLast,
+      handleStr: data.users[userIndex].handleStr,
     }],
     allMembers: [{
-		uId: data.users[userIndex].uId,
-     	email: data.users[userIndex].email,
-      	nameFirst: data.users[userIndex].nameFirst,
-     	nameLast: data.users[userIndex].nameLast,
-     	handleStr: data.users[userIndex].handleStr,
+      uId: data.users[userIndex].uId,
+      email: data.users[userIndex].email,
+      nameFirst: data.users[userIndex].nameFirst,
+      nameLast: data.users[userIndex].nameLast,
+      handleStr: data.users[userIndex].handleStr,
     }],
     messages: []
   };
