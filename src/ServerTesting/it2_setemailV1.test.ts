@@ -1,10 +1,4 @@
-
-test('I hate pipeline', () => {
-  expect(1 + 1).toStrictEqual(2);
-});
-/*
 import request, { HttpVerb } from 'sync-request';
-
 import { port, url } from '../config.json';
 
 const SERVER_URL = `${url}:${port}`;
@@ -75,4 +69,4 @@ describe('/user/profile/setemail/v1', () => {
       }
     });// more tests needed when other function finished
   });
-}); */
+}); 

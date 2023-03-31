@@ -1,6 +1,3 @@
-test('Test placeholder', () => {
-  expect(1 + 1).toStrictEqual(2);
-});
 
 import { requestChannelsListAll, requestAuthRegister, requestChannelsCreate, requestClear } from './../wrappers';
 

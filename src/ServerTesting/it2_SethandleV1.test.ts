@@ -1,7 +1,4 @@
-test('PlaceHolder', () => {
-  expect(1 + 1).toStrictEqual(2);
-});
-/*
+
 import request, { HttpVerb } from 'sync-request';
 
 import { port, url } from '../config.json';
@@ -75,4 +72,4 @@ describe('/user/profile/sethandle/v1', () => {
       }
     });// more tests needed when other function finished
   });
-}); */
+}); 

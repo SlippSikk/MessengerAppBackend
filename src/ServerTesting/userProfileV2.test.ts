@@ -1,7 +1,3 @@
-test('PlaceHolder', () => {
-  expect(1 + 1).toStrictEqual(2);
-});
-/*
 import request, { HttpVerb } from 'sync-request';
 
 import { port, url } from '../config.json';
@@ -61,7 +57,7 @@ describe('/user/profile/v2', () => {
         nameLast: 'CDE',
         handleStr: 'abcde'
       }
-    });// more tests needed when other function finished
+    });
   });
   test('viewing others', () => {
     requestClear();
@@ -75,6 +71,6 @@ describe('/user/profile/v2', () => {
         nameLast: 'run',
         handleStr: 'boostrun'
       }
-    });// more tests needed when other function finished
+    });
   });
-}); */
+});

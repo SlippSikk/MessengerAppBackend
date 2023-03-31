@@ -1,7 +1,4 @@
-test('Test placeholder', () => {
-  expect(1 + 1).toStrictEqual(2);
-});
-/*
+
 import { requestAuthRegister, requestClear, requestMessageSenddm, requestDmCreate, requestDmMessages } from '../wrappers';
 import { authUserId } from '../interfaces';
 import { getData } from '../dataStore';
@@ -64,8 +61,6 @@ describe('Function Testing', () => {
     const a = requestDmMessages(registered1.token, dmId2, 0);
     expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
     expect(a.messages[1].message).toStrictEqual('How to get bread ?');
-    // console.log(a.messages[0].message);
-    // console.log(a.messages[1].message);
 
   });
   test('send multiple dms to multiple people', () => {
@@ -78,4 +73,4 @@ describe('Function Testing', () => {
     expect(b.messages[0].message).toStrictEqual('How to get bread ?');
   });
 })
-*/
+

@@ -1,8 +1,4 @@
-test('Test placeholder', () => {
-  expect(1 + 1).toStrictEqual(2);
-});
 
-/*
 import { requestChannelsList, requestChannelsCreate, requestClear, requestAuthRegister} from './../wrappers'
 // import { requestChannelInvite, requestChannelJoin } from './../wrappers'
 
@@ -94,4 +90,4 @@ beforeEach(() => {
       expect(requestChannelsList(invalidtoken)).toEqual({ error: expect.any(String) });
     });
   });
-*/
+

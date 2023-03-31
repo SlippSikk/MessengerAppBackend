@@ -1,7 +1,7 @@
 import { requestAuthRegister, requestClear, requestDmCreate, requestDmMessages } from '../wrappers';
 import { authUserId } from '../interfaces';
 
-// // Global
+// Global
 let registered: authUserId;
 let registered2: authUserId;
 let registered3: authUserId;

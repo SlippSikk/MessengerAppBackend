@@ -1,10 +1,8 @@
-// import {
-//   requestAuthRegister, requestClear, requestDmCreate, requestDmDetails,
-//   requestDmList, requestDmRemove, requestDmLeave
-// } from '../wrappers';
 import {
-  requestAuthRegister, requestClear, requestDmCreate, requestDmRemove, requestDmLeave
+  requestAuthRegister, requestClear, requestDmCreate, requestDmDetails,
+  requestDmList, requestDmRemove, requestDmLeave
 } from '../wrappers';
+
 import { authUserId } from '../interfaces';
 
 // Global
@@ -29,25 +27,24 @@ beforeEach(() => {
   requestDmLeave(registered.token, dmId2);
 });
 
-// describe('Correct Dm Remove', () => {
+describe('Correct Dm Remove', () => {
+  test('Correct removal', () => {
+    expect(requestDmRemove(registered.token, dmId)).toStrictEqual({});
+  });
 
-test('Correct removal', () => {
-  expect(requestDmRemove(registered.token, dmId)).toStrictEqual({});
+  test('Correct Output DmList', () => {
+    requestDmRemove(registered.token, dmId);
+    expect(requestDmList(registered3.token)).toStrictEqual({
+      dms: []
+    });
+  });
+
+  test('Correct Output DmDetails', () => {
+    requestDmRemove(registered.token, dmId2);
+    expect(requestDmDetails(registered2.token, dmId2)).toStrictEqual({ error: expect.any(String) })
+  })
+
 });
-
-//   test('Correct Output DmList', () => {
-//     requestDmRemove(registered.token, dmId);
-//     expect(requestDmList(registered2.token)).toStrictEqual({
-//       dms: []
-//     });
-//   });
-
-//   test('Correct Output DmDetails', () => {
-//     requestDmRemove(registered.token, dmId2);
-//     expect(requestDmDetails(registered2.token, dmId2)).toStrictEqual({ error: expect.any(String) })
-//   })
-
-// });
 
 describe('Incorrect Dm Remove', () => {
   test('Invalid dmId', () => {

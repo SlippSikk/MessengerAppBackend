@@ -1,6 +1,4 @@
-test('PlaceHolder', () => {
-  expect(1 + 1).toStrictEqual(2);
-});
+
 /**
  * For a valid user, returns information about their user ID,
  * email, first name, last name, and handle
@@ -9,7 +7,7 @@ test('PlaceHolder', () => {
  * @param {string} uID
  * @returns {{user: object}}
  */
-/*
+
 import request, { HttpVerb } from 'sync-request';
 
 import { port, url } from '../config.json';
@@ -66,4 +64,4 @@ describe('/user/profile/setname/v1', () => {
     const tokenA = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
     expect(requestSetNameV1(tokenA, 'DeathLoop', 'ABCD')).toStrictEqual({});// more tests needed when other function finished
   });
-}); */
+});

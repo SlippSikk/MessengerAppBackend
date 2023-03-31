@@ -1,8 +1,4 @@
-test('Test placeholder', () => {
-  expect(1 + 1).toStrictEqual(2);
-});
 
-/*
 import { requestChannelsCreate, requestClear, requestAuthRegister } from './../wrappers';
 
 // test success cases
@@ -102,4 +98,4 @@ describe('channelsCreateV2 Error Test', () => {
     expect(requestChannelsCreate(invalidUserId, 'asdflaskdjfhakjhflkasjhdl', false)).toEqual({ error: expect.any(String) });
   });
 });
-*/
+

@@ -1,7 +1,4 @@
-test('Test placeholder', () => {
-  expect(1 + 1).toStrictEqual(2);
-});
-/*
+
 import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelJoin, requestChannelInvite, requestChannelDetails } from '../wrappers';
 import { authUserId } from '../interfaces';
 const ERROR = { error: expect.any(String) };
@@ -191,4 +188,4 @@ describe('Function Testing', () => {
     });
   });
 });
-*/
+

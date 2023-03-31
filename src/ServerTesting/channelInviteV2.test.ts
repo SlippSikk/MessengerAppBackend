@@ -1,12 +1,4 @@
-// place holder test to pass pipeline
 
-import { echo } from '../echo';
-
-test('Test', () => {
-  expect(echo('echo')).toEqual({ error: expect.any(String) });
-});
-
-/*
 import { requestClear, requestAuthRegister, requestChannelsCreate, requestChannelInvite, requestChannelDetails } from '../wrappers';
 
 describe('Members with different permissions inviting once', () => {
@@ -506,4 +498,4 @@ describe('Miscallaneous errors', () => {
   });
 });
 
-*/
+

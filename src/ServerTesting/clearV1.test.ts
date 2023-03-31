@@ -1,7 +1,4 @@
-test('PlaceHolder', () => {
-  expect(1 + 1).toStrictEqual(2);
-});
-/*
+
 import request, { HttpVerb } from 'sync-request';
 
 import { port, url } from '../config.json';
@@ -55,7 +52,7 @@ describe('correct return value', () => {
     });
   });
 });
-*/
+
 
 /*  old version
 import { clearV1 } from '../other.js';

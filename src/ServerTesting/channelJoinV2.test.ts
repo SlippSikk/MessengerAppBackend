@@ -1,8 +1,4 @@
-test('Global owner joins private channel', () => {
-  expect(1 + 1).toEqual(2);
-});
 
-/*
 import { requestAuthRegister, requestChannelDetails, requestChannelsCreate, requestClear, requestChannelJoin } from '../wrappers';
 
 describe('Valid joining sequences', () => {
@@ -295,4 +291,4 @@ describe('InvalId joining sequences', () => {
   });
 });
 
-*/
+
