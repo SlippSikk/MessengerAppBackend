@@ -110,7 +110,7 @@ app.get('/channels/create/v2', (req: Request, res: Response) => {
   const token = req.query.token as string;
   const name = req.query.name as string;
   const isPublic = req.query.isPublic as string;
-
+});
 /*
 
 app.put('/user/profile/sethandle/v1', (req: Request, res: Response) => {

@@ -1,6 +1,6 @@
 test('PlaceHolder', () => {
-    expect(1 + 1).toStrictEqual(2);
-  });
+  expect(1 + 1).toStrictEqual(2);
+});
 
 /*
 import request, { HttpVerb } from 'sync-request';
@@ -46,16 +46,15 @@ describe('correct return value', () => {
     const registerObjectC = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
     expect(requestUserAllV1(registerObjectA.token)).toStrictEqual({users:[
       {
-        uId:registerObjectC.authUserId, 
-        email:'csgo@gmail.com', 
-        nameFirst:'Ab', 
-        nameLast:'CDE', 
+        uId:registerObjectC.authUserId,
+        email:'csgo@gmail.com',
+        nameFirst:'Ab',
+        nameLast:'CDE',
         handleStr:'abcde'
     }
     ]})
   });
 });
-
 
 /*  old version
 import { clearV1 } from '../other.js';

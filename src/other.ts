@@ -4,7 +4,7 @@
  * @returns {{}}
  */
 import { setData } from './dataStore';
-import { dataTs } from './interfaces'
+import { dataTs } from './interfaces';
 export function clearV1() {
   const iniData:dataTs = {
     users: [],

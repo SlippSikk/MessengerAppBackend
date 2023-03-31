@@ -1,6 +1,6 @@
 test('PlaceHolder', () => {
-    expect(1 + 1).toStrictEqual(2);
-  });
+  expect(1 + 1).toStrictEqual(2);
+});
 /*
 import request, { HttpVerb } from 'sync-request';
 
@@ -22,8 +22,6 @@ function requestHelper(method: HttpVerb, path: string, payload: object) {
   return JSON.parse(res.getBody('utf-8'));
 }
 
-
-
 function requestUserProfileV2(token: string, uId: number) {
     return requestHelper('GET', '/user/profile/v2', { token, uId });
 }
@@ -39,7 +37,7 @@ function requestRegister(email: string, password: string, nameFirst: string, nam
 beforeEach(() => {
     requestClear();
 });
-  
+
 describe('/user/profile/v2', () => {
     describe('error', () => {
         requestClear()
@@ -51,15 +49,15 @@ describe('/user/profile/v2', () => {
         expect(requestUserProfileV2(token, uId)).toStrictEqual(ERROR);
         });
     });
-  
+
     test('viewing someone himself', () => {
         requestClear()
         const registerObjectA = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
         expect(requestUserProfileV2(registerObjectA.token, registerObjectA.authUserId)).toStrictEqual({user:{
-            uId:registerObjectA.authUserId, 
-            email:'csgo@gmail.com', 
-            nameFirst:'Ab', 
-            nameLast:'CDE', 
+            uId:registerObjectA.authUserId,
+            email:'csgo@gmail.com',
+            nameFirst:'Ab',
+            nameLast:'CDE',
             handleStr:'abcde'}});//more tests needed when other function finished
     });
     test('viewing others', () => {
@@ -67,10 +65,10 @@ describe('/user/profile/v2', () => {
         const registerObjectA = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
         const registerObjectB = requestRegister('csgoFaze@gmail.com', 'counterStrike', 'boost', 'run');
         expect(requestUserProfileV2(registerObjectA.token, registerObjectB.authUserId)).toStrictEqual({user:{
-            uId:registerObjectB.authUserId, 
-            email:'csgoFaze@gmail.com', 
-            nameFirst:'boost', 
-            nameLast:'run', 
+            uId:registerObjectB.authUserId,
+            email:'csgoFaze@gmail.com',
+            nameFirst:'boost',
+            nameLast:'run',
             handleStr:'boostrun'}});//more tests needed when other function finished
     });
-  });*/
+  }); */

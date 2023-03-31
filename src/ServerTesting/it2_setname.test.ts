@@ -1,7 +1,7 @@
 test('PlaceHolder', () => {
-    expect(1 + 1).toStrictEqual(2);
-  });
-  /**
+  expect(1 + 1).toStrictEqual(2);
+});
+/**
  * For a valid user, returns information about their user ID,
  * email, first name, last name, and handle
  *
@@ -10,7 +10,7 @@ test('PlaceHolder', () => {
  * @returns {{user: object}}
  */
 
-  /*
+/*
   import request, { HttpVerb } from 'sync-request';
 
 import { port, url } from '../config.json';
@@ -31,13 +31,9 @@ function requestHelper(method: HttpVerb, path: string, payload: object) {
   return JSON.parse(res.getBody('utf-8'));
 }
 
-
-
 function requestSetNameV1(token: string, nameFirst: string,nameLast:string) {
     return requestHelper('PUT', '/user/profile/setname/v1', { token, nameFirst, nameLast });
 }
-
-
 
 function requestClear() {
     return requestHelper('DELETE', '/clear/v1', {});
@@ -50,7 +46,7 @@ function requestRegister(email: string, password: string, nameFirst: string, nam
 beforeEach(() => {
     requestClear();
 });
-  
+
 describe('/user/profile/setname/v1', () => {
     describe('error', () => {
         const tokenA = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
@@ -64,7 +60,7 @@ describe('/user/profile/setname/v1', () => {
         expect(requestSetNameV1(token, nameFirst, nameLast)).toStrictEqual(ERROR);
         });
     });
-  
+
     test('return value', () => {
         const tokenA = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
         expect(requestSetNameV1(tokenA, 'DeathLoop','ABCD')).toStrictEqual({});//more tests needed when other function finished
