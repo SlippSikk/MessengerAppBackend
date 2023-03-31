@@ -1,7 +1,6 @@
-test('Global owner joins private channel', () => {
+test('Stub test', () => {
   expect(1 + 1).toEqual(2);
 });
-
 /*
 import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelMessages, requestMessageSend, requestDmCreate, requestMessageSenddm, requestChannelJoin, requestMessageRemove, requestDmMessages } from '../wrappers';
 
@@ -87,5 +86,4 @@ describe('Valid inputs', () => {
     expect(requestDmMessages(authToken1, dmId1, 0)).toEqual({ error: expect.any(String) });
   });
 });
-
 */

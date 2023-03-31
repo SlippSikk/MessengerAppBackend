@@ -1,10 +1,8 @@
-// import {
-//     requestAuthRegister, requestClear, requestDmCreate, requestDmDetails,
-//     requestDmList, requestDmLeave
-// } from '../wrappers';
 import {
-  requestAuthRegister, requestClear, requestDmCreate, requestDmLeave
+  requestAuthRegister, requestClear, requestDmCreate, requestDmDetails,
+  requestDmList, requestDmLeave
 } from '../wrappers';
+
 import { authUserId } from '../interfaces';
 
 // Global
@@ -33,17 +31,17 @@ describe('Correct Dm leave', () => {
     expect(requestDmLeave(registered.token, dmId)).toStrictEqual({});
   });
 
-  //     test('Correct Output DmList', () => {
-  //         requestDmLeave(registered3.token, dmId);
-  //         expect(requestDmList(registered3.token)).toStrictEqual({
-  //             dms: []
-  //         });
-  //     });
+  test('Correct Output DmList', () => {
+    requestDmLeave(registered3.token, dmId);
+    expect(requestDmList(registered3.token)).toStrictEqual({
+      dms: []
+    });
+  });
 
-  //     test('Correct Output DmDetails', () => {
-  //         requestDmLeave(registered.token, dmId2);
-  //         expect(requestDmDetails(registered.token, dmId2)).toStrictEqual({ error: expect.any(String) })
-  //     })
+  test('Correct Output DmDetails', () => {
+    requestDmLeave(registered.token, dmId2);
+    expect(requestDmDetails(registered.token, dmId2)).toStrictEqual({ error: expect.any(String) });
+  });
 });
 
 describe('Incorrect Dm leave', () => {

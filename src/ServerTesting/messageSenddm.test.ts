@@ -1,5 +1,5 @@
-test('Test placeholder', () => {
-  expect(1 + 1).toStrictEqual(2);
+test('Stub test', () => {
+  expect(1 + 1).toEqual(2);
 });
 /*
 import { requestAuthRegister, requestClear, requestMessageSenddm, requestDmCreate, requestDmMessages } from '../wrappers';
@@ -27,11 +27,11 @@ beforeEach(() => {
 });
 describe('Error Cases', () => {
   test('Invalid dm Id', () => {
-    //console.log(requestMessageSenddm(registered1.token, dmId1 + 1, 'Hi my ducklings'));
+    // console.log(requestMessageSenddm(registered1.token, dmId1 + 1, 'Hi my ducklings'));
     expect(requestMessageSenddm(registered1.token, dmId1 + 1, 'Hi my ducklings')).toStrictEqual(ERROR);
   });
   test('Message must be between 1 to 1000 letters', () => {
-    //console.log((requestMessageSenddm(registered1.token, dmId1, '')));
+    // console.log((requestMessageSenddm(registered1.token, dmId1, '')));
     expect(requestMessageSenddm(registered1.token, dmId1, '')).toStrictEqual(ERROR);
   });
   test('Message must be between 1 to 1000 letters', () => {
@@ -39,15 +39,15 @@ describe('Error Cases', () => {
     for (let i = 0; i < 1001; i++) {
       fullChar += 'p';
     }
-    //console.log(requestMessageSenddm(registered1.token, dmId1, fullChar));
+    // console.log(requestMessageSenddm(registered1.token, dmId1, fullChar));
     expect(requestMessageSenddm(registered1.token, dmId1, fullChar)).toStrictEqual(ERROR);
   });
   test('User is not member of channel', () => {
-    //console.log(requestMessageSenddm(registered5.token, dmId1, 'Lets dance'));
+    // console.log(requestMessageSenddm(registered5.token, dmId1, 'Lets dance'));
     expect(requestMessageSenddm(registered5.token, dmId1, 'Lets dance')).toStrictEqual(ERROR);
   });
   test('Invalid token', () => {
-    //console.log(requestMessageSenddm(registered1.token + 'p', dmId1, 'Lets dance'));
+    // console.log(requestMessageSenddm(registered1.token + 'p', dmId1, 'Lets dance'));
     expect(requestMessageSenddm(registered1.token + 'p', dmId1, 'Lets dance')).toStrictEqual(ERROR);
   });
 });
@@ -64,9 +64,6 @@ describe('Function Testing', () => {
     const a = requestDmMessages(registered1.token, dmId2, 0);
     expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
     expect(a.messages[1].message).toStrictEqual('How to get bread ?');
-    // console.log(a.messages[0].message);
-    // console.log(a.messages[1].message);
-
   });
   test('send multiple dms to multiple people', () => {
     requestMessageSenddm(registered1.token, dmId2, 'Hi my ducklings');
@@ -77,5 +74,5 @@ describe('Function Testing', () => {
     expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
     expect(b.messages[0].message).toStrictEqual('How to get bread ?');
   });
-})
+});
 */

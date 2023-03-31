@@ -1,5 +1,5 @@
-test('PlaceHolder', () => {
-  expect(1 + 1).toStrictEqual(2);
+test('Stub test', () => {
+  expect(1 + 1).toEqual(2);
 });
 /*
 import { requestAuthRegister, requestClear, requestAddowner, requestChannelsCreate, requestChannelJoin } from '../wrappers';

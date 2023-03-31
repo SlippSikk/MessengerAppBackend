@@ -1,9 +1,3 @@
-import { echo } from '../echo';
-
-test('Test', () => {
-  expect(echo('echo')).toEqual({ error: expect.any(String) });
-});
-
 /*
 import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelMessages, requestMessageSend } from '../wrappers';
 
@@ -89,4 +83,5 @@ describe('Correct input', () => {
     });
   });
 });
+
 */

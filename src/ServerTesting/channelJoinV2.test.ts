@@ -1,7 +1,6 @@
-test('Global owner joins private channel', () => {
+test('Stub test', () => {
   expect(1 + 1).toEqual(2);
 });
-
 /*
 import { requestAuthRegister, requestChannelDetails, requestChannelsCreate, requestClear, requestChannelJoin } from '../wrappers';
 
@@ -294,5 +293,4 @@ describe('InvalId joining sequences', () => {
     });
   });
 });
-
 */

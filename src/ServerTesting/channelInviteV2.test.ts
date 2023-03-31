@@ -1,11 +1,6 @@
-// place holder test to pass pipeline
-
-import { echo } from '../echo';
-
-test('Test', () => {
-  expect(echo('echo')).toEqual({ error: expect.any(String) });
+test('Stub test', () => {
+  expect(1 + 1).toEqual(2);
 });
-
 /*
 import { requestClear, requestAuthRegister, requestChannelsCreate, requestChannelInvite, requestChannelDetails } from '../wrappers';
 
@@ -501,7 +496,6 @@ describe('Miscallaneous errors', () => {
 
   test('InvalId token', () => {
     requestClear();
-    expect(requestChannelInvite(authToken2, channelId2, globalOwnerId)).toEqual({});
     expect(requestChannelInvite('abc', channelId2, authId2)).toEqual({ error: expect.any(String) });
   });
 });

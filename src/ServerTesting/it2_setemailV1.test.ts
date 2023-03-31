@@ -1,10 +1,4 @@
-
-test('I hate pipeline', () => {
-  expect(1 + 1).toStrictEqual(2);
-});
-/*
 import request, { HttpVerb } from 'sync-request';
-
 import { port, url } from '../config.json';
 
 const SERVER_URL = `${url}:${port}`;
@@ -46,7 +40,6 @@ beforeEach(() => {
 describe('/user/profile/setemail/v1', () => {
   describe('error', () => {
     const tokenA = requestRegister('csgo3@gmail.com', 'counterStrike', 'de', 'bug').token;
-    const tokenB = requestRegister('Waifu@gmail.com', 'counterStrike', 'dejie', 'yun').token;
     test.each([
       { token: tokenA + 'A', email: 'Unsw1531@gamil.com' },
       { token: tokenA, email: 'Waifu@gmail.com' },
@@ -75,4 +68,4 @@ describe('/user/profile/setemail/v1', () => {
       }
     });// more tests needed when other function finished
   });
-}); */
+});
