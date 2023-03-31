@@ -251,6 +251,11 @@ export const channelDetailsV2 = (token: string, channelId: number): channelDetai
 };
 */
 
+/**
+ * @param {string} token
+ * @param {number} channelId
+ * @returns {{}}
+ */
 /*
 export const channelLeaveV1 = (token: string, channelId: number) => {
   if (!isChannelIdValid(channelId)) {
