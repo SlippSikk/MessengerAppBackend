@@ -66,4 +66,4 @@ describe('/user/profile/setname/v1', () => {
     const tokenA = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
     expect(requestSetNameV1(tokenA, 'DeathLoop', 'ABCD')).toStrictEqual({});// more tests needed when other function finished
   });
-});*/
+}); */

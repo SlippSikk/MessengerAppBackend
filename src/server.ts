@@ -2,7 +2,7 @@ import express, { json, Request, Response } from 'express';
 import { echo } from './echo';
 import { authRegisterV2, authLoginV2, authLogoutV1 } from './auth';
 import { dmCreateV1, dmLeaveV1, dmRemoveV1 } from './dm';
-import { dmListV1 } from './dm';
+// import { dmListV1 } from './dm';
 import { channelsCreateV2 } from './channels';
 import { channelsListV2 } from './channels';
 
@@ -188,7 +188,7 @@ app.get('/user/profile/v2', (req: Request, res: Response) => {
   const token = req.query.token as string;
   const uId = parseInt(req.query.uId as string);
   return res.json(userProfileV2(token, uId));
-});*/
+}); */
 
 /*
 app.post('/channel/join/v2', (req: Request, res: Response) => {
