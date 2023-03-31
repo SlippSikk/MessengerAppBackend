@@ -107,6 +107,19 @@ export function requestDmList(token: string) {
   return JSON.parse(res.getBody() as string);
 }
 
+export function requestDmMessages(token: string, dmId: number, start: number) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/dm/messages/v1',
+    {
+      qs: {
+        token, dmId, start 
+      }
+    }
+  );
+  return JSON.parse(res.getBody() as string);
+}
+
 
 export function requestDmCreate(token: string, uIds: number[]): dmId {
   const res = request(
