@@ -1,9 +1,9 @@
 
 import { getData, setData } from './dataStore';
-import { isChannelIdValid, isTokenValid, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember } from './helper';
-import { user, channel, dataTs } from './interfaces';
+import { isChannelIdValid, isTokenValid, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser } from './helper';
+import { user, channel, dataTs, users } from './interfaces';
 
-function channelJoinV2(token: string, channelId: number) {
+export function channelJoinV2(token: string, channelId: number) {
   const data: dataTs = getData();
 
   if (!isChannelIdValid(channelId)) {
@@ -30,14 +30,14 @@ function channelJoinV2(token: string, channelId: number) {
   }
 
   // finally adds user to channel
-  const userObj : users = data.users.find(user => user.uId = authUserId)
+  const userObj : users = data.users.find(user => user.uId === authUserId)
   data.channels[channelIndex].allMembers.push(userObj);
   setData(data);
 
   return {};
 }
 
-function channelInviteV2(token: string, channelId: number, uId: number) {
+export function channelInviteV2(token: string, channelId: number, uId: number) {
     const data: dataTs = getData();
     if (!isChannelIdValid(channelId)) {
       return { error: 'This channel does not exist' };
@@ -69,8 +69,10 @@ function channelInviteV2(token: string, channelId: number, uId: number) {
     }
 
     // finally adds user to channel
+    const userObj = getUser(authUserId);
 
-    const userObj : users = data.users.find(user => user.uId = authUserId)
+
+    // const userObj : user = data.users.find(user => user.uId = authUserId)
     data.channels[channelIndex].allMembers.push(userObj);
     setData(data);
     return {};
