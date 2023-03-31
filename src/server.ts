@@ -112,32 +112,32 @@ app.get('/channels/create/v2', (req: Request, res: Response) => {
   return res.json(channelsCreateV2(token, name, Boolean(isPublic)));
 });
 
-app.get('/channels/list/v2', (req: Request, res: Response) => {
-  const token = req.query.token as string;
+// app.get('/channels/list/v2', (req: Request, res: Response) => {
+//   const token = req.query.token as string;
 
-  return res.json(channelsListV2(token));
-});
+//   return res.json(channelsListV2(token));
+// });
 
-app.get('/channels/listall/v2', (req: Request, res: Response) => {
-  const token = req.query.token as string;
+// app.get('/channels/listall/v2', (req: Request, res: Response) => {
+//   const token = req.query.token as string;
 
-  return res.json(channelsListAllV2(token));
-});
-
-
-app.post('/channel/join/v2', (req: Request, res: Response) => {
-  const { token, channelId } = req.body;
-
-  return res.json(channelJoinV2(token, channelId));
-});
+//   return res.json(channelsListAllV2(token));
+// });
 
 
+// app.post('/channel/join/v2', (req: Request, res: Response) => {
+//   const { token, channelId } = req.body;
 
-app.post('/channel/invite/v2', (req: Request, res: Response) => {
-  const { token, channelId, uId } = req.body;
+//   return res.json(channelJoinV2(token, channelId));
+// });
 
-  return res.json(channelInviteV2(token, channelId, uId));
-});
+
+
+// app.post('/channel/invite/v2', (req: Request, res: Response) => {
+//   const { token, channelId, uId } = req.body;
+
+//   return res.json(channelInviteV2(token, channelId, uId));
+// });
 
 
 
