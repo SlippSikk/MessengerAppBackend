@@ -94,6 +94,20 @@ export function requestChannelLeave(token: string, channelId: number) {
   return JSON.parse(res.getBody() as string);
 }
 
+export function requestDmList(token: string) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/dm/list/v1',
+    {
+      qs: {
+        token
+      }
+    }
+  );
+  return JSON.parse(res.getBody() as string);
+}
+
+
 export function requestDmCreate(token: string, uIds: number[]): dmId {
   const res = request(
     'POST',
