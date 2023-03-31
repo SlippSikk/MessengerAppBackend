@@ -41,9 +41,8 @@ describe('Correct Dm Remove', () => {
 
   test('Correct Output DmDetails', () => {
     requestDmRemove(registered.token, dmId2);
-    expect(requestDmDetails(registered2.token, dmId2)).toStrictEqual({ error: expect.any(String) })
-  })
-
+    expect(requestDmDetails(registered.token, dmId2)).toStrictEqual({ error: expect.any(String) });
+  });
 });
 
 describe('Incorrect Dm Remove', () => {

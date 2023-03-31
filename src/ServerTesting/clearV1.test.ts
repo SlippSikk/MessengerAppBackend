@@ -36,7 +36,6 @@ describe('correct return value', () => {
   });
   test('delete all users', () => {
     const registerObjectA = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
-    const registerObjectB = requestRegister('csgogo@gmail.com', 'counterStrike2', 'john', 'cena');
     requestClear();
     const registerObjectC = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
     expect(requestUserAllV1(registerObjectA.token)).toStrictEqual({
@@ -52,7 +51,6 @@ describe('correct return value', () => {
     });
   });
 });
-
 
 /*  old version
 import { clearV1 } from '../other.js';

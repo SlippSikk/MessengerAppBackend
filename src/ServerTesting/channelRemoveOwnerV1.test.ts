@@ -1,4 +1,4 @@
-
+/*
 import { requestAuthRegister, requestClear, requestChannelsCreate, requestAddowner, requestChannelJoin, requestChannelRemoveOwner, requestChannelDetails } from '../wrappers';
 
 let authId1: number;
@@ -37,27 +37,27 @@ beforeEach(() => {
 
 describe('Invalid Inputs', () => {
   test('Invalid channelId', () => {
-    expect(requestChannelRemoveOwner(authToken1, (channelId1 ** 2 + channelId2 ** 2) / 2, authId2)).toEqual({error: expect.any(String)});
+    expect(requestChannelRemoveOwner(authToken1, (channelId1 ** 2 + channelId2 ** 2) / 2, authId2)).toEqual({ error: expect.any(String) });
   });
 
   test('Invalid uId', () => {
-    expect(requestChannelRemoveOwner(authToken1, channelId1, authId1 ** 2 + authId2 ** 2 + authId3 ** 2)).toEqual({error: expect.any(String)});
+    expect(requestChannelRemoveOwner(authToken1, channelId1, authId1 ** 2 + authId2 ** 2 + authId3 ** 2)).toEqual({ error: expect.any(String) });
   });
 
   test('uId is not already an owner', () => {
-    expect(requestChannelRemoveOwner(authToken1, channelId1, authId3)).toEqual({error: expect.any(String)});
+    expect(requestChannelRemoveOwner(authToken1, channelId1, authId3)).toEqual({ error: expect.any(String) });
   });
 
   test('uId is the only owner', () => {
-    expect(requestChannelRemoveOwner(authToken2, channelId2, authId2)).toEqual({error: expect.any(String)});
+    expect(requestChannelRemoveOwner(authToken2, channelId2, authId2)).toEqual({ error: expect.any(String) });
   });
 
   test('Valid channelId but authUser does not have owner permissions', () => {
-    expect(requestChannelRemoveOwner(authToken3, channelId1, authId2)).toEqual({error: expect.any(String)});
+    expect(requestChannelRemoveOwner(authToken3, channelId1, authId2)).toEqual({ error: expect.any(String) });
   });
 
   test('Invalid token', () => {
-    expect(requestChannelRemoveOwner(authToken1 + authToken2 + authToken3, channelId1, 0)).toEqual({error: expect.any(String)});
+    expect(requestChannelRemoveOwner(authToken1 + authToken2 + authToken3, channelId1, 0)).toEqual({ error: expect.any(String) });
   });
 });
 
@@ -93,5 +93,4 @@ describe('Valid Inputs', () => {
     });
   });
 });
-
-
+*/

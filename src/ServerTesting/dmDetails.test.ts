@@ -1,5 +1,4 @@
 
-
 import { requestAuthRegister, requestClear, requestDmCreate, requestDmDetails } from '../wrappers';
 import { authUserId } from '../interfaces';
 
@@ -28,7 +27,6 @@ beforeEach(() => {
 
 describe('dmDetails Success', () => {
   test('Test 1', () => {
-    console.log(registered2.token);
     expect(requestDmDetails(registered2.token, dmId2)).toStrictEqual({
       name: 'adamb, cb',
       members: [{

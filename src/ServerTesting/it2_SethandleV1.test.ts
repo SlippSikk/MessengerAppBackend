@@ -72,4 +72,4 @@ describe('/user/profile/sethandle/v1', () => {
       }
     });// more tests needed when other function finished
   });
-}); 
+});

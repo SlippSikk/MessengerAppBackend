@@ -29,17 +29,16 @@ describe('Correct Dm Create', () => {
     expect(requestDmCreate(registered.token, uIds2)).toStrictEqual({ dmId: expect.any(Number) });
   });
 
-    test('Correct Output DmList', () => {
-      expect(requestDmList(registered3.token)).toStrictEqual({
-        dms: [{
-          dmId: dmId,
-          name: 'adamb, cb, eb, fb'
-        },]
-      });
+  test('Correct Output DmList', () => {
+    expect(requestDmList(registered3.token)).toStrictEqual({
+      dms: [{
+        dmId: dmId,
+        name: 'adamb, cb, eb, fb'
+      }]
     });
+  });
 
   test('Correct Output DmDetails', () => {
-
     expect(requestDmDetails(registered2.token, dmId2)).toStrictEqual({
       name: 'adamb, cb',
       members: [{
@@ -56,8 +55,8 @@ describe('Correct Dm Create', () => {
         nameLast: 'B',
         handleStr: 'cb'
       }]
-    })
-  })
+    });
+  });
 });
 
 describe('Incorrect Dm Create', () => {

@@ -98,4 +98,3 @@ describe('channelsCreateV2 Error Test', () => {
     expect(requestChannelsCreate(invalidUserId, 'asdflaskdjfhakjhflkasjhdl', false)).toEqual({ error: expect.any(String) });
   });
 });
-
