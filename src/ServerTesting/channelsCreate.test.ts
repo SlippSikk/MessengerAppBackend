@@ -1,5 +1,5 @@
 test('Test placeholder', () => {
-  expect(1+1).toStrictEqual(2);
+  expect(1 + 1).toStrictEqual(2);
 });
 
 /*
