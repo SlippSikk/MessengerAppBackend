@@ -107,7 +107,6 @@ export function requestDmList(token: string) {
   return JSON.parse(res.getBody() as string);
 }
 
-
 export function requestDmCreate(token: string, uIds: number[]): dmId {
   const res = request(
     'POST',

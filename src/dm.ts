@@ -1,5 +1,4 @@
 
-
 import { error, dmId, user, dms, dmDetails, dmsOutput } from './interfaces';
 import { isTokenValid, isUserIdValid, getHandle, getUser, getUIdFromToken } from './helper';
 import { getData, setData } from './dataStore';
@@ -31,7 +30,6 @@ export function dmListV1(token: string): { dms: dmsOutput[] } | error {
   // return
   return { dms: userDms };
 }
-
 
 function dmCreateV1(token: string, uIds: number[]): dmId | error {
   const data = getData();

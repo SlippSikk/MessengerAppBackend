@@ -101,10 +101,9 @@ export const messageSenddmV1 = (token: string, dmId: number, message: string) =>
     return { error: 'user is not member of channel' };
   }
   const messageId = createMessageId();
-  const uId = getUidFromToken(token);
-  //   should I put time stamp ??
-  const dm = getDm();
-  dm.push({
+  const uId = getUIdFromToken(token);
+  const dm = getDm(dmId);
+  dm.messages.push({
     messageId: messageId,
     uId: uId,
     message: message,

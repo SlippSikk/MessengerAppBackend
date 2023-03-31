@@ -2,9 +2,9 @@ test('Test placeholder', () => {
   expect(1 + 1).toStrictEqual(2);
 });
 /*
-import { requestAuthRegister, requestClear, requestMessageSenddm, requestDmCreate } from '../wrappers';
+import { requestAuthRegister, requestClear, requestMessageSenddm, requestDmCreate, requestDmMessages } from '../wrappers';
 import { authUserId } from '../interfaces';
-import { getData } from './dataStore';
+import { getData } from '../dataStore';
 const ERROR = { error: expect.any(String) };
 
 let registered1: authUserId;
@@ -27,9 +27,11 @@ beforeEach(() => {
 });
 describe('Error Cases', () => {
   test('Invalid dm Id', () => {
+    //console.log(requestMessageSenddm(registered1.token, dmId1 + 1, 'Hi my ducklings'));
     expect(requestMessageSenddm(registered1.token, dmId1 + 1, 'Hi my ducklings')).toStrictEqual(ERROR);
   });
   test('Message must be between 1 to 1000 letters', () => {
+    //console.log((requestMessageSenddm(registered1.token, dmId1, '')));
     expect(requestMessageSenddm(registered1.token, dmId1, '')).toStrictEqual(ERROR);
   });
   test('Message must be between 1 to 1000 letters', () => {
@@ -37,13 +39,15 @@ describe('Error Cases', () => {
     for (let i = 0; i < 1001; i++) {
       fullChar += 'p';
     }
+    //console.log(requestMessageSenddm(registered1.token, dmId1, fullChar));
     expect(requestMessageSenddm(registered1.token, dmId1, fullChar)).toStrictEqual(ERROR);
   });
   test('User is not member of channel', () => {
+    //console.log(requestMessageSenddm(registered5.token, dmId1, 'Lets dance'));
     expect(requestMessageSenddm(registered5.token, dmId1, 'Lets dance')).toStrictEqual(ERROR);
   });
   test('Invalid token', () => {
-    // white box testing
+    //console.log(requestMessageSenddm(registered1.token + 'p', dmId1, 'Lets dance'));
     expect(requestMessageSenddm(registered1.token + 'p', dmId1, 'Lets dance')).toStrictEqual(ERROR);
   });
 });
@@ -51,22 +55,27 @@ describe('Error Cases', () => {
 describe('Function Testing', () => {
   test('Send a dm', () => {
     expect(requestMessageSenddm(registered1.token, dmId2, 'Hi my ducklings')).toStrictEqual({ messageId: expect.any(Number) });
+    const a = requestDmMessages(registered1.token, dmId2, 0);
+    expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
   });
   test('Send two dms', () => {
     expect(requestMessageSenddm(registered1.token, dmId2, 'Hi my ducklings')).toStrictEqual({ messageId: expect.any(Number) });
     expect(requestMessageSenddm(registered1.token, dmId2, 'How to get bread ?')).toStrictEqual({ messageId: expect.any(Number) });
-    // white box testing
-    const data = getData();
-    expect(data.dms[0].messages[0].message).toStrictEqual('Hi my ducklings');
-    expect(data.dms[0].messages[1].message).toStrictEqual('How to get bread ?');
+    const a = requestDmMessages(registered1.token, dmId2, 0);
+    expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
+    expect(a.messages[1].message).toStrictEqual('How to get bread ?');
+    // console.log(a.messages[0].message);
+    // console.log(a.messages[1].message);
+
   });
   test('send multiple dms to multiple people', () => {
     requestMessageSenddm(registered1.token, dmId2, 'Hi my ducklings');
     requestMessageSenddm(registered3.token, dmId1, 'How to get bread ?');
-    // white box testing
-    const data = getData();
-    expect(data.dms[0].messages[0].message).toStrictEqual('How to get bread ?');
-    expect(data.dms[1].messages[0].message).toStrictEqual('Hi my ducklings');
+    const a = requestDmMessages(registered1.token, dmId2, 0);
+    const b = requestDmMessages(registered3.token, dmId1, 0);
+
+    expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
+    expect(b.messages[0].message).toStrictEqual('How to get bread ?');
   });
-});
+})
 */

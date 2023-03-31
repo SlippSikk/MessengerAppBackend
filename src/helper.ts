@@ -1,5 +1,5 @@
 import { getData } from './dataStore';
-import { channel, user } from './interfaces';
+import { channel, user, dms } from './interfaces';
 
 // NOTE: checkExsists param "array" needs attention
 
@@ -67,8 +67,9 @@ export const getChannel = (channelId: number): channel | boolean => {
  * @summary check if uId is member of channelId
  */
 export const isMember = (channelId: number, uId: number): boolean => {
-  const channel = getChannel(channelId) as channel;
-  const value = channel.allMembers.find(a => a === uId);
+  const channel = getChannel(channelId) as channel || false;
+  if (!channel) return false;
+  const value = channel.allMembers.find(a => a.uId === uId);
   return value !== undefined;
 };
 
@@ -80,7 +81,7 @@ export const isMember = (channelId: number, uId: number): boolean => {
  */
 export const isOwner = (channelId: number, uId: number): boolean => {
   const channel = getChannel(channelId) as channel;
-  const value = channel.ownerMembers.find(a => a === uId);
+  const value = channel.ownerMembers.find(a => a.uId === uId);
   return value !== undefined;
 };
 
@@ -158,4 +159,22 @@ export const getUser = (uId: number): typeof user => {
   };
 
   return member;
+};
+// getDm = gets dm object;
+export const getDm = (dmId: number): dms | boolean => {
+  const data = getData();
+  const dm = data.dms.find(a => a.dmId === dmId);
+  return dm !== undefined ? dm : false;
+};
+export const isDmMember = (dmId: number, token: string): boolean => {
+  const uId = getUIdFromToken(token) as number;
+  const dm = getDm(dmId) as dms || false;
+  if (!dm) return false;
+  return dm.members.find(dmMember => dmMember.uId === uId) !== undefined;
+};
+
+export const isDmIdValid = (dmId: number): boolean => {
+  const status = !!getDm(dmId);
+  if (!status) return false;
+  return true;
 };
