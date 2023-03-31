@@ -113,13 +113,12 @@ export function requestDmMessages(token: string, dmId: number, start: number) {
     SERVER_URL + '/dm/messages/v1',
     {
       qs: {
-        token, dmId, start 
+        token, dmId, start
       }
     }
   );
   return JSON.parse(res.getBody() as string);
 }
-
 
 export function requestDmCreate(token: string, uIds: number[]): dmId {
   const res = request(
