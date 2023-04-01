@@ -224,7 +224,20 @@ export function requestChannelMessages(token: string, channelId: number, start: 
 
   return JSON.parse(res.getBody() as string);
 }
+export function requestUserProfileV2(token: string, uId: number) {
+  const res = request(
+    'GET',
+    `${url}:${port}/user/profile/v2`,
+    {
+      qs: {
+        token: token,
+        uId: uId
+      }
+    }
+  );
 
+  return JSON.parse(res.getBody() as string);
+}
 export function requestMessageEdit(token: string, messageId: number, message: string) {
   const res = request(
     'PUT',
@@ -348,5 +361,57 @@ export function requestClear() {
     }
   );
 
+  return JSON.parse(res.getBody() as string);
+}
+
+export function requestUsersAllV1(token: string) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/users/all/v1',
+    {
+      qs: {
+        token
+      }
+    }
+  );
+  return JSON.parse(res.getBody() as string);
+}
+
+export function requestSetNameV1(token: string, nameFirst: string, nameLast: string) {
+  const res = request(
+    'PUT',
+    SERVER_URL + '/user/profile/setname/v1',
+    {
+      json: {
+        token, nameFirst, nameLast
+      }
+    }
+  );
+  return JSON.parse(res.getBody() as string);
+}
+
+export function requestuserSetemail(token: string, email: string) {
+  const res = request(
+    'PUT',
+    SERVER_URL + '/user/profile/setname/v1',
+    {
+      json: {
+        token, email
+      }
+    }
+  );
+  return JSON.parse(res.getBody() as string);
+}
+
+export function requestuserProfileSethandleV1(token: string, handleStr: string) {
+  const res = request(
+    'PUT',
+    SERVER_URL + '/user/profile/sethandle/v1',
+    {
+      json: {
+        token, handleStr
+      }
+    }
+  );
   return JSON.parse(res.getBody() as string);
 }

@@ -1,4 +1,4 @@
-/*
+
 import { requestClear, requestAuthRegister, requestChannelsCreate, requestChannelInvite, requestChannelDetails } from '../wrappers';
 
 describe('Members with different permissions inviting once', () => {
@@ -496,4 +496,3 @@ describe('Miscallaneous errors', () => {
     expect(requestChannelInvite('abc', channelId2, authId2)).toEqual({ error: expect.any(String) });
   });
 });
-*/

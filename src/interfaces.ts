@@ -75,6 +75,6 @@ type error = { error: string };
 type channelId = { channelId: number }
 
 export {
-    users, channels, user, messages, dataTs, authUserId, error, channel,
-    dmMessages, dmDetails, dmsOutput, dmId, dms, channelId
+  users, channels, user, messages, dataTs, authUserId, error, channel,
+  dmMessages, dmDetails, dmsOutput, dmId, dms, channelId
 };

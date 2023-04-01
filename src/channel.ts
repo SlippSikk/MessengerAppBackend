@@ -1,7 +1,7 @@
 
 import { getData, setData } from './dataStore';
 import { isChannelIdValid, isTokenValid, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser, isOwnerByToken } from './helper';
-import { user, channel, dataTs, users } from './interfaces';
+import { user, channel, dataTs } from './interfaces';
 
 export function channelJoinV2(token: string, channelId: number) {
   const data: dataTs = getData();
@@ -69,7 +69,7 @@ export function channelInviteV2(token: string, channelId: number, uId: number) {
 
   // const userObj : user = data.users.find(user => user.uId = authUserId)
   data.channels[channelIndex].allMembers.push(userObj);
-  // setData(data); Note: Might be Useless 
+  // setData(data); Note: Might be Useless
   return {};
 }
 
@@ -204,10 +204,10 @@ export const channelDetailsV2 = (token: string, channelId: number) => {
     isPublic: channel.isPublic,
     ownerMembers: channel.ownerMembers,
     allMembers: channel.allMembers
-  }
+  };
 };
 
-/** 
+/**
  * @param {string} token
  * @param {number} channelId
  * @returns {{}}

@@ -1,4 +1,4 @@
-/*
+
 import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelAddowner, requestChannelJoin, requestChannelRemoveOwner, requestChannelDetails } from '../wrappers';
 
 let authId1: number;
@@ -93,4 +93,4 @@ describe('Valid Inputs', () => {
     });
   });
 });
-*/
+

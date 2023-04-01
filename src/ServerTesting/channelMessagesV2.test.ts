@@ -1,4 +1,4 @@
-/*
+
 import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelMessages, requestMessageSend } from '../wrappers';
 
 let authToken1: string;
@@ -83,4 +83,4 @@ describe('Correct input', () => {
     });
   });
 });
-*/
+

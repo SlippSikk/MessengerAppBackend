@@ -1,6 +1,6 @@
 
 import { getData, setData } from './dataStore';
-import { isTokenValid, isMessageInChannel, getDm, getUser, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage } from './helper';
+import { isTokenValid, isMessageInChannel, getDm, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage } from './helper';
 import { isDmIdValid, createMessageId, isChannelIdValid, getChannel } from './helper';
 import { dataTs, channel, dms } from './interfaces';
 
