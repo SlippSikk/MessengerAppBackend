@@ -124,12 +124,6 @@ export const createMessageId = (): number => {
  * , or returns false
  */
 export const getUIdFromToken = (token: string): number | boolean => {
-  // const data = getData();
-  // const findToken = (a) => {
-  //   return a.token.find(n => n === token) !== undefined;
-  // };
-  // const uId = data.users.find(findToken).uId;
-  // return uId || false;
   const data = getData();
   const foundToken = data.users.find(element => element.token.find(element => element === token));
 
@@ -160,7 +154,7 @@ export const getUser = (uId: number): typeof user => {
 
   return member;
 };
-// getDm = gets dm object;
+// getDm = gets dms object;
 export const getDm = (dmId: number): dms | boolean => {
   const data = getData();
   const dm = data.dms.find(a => a.dmId === dmId);

@@ -1,6 +1,6 @@
 
 import { getData, setData } from './dataStore';
-import { isChannelIdValid, isTokenValid, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser } from './helper';
+import { isChannelIdValid, isTokenValid, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser, isOwnerByToken } from './helper';
 import { user, channel, dataTs, users } from './interfaces';
 
 export function channelJoinV2(token: string, channelId: number) {
@@ -9,7 +9,6 @@ export function channelJoinV2(token: string, channelId: number) {
   if (!isChannelIdValid(channelId)) {
     return { error: 'This channel does not exist' };
   }
-
   if (!isTokenValid(token)) {
     return { error: 'Invalid token' };
   }
@@ -23,17 +22,16 @@ export function channelJoinV2(token: string, channelId: number) {
   }
 
   // checks if that user is already in the channel
-  const channel: channel = data.channels[channelIndex];
-  const hasUser: user = channel.allMembers.find(member => member.uId === authUserId);
-  if (hasUser !== undefined) {
+  // const channel: channel = data.channels[channelIndex];
+  // const hasUser: user = channel.allMembers.find(member => member.uId === authUserId);
+  // if (hasUser !== undefined) {
+  //   return { error: 'This user is already in this channel' };
+  // }
+  if (isMember(channelId, authUserId)) {
     return { error: 'This user is already in this channel' };
   }
-
-  // finally adds user to channel
-  const userObj: users = data.users.find(user => user.uId === authUserId)
+  const userObj = getUser(authUserId);
   data.channels[channelIndex].allMembers.push(userObj);
-  setData(data);
-
   return {};
 }
 
@@ -53,27 +51,25 @@ export function channelInviteV2(token: string, channelId: number, uId: number) {
 
   // can safely assume authUserId is a number as token must be valid from above
   const authUserId: number = getUIdFromToken(token) as number;
-
   if (authUserId === uId && authUserId !== 1) {
     return { error: 'A user cannot invite themselves' };
   }
 
   const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);
   const channel: channel = data.channels[channelIndex];
-  const hasUser: user = channel.allMembers.find(member => member.uId === uId);
   const hasAuthUser: user = channel.allMembers.find(member => member.uId === authUserId);
-  if (hasUser !== undefined) {
+  if (isMember(uId)) {
     return { error: 'This user is already in this channel' };
   } else if (hasAuthUser === undefined && authUserId !== 1) {
     return { error: 'This auth user is not in the channel' };
   }
 
   // finally adds user to channel
-  const userObj = getUser(authUserId);
+  const userObj = getUser(uId);
 
   // const userObj : user = data.users.find(user => user.uId = authUserId)
   data.channels[channelIndex].allMembers.push(userObj);
-  setData(data);
+  // setData(data); Note: Might be Useless 
   return {};
 }
 
@@ -159,8 +155,7 @@ export function channelMessagesV2(token: string, channelId: number, start: numbe
  * @param uId
  * @sum Makes uId owner of channelId
  */
-
-export const channelAddownerV1 = (token: string, channelId: number, uId: number): `{}` | error => {
+export const channelAddownerV1 = (token: string, channelId: number, uId: number) => {
   // Error handle
   if (!isTokenValid(token)) {
     return { error: 'invalid token' };
@@ -192,7 +187,7 @@ export const channelAddownerV1 = (token: string, channelId: number, uId: number)
  * @returns {name, isPublic, ownerMembers, allMembers}
  */
 
-export const channelDetailsV2 = (token: string, channelId: number): channelDetails => {
+export const channelDetailsV2 = (token: string, channelId: number) => {
   if (!isChannelIdValid(channelId)) {
     return { error: 'channelId not valid' };
   }
@@ -204,15 +199,15 @@ export const channelDetailsV2 = (token: string, channelId: number): channelDetai
     return { error: 'authUserId is not a member of channelId' };
   }
   const channel = getChannel(channelId);
-  const returnObject = {};
-  returnObject.name = channel.name;
-  returnObject.isPublic = channel.isPublic;
-  returnObject.ownerMembers = channel.ownerMembers;
-  returnObject.allMembers = channel.allMembers;
-  return returnObject;
+  return {
+    name: channel.name,
+    isPublic: channel.isPublic,
+    ownerMembers: channel.ownerMembers,
+    allMembers: channel.allMembers
+  }
 };
 
-/**
+/** 
  * @param {string} token
  * @param {number} channelId
  * @returns {{}}

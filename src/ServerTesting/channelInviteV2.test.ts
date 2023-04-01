@@ -1,6 +1,3 @@
-test('Stub test', () => {
-  expect(1 + 1).toEqual(2);
-});
 /*
 import { requestClear, requestAuthRegister, requestChannelsCreate, requestChannelInvite, requestChannelDetails } from '../wrappers';
 
@@ -499,5 +496,4 @@ describe('Miscallaneous errors', () => {
     expect(requestChannelInvite('abc', channelId2, authId2)).toEqual({ error: expect.any(String) });
   });
 });
-
 */

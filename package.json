@@ -1,6 +1,11 @@
 {
     "scripts": {
-        "test": "jest src/ServerTesting/channelDetails.test.ts",
+        "test": "jest",
+        "test_1": "jest src/ServerTesting/channelJoinV2.test.ts",
+        "test_2": "jest src/ServerTesting/channelsCreate.test.ts",
+        "test_3": "jest src/ServerTesting/channelAddownerV1.test.ts",
+        "test_4": "jest src/ServerTesting/messageSend.test.ts",
+        "test_5": "jest src/ServerTesting/messageSenddm.test.ts",
         "tsc": "tsc --project tsconfig.json",
         "lint": "eslint src/**/*.{ts,js}",
         "lint-fix": "eslint --fix src/**/*.{ts,js}",

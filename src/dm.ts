@@ -1,9 +1,9 @@
 
 import { error, dmId, user, dms, dmDetails, dmsOutput, dmMessages } from './interfaces';
-import { isTokenValid, isUserIdValid, getHandle, getUser, getUIdFromToken } from './helper';
+import { isTokenValid, isUserIdValid, getHandle, getUser, getUIdFromToken, getDm } from './helper';
 import { getData, setData } from './dataStore';
 
-export function dmMessagesV1 (token: string, dmId: number, start: number): error | dmMessages {
+export function dmMessagesV1(token: string, dmId: number, start: number): error | dmMessages {
   // get data from dataStore
   const data = getData();
 
@@ -34,17 +34,21 @@ export function dmMessagesV1 (token: string, dmId: number, start: number): error
     return { error: 'User is not a member of the DM' };
   }
 
-  // set end
+  // Set end
   let end;
+  let endrange;
+  const dm = getDm(dmId);
   if (findDm.messages.length > start + 50) {
     end = start + 50;
+    endrange = end;
   } else {
     end = -1;
+    endrange = dm.messages.length;
   }
 
   // return
   return {
-    messages: findDm.messages.slice(start, end),
+    messages: findDm.messages.slice(start, endrange),
     start: start,
     end: end
   };
@@ -78,7 +82,7 @@ export function dmListV1(token: string): { dms: dmsOutput[] } | error {
   return { dms: userDms };
 }
 
-function dmCreateV1(token: string, uIds: number[]): dmId | error {
+export function dmCreateV1(token: string, uIds: number[]): dmId | error {
   const data = getData();
 
   // Error Cases
@@ -142,7 +146,7 @@ function dmCreateV1(token: string, uIds: number[]): dmId | error {
   return { dmId: dmId };
 }
 
-function dmLeaveV1(token: string, dmId: number) {
+export function dmLeaveV1(token: string, dmId: number) {
   const data = getData();
   // Error Cases
   const foundDm = data.dms.find(element => element.dmId === dmId);
@@ -168,7 +172,7 @@ function dmLeaveV1(token: string, dmId: number) {
   return {};
 }
 
-function dmRemoveV1(token: string, dmId: number) {
+export function dmRemoveV1(token: string, dmId: number) {
   const data = getData();
 
   // Error Cases
@@ -198,7 +202,7 @@ function dmRemoveV1(token: string, dmId: number) {
   return {};
 }
 
-export function dmDetailsV1 (token: string, dmId: number): error | dmDetails {
+export function dmDetailsV1(token: string, dmId: number): error | dmDetails {
   // get data from dataStore
   const data = getData();
 
@@ -234,5 +238,3 @@ export function dmDetailsV1 (token: string, dmId: number): error | dmDetails {
     members: findDm.members
   };
 }
-
-export { dmCreateV1, dmLeaveV1, dmRemoveV1 };

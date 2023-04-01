@@ -1,5 +1,5 @@
 /*
-import { requestAuthRegister, requestClear, requestChannelsCreate, requestAddowner, requestChannelJoin, requestChannelRemoveOwner, requestChannelDetails } from '../wrappers';
+import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelAddowner, requestChannelJoin, requestChannelRemoveOwner, requestChannelDetails } from '../wrappers';
 
 let authId1: number;
 let authId2: number;
@@ -26,7 +26,7 @@ beforeEach(() => {
 
   channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).channelId;
   requestChannelJoin(authToken2, channelId1);
-  requestAddowner(authToken1, channelId1, authId1);
+  requestChannelAddowner(authToken1, channelId1, authId1);
   requestChannelJoin(authToken3, channelId1);
 
   channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).channelId;
@@ -73,7 +73,7 @@ describe('Valid Inputs', () => {
   });
 
   test('Global owner removes another in a channel they are not in', () => {
-    requestAddowner(authToken3, channelId2, authId3);
+    requestChannelAddowner(authToken3, channelId2, authId3);
     expect(requestChannelRemoveOwner(authToken1, channelId2, authId2)).toEqual({});
     expect(requestChannelDetails(authToken1, channelId2)).toEqual({
       name: 'Channel 2',

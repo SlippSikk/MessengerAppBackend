@@ -1,7 +1,4 @@
-test('Stub test', () => {
-  expect(1 + 1).toEqual(2);
-});
-/*
+
 import { requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate } from '../wrappers';
 import { requestChannelMessages } from '../wrappers';
 import { authUserId } from '../interfaces';
@@ -69,4 +66,3 @@ describe('Function Testing', () => {
     expect(b.messages[1].message).toStrictEqual('four');
   });
 });
-*/

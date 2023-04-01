@@ -1,10 +1,6 @@
-test('Stub test', () => {
-  expect(1 + 1).toEqual(2);
-});
-/*
+
 import { requestAuthRegister, requestClear, requestMessageSenddm, requestDmCreate, requestDmMessages } from '../wrappers';
 import { authUserId } from '../interfaces';
-import { getData } from '../dataStore';
 const ERROR = { error: expect.any(String) };
 
 let registered1: authUserId;
@@ -70,9 +66,7 @@ describe('Function Testing', () => {
     requestMessageSenddm(registered3.token, dmId1, 'How to get bread ?');
     const a = requestDmMessages(registered1.token, dmId2, 0);
     const b = requestDmMessages(registered3.token, dmId1, 0);
-
     expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
     expect(b.messages[0].message).toStrictEqual('How to get bread ?');
   });
 });
-*/

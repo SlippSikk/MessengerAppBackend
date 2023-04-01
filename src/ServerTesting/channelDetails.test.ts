@@ -11,8 +11,8 @@ beforeEach(() => {
   registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
   channelId1 = requestChannelsCreate(registered1.token, 'first', true).channelId;
 });
-describe('Error cases', () => {
 
+describe('Error cases', () => {
   test('Test for Invalid authUserId', () => {
     expect(requestChannelDetails(registered1.token + 'p', channelId1)).toStrictEqual(ERROR);
   });
@@ -26,8 +26,7 @@ describe('Error cases', () => {
 });
 
 describe('Function Testing', () => {
-
-  test('Test: call function -> public courseId ', () => {
+  test('In public courseId ', () => {
     expect(requestChannelDetails(registered1.token, channelId1)).toStrictEqual({
       name: 'first',
       isPublic: true,
@@ -47,7 +46,7 @@ describe('Function Testing', () => {
       }],
     });
   });
-  test('Test: call function -> non public courseId', () => {
+  test('non-public courseId', () => {
     const channelIdPrivate = requestChannelsCreate(registered1.token, 'third', false).channelId;
     expect(requestChannelDetails(registered1.token, channelIdPrivate)).toStrictEqual({
       name: 'third',
@@ -69,11 +68,11 @@ describe('Function Testing', () => {
     });
   });
 
-  test('Test: channelJoin -> public courseId', () => {
+  test('Public courseId', () => {
     const registered2 = requestAuthRegister('dog@gmail.com', 'hound123', 'dog', 'drown');
     const registered3 = requestAuthRegister('donkey@gmail.com', '123456', 'donkey', 'fly');
-    console.log(requestChannelJoin(registered2.token, channelId1));
-    console.log(requestChannelDetails(registered1.token, channelId1));
+    requestChannelJoin(registered2.token, channelId1);
+    requestChannelDetails(registered1.token, channelId1);
     expect(requestChannelDetails(registered1.token, channelId1)).toStrictEqual({
       name: 'first',
       isPublic: true,
@@ -118,14 +117,14 @@ describe('Function Testing', () => {
         handleStr: expect.any(String),
       },
       {
-        uId: registered2.token,
+        uId: registered2.authUserId,
         email: 'dog@gmail.com',
         nameFirst: 'dog',
         nameLast: 'drown',
         handleStr: expect.any(String),
       },
       {
-        uId: registered3.token,
+        uId: registered3.authUserId,
         email: 'donkey@gmail.com',
         nameFirst: 'donkey',
         nameLast: 'fly',
@@ -134,7 +133,7 @@ describe('Function Testing', () => {
     });
   });
 
-  test('Test: channelInvite ->2 public courseId', () => {
+  test('Public courseId use ChannelInv', () => {
     const registered2 = requestAuthRegister('dog@gmail.com', 'hound123', 'dog', 'drown');
     const channelIdPrivate = requestChannelsCreate(registered1.token, 'third', false).channelId;
     requestChannelInvite(registered1.token, channelId1, registered2.authUserId);
