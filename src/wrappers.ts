@@ -394,7 +394,7 @@ export function requestSetNameV1(token: string, nameFirst: string, nameLast: str
 export function requestuserSetemail(token: string, email: string) {
   const res = request(
     'PUT',
-    SERVER_URL + '/user/profile/setname/v1',
+    SERVER_URL + '/user/profile/setemail/v1',
     {
       json: {
         token, email

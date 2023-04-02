@@ -1,6 +1,6 @@
 import { getData, setData } from './dataStore';
-import { isTokenValid, isMessageInChannel, getDm, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember } from './helper';
-import { isDmIdValid, createMessageId, isChannelIdValid, getChannel } from './helper';
+import { isTokenValid, isMessageInChannel, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember } from './helper';
+import { isDmIdValid, createMessageId, isChannelIdValid } from './helper';
 import { dataTs, channel, dms } from './interfaces';
 
 export function messageEditV1(token: string, messageId: number, message: string) {
