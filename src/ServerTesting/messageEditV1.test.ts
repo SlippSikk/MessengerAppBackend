@@ -1,44 +1,40 @@
-test('Stub test', () => {
-  expect(1 + 1).toEqual(2);
-});
-/*
 import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelMessages, requestMessageSend, requestDmCreate, requestMessageSenddm, requestChannelJoin, requestMessageEdit, requestDmMessages } from '../wrappers';
 
-let authToken1: string;
-let authToken2: string;
-let authToken3: string;
-let authId1: number;
-let authId2: number;
-let authId3: number;
-let channelId1: number;
-let messageId1: number;
-let dmId1: number;
-
-beforeEach(() => {
-  requestClear();
-  const user1 = requestAuthRegister('anna@gmail.com', 'aaa123', 'Anna', 'Albert');
-  authToken1 = user1.token;
-  authId1 = user1.authUserId;
-
-  const user2 = requestAuthRegister('bob@outlook.com', 'bbb123', 'Bob', 'Billington');
-  authToken2 = user2.token;
-  authId2 = user2.authUserId;
-
-  const user3 = requestAuthRegister('claire@gmail.com', 'ccc123', 'Claire', 'Cucumber');
-  authToken3 = user3.token;
-  authId3 = user3.authUserId;
-
-  channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).channelId;
-  requestChannelJoin(authToken2, channelId1);
-  requestChannelJoin(authToken3, channelId1);
-  messageId1 = requestMessageSend(authToken1, channelId1, 'First message').messageId;
-  dmId1 = requestDmCreate(authToken1, [authId2, authId3]).dmId;
-  requestMessageSenddm(authToken1, dmId1, 'First DM');
-});
-
 describe('Invalid inputs', () => {
+  let authToken1: string;
+  let authToken2: string;
+  let authToken3: string;
+  let authId1: number;
+  let authId2: number;
+  let authId3: number;
+  let channelId1: number;
+  let messageId1: number;
+  let dmId1: number;
+
+  beforeEach(() => {
+    requestClear();
+    const user1 = requestAuthRegister('anna@gmail.com', 'aaa123', 'Anna', 'Albert');
+    authToken1 = user1.token;
+    authId1 = user1.authUserId;
+
+    const user2 = requestAuthRegister('bob@outlook.com', 'bbb123', 'Bob', 'Billington');
+    authToken2 = user2.token;
+    authId2 = user2.authUserId;
+
+    const user3 = requestAuthRegister('claire@gmail.com', 'ccc123', 'Claire', 'Cucumber');
+    authToken3 = user3.token;
+    authId3 = user3.authUserId;
+
+    channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).channelId;
+    requestChannelJoin(authToken2, channelId1);
+    requestChannelJoin(authToken3, channelId1);
+    messageId1 = requestMessageSend(authToken1, channelId1, 'First message').messageId;
+    dmId1 = requestDmCreate(authToken1, [authId2, authId3]).dmId;
+    requestMessageSenddm(authToken1, dmId1, 'First DM');
+  });
+
   test('New message too long', () => {
-    const longString = Array(1001).join('x');
+    const longString = Array(1002).join('x');
     expect(requestMessageEdit(authToken1, messageId1, longString)).toStrictEqual({ error: expect.any(String) });
     expect(requestMessageEdit(authToken1, dmId1, longString)).toStrictEqual({ error: expect.any(String) });
   });
@@ -61,10 +57,43 @@ describe('Invalid inputs', () => {
 });
 
 describe('Valid inputs', () => {
+  let authToken1: string;
+  let authToken2: string;
+  let authToken3: string;
+  let authId1: number;
+  let authId2: number;
+  let authId3: number;
+  let channelId1: number;
+  let messageId1: number;
+  let dmMessageId1: number;
+  let dmId1: number;
+
+  beforeEach(() => {
+    requestClear();
+    const user1 = requestAuthRegister('anna@gmail.com', 'aaa123', 'Anna', 'Albert');
+    authToken1 = user1.token;
+    authId1 = user1.authUserId;
+
+    const user2 = requestAuthRegister('bob@outlook.com', 'bbb123', 'Bob', 'Billington');
+    authToken2 = user2.token;
+    authId2 = user2.authUserId;
+
+    const user3 = requestAuthRegister('claire@gmail.com', 'ccc123', 'Claire', 'Cucumber');
+    authToken3 = user3.token;
+    authId3 = user3.authUserId;
+
+    channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).channelId;
+    requestChannelJoin(authToken2, channelId1);
+    requestChannelJoin(authToken3, channelId1);
+    messageId1 = requestMessageSend(authToken1, channelId1, 'First message').messageId;
+    dmId1 = requestDmCreate(authToken1, [authId2, authId3]).dmId;
+    dmMessageId1 = requestMessageSenddm(authToken1, dmId1, 'First DM').messageId;
+  });
+
   test('New message', () => {
     const newString = 'New String';
     expect(requestMessageEdit(authToken1, messageId1, newString)).toStrictEqual({});
-    expect(requestMessageEdit(authToken1, dmId1, newString)).toStrictEqual({});
+    expect(requestMessageEdit(authToken1, dmMessageId1, newString)).toStrictEqual({});
     expect(requestChannelMessages(authToken1, channelId1, 0)).toEqual({
       messages: [{
         messageId: messageId1,
@@ -78,8 +107,8 @@ describe('Valid inputs', () => {
 
     expect(requestDmMessages(authToken1, dmId1, 0)).toEqual({
       messages: [{
-        messageId: messageId1,
-        uId: authId2,
+        messageId: dmMessageId1,
+        uId: authId1,
         message: newString,
         timeSent: expect.any(Number)
       }],
@@ -91,9 +120,9 @@ describe('Valid inputs', () => {
   test('Delete message', () => {
     const newString = '';
     const messageId2 = requestMessageSend(authToken1, channelId1, 'Second message').messageId;
-    requestMessageSenddm(authToken1, dmId1, 'Second DM');
+    const dmMessageId2 = requestMessageSenddm(authToken2, dmId1, 'Second DM').messageId;
     expect(requestMessageEdit(authToken1, messageId1, newString)).toStrictEqual({});
-    expect(requestMessageEdit(authToken1, dmId1, newString)).toStrictEqual({});
+    expect(requestMessageEdit(authToken1, dmMessageId1, newString)).toStrictEqual({});
     expect(requestChannelMessages(authToken1, channelId1, 0)).toEqual({
       messages: [{
         messageId: messageId2,
@@ -105,10 +134,9 @@ describe('Valid inputs', () => {
       end: -1
     });
 
-    // THIS COULD BE WRONG- DONT RLLY GET DMs
     expect(requestDmMessages(authToken1, dmId1, 0)).toEqual({
       messages: [{
-        messageId: messageId1,
+        messageId: dmMessageId2,
         uId: authId2,
         message: 'Second DM',
         timeSent: expect.any(Number)
@@ -118,4 +146,3 @@ describe('Valid inputs', () => {
     });
   });
 });
-*/

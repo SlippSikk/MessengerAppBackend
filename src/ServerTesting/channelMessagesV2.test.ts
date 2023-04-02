@@ -1,25 +1,24 @@
-
 import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelMessages, requestMessageSend } from '../wrappers';
-
-let authToken1: string;
-let authToken2: string;
-let authToken3: string;
-let channelId1: number;
-let channelId2: number;
-let channelId3: number;
-
-beforeEach(() => {
-  requestClear();
-  authToken1 = requestAuthRegister('gura@gmail.com', '114514810', 'huaizhi', 'li').token;
-  authToken2 = requestAuthRegister('Ina@outlook.com', 'asdgf8', 'me', 'vasdui').token;
-  authToken3 = requestAuthRegister('ichiru@qq.com', 'asduif8195', 'ichiru', 'shirase').token;
-
-  channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).channelId;
-  channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).channelId;
-  channelId3 = requestChannelsCreate(authToken3, 'Channel 3', false).channelId;
-});
+import { messages } from '../interfaces';
 
 describe('Incorrect input', () => {
+  let authToken1: string;
+  let authToken2: string;
+  let authToken3: string;
+  let channelId1: number;
+  let channelId2: number;
+  let channelId3: number;
+
+  beforeEach(() => {
+    requestClear();
+    authToken1 = requestAuthRegister('gura@gmail.com', '114514810', 'huaizhi', 'li').token;
+    authToken2 = requestAuthRegister('Ina@outlook.com', 'asdgf8', 'me', 'vasdui').token;
+    authToken3 = requestAuthRegister('ichiru@qq.com', 'asduif8195', 'ichiru', 'shirase').token;
+
+    channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).channelId;
+    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).channelId;
+    channelId3 = requestChannelsCreate(authToken3, 'Channel 3', false).channelId;
+  });
   test('Invalid token', () => {
     // concatenates all token strings together, to guarantee an invalid token
     expect(requestChannelMessages(authToken1 + authToken2 + authToken3, channelId1, 0)).toStrictEqual({ error: expect.any(String) });
@@ -39,6 +38,33 @@ describe('Incorrect input', () => {
 });
 
 describe('Correct input', () => {
+  let authToken1: string;
+  let authId1: number;
+  let authToken2: string;
+  let authId2: number;
+  let authToken3: string;
+  let authId3: number;
+  let channelId1: number;
+  let channelId2: number;
+  let channelId3: number;
+
+  beforeEach(() => {
+    requestClear();
+    const user1 = requestAuthRegister('gura@gmail.com', '114514810', 'huaizhi', 'li');
+    authToken1 = user1.token;
+    authId1 = user1.authUserId;
+    const user2 = requestAuthRegister('Ina@outlook.com', 'asdgf8', 'me', 'vasdui');
+    authToken2 = user2.token;
+    authId2 = user2.authUserId;
+    const user3 = requestAuthRegister('ichiru@qq.com', 'asduif8195', 'ichiru', 'shirase');
+    authToken3 = user3.token;
+    authId3 = user3.authUserId;
+
+    channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).channelId;
+    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).channelId;
+    channelId3 = requestChannelsCreate(authToken3, 'Channel 3', false).channelId;
+  });
+
   test('No messages sent', () => {
     expect(requestChannelMessages(authToken3, channelId3, 0)).toEqual({
       messages: [],
@@ -48,9 +74,14 @@ describe('Correct input', () => {
   });
 
   test('Single Message', () => {
-    requestMessageSend(authToken3, channelId3, 'My first message!');
-    expect(requestChannelMessages(authToken2, channelId2, 0)).toEqual({
-      messages: ['My first message!'],
+    const messageId: number = requestMessageSend(authToken3, channelId3, 'My first message!').messageId;
+    expect(requestChannelMessages(authToken3, channelId3, 0)).toEqual({
+      messages: [{
+        messageId: messageId,
+        uId: authId3,
+        message: 'My first message!',
+        timeSent: expect.any(Number)
+      }],
       start: 0,
       end: -1
     });
@@ -58,10 +89,21 @@ describe('Correct input', () => {
 
   test('Start is not at index 0', () => {
     requestMessageSend(authToken2, channelId2, 'My first message!');
-    requestMessageSend(authToken2, channelId2, 'My second message!');
-    requestMessageSend(authToken2, channelId2, 'My third message!');
+    const messageId2 = requestMessageSend(authToken2, channelId2, 'My second message!').messageId;
+    const messageId3 = requestMessageSend(authToken2, channelId2, 'My third message!').messageId;
     expect(requestChannelMessages(authToken2, channelId2, 1)).toEqual({
-      messages: ['My second message!', 'My third message!'],
+      messages: [{
+        messageId: messageId2,
+        uId: authId2,
+        message: 'My second message!',
+        timeSent: expect.any(Number)
+      },
+      {
+        messageId: messageId3,
+        uId: authId2,
+        message: 'My third message!',
+        timeSent: expect.any(Number)
+      }],
       start: 1,
       end: -1
     });
@@ -69,18 +111,23 @@ describe('Correct input', () => {
 
   test('Over 50 messages', () => {
     // generates 50 messages and pushes to an array: ['0', '1', '2', etc...]
-    const messages: string[] = [];
+    const messages: messages[] = [];
     for (let i = 0; i < 55; i++) {
       const currentMessage = i.toString();
-      messages.push(currentMessage);
-      requestMessageSend(authToken1, channelId1, currentMessage);
+      const messageId: number = requestMessageSend(authToken1, channelId1, currentMessage).messageId;
+
+      messages.push({
+        messageId: messageId,
+        uId: authId1,
+        message: currentMessage,
+        timeSent: expect.any(Number)
+      });
     }
 
-    expect(requestChannelMessages(authToken1, channelId2, 0)).toEqual({
+    expect(requestChannelMessages(authToken1, channelId1, 0)).toEqual({
       messages: messages.slice(0, 50),
       start: 0,
       end: 50
     });
   });
 });
-

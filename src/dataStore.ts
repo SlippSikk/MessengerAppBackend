@@ -1,4 +1,5 @@
 // YOU SHOULD MODIFY THIS OBJECT BELOW
+import fs from 'fs';
 import { dataTs } from './interfaces';
 let data: dataTs = {
   users: [],
@@ -23,6 +24,10 @@ Example usage
 
 // Use get() to access the data
 function getData() {
+  if (fs.existsSync('./database.json')) {
+    const dbstr = fs.readFileSync('./database.json');
+    data = JSON.parse(String(dbstr));
+  }
   return data;
 }
 
@@ -32,6 +37,8 @@ function getData() {
 // Hint: this function might be useful to edit in iteration 2
 function setData(newData: dataTs) {
   data = newData;
+  const jsonstr = JSON.stringify(data);
+  fs.writeFileSync('./database.json', jsonstr);
 }
 
 export { getData, setData };

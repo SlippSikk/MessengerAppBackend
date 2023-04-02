@@ -1,14 +1,8 @@
-
 import { getData, setData } from './dataStore';
-import { isTokenValid, isMessageInChannel, getDm, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage } from './helper';
+import { isTokenValid, isMessageInChannel, getDm, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember } from './helper';
 import { isDmIdValid, createMessageId, isChannelIdValid, getChannel } from './helper';
 import { dataTs, channel, dms } from './interfaces';
 
-const isDmMember = (dmId: number, token: string): boolean => {
-  const uId = getUIdFromToken(token) as number;
-  const dm = getDm(dmId) as dms;
-  return dm.members.find(dmMember => dmMember.uId === uId) !== undefined;
-};
 export function messageEditV1(token: string, messageId: number, message: string) {
   const data: dataTs = getData();
   if (message.length > 1000) {
@@ -81,6 +75,8 @@ export function messageRemoveV1(token: string, messageId: number) {
  */
 
 export const messageSenddmV1 = (token: string, dmId: number, message: string) => {
+  const data: dataTs = getData();
+
   if (!isDmIdValid(dmId)) {
     return { error: 'Invalid dmId' };
   }
@@ -94,15 +90,15 @@ export const messageSenddmV1 = (token: string, dmId: number, message: string) =>
     return { error: 'user is not member of channel' };
   }
   const messageId = createMessageId();
-  const uId = getUIdFromToken(token);
-  const dm = getDm(dmId);
-  dm.messages.push({
+  const uId = getUIdFromToken(token) as number;
+  const dmIndex: number = data.dms.findIndex(dm => dm.dmId === dmId);
+  data.dms[dmIndex].messages.push({
     messageId: messageId,
     uId: uId,
     message: message,
     timeSent: new Date().getTime()
   });
-
+  setData(data);
   return { messageId: messageId };
 };
 
@@ -115,6 +111,8 @@ export const messageSenddmV1 = (token: string, dmId: number, message: string) =>
  */
 
 export const messageSendV1 = (token: string, channelId: number, message: string) => {
+  const data: dataTs = getData();
+
   if (!isChannelIdValid(channelId)) {
     return { error: 'Invalid channelId' };
   }
@@ -124,17 +122,18 @@ export const messageSendV1 = (token: string, channelId: number, message: string)
   if (!isTokenValid(token)) {
     return { error: 'invalid token' };
   }
-  const uId = getUIdFromToken(token);
+  const uId = getUIdFromToken(token) as number;
   if (!isMember(channelId, uId)) {
     return { error: 'user is not member of channel' };
   }
   const messageId = createMessageId();
-  const channel = getChannel(channelId);
-  channel.messages.push({
+  const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);
+  data.channels[channelIndex].messages.push({
     messageId: messageId,
     uId: uId,
     message: message,
     timeSent: new Date().getTime()
   });
+  setData(data);
   return { messageId: messageId };
 };

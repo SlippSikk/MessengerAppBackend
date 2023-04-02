@@ -17,21 +17,17 @@ export function channelJoinV2(token: string, channelId: number) {
   const authUserId: number = getUIdFromToken(token) as number;
   // checks if a non-global owner is joining a private channel
 
-  if (!data.channels[channelIndex].isPublic && authUserId !== 1) {
+  const channel: channel = getChannel(channelId) as channel;
+  if (!channel.isPublic && authUserId !== 1) {
     return { error: 'Regular users cannot join private channels' };
   }
 
-  // checks if that user is already in the channel
-  // const channel: channel = data.channels[channelIndex];
-  // const hasUser: user = channel.allMembers.find(member => member.uId === authUserId);
-  // if (hasUser !== undefined) {
-  //   return { error: 'This user is already in this channel' };
-  // }
-  if (isMember(channelId, authUserId)) {
+  if (isMember(channelId, authUserId) !== false) {
     return { error: 'This user is already in this channel' };
   }
   const userObj = getUser(authUserId);
   data.channels[channelIndex].allMembers.push(userObj);
+  setData(data);
   return {};
 }
 
@@ -56,20 +52,16 @@ export function channelInviteV2(token: string, channelId: number, uId: number) {
   }
 
   const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);
-  const channel: channel = data.channels[channelIndex];
-  const hasAuthUser: user = channel.allMembers.find(member => member.uId === authUserId);
-  if (isMember(uId)) {
+  if (isMember(channelId, uId)) {
     return { error: 'This user is already in this channel' };
-  } else if (hasAuthUser === undefined && authUserId !== 1) {
+  } else if (!isMember(channelId, authUserId) && authUserId !== 1) {
     return { error: 'This auth user is not in the channel' };
   }
 
   // finally adds user to channel
   const userObj = getUser(uId);
-
-  // const userObj : user = data.users.find(user => user.uId = authUserId)
   data.channels[channelIndex].allMembers.push(userObj);
-  // setData(data); Note: Might be Useless
+  setData(data);
   return {};
 }
 
@@ -156,6 +148,7 @@ export function channelMessagesV2(token: string, channelId: number, start: numbe
  * @sum Makes uId owner of channelId
  */
 export const channelAddownerV1 = (token: string, channelId: number, uId: number) => {
+  const data: dataTs = getData();
   // Error handle
   if (!isTokenValid(token)) {
     return { error: 'invalid token' };
@@ -175,9 +168,11 @@ export const channelAddownerV1 = (token: string, channelId: number, uId: number)
   if (isOwner(channelId, uId)) {
     return { error: 'uId is already owner' };
   }
-  const channel = getChannel(channelId);
+
+  const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);
   const user = getUser(uId);
-  channel.ownerMembers.push(user);
+  data.channels[channelIndex].ownerMembers.push(user);
+  setData(data);
   return {};
 };
 
@@ -194,11 +189,11 @@ export const channelDetailsV2 = (token: string, channelId: number) => {
   if (!isTokenValid(token)) {
     return { error: 'authUserId not valid' };
   }
-  const uId = getUIdFromToken(token);
-  if (!isMember(channelId, uId)) {
+  const uId = getUIdFromToken(token) as number;
+  if (!isMember(channelId, uId) && uId !== 1) {
     return { error: 'authUserId is not a member of channelId' };
   }
-  const channel = getChannel(channelId);
+  const channel = getChannel(channelId) as channel;
   return {
     name: channel.name,
     isPublic: channel.isPublic,
@@ -214,24 +209,22 @@ export const channelDetailsV2 = (token: string, channelId: number) => {
  */
 
 export const channelLeaveV1 = (token: string, channelId: number) => {
+  const data: dataTs = getData();
   if (!isChannelIdValid(channelId)) {
     return { error: 'Invalid channelId' };
   }
   if (!isTokenValid(token)) {
     return { error: 'Invalid token' };
   }
-  const uId = getUIdFromToken(token);
+  const uId = getUIdFromToken(token) as number;
+  const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);
   if (!isMember(channelId, uId)) {
     return { error: 'user not a member of channelId' };
   }
-  const channel = getChannel(channelId);
-  // remove ownership
-  if (isOwner(channelId, uId)) {
-    const ownerIndex = channel.ownerMembers.indexOf(uId);
-    channel.ownerMembers.splice(ownerIndex, 1);
-  }
-  // remove membership
-  const memberIndex = channel.allMembers.indexOf(uId);
-  channel.allMembers.splice(memberIndex, 1);
+  const channel = getChannel(channelId) as channel;
+
+  data.channels[channelIndex].ownerMembers = channel.ownerMembers.filter(owner => owner.uId !== uId);
+  data.channels[channelIndex].allMembers = channel.allMembers.filter(member => member.uId !== uId);
+  setData(data);
   return {};
 };

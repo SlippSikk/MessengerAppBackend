@@ -109,7 +109,7 @@ export const isTokenValid = (token: string): boolean => {
 export const createMessageId = (): number => {
   const data = getData();
   let id = Math.floor(Math.random() * 10000);
-  const findId = (n) => {
+  const findId = (n: channel) => {
     return n.messages.find(mId => mId.messageId === id) !== undefined;
   };
   while (data.channels.find(findId) !== undefined) {
@@ -171,4 +171,58 @@ export const isDmIdValid = (dmId: number): boolean => {
   const status = !!getDm(dmId);
   if (!status) return false;
   return true;
+};
+
+/**
+ *
+ * @param messageId
+ * @returns {boolean | number}
+ * Searches all channels for a message with messageId. Returns the index of the
+ * channel in the datastore if found and false if unfound.
+ */
+export const isMessageInChannel = (messageId: number): boolean => {
+  const data = getData();
+  for (const channel of data.channels) {
+    if (channel.messages.find(message => message.messageId === messageId)) {
+      return true;
+    }
+  }
+  return false;
+};
+
+export const findChannelIndexWithMessage = (messageId: number): number => {
+  const data = getData();
+  for (let channelIndex = 0; channelIndex < data.channels.length; channelIndex++) {
+    if (data.channels[channelIndex].messages.find(message => message.messageId === messageId)) {
+      return channelIndex;
+    }
+  }
+  return -1;
+};
+
+/**
+ *
+ * @param messageId
+ * @returns {boolean | number}
+ * Searches all channels for a message with messageId. Returns true if the
+ * message was found in a DM.
+ */
+export const isMessageInDM = (messageId: number): boolean => {
+  const data = getData();
+  for (const dm of data.dms) {
+    if (dm.messages.find(message => message.messageId === messageId)) {
+      return true;
+    }
+  }
+  return false;
+};
+
+export const findDMIndexWithMessage = (messageId: number): number => {
+  const data = getData();
+  for (let dmIndex = 0; dmIndex < data.channels.length; dmIndex++) {
+    if (data.dms[dmIndex].messages.find(message => message.messageId === messageId)) {
+      return dmIndex;
+    }
+  }
+  return -1;
 };

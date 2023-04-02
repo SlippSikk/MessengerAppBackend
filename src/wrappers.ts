@@ -254,9 +254,10 @@ export function requestMessageEdit(token: string, messageId: number, message: st
   return JSON.parse(res.getBody() as string);
 }
 
+// PUT because messageEdit is called
 export function requestMessageRemove(token: string, messageId: number) {
   const res = request(
-    'DELETE',
+    'PUT',
     `${url}:${port}/message/remove/v1`,
     {
       json: {

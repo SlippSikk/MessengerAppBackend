@@ -1,4 +1,4 @@
-/* ------------------delete me--------------------
+
 import { getData, setData } from './dataStore';
 import validator from 'validator';
 import { isTokenValid } from './helper';
@@ -10,19 +10,14 @@ import { isTokenValid } from './helper';
  * @param {string} uID
  * @returns {{user: object}}
  */
-/*
-import { getData, setData } from "./dataStore";
-import validator from 'validator';
-import { users, authUserId, error } from './interfaces'
-import { isTokenValid, isUserIdValid, getHandle, getUser } from './helper'
-/*
+
 /**
  * set a new email for a user
  * @param {string} token
  * @param {string} email
  * @returns {}
  */
-/* ------------------delete me--------------------
+
 export function userProfileSetemailV1(token:string, email:string) {
   const data = getData();
   if (isTokenValid(token) !== true) {
@@ -46,7 +41,7 @@ export function userProfileSetemailV1(token:string, email:string) {
  * @param {string} handleStr
  * @returns {}
  */
-/* ------------------delete me--------------------
+
 export function userProfileSethandleV1(token:string, handleStr:string) {
   const data = getData();
   if (isTokenValid(token) !== true) {
@@ -79,7 +74,7 @@ export function userProfileSethandleV1(token:string, handleStr:string) {
  * @param {string} nameLast
  * @returns {}
  */
-/* ------------------delete me--------------------
+
 export function userProfileSetnameV1(token:string, nameFirst:string, nameLast:string) {
   const data = getData();
   if (isTokenValid(token) !== true) {
@@ -102,7 +97,7 @@ export function userProfileSetnameV1(token:string, nameFirst:string, nameLast:st
  * @param {string} token
  * @returns {{users}}
  */
-/* ------------------delete me--------------------
+
 export function usersAllV1(token:string) {
   const data = getData();
   if (isTokenValid(token) !== true) {
@@ -124,7 +119,7 @@ export function usersAllV1(token:string) {
  * @param {string} uId
  * @returns {user}
  */
-/* ------------------delete me--------------------
+
 export function userProfileV2(token:string, uId:number) {
   const data = getData();
   if (isTokenValid(token) !== true) {
@@ -143,4 +138,4 @@ export function userProfileV2(token:string, uId:number) {
       handleStr: idToView.handleStr
     }
   };
-}------------------delete me-------------------- */
+}

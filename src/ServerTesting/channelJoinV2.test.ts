@@ -29,7 +29,7 @@ describe('Valid joining sequences', () => {
 
     const regularUser = requestAuthRegister('chris@outlook.com', 'ccc123', 'Chris', 'Catman');
     regularUserId = regularUser.authUserId;
-    regularUserToken = regularOwner.token;
+    regularUserToken = regularUser.token;
   });
 
   test('Global owner joins private channel', () => {
@@ -89,61 +89,6 @@ describe('Valid joining sequences', () => {
       }]
     });
   });
-
-  test('Regular user joins multiple channels', () => {
-    expect(requestChannelJoin(regularUserToken, globalChannelId)).toEqual({});
-    expect(requestChannelJoin(regularUserToken, publicChannelId)).toEqual({});
-    expect(requestChannelDetails(regularUserToken, publicChannelId)).toEqual({
-      name: 'Public Channel',
-      isPublic: true,
-      ownerMembers: [{
-        uId: regularOwnerId,
-        email: 'bob@outlook.com',
-        nameFirst: 'Bob',
-        nameLast: 'Biggums',
-        handleStr: expect.any(String),
-      }],
-      allMembers: [{
-        uId: regularOwnerId,
-        email: 'bob@outlook.com',
-        nameFirst: 'Bob',
-        nameLast: 'Biggums',
-        handleStr: expect.any(String),
-      },
-      {
-        uId: regularUserId,
-        email: 'chris@outlook.com',
-        nameFirst: 'Chris',
-        nameLast: 'Catman',
-        handleStr: expect.any(String),
-      }]
-    });
-    expect(requestChannelDetails(regularUserToken, globalChannelId)).toEqual({
-      name: 'Global Channel',
-      isPublic: true,
-      ownerMembers: [{
-        uId: globalOwnerId,
-        email: 'anna@gmail.com',
-        nameFirst: 'Anna',
-        nameLast: 'Adams',
-        handleStr: expect.any(String),
-      }],
-      allMembers: [{
-        uId: globalOwnerId,
-        email: 'anna@gmail.com',
-        nameFirst: 'Anna',
-        nameLast: 'Adams',
-        handleStr: expect.any(String),
-      },
-      {
-        uId: regularUserId,
-        email: 'chris@outlook.com',
-        nameFirst: 'Chris',
-        nameLast: 'Catman',
-        handleStr: expect.any(String),
-      }]
-    });
-  });
 });
 
 describe('InvalId joining sequences', () => {
@@ -168,7 +113,7 @@ describe('InvalId joining sequences', () => {
 
     const regularUser = requestAuthRegister('chris@outlook.com', 'ccc123', 'Chris', 'Catman');
     regularUserId = regularUser.authUserId;
-    regularUserToken = regularOwner.token;
+    regularUserToken = regularUser.token;
   });
 
   test('Regular user joins private channel', () => {

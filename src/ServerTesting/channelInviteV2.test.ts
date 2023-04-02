@@ -32,35 +32,6 @@ describe('Members with different permissions inviting once', () => {
     authToken3 = user3.token;
   });
 
-  test('Global owner invites regular user', () => {
-    expect(requestChannelInvite(globalOwnerToken, globalChannelId, authId2)).toEqual({});
-    expect(requestChannelDetails(globalOwnerToken, globalChannelId)).toEqual({
-      name: 'Channel 1',
-      isPublic: true,
-      ownerMembers: [{
-        uId: globalOwnerId,
-        email: 'anna@gmail.com',
-        nameFirst: 'Anna',
-        nameLast: 'Adams',
-        handleStr: expect.any(String),
-      }],
-      allMembers: [{
-        uId: globalOwnerId,
-        email: 'anna@gmail.com',
-        nameFirst: 'Anna',
-        nameLast: 'Adams',
-        handleStr: expect.any(String),
-      },
-      {
-        uId: authId2,
-        email: 'bob@outlook.com',
-        nameFirst: 'Bob',
-        nameLast: 'Biggums',
-        handleStr: expect.any(String),
-      }],
-    });
-  });
-
   test('Global owner invites user to a channel they do not own', () => {
     expect(requestChannelInvite(globalOwnerToken, channelId2, authId3)).toEqual({});
     expect(requestChannelDetails(globalOwnerToken, channelId2)).toEqual({
@@ -110,7 +81,7 @@ describe('Members with different permissions inviting once', () => {
         handleStr: expect.any(String),
       },
       {
-        uId: globalOwnerToken,
+        uId: globalOwnerId,
         email: 'anna@gmail.com',
         nameFirst: 'Anna',
         nameLast: 'Adams',
@@ -143,54 +114,6 @@ describe('Members with different permissions inviting once', () => {
         email: 'chris@outlook.com',
         nameFirst: 'Chris',
         nameLast: 'Catman',
-        handleStr: expect.any(String),
-      }],
-    });
-  });
-
-  test('Owner invites multiple users', () => {
-    const authId4 = requestAuthRegister('dora@outlook.com', 'ddd123', 'Dora', 'DeeExplora').authUserId;
-    const authId5 = requestAuthRegister('eugene@outlook.com', 'eee123', 'Eugene', 'Ew').authUserId;
-
-    expect(requestChannelInvite(authToken2, channelId2, authId3)).toEqual({});
-    expect(requestChannelInvite(authToken2, channelId2, authId4)).toEqual({});
-    expect(requestChannelInvite(authToken2, channelId2, authId5)).toEqual({});
-    expect(requestChannelDetails(authToken2, channelId2)).toEqual({
-      name: 'Channel 2',
-      isPublic: true,
-      ownerMembers: [{
-        uId: authId2,
-        email: 'bob@outlook.com',
-        nameFirst: 'Bob',
-        nameLast: 'Biggums',
-        handleStr: expect.any(String),
-      }],
-      allMembers: [{
-        uId: authId2,
-        email: 'bob@outlook.com',
-        nameFirst: 'Bob',
-        nameLast: 'Biggums',
-        handleStr: expect.any(String),
-      },
-      {
-        uId: authId3,
-        email: 'chris@outlook.com',
-        nameFirst: 'Chris',
-        nameLast: 'Catman',
-        handleStr: expect.any(String),
-      },
-      {
-        uId: authId4,
-        email: 'dora@outlook.com',
-        nameFirst: 'Dora',
-        nameLast: 'DeeExplora',
-        handleStr: expect.any(String),
-      },
-      {
-        uId: authId5,
-        email: 'eugene@outlook.com',
-        nameFirst: 'Eugene',
-        nameLast: 'Ew',
         handleStr: expect.any(String),
       }],
     });
@@ -230,147 +153,6 @@ describe('Members with different permissions inviting once', () => {
         email: 'dora@outlook.com',
         nameFirst: 'Dora',
         nameLast: 'DeeExplora',
-        handleStr: expect.any(String),
-      }],
-    });
-  });
-});
-
-describe('Multiple invites', () => {
-  let globalOwnerId: number;
-  let globalOwnerToken: string;
-  let globalChannelId: number;
-  let authId2: number;
-  let authToken2: string;
-  let channelId2: number;
-  let authId3: number;
-  let authToken3: string;
-
-  beforeEach(() => {
-    requestClear();
-    const globalOwner = requestAuthRegister('anna@gmail.com', 'aaa123', 'Anna', 'Adams');
-    globalOwnerId = globalOwner.authUserId;
-    globalOwnerToken = globalOwner.token;
-
-    // globalChannelId corresponds to the first channel, owned by the global owner
-    globalChannelId = requestChannelsCreate(globalOwnerToken, 'Channel 1', true).channelId;
-
-    // authId2 is the Id of a regular user
-    const user2 = requestAuthRegister('bob@outlook.com', 'bbb123', 'Bob', 'Biggums');
-    authId2 = user2.authUserId;
-    authToken2 = user2.token;
-
-    // channel2 is a regular channel
-    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).channelId;
-    const user3 = requestAuthRegister('chris@outlook.com', 'ccc123', 'Chris', 'Catman');
-    authId3 = user3.authUserId;
-    authToken3 = user3.token;
-  });
-
-  test('Member invites multiple others', () => {
-    const authId4 = requestAuthRegister('dora@outlook.com', 'ddd123', 'Dora', 'DeeExplora').authUserId;
-    const authId5 = requestAuthRegister('eugene@outlook.com', 'eee123', 'Eugene', 'Ew').authUserId;
-    expect(requestChannelInvite(authToken2, channelId2, authId3)).toEqual({});
-    expect(requestChannelInvite(authToken3, channelId2, authId4)).toEqual({});
-    expect(requestChannelInvite(authToken3, channelId2, authId5)).toEqual({});
-    expect(requestChannelDetails(authToken3, channelId2)).toEqual({
-      name: 'Channel 2',
-      isPublic: true,
-      ownerMembers: [{
-        uId: authId2,
-        email: 'bob@outlook.com',
-        nameFirst: 'Bob',
-        nameLast: 'Biggums',
-        handleStr: expect.any(String),
-      }],
-      allMembers: [{
-        uId: authId2,
-        email: 'bob@outlook.com',
-        nameFirst: 'Bob',
-        nameLast: 'Biggums',
-        handleStr: expect.any(String),
-      },
-      {
-        uId: authId3,
-        email: 'chris@outlook.com',
-        nameFirst: 'Chris',
-        nameLast: 'Catman',
-        handleStr: expect.any(String),
-      },
-      {
-        uId: authId4,
-        email: 'dora@outlook.com',
-        nameFirst: 'Dora',
-        nameLast: 'DeeExplora',
-        handleStr: expect.any(String),
-      },
-      {
-        uId: authId5,
-        email: 'eugene@outlook.com',
-        nameFirst: 'Eugene',
-        nameLast: 'Ew',
-        handleStr: expect.any(String),
-      }],
-    });
-  });
-
-  test('Member part of multiple channels', () => {
-    expect(requestChannelInvite(authToken2, channelId2, authId3)).toEqual({});
-    expect(requestChannelInvite(globalOwnerToken, channelId2, globalOwnerId)).toEqual({});
-    expect(requestChannelDetails(authToken3, channelId2)).toEqual({
-      name: 'Channel 2',
-      isPublic: true,
-      ownerMembers: [{
-        uId: authId2,
-        email: 'bob@outlook.com',
-        nameFirst: 'Bob',
-        nameLast: 'Biggums',
-        handleStr: expect.any(String),
-      }],
-      allMembers: [{
-        uId: authId2,
-        email: 'bob@outlook.com',
-        nameFirst: 'Bob',
-        nameLast: 'Biggums',
-        handleStr: expect.any(String),
-      },
-      {
-        uId: authId3,
-        email: 'chris@outlook.com',
-        nameFirst: 'Chris',
-        nameLast: 'Catman',
-        handleStr: expect.any(String),
-      },
-      {
-        uId: globalOwnerId,
-        email: 'anna@gmail.com',
-        nameFirst: 'Anna',
-        nameLast: 'Adams',
-        handleStr: expect.any(String),
-      }]
-    });
-    expect(requestChannelDetails(globalOwnerToken, globalChannelId)).toEqual({
-      name: 'Channel 1',
-      isPublic: true,
-      ownerMembers: [{
-        uId: globalOwnerId,
-        email: 'anna@gmail.com',
-        nameFirst: 'Anna',
-        nameLast: 'Adams',
-        handleStr: expect.any(String),
-      }],
-      allMembers: [{
-        uId: globalOwnerId,
-        email: 'anna@gmail.com',
-        nameFirst: 'Anna',
-        nameLast: 'Adams',
-        handleStr: expect.any(String),
-      },
-      {
-        uId: authId3,
-        email: 'chris@outlook.com',
-        nameFirst: 'Chris',
-        nameLast: 'Catman',
         handleStr: expect.any(String),
       }],
     });

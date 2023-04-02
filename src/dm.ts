@@ -37,7 +37,7 @@ export function dmMessagesV1(token: string, dmId: number, start: number): error 
   // Set end
   let end;
   let endrange;
-  const dm = getDm(dmId);
+  const dm = getDm(dmId) as dms;
   if (findDm.messages.length > start + 50) {
     end = start + 50;
     endrange = end;

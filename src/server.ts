@@ -46,7 +46,7 @@ app.put('/message/edit/v1', (req: Request, res: Response) => {
   return res.json(messageEditV1(token, messageId, message));
 });
 
-app.delete('/message/remove/v1', (req: Request, res: Response) => {
+app.put('/message/remove/v1', (req: Request, res: Response) => {
   const { token, messageId } = req.body;
 
   return res.json(messageRemoveV1(token, messageId));
@@ -81,9 +81,7 @@ app.post('/channel/invite/v2', (req: Request, res: Response) => {
 });
 
 app.post('/channel/removeowner/v1', (req: Request, res: Response) => {
-  const token = req.query.token as string;
-  const channelId = parseInt(req.query.channelId as string);
-  const uId = parseInt(req.query.uId as string);
+  const { token, channelId, uId } = req.body;
   return res.json(channelRemoveOwnerV1(token, channelId, uId));
 });
 
