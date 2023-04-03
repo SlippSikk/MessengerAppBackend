@@ -29,7 +29,7 @@ describe('/user/profile/setname/v1', () => {
   test('reset the name', () => {
     requestClear();
     const registerObject = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
-    requestSetNameV1(registerObject.token, 'Ichiru','Shirase');
+    requestSetNameV1(registerObject.token, 'Ichiru', 'Shirase');
     expect(requestUserProfileV2(registerObject.token, registerObject.authUserId)).toStrictEqual({
       user: {
         uId: registerObject.authUserId,
@@ -38,7 +38,6 @@ describe('/user/profile/setname/v1', () => {
         nameLast: 'Shirase',
         handleStr: 'abcde'
       }
-    })
-
+    });
   });
 });
