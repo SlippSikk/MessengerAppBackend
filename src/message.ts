@@ -96,7 +96,7 @@ export const messageSenddmV1 = (token: string, dmId: number, message: string) =>
     messageId: messageId,
     uId: uId,
     message: message,
-    timeSent: new Date().getTime()
+    timeSent: ~~(new Date().getTime() / 1000)
   });
   setData(data);
   return { messageId: messageId };
@@ -132,7 +132,7 @@ export const messageSendV1 = (token: string, channelId: number, message: string)
     messageId: messageId,
     uId: uId,
     message: message,
-    timeSent: new Date().getTime()
+    timeSent: ~~(new Date().getTime() / 1000)
   });
   setData(data);
   return { messageId: messageId };
