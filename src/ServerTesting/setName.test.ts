@@ -1,4 +1,4 @@
-import { requestClear, requestAuthRegister, requestSetNameV1 } from '../wrappers';
+import { requestClear, requestAuthRegister, requestSetNameV1, requestUserProfileV2 } from '../wrappers';
 const ERROR = { error: expect.any(String) };
 
 beforeEach(() => {
@@ -24,5 +24,21 @@ describe('/user/profile/setname/v1', () => {
     requestClear();
     const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
     expect(requestSetNameV1(tokenA, 'DeathLoop', 'ABCD')).toStrictEqual({});// more tests needed when other function finished
+  });
+
+  test('reset the name', () => {
+    requestClear();
+    const registerObject = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
+    requestSetNameV1(registerObject.token, 'Ichiru','Shirase');
+    expect(requestUserProfileV2(registerObject.token, registerObject.authUserId)).toStrictEqual({
+      user: {
+        uId: registerObject.authUserId,
+        email: 'csgo@gmail.com',
+        nameFirst: 'Ichiru',
+        nameLast: 'Shirase',
+        handleStr: 'abcde'
+      }
+    })
+
   });
 });
