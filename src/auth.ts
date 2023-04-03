@@ -42,7 +42,6 @@ function authRegisterV2(email: string, password: string, nameFirst: string, name
   }
 
   // Create handleStr
-  // Create handleStr
   let nameConcats = nameFirst.toLowerCase() + nameLast.toLowerCase();
 
   const regex = /[^a-z0-9]/g;
