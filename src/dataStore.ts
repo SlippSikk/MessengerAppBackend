@@ -1,6 +1,11 @@
 // YOU SHOULD MODIFY THIS OBJECT BELOW
-let data = {};
-
+import fs from 'fs';
+import { dataTs } from './interfaces';
+let data: dataTs = {
+  users: [],
+  channels: [],
+  dms: []
+};
 // YOU SHOULDNT NEED TO MODIFY THE FUNCTIONS BELOW IN ITERATION 1
 
 /*
@@ -19,6 +24,10 @@ Example usage
 
 // Use getData() to access the data
 function getData() {
+  if (fs.existsSync('./database.json')) {
+    const dbstr = fs.readFileSync('./database.json');
+    data = JSON.parse(String(dbstr));
+  }
   return data;
 }
 
@@ -26,8 +35,10 @@ function getData() {
 // - Only needs to be used if you replace the data store entirely
 // - Javascript uses pass-by-reference for objects... read more here: https://stackoverflow.com/questions/13104494/does-javascript-pass-by-reference
 // Hint: this function might be useful to edit in iteration 2
-function setData(newData) {
+function setData(newData: dataTs) {
   data = newData;
+  const jsonstr = JSON.stringify(data);
+  fs.writeFileSync('./database.json', jsonstr);
 }
 
 export { getData, setData };
