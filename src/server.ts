@@ -46,8 +46,9 @@ app.put('/message/edit/v1', (req: Request, res: Response) => {
   return res.json(messageEditV1(token, messageId, message));
 });
 
-app.put('/message/remove/v1', (req: Request, res: Response) => {
-  const { token, messageId } = req.body;
+app.delete('/message/remove/v1', (req: Request, res: Response) => {
+  const token = req.query.token as string;
+  const messageId = parseInt(req.query.messageId as string);
 
   return res.json(messageRemoveV1(token, messageId));
 });
