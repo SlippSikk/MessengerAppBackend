@@ -257,10 +257,10 @@ export function requestMessageEdit(token: string, messageId: number, message: st
 // PUT because messageEdit is called
 export function requestMessageRemove(token: string, messageId: number) {
   const res = request(
-    'PUT',
+    'DELETE',
     `${url}:${port}/message/remove/v1`,
     {
-      json: {
+      qs: {
         token: token,
         messageId: messageId,
       }
