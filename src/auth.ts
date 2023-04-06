@@ -24,7 +24,7 @@ import { users, authUserId, error } from './interfaces';
  * @returns {error: 'string'} Error Message - Error message describing the error cause
  **/
 
-function authRegisterV2(email: string, password: string, nameFirst: string, nameLast: string): authUserId | error {
+function authRegisterV3(email: string, password: string, nameFirst: string, nameLast: string): authUserId | error {
   const data = getData();
 
   // Error Block
@@ -95,7 +95,7 @@ function authRegisterV2(email: string, password: string, nameFirst: string, name
  * @returns {authUserId: Number} authUserId - Unqiue ID of the user created
  * @returns {error: 'string'} Error Message - Error message describing the error caus
  */
-function authLoginV2(email: string, password: string): authUserId | error {
+function authLoginV3(email: string, password: string): authUserId | error {
   const data = getData();
 
   // Error Block & find Object with details
@@ -127,7 +127,7 @@ function authLoginV2(email: string, password: string): authUserId | error {
   };
 }
 
-function authLogoutV1(token: string) {
+function authLogoutV2(token: string) {
   const data = getData();
   const userIndex = data.users.findIndex(user => user.token.includes(token));
 
@@ -142,4 +142,4 @@ function authLogoutV1(token: string) {
   return {};
 }
 
-export { authRegisterV2, authLoginV2, authLogoutV1 };
+export { authRegisterV3, authLoginV3, authLogoutV2 };
