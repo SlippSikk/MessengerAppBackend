@@ -21,6 +21,11 @@ interface messages {
     uId: number,
     message: string,
     timeSent: number
+    // reacts: [{
+    //     reactId: number,
+    //     user: user
+    // }],
+    // isPinned: boolean
 }
 
 interface channels {
