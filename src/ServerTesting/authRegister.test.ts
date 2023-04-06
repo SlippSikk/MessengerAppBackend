@@ -3,15 +3,21 @@ import { authUserId } from '../interfaces';
 
 // Global
 let registered: authUserId;
+let registered2: authUserId;
 beforeEach(() => {
   requestClear();
-  registered = requestAuthRegister('adam.baqaie@gmail.com', 'adam123', 'Adam', 'Baqaie');
+  registered = requestAuthRegister('adam.baqaie@gmail.com', 'adam123', 'Adamklklklk', 'Baqaieokokokokok');
+  registered2 = requestAuthRegister('adam@gmail.com', 'adam123', 'Adamklklklk', 'Baqaieokokokokok');
 });
 
 describe('Correct Registration', () => {
   test('Correct Inputs', () => {
     expect(registered).toStrictEqual({ token: expect.any(String), authUserId: expect.any(Number) });
   });
+  test('Correct Inputs', () => {
+    expect(registered2).toStrictEqual({ token: expect.any(String), authUserId: expect.any(Number) });
+  });
+
 });
 
 describe('Incorrect Registration', () => {
@@ -24,6 +30,6 @@ describe('Incorrect Registration', () => {
     { testName: 'length of nameLast < 1 || > 50', email: 'foo.bar@foobar.com', password: 'hello1', nameFirst: 'Daniel', nameLast: '' },
     { testName: 'length of nameLast < 1 || > 50', email: 'foo.bar@foobar.com', password: 'hello1', nameFirst: 'Daniel', nameLast: 'ghfhfhfhfhfhfhfhfhfhfhfhfhfhfhfhfhfhfhfhfhfhfhfhfhfh' },
   ])('Input has $testName', ({ email, password, nameFirst, nameLast }) => {
-    expect(requestAuthRegister(email, password, nameFirst, nameLast)).toStrictEqual({ error: expect.any(String) });
+    expect(requestAuthRegister(email, password, nameFirst, nameLast).error).toStrictEqual({ message: expect.any(String) });
   });
 });

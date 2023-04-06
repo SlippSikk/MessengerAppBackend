@@ -1,6 +1,7 @@
 import { getData, setData } from './dataStore';
 import validator from 'validator';
 import { users, authUserId, error } from './interfaces';
+import HTTPError from 'http-errors';
 
 /**
  * Summary: Registers a user returning their unique Id
@@ -30,15 +31,15 @@ function authRegisterV2(email: string, password: string, nameFirst: string, name
   // Error Block
   const found = data.users.find(element => element.email === email);
   if (!(validator.isEmail(email))) {
-    return { error: 'Invalid Email' };
+    throw HTTPError(400, 'Invalid Email');
   } else if (found !== undefined) {
-    return { error: 'Email in use' };
+    throw HTTPError(400, 'Email in use');
   } else if (password.length < 6) {
-    return { error: 'Password too short' };
+    throw HTTPError(400, 'Password too short');
   } else if (nameFirst.length < 1 || nameFirst.length > 50) {
-    return { error: 'Incorrect nameFirst length' };
+    throw HTTPError(400, 'Incorrect nameFirst length');
   } else if (nameLast.length < 1 || nameLast.length > 50) {
-    return { error: 'Incorrect nameLast length' };
+    throw HTTPError(400, 'Incorrect nameLast length');
   }
 
   // Create handleStr
@@ -62,6 +63,8 @@ function authRegisterV2(email: string, password: string, nameFirst: string, name
 
   const Id = data.users.length + 1;
 
+  // Call hashed token functions
+
   const user: users = {
     uId: Id,
     email: email,
@@ -77,7 +80,7 @@ function authRegisterV2(email: string, password: string, nameFirst: string, name
   setData(data);
 
   return {
-    token: nameConcat,
+    token: nameConcat, // Replace with hash
     authUserId: Id,
   };
 }
@@ -120,6 +123,8 @@ function authLoginV2(email: string, password: string): authUserId | error {
   data.users[indexUser].token.push(randToken);
 
   setData(data);
+
+  // Hash the token and return it
 
   return {
     token: randToken,
