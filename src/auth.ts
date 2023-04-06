@@ -2,7 +2,7 @@ import { getData, setData } from './dataStore';
 import validator from 'validator';
 import { users, authUserId, error } from './interfaces';
 import HTTPError from 'http-errors';
-import { decrypt, encrypt, hashToken, userIndexToken } from './helper';
+import { decrypt, encrypt, findPassword, hashToken, userIndexToken } from './helper';
 
 
 /**
@@ -116,10 +116,10 @@ function authLoginV3(email: string, password: string): authUserId | error {
   const found = data.users.find(element => element.email === email);
   const indexUser = data.users.findIndex(element => element.email === email);
 
-  const foundPass = data.users.find(element => decrypt(element.password) === password);
+  const foundPass = findPassword(password);
   if (found === undefined) {
     return { error: 'Email does not belong to a user' };
-  } else if (foundPass === undefined) {
+  } else if (foundPass === false) {
     return { error: 'Password Incorrect' };
   }
 

@@ -110,9 +110,9 @@ export const isOwnerByToken = (channelId: number, token: string): boolean => {
  */
 
 ///////////// DEPRECATED //////////////////
-export const isTokenValid = (token: string): boolean => {
-  return !!getUIdFromToken(token);
-};
+// export const isTokenValid = (token: string): boolean => {
+//   return !!getUIdFromToken(token);
+// };
 
 /**
  * @returns messageId thats unique
@@ -134,13 +134,13 @@ export const createMessageId = (): number => {
  * @returns returns the uId from a token
  * , or returns false
  */
-export const getUIdFromToken = (token: string): number | boolean => {
+export const getUIdFromToken = (token: string): number => {
   const data = getData();
   const foundToken = data.users.find(element => element.token.find(element => hashToken(element) === token));
 
-  if (foundToken === undefined) {
-    return false;
-  }
+  // if (foundToken === undefined) {
+  //   return false;
+  // }
   return foundToken.uId;
 };
 
