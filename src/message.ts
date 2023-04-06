@@ -1,5 +1,5 @@
 import { getData, setData } from './dataStore';
-import { isTokenValid, isMessageInChannel, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember } from './helper';
+import { validateToken, isMessageInChannel, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember } from './helper';
 import { isDmIdValid, createMessageId, isChannelIdValid } from './helper';
 import { dataTs, channel, dms } from './interfaces';
 
@@ -9,7 +9,7 @@ export function messageEditV1(token: string, messageId: number, message: string)
     return { error: 'Messages cannot be longer than 1000 characters' };
   }
 
-  if (!isTokenValid(token)) {
+  if (!validateToken(token)) {
     return { error: 'Invalid token' };
   }
 
@@ -83,7 +83,7 @@ export const messageSenddmV1 = (token: string, dmId: number, message: string) =>
   if (!(message.length >= 1 && message.length <= 1000)) {
     return { error: 'message must be between 1 to 1000 letters' };
   }
-  if (!isTokenValid(token)) {
+  if (!validateToken(token)) {
     return { error: 'invalid token' };
   }
   if (!isDmMember(dmId, token)) {
@@ -119,7 +119,7 @@ export const messageSendV1 = (token: string, channelId: number, message: string)
   if (!(message.length >= 1 && message.length <= 1000)) {
     return { error: 'message must be between 1 to 1000 letters' };
   }
-  if (!isTokenValid(token)) {
+  if (!validateToken(token)) {
     return { error: 'invalid token' };
   }
   const uId = getUIdFromToken(token) as number;

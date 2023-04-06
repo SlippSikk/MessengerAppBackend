@@ -2,6 +2,8 @@ import { getData, setData } from './dataStore';
 import validator from 'validator';
 import { users, authUserId, error } from './interfaces';
 import HTTPError from 'http-errors';
+import { decrypt, encrypt, hashToken, userIndexToken } from './helper';
+
 
 /**
  * Summary: Registers a user returning their unique Id
@@ -63,7 +65,9 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
 
   const Id = data.users.length + 1;
 
-  // Call hashed token functions
+  // Encrypt password
+
+  const pass = encrypt(password)
 
   const user: users = {
     uId: Id,
@@ -71,7 +75,7 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
     nameFirst: nameFirst,
     nameLast: nameLast,
     handleStr: nameConcat,
-    password: password,
+    password: pass,
     token: [nameConcat]
   };
 
@@ -79,8 +83,11 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
 
   setData(data);
 
+  // Hash token 
+  const hashedToken = hashToken(nameConcat)
+
   return {
-    token: nameConcat, // Replace with hash
+    token: hashedToken, // Replace with hash
     authUserId: Id,
   };
 }
@@ -108,7 +115,8 @@ function authLoginV3(email: string, password: string): authUserId | error {
 
   const found = data.users.find(element => element.email === email);
   const indexUser = data.users.findIndex(element => element.email === email);
-  const foundPass = data.users.find(element => element.password === password);
+
+  const foundPass = data.users.find(element => decrypt(element.password) === password);
   if (found === undefined) {
     return { error: 'Email does not belong to a user' };
   } else if (foundPass === undefined) {
@@ -126,18 +134,22 @@ function authLoginV3(email: string, password: string): authUserId | error {
 
   // Hash the token and return it
 
+  const hashedToken = hashToken(randToken);
+
   return {
-    token: randToken,
+    token: hashedToken,
     authUserId: found.uId,
   };
 }
 
 function authLogoutV2(token: string) {
   const data = getData();
-  const userIndex = data.users.findIndex(user => user.token.includes(token));
+
+
+  const userIndex = userIndexToken(token);
 
   if (userIndex !== -1) {
-    const tokenIndex = data.users[userIndex].token.findIndex(element => element === token);
+    const tokenIndex = data.users[userIndex].token.findIndex(element => hashToken(element) === token);
     data.users[userIndex].token.splice(tokenIndex, 1);
     setData(data);
   } else {
@@ -148,3 +160,5 @@ function authLogoutV2(token: string) {
 }
 
 export { authRegisterV3, authLoginV3, authLogoutV2 };
+
+

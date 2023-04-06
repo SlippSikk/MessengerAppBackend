@@ -1,6 +1,6 @@
 
 import { getData, setData } from './dataStore';
-import { isChannelIdValid, isTokenValid, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser, isOwnerByToken } from './helper';
+import { isChannelIdValid, validateToken, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser, isOwnerByToken } from './helper';
 import { user, channel, dataTs } from './interfaces';
 
 export function channelJoinV2(token: string, channelId: number) {
@@ -9,7 +9,7 @@ export function channelJoinV2(token: string, channelId: number) {
   if (!isChannelIdValid(channelId)) {
     return { error: 'This channel does not exist' };
   }
-  if (!isTokenValid(token)) {
+  if (!validateToken(token)) {
     return { error: 'Invalid token' };
   }
 
@@ -37,7 +37,7 @@ export function channelInviteV2(token: string, channelId: number, uId: number) {
     return { error: 'This channel does not exist' };
   }
 
-  if (!isTokenValid(token)) {
+  if (!validateToken(token)) {
     return { error: 'Invalid token' };
   }
 
@@ -71,7 +71,7 @@ export function channelRemoveOwnerV1(token: string, channelId: number, uId: numb
     return { error: 'This channel does not exist' };
   }
 
-  if (!isTokenValid(token)) {
+  if (!validateToken(token)) {
     return { error: 'Invalid token' };
   }
 
@@ -105,7 +105,7 @@ export function channelMessagesV2(token: string, channelId: number, start: numbe
     return { error: 'This channel does not exist' };
   }
 
-  if (!isTokenValid(token)) {
+  if (!validateToken(token)) {
     return { error: 'Invalid token' };
   }
 
@@ -150,7 +150,7 @@ export function channelMessagesV2(token: string, channelId: number, start: numbe
 export const channelAddownerV1 = (token: string, channelId: number, uId: number) => {
   const data: dataTs = getData();
   // Error handle
-  if (!isTokenValid(token)) {
+  if (!validateToken(token)) {
     return { error: 'invalid token' };
   }
   if (!isChannelIdValid(channelId)) {
@@ -186,7 +186,7 @@ export const channelDetailsV2 = (token: string, channelId: number) => {
   if (!isChannelIdValid(channelId)) {
     return { error: 'channelId not valid' };
   }
-  if (!isTokenValid(token)) {
+  if (!validateToken(token)) {
     return { error: 'authUserId not valid' };
   }
   const uId = getUIdFromToken(token) as number;
@@ -213,7 +213,7 @@ export const channelLeaveV1 = (token: string, channelId: number) => {
   if (!isChannelIdValid(channelId)) {
     return { error: 'Invalid channelId' };
   }
-  if (!isTokenValid(token)) {
+  if (!validateToken(token)) {
     return { error: 'Invalid token' };
   }
   const uId = getUIdFromToken(token) as number;

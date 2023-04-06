@@ -1,6 +1,6 @@
 // import { isToken } from 'typescript';
 import { getData, setData } from './dataStore';
-import { getUIdFromToken, isTokenValid } from './helper';
+import { getUIdFromToken, userIndexToken, validateToken } from './helper';
 import { error, channel, channelId, channels } from './interfaces';
 
 /**
@@ -37,7 +37,7 @@ export function channelsCreateV2(token: string, name: string, isPublic: boolean)
   }
 
   // token is invalid
-  if (!isTokenValid(token)) return { error: 'token not valid' };
+  if (!validateToken(token)) return { error: 'token not valid' };
 
   // Find and assign a suitable channelId
   let channelId: number;
@@ -99,7 +99,8 @@ export function channelsListV2(token: string): { channels: channels[] } | error 
   const data = getData();
 
   // Error if invalid
-  const userIndex = data.users.findIndex(element => element.token.includes(token));
+  // const userIndex = data.users.findIndex(element => element.token.includes(token));
+  const userIndex = userIndexToken(token);
   if (userIndex === -1) {
     return { error: 'token is invalid' };
   }
@@ -133,7 +134,8 @@ export function channelsListV2(token: string): { channels: channels[] } | error 
 export function channelsListAllV2(token: string): { channels: channels[] } | error {
   const data = getData();
 
-  const userIndex = data.users.findIndex(element => element.token.includes(token));
+  // const userIndex = data.users.findIndex(element => element.token.includes(token));
+  const userIndex = userIndexToken(token);
   if (userIndex === -1) {
     return { error: 'token is invalid' };
   }

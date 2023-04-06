@@ -4,7 +4,7 @@ interface users {
     nameFirst: string,
     nameLast: string,
     handleStr: string,
-    password: string,
+    password: password,
     token: string[],
 }
 
@@ -74,7 +74,12 @@ type error = { error: string };
 
 type channelId = { channelId: number }
 
+interface password {
+    iv: string,
+    encryptedData: string
+};
+
 export {
-  users, channels, user, messages, dataTs, authUserId, error, channel,
-  dmMessages, dmDetails, dmsOutput, dmId, dms, channelId
+    users, channels, user, messages, dataTs, authUserId, error, channel,
+    dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password
 };

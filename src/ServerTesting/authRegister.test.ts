@@ -17,7 +17,6 @@ describe('Correct Registration', () => {
   test('Correct Inputs', () => {
     expect(registered2).toStrictEqual({ token: expect.any(String), authUserId: expect.any(Number) });
   });
-
 });
 
 describe('Incorrect Registration', () => {
