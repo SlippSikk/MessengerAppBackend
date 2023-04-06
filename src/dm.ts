@@ -82,7 +82,7 @@ export function dmListV1(token: string): { dms: dmsOutput[] } | error {
   return { dms: userDms };
 }
 
-export function dmCreateV1(token: string, uIds: number[]): dmId | error {
+export function dmCreateV2(token: string, uIds: number[]): dmId | error {
   const data = getData();
 
   // Error Cases
@@ -146,7 +146,7 @@ export function dmCreateV1(token: string, uIds: number[]): dmId | error {
   return { dmId: dmId };
 }
 
-export function dmLeaveV1(token: string, dmId: number) {
+export function dmLeaveV2(token: string, dmId: number) {
   const data = getData();
   // Error Cases
   const foundDm = data.dms.find(element => element.dmId === dmId);
@@ -172,7 +172,7 @@ export function dmLeaveV1(token: string, dmId: number) {
   return {};
 }
 
-export function dmRemoveV1(token: string, dmId: number) {
+export function dmRemoveV2(token: string, dmId: number) {
   const data = getData();
 
   // Error Cases

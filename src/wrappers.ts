@@ -6,7 +6,7 @@ const SERVER_URL = `${url}:${port}`;
 export function requestAuthRegister(email: string, password: string, nameFirst: string, nameLast: string) {
   const res = request(
     'POST',
-    `${url}:${port}/auth/register/v2`,
+    `${url}:${port}/auth/register/v3`,
     {
       json: {
         email,
@@ -24,7 +24,7 @@ export function requestAuthRegister(email: string, password: string, nameFirst: 
 export function requestAuthLogin(email: string, password: string) {
   const res = request(
     'POST',
-    `${url}:${port}/auth/login/v2`,
+    `${url}:${port}/auth/login/v3`,
     {
       json: {
         email,
@@ -54,7 +54,7 @@ export function requestChannelAddowner(token: string, channelId: number, uId: nu
 export function requestAuthLogout(token: string) {
   const res = request(
     'POST',
-    `${url}:${port}/auth/logout/v1`,
+    `${url}:${port}/auth/logout/v2`,
     {
       json: {
         token
@@ -108,7 +108,7 @@ export function requestDmMessages(token: string, dmId: number, start: number) {
 export function requestDmCreate(token: string, uIds: number[]): dmId {
   const res = request(
     'POST',
-    `${url}:${port}/dm/create/v1`,
+    `${url}:${port}/dm/create/v2`,
     {
       json: {
         token,
@@ -123,7 +123,7 @@ export function requestDmCreate(token: string, uIds: number[]): dmId {
 export function requestDmLeave(token: string, dmId: number) {
   const res = request(
     'POST',
-    `${url}:${port}/dm/leave/v1`,
+    `${url}:${port}/dm/leave/v2`,
     {
       json: {
         token,
@@ -151,7 +151,7 @@ export function requestDmDetails(token: string, dmId: number) {
 export function requestDmRemove(token: string, dmId: number) {
   const res = request(
     'DELETE',
-    `${url}:${port}/dm/remove/v1`,
+    `${url}:${port}/dm/remove/v2`,
     {
       qs: {
         token,
