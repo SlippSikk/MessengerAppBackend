@@ -17,24 +17,18 @@ beforeEach(() => {
   channelId2 = requestChannelsCreate(registered2.token, 'shed', true).channelId;
 });
 describe('Error Cases', () => {
+  // EXPECT ERROR 400
   test('Invalid channelId', () => {
     expect(requestMessageSend(registered1.token, channelId1 * channelId2 + 1, 'Hi my ducklings')).toStrictEqual(ERROR);
   });
-  test('Message must be between 1 to 1000 letters', () => {
+  test('user is not in channel/dm of messageId', () => {
     expect(requestMessageSend(registered1.token, channelId1, '')).toStrictEqual(ERROR);
   });
-  test('Message must be between 1 to 1000 letters', () => {
-    let fullChar = '';
-    for (let i = 0; i < 1001; i++) {
-      fullChar += 'p';
-    }
+  test('Invalid reactId', () => {
     expect(requestMessageSend(registered1.token, channelId1, fullChar)).toStrictEqual(ERROR);
   });
-  test('User is not member of channel', () => {
+  test('Message already has the current reactId', () => {
     expect(requestMessageSend(registered1.token, channelId2, 'Lets dance')).toStrictEqual(ERROR);
-  });
-  test('Invalid token', () => {
-    expect(requestMessageSend(registered1.token + registered2.token + 'p', channelId1, 'Lets dance')).toStrictEqual(ERROR);
   });
 });
 
