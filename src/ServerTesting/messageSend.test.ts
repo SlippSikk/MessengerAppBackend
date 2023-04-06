@@ -3,8 +3,8 @@ test('Invalid channelId', () => {
 });
 
 /*
-import { requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate } from '../wrappers';
-import { requestChannelMessages } from '../wrappers';
+import { requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate} from '../wrappers';
+import { requestChannelMessages, requestMessageReact, requestMessageSenddm, requestDmCreate } from '../wrappers';
 import { authUserId } from '../interfaces';
 const ERROR = { error: expect.any(String) };
 
@@ -37,31 +37,25 @@ describe('Error Cases', () => {
 });
 
 describe('Function Testing', () => {
-  test('Send a message', () => {
-    expect(requestMessageSend(registered1.token, channelId1, 'Hi my ducklings')).toStrictEqual({ messageId: expect.any(Number) });
-    const a = requestChannelMessages(registered1.token, channelId1, 0);
-    expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
+  const mIdChannel: number;
+  const mIdDm: number;
+  const dmId: number;
+  beforeEach(() => {
+    dmId = requestDmCreate(registered2.token, [registered1.authUserId, registered2.authUserId]).dmId;
+    const mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').messageId;
+    const mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').messageId;
   });
-  test('Send two messages in the same channel', () => {
-    expect(requestMessageSend(registered1.token, channelId1, 'Hi my ducklings')).toStrictEqual({ messageId: expect.any(Number) });
-    expect(requestMessageSend(registered1.token, channelId1, 'How to get bread ?')).toStrictEqual({ messageId: expect.any(Number) });
-    const a = requestChannelMessages(registered1.token, channelId1, 0);
-    expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
-    expect(a.messages[1].message).toStrictEqual('How to get bread ?');
+  test('React in channel msg', () => {
+    expect().toStrictEqual({});
   });
-  test('Send four messages in the two channels', () => {
-    expect(requestMessageSend(registered1.token, channelId1, 'one')).toStrictEqual({ messageId: expect.any(Number) });
-    expect(requestMessageSend(registered2.token, channelId2, 'two')).toStrictEqual({ messageId: expect.any(Number) });
-    expect(requestMessageSend(registered1.token, channelId1, 'three')).toStrictEqual({ messageId: expect.any(Number) });
-    expect(requestMessageSend(registered2.token, channelId2, 'four')).toStrictEqual({ messageId: expect.any(Number) });
-
-    const a = requestChannelMessages(registered1.token, channelId1, 0);
-    const b = requestChannelMessages(registered2.token, channelId2, 0);
-
-    expect(a.messages[0].message).toStrictEqual('one');
-    expect(a.messages[1].message).toStrictEqual('three');
-    expect(b.messages[0].message).toStrictEqual('two');
-    expect(b.messages[1].message).toStrictEqual('four');
+  test('React in dm msg', () => {
+    expect().toStrictEqual({});
+  });
+  test('Double reacts in channel msg', () => {
+    expect().toStrictEqual({THROW EERRORR});
+  });
+  test('Double reacts in dm msg', () => {
+    expect().toStrictEqual({THROW EERRORR});
   });
 });
 */
