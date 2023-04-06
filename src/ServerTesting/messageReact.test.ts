@@ -22,7 +22,6 @@ beforeEach(() => {
   channelId2 = requestChannelsCreate(registered2.token, 'shed', true).channelId;
 });
 describe('Error Cases', () => {
-  // EXPECT ERROR 400
   test('Invalid channelId', () => {
     expect(response).toStrictEqual({ code: 400, error: expect.any(String) });
   });
@@ -48,18 +47,31 @@ describe('Function Testing', () => {
   });
   test('React in channel msg', () => {
     expect(request).toStrictEqual({});
-    const a = requestDmMessages(registered1.token, dmId2, 0);
+    const a = requestChannelMessages(registered1.token, channelId1, 0);
     expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
     expect(a.messages[0].message.reacts.user.uId).toStrictEqual(registered1);
   });
   test('React in dm msg', () => {
-    expect().toStrictEqual({});
+    expect(request).toStrictEqual({});
+    const a = requestDmMessages(registered1.token, dmId2, 0);
+    expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
+    expect(a.messages[0].message.reacts.user.uId).toStrictEqual(registered1);
   });
   test('Double reacts in channel msg', () => {
+    expect(request).toStrictEqual({});
+    expect(request).toStrictEqual({});
     expect(response).toStrictEqual({ code: 400, error: expect.any(String) });
+    const a = requestChannelMessages(registered1.token, channelId1, 0);
+    expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
+    expect(a.messages[0].message.reacts.user.uId).toStrictEqual(registered1);
   });
   test('Double reacts in dm msg', () => {
+    expect(request).toStrictEqual({});
+    expect(request).toStrictEqual({});
     expect(response).toStrictEqual({ code: 400, error: expect.any(String) });
+    const a = requestDmMessages(registered1.token, dmId2, 0);
+    expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
+    expect(a.messages[0].message.reacts.user.uId).toStrictEqual(registered1);
   });
 });
 */
