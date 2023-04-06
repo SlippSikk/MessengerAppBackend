@@ -4,6 +4,27 @@ test('Invalid channelId', () => {
 // const token = req.header('token');
 // const { other, data } = req.body;
 /*
+export function requestMessageReact(token: string, messageId: number, reactId: number) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/message/react/v1',
+    {
+      json: {
+        token,
+        messageId,
+        number
+      }
+    }
+  );
+
+  return JSON.parse(res.getBody() as string);
+}
+app.post('/message/react/v1', (req: Request, res: Response) => {
+  const token = req.header('token');
+  const { messageId, reactId } = req.body;
+
+  res.json(messageReactV1(token, +messageId, +reactId));
+});
 import { requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate} from '../wrappers';
 import { requestChannelMessages, requestMessageReact, requestMessageSenddm, requestDmCreate } from '../wrappers';
 import { authUserId } from '../interfaces';
