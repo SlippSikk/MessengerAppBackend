@@ -1,7 +1,9 @@
 
 import { getData, setData } from './dataStore';
 import validator from 'validator';
-import { isTokenValid } from './helper';
+import HTTPError from 'http-errors';
+import { encrypt, findPassword, hashToken, userIndexToken } from './helper';
+
 /**
  * For a valid user, returns information about their user ID,
  * email, first name, last name, and handle
@@ -17,105 +19,105 @@ import { isTokenValid } from './helper';
  * @returns {}
  */
 
-// export function userProfileSetemailV2(email:string) {
-//   const data = getData();
-//   if (!(validator.isEmail(email))) {
-//     throw HTTPError(400, "email is not valid");
-//   }
-//   const userObjectEmail = data.users.find(a => a.email === email);
-//   if (userObjectEmail !== undefined) {
-//     throw HTTPError(400, "email is in use");
-//   }
-//   const userObject = data.users.find(a => a.token.includes(token));
-//   userObject.email = email;  // need to be fixed here
-//   setData(data);
-//   return {};
-// }
-// /**
-//  * set a new handle for a user
-//  * @param {string} handleStr
-//  * @returns {}
-//  */
+export function userProfileSetemailV2(email:string) {
+  const data = getData();
+  if (!(validator.isEmail(email))) {
+    throw HTTPError(400, "email is not valid");
+  }
+  const userObjectEmail = data.users.find(a => a.email === email);
+  if (userObjectEmail !== undefined) {
+    throw HTTPError(400, "email is in use");
+  }
+//   const userObject = data.users.find(a => a.token.includes(token));  
+//   userObject.email = email;  // how could I find the object to change the email??
+  setData(data);
+  return {};
+}
+/**
+ * set a new handle for a user
+ * @param {string} handleStr
+ * @returns {}
+ */
 
-// export function userProfileSethandleV2(handleStr:string) {
-//   const data = getData();
-//   const userObjectHandleStr = data.users.find(a => a.handleStr === handleStr);
-//   if (userObjectHandleStr !== undefined) {
-//     throw HTTPError(400, "handle is in use");
-//   }
-//   const noAlphanumeric = /^[a-zA-Z0-9]+$/i;
-//   if (!noAlphanumeric.test(handleStr)) {
-//     throw HTTPError(400, "handleStr can not include non alphanumeric");
-//   }
+export function userProfileSethandleV2(handleStr:string) {
+  const data = getData();
+  const userObjectHandleStr = data.users.find(a => a.handleStr === handleStr);
+  if (userObjectHandleStr !== undefined) {
+    throw HTTPError(400, "handle is in use");
+  }
+  const noAlphanumeric = /^[a-zA-Z0-9]+$/i;
+  if (!noAlphanumeric.test(handleStr)) {
+    throw HTTPError(400, "handleStr can not include non alphanumeric");
+  }
 
-//   if ((handleStr.length > 20) || (handleStr.length < 3)) {
-//     throw HTTPError(400, "length of handleStr is not between 3 and 20 characters inclusive");
-//   }
+  if ((handleStr.length > 20) || (handleStr.length < 3)) {
+    throw HTTPError(400, "length of handleStr is not between 3 and 20 characters inclusive");
+  }
 
-//   const userObject = data.users.find(a => a.token.includes(token));
-//   userObject.handleStr = handleStr;
-//   setData(data);
-//   return {};
-// }
+  const userObject = data.users.find(a => a.token.includes(token));
+  userObject.handleStr = handleStr;
+  setData(data);
+  return {};
+}
 
-// /**
-//  * set a new name for a user
-//  * @param {string} nameFirst
-//  * @param {string} nameLast
-//  * @returns {}
-//  */
+/**
+ * set a new name for a user
+ * @param {string} nameFirst
+ * @param {string} nameLast
+ * @returns {}
+ */
 
-// export function userProfileSetnameV2(nameFirst:string, nameLast:string) {
-//   const data = getData();
-//   if ((nameFirst.length > 50) || (nameFirst.length < 1)) {
-//     throw HTTPError(400, "length of nameFirst is not between 1 and 50 characters inclusive"); 
-//   }
-//   if ((nameLast.length > 50) || (nameLast.length < 1)) {
-//     throw HTTPError(400, "length of nameLast is not between 1 and 50 characters inclusive");
-//   }
-//   const userObject = data.users.find(a => a.token.includes(token)); // I guess it could work :D
-//   userObject.nameFirst = nameFirst;
-//   userObject.nameLast = nameLast;
-//   setData(data);
-//   return {};
-// }
-// /**
-//  * view all users' detail
-//  * @returns {{users}}
-//  */
+export function userProfileSetnameV2(nameFirst:string, nameLast:string) {
+  const data = getData();
+  if ((nameFirst.length > 50) || (nameFirst.length < 1)) {
+    throw HTTPError(400, "length of nameFirst is not between 1 and 50 characters inclusive"); 
+  }
+  if ((nameLast.length > 50) || (nameLast.length < 1)) {
+    throw HTTPError(400, "length of nameLast is not between 1 and 50 characters inclusive");
+  }
+  const userObject = data.users.find(a => a.token.includes(token)); // I guess it could work :D
+  userObject.nameFirst = nameFirst;
+  userObject.nameLast = nameLast;
+  setData(data);
+  return {};
+}
+/**
+ * view all users' detail
+ * @returns {{users}}
+ */
 
-// export function usersAllV2() {
-//   const data = getData();
-//   const users = data.users
-//     .map(p => ({
-//       uId: p.uId,
-//       email: p.email,
-//       nameFirst: p.nameFirst,
-//       nameLast: p.nameLast,
-//       handleStr: p.handleStr
-//     }));
-//   return { users };
-// }
-// /**
-//  * view all users' detail
-//  * @param {string} uId
-//  * @returns {user}
-//  */
+export function usersAllV2() {
+  const data = getData();
+  const users = data.users
+    .map(p => ({
+      uId: p.uId,
+      email: p.email,
+      nameFirst: p.nameFirst,
+      nameLast: p.nameLast,
+      handleStr: p.handleStr
+    }));
+  return { users };
+}
+/**
+ * view all users' detail
+ * @param {string} uId
+ * @returns {user}
+ */
 
-// export function userProfileV3(uId:number) {
-//   const data = getData();
-//   const idToView = data.users.find(a => a.uId === uId);
-//   if (idToView === undefined) {
-//     throw HTTPError(400, "uId is not valid");
-//   }
-//   return {
-//     user: {
-//       uId: idToView.uId,
-//       email: idToView.email,
-//       nameFirst: idToView.nameFirst,
-//       nameLast: idToView.nameLast,
-//       handleStr: idToView.handleStr
-//     }
-//   };
-// }
+export function userProfileV3(uId:number) {
+  const data = getData();
+  const idToView = data.users.find(a => a.uId === uId);
+  if (idToView === undefined) {
+    throw HTTPError(400, "uId is not valid");
+  }
+  return {
+    user: {
+      uId: idToView.uId,
+      email: idToView.email,
+      nameFirst: idToView.nameFirst,
+      nameLast: idToView.nameLast,
+      handleStr: idToView.handleStr
+    }
+  };
+}
 
