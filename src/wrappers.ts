@@ -56,9 +56,10 @@ export function requestAuthLogout(token: string) {
     'POST',
     `${url}:${port}/auth/logout/v2`,
     {
-      json: {
+      headers: {
         token
-      }
+      },
+      timeout: 100
     }
   );
 
