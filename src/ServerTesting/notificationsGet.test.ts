@@ -17,41 +17,47 @@ beforeEach(() => {
     dmId1 = requestDmCreate(registered1.token, [registered2.authUserId]).dmId;
     requestMessageSend(registered2.token, channelId1, '@duckdash, Hi my ducklings')
     requestMessageSend(registered1.token, channelId1, '@duckdash! Reminder!!')
+    requestMessageSend(registered1.token, dmId1, 'hello @duckdash')
 
 });
 
 describe('Function Testing', () => {
-    test('Notifications from channels', () => {
+    test('Tags from channels & Dm', () => {
         expect(requestNotificationsGet(registered1.token)).toStrictEqual([
             {
                 channelId: channelId1,
                 dmId: -1,
-                notificationMessage: ''
+                notificationMessage: '{duckdash} tagged you in {nest}: Reminder!!'
             },
+            {
+                channelId: channelId1,
+                dmId: -1,
+                notificationMessage: '{chickmafia} tagged you in {nest}: Hi my ducklings'
+            },
+            {
+                channelId: -1,
+                dmId: dmId1,
+                notificationMessage: '{duckdash} tagged you in {duckdash, chickmafia}: hello'
+            }
         ]);
-        // const a = requestChannelMessages(registered1.token, channelId1, 0);
-        // expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
     });
-    test('Send two messages in the same channel', () => {
-        expect(requestMessageSend(registered1.token, channelId1, 'Hi my ducklings')).toStrictEqual({ messageId: expect.any(Number) });
-        expect(requestMessageSend(registered1.token, channelId1, 'How to get bread ?')).toStrictEqual({ messageId: expect.any(Number) });
-        const a = requestChannelMessages(registered1.token, channelId1, 0);
-        expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
-        expect(a.messages[1].message).toStrictEqual('How to get bread ?');
-    });
-    test('Send four messages in the two channels', () => {
-        expect(requestMessageSend(registered1.token, channelId1, 'one')).toStrictEqual({ messageId: expect.any(Number) });
-        expect(requestMessageSend(registered2.token, channelId2, 'two')).toStrictEqual({ messageId: expect.any(Number) });
-        expect(requestMessageSend(registered1.token, channelId1, 'three')).toStrictEqual({ messageId: expect.any(Number) });
-        expect(requestMessageSend(registered2.token, channelId2, 'four')).toStrictEqual({ messageId: expect.any(Number) });
 
-        const a = requestChannelMessages(registered1.token, channelId1, 0);
-        const b = requestChannelMessages(registered2.token, channelId2, 0);
-
-        expect(a.messages[0].message).toStrictEqual('one');
-        expect(a.messages[1].message).toStrictEqual('three');
-        expect(b.messages[0].message).toStrictEqual('two');
-        expect(b.messages[1].message).toStrictEqual('four');
+    test('Notif from joining channel', () => {
+        const registered3 = requestAuthRegister('adam@gmail.com', 'adam123', 'adam', 'baqaie');
+        requestChannelInvite(registered1.authUserId, channelId1, registered3.authUserId);
+        requestMessageSend(registered2.token, channelId1, '@adambaqaie hello mate')
+        expect(requestNotificationsGet(registered3.token)).toStrictEqual([
+            {
+                channelId: channelId1,
+                dmId: -1,
+                notificationMessage: '{chickmafia} tagged you in {nest}: hello mate'
+            },
+            {
+                channelId: channelId1,
+                dmId: -1,
+                notificationMessage: '{duckdash} added you to {nest}'
+            }
+        ]);
     });
 });
 
