@@ -29,11 +29,13 @@ export function requestAuthLogin(email: string, password: string) {
       json: {
         email,
         password
-      }
+      },
+
+      timeout: 100
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  return JSON.parse(res.body as string);
 }
 
 export function requestChannelAddowner(token: string, channelId: number, uId: number) {
@@ -56,13 +58,14 @@ export function requestAuthLogout(token: string) {
     'POST',
     `${url}:${port}/auth/logout/v2`,
     {
-      json: {
+      headers: {
         token
-      }
+      },
+      timeout: 100
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  return JSON.parse(res.body as string);
 }
 
 export function requestChannelLeave(token: string, channelId: number) {
