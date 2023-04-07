@@ -144,7 +144,8 @@ app.delete('/dm/remove/v2', (req: Request, res: Response) => {
 });
 
 app.post('/dm/leave/v2', (req: Request, res: Response) => {
-  const { token, dmId } = req.body;
+  const { dmId } = req.body;
+  const token = req.header('token');
 
   return res.json(dmLeaveV2(token, parseInt(dmId)));
 });
