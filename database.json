@@ -1,1 +1,1 @@
-{"users":[{"uId":1,"email":"csgo@gmail.com","nameFirst":"Ab","nameLast":"CDE","handleStr":"abcde","password":{"iv":"7c137bc698182c8e4eaa8acd26141eaf","encryptedData":"36dfd1b3e32810d68f08b7a3c2a52ffb"},"token":["abcde"]}],"channels":[],"dms":[]}
+{"users":[{"uId":1,"email":"csgo@gmail.com","nameFirst":"Ab","nameLast":"CDE","handleStr":"abcde","password":{"iv":"5d38b0438da0c8d1d1c9b8ce70c3ba5d","encryptedData":"69ac986f529653408e3a325d68db8e52"},"token":["abcde"]}],"channels":[],"dms":[]}
