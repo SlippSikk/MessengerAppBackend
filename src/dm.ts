@@ -89,12 +89,12 @@ export function dmCreateV2(token: string, uIds: number[]): dmId | error {
 
   // Error Cases
   if (validateToken(token) === false) {
-    return { error: 'Token is not valid' };
+    throw HTTPError(403, 'Token is not valid');
   }
 
   for (const Id of uIds) {
     if (isUserIdValid(Id) === false) {
-      return { error: 'A user Id is not valid' };
+      throw HTTPError(400, 'A user Id is not valid');
     }
   }
 
@@ -103,7 +103,7 @@ export function dmCreateV2(token: string, uIds: number[]): dmId | error {
   }
 
   if (hasDuplicates(uIds)) {
-    return { error: 'uIds contains duplicates' };
+    throw HTTPError(400, 'uIds contains duplicates');
   }
 
   const creatorId = userObjToken(token).uId;
@@ -111,7 +111,7 @@ export function dmCreateV2(token: string, uIds: number[]): dmId | error {
   const foundCreator = uIds.find(element => element === creatorId);
 
   if (foundCreator !== undefined) {
-    return { error: 'Creator Id in list of uIds' };
+    throw HTTPError(400, 'Creator Id in list of uIds');
   }
 
   // Creating Dm

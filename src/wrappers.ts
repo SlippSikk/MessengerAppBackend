@@ -1,5 +1,4 @@
 import request from 'sync-request';
-import { dmId } from './interfaces';
 import { port, url } from './config.json';
 const SERVER_URL = `${url}:${port}`;
 
@@ -108,19 +107,20 @@ export function requestDmMessages(token: string, dmId: number, start: number) {
   return JSON.parse(res.getBody() as string);
 }
 
-export function requestDmCreate(token: string, uIds: number[]): dmId {
+export function requestDmCreate(token: string, uIds: number[]) {
   const res = request(
     'POST',
     `${url}:${port}/dm/create/v2`,
     {
+      headers: { token },
       json: {
-        token,
         uIds
-      }
+      },
+      timeout: 100
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  return JSON.parse(res.body as string);
 }
 
 export function requestDmLeave(token: string, dmId: number) {
@@ -324,6 +324,7 @@ export function requestChannelsCreate(token: string, name: string, isPublic: boo
     'POST',
     SERVER_URL + '/channels/create/v2',
     {
+
       json: {
         token, name, isPublic
       }
