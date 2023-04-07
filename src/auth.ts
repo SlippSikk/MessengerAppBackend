@@ -149,7 +149,7 @@ function authLogoutV2(token: string) {
     data.users[userIndex].token.splice(tokenIndex, 1);
     setData(data);
   } else {
-    return { error: 'Incorrect token' };
+    throw HTTPError(403, 'Incorrect token');
   }
 
   return {};
