@@ -320,9 +320,9 @@ export function requestChannelsCreate(token: string, name: string, isPublic: boo
     'POST',
     SERVER_URL + '/channels/create/v2',
     {
-      headers: { token },
+
       json: {
-        name, isPublic
+        token, name, isPublic
       }
     }
   );
