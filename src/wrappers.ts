@@ -153,8 +153,8 @@ export function requestDmRemove(token: string, dmId: number) {
     'DELETE',
     `${url}:${port}/dm/remove/v2`,
     {
+      headers: { token },
       qs: {
-        token,
         dmId
       },
       timeout: 100
