@@ -1,6 +1,6 @@
 
 import { error, dmId, user, dms, dmDetails, dmsOutput, dmMessages } from './interfaces';
-import { isTokenValid, isUserIdValid, getHandle, getUser, getUIdFromToken, getDm } from './helper';
+import { validateToken, isUserIdValid, getHandle, getUser, getUIdFromToken, getDm, userObjToken, userIndexToken } from './helper';
 import { getData, setData } from './dataStore';
 
 export function dmMessagesV1(token: string, dmId: number, start: number): error | dmMessages {
@@ -9,7 +9,7 @@ export function dmMessagesV1(token: string, dmId: number, start: number): error 
 
   // errors:
   // case: token is invalid
-  if (isTokenValid(token) !== true) {
+  if (validateToken(token) !== true) {
     return { error: 'Token is not valid' };
   }
 
@@ -25,7 +25,8 @@ export function dmMessagesV1(token: string, dmId: number, start: number): error 
   }
 
   // get the user's details with the given token
-  const currUser = data.users.find(users => users.token.includes(token));
+  // const currUser = data.users.find(users => users.token.includes(token));
+  const currUser = userObjToken(token);
 
   // case: dmId is valid and the authorised user is not a member of the DM
   const hasToken = findDm.members.find(user => user.uId === currUser.uId);
@@ -56,7 +57,7 @@ export function dmMessagesV1(token: string, dmId: number, start: number): error 
 
 export function dmListV1(token: string): { dms: dmsOutput[] } | error {
   // error case: invalid token
-  if (isTokenValid(token) !== true) {
+  if (validateToken(token) !== true) {
     return { error: 'Token is not valid' };
   }
 
@@ -64,7 +65,7 @@ export function dmListV1(token: string): { dms: dmsOutput[] } | error {
   const data = getData();
 
   // get the user's uId with the given token
-  const uId = data.users.find(element => element.token.includes(token)).uId;
+  const uId = getUIdFromToken(token);
 
   // Go through all dms and filter the ones this user is a member of
   const userDms = [];
@@ -86,7 +87,7 @@ export function dmCreateV2(token: string, uIds: number[]): dmId | error {
   const data = getData();
 
   // Error Cases
-  if (isTokenValid(token) === false) {
+  if (validateToken(token) === false) {
     return { error: 'Token is not valid' };
   }
 
@@ -104,7 +105,7 @@ export function dmCreateV2(token: string, uIds: number[]): dmId | error {
     return { error: 'uIds contains duplicates' };
   }
 
-  const creatorId = data.users.find(element => element.token.find(element => element === token)).uId;
+  const creatorId = userObjToken(token).uId;
 
   const foundCreator = uIds.find(element => element === creatorId);
 
@@ -153,7 +154,7 @@ export function dmLeaveV2(token: string, dmId: number) {
   if (foundDm === undefined) {
     return { error: 'dmId does not exist' };
   }
-  if (isTokenValid(token) !== true) {
+  if (validateToken(token) !== true) {
     return { error: 'Token is not valid' };
   }
   const authId = getUIdFromToken(token);
@@ -180,7 +181,7 @@ export function dmRemoveV2(token: string, dmId: number) {
   if (foundDm === undefined) {
     return { error: 'dmId does not exist' };
   }
-  if (isTokenValid(token) !== true) {
+  if (validateToken(token) !== true) {
     return { error: 'Token is not valid' };
   }
   const creatorId = getUIdFromToken(token);
@@ -208,11 +209,15 @@ export function dmDetailsV1(token: string, dmId: number): error | dmDetails {
 
   // errors:
   // case: token is invalid
-  if (isTokenValid(token) === false) {
+  if (validateToken(token) === false) {
     return { error: 'Token is not valid1' };
   }
 
-  if (data.users.findIndex(element => element.token.includes(token)) === -1) {
+  // if (data.users.findIndex(element => element.token.includes(token)) === -1) {
+  //   return { error: 'token is invalid2' };
+  // }
+
+  if (userIndexToken(token) === -1) {
     return { error: 'token is invalid2' };
   }
 
@@ -223,7 +228,8 @@ export function dmDetailsV1(token: string, dmId: number): error | dmDetails {
   }
 
   // get the user's details with the given token
-  const currUser = data.users.find(users => users.token.includes(token));
+  // const currUser = data.users.find(users => users.token.includes(token));
+  const currUser = userObjToken(token);
 
   // case: dmId is valid and the authorised user is not a member of the DM
   const hasToken = findDm.members.find(user => user.uId === currUser.uId);

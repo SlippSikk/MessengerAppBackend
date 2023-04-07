@@ -13,11 +13,12 @@ export function requestAuthRegister(email: string, password: string, nameFirst: 
         password,
         nameFirst,
         nameLast
-      }
+      },
+      timeout: 100
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  return JSON.parse(res.body as string);
 }
 
 export function requestAuthLogin(email: string, password: string) {
