@@ -1,7 +1,7 @@
 import express, { json, Request, Response } from 'express';
 import { echo } from './echo';
-import { authRegisterV2, authLoginV2, authLogoutV1 } from './auth';
-import { dmCreateV1, dmLeaveV1, dmRemoveV1, dmDetailsV1, dmMessagesV1, dmListV1 } from './dm';
+import { authRegisterV3, authLoginV3, authLogoutV2 } from './auth';
+import { dmCreateV2, dmLeaveV2, dmRemoveV2, dmDetailsV1, dmMessagesV1, dmListV1 } from './dm';
 import { channelsListAllV2, channelsListV2, channelsCreateV2 } from './channels';
 import { channelDetailsV2, channelLeaveV1, channelAddownerV1, channelInviteV2, channelJoinV2, channelRemoveOwnerV1, channelMessagesV2 } from './channel';
 import { userProfileSethandleV1, userProfileSetemailV1, userProfileSetnameV1, usersAllV1, userProfileV2 } from './users';
@@ -11,6 +11,7 @@ import { clearV1 } from './other';
 import morgan from 'morgan';
 import config from './config.json';
 import cors from 'cors';
+import errorHandler from 'middleware-http-errors';
 
 // Set up web app
 const app = express();
@@ -28,6 +29,8 @@ app.get('/echo', (req: Request, res: Response, next) => {
   const data = req.query.echo as string;
   return res.json(echo(data));
 });
+
+
 
 app.post('/message/send/v1', (req: Request, res: Response) => {
   const { token, channelId, message } = req.body;
@@ -93,31 +96,28 @@ app.get('/channel/messages/v2', (req: Request, res: Response) => {
   return res.json(channelMessagesV2(token, channelId, start));
 });
 
-app.post('/auth/register/v2', (req: Request, res: Response) => {
+app.post('/auth/register/v3', (req: Request, res: Response) => {
   const { email, password, nameFirst, nameLast } = req.body;
 
-  return res.json(authRegisterV2(email, password, nameFirst, nameLast));
+  return res.json(authRegisterV3(email, password, nameFirst, nameLast));
 });
 
-app.post('/auth/login/v2', (req: Request, res: Response) => {
+app.post('/auth/login/v3', (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  return res.json(authLoginV2(email, password));
+  return res.json(authLoginV3(email, password));
 });
 
-app.post('/auth/logout/v1', (req: Request, res: Response) => {
-  const { token } = req.body;
-
-  return res.json(authLogoutV1(token));
+app.post('/auth/logout/v2', (req: Request, res: Response) => {
+  const token = req.header('token');
+  return res.json(authLogoutV2(token));
 });
 
-app.post('/dm/create/v1', (req: Request, res: Response) => {
-  const { token, uIds } = req.body;
-  const Ids = uIds.map(function (x: string) {
-    return parseInt(x, 10);
-  });
+app.post('/dm/create/v2', (req: Request, res: Response) => {
+  const { uIds } = req.body;
+  const token = req.header('token');
 
-  return res.json(dmCreateV1(token, Ids));
+  return res.json(dmCreateV2(token, uIds));
 });
 
 app.get('/dm/list/v1', (req: Request, res: Response) => {
@@ -133,17 +133,18 @@ app.get('/dm/details/v1', (req: Request, res: Response) => {
   return res.json(dmDetailsV1(token, parseInt(dmId)));
 });
 
-app.delete('/dm/remove/v1', (req: Request, res: Response) => {
-  const token = req.query.token as string;
+app.delete('/dm/remove/v2', (req: Request, res: Response) => {
+  const token = req.header('token');
   const dmId = req.query.dmId as string;
 
-  return res.json(dmRemoveV1(token, parseInt(dmId)));
+  return res.json(dmRemoveV2(token, parseInt(dmId)));
 });
 
-app.post('/dm/leave/v1', (req: Request, res: Response) => {
-  const { token, dmId } = req.body;
+app.post('/dm/leave/v2', (req: Request, res: Response) => {
+  const { dmId } = req.body;
+  const token = req.header('token');
 
-  return res.json(dmLeaveV1(token, parseInt(dmId)));
+  return res.json(dmLeaveV2(token, parseInt(dmId)));
 });
 
 app.get('/dm/messages/v1', (req: Request, res: Response) => {
@@ -201,6 +202,10 @@ app.get('/user/profile/v2', (req: Request, res: Response) => {
 app.delete('/clear/v1', (req: Request, res: Response) => {
   return res.json(clearV1());
 });
+
+// Keep this BENEATH route definitions
+// handles errors nicely
+app.use(errorHandler());
 
 // start server
 const server = app.listen(PORT, HOST, () => {

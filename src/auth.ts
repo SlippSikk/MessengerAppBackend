@@ -1,6 +1,9 @@
 import { getData, setData } from './dataStore';
 import validator from 'validator';
 import { users, authUserId, error } from './interfaces';
+import HTTPError from 'http-errors';
+import { encrypt, findPassword, hashToken, userIndexToken } from './helper';
+
 
 /**
  * Summary: Registers a user returning their unique Id
@@ -24,21 +27,21 @@ import { users, authUserId, error } from './interfaces';
  * @returns {error: 'string'} Error Message - Error message describing the error cause
  **/
 
-function authRegisterV2(email: string, password: string, nameFirst: string, nameLast: string): authUserId | error {
+function authRegisterV3(email: string, password: string, nameFirst: string, nameLast: string): authUserId | error {
   const data = getData();
 
   // Error Block
   const found = data.users.find(element => element.email === email);
   if (!(validator.isEmail(email))) {
-    return { error: 'Invalid Email' };
+    throw HTTPError(400, 'Invalid Email');
   } else if (found !== undefined) {
-    return { error: 'Email in use' };
+    throw HTTPError(400, 'Email in use');
   } else if (password.length < 6) {
-    return { error: 'Password too short' };
+    throw HTTPError(400, 'Password too short');
   } else if (nameFirst.length < 1 || nameFirst.length > 50) {
-    return { error: 'Incorrect nameFirst length' };
+    throw HTTPError(400, 'Incorrect nameFirst length');
   } else if (nameLast.length < 1 || nameLast.length > 50) {
-    return { error: 'Incorrect nameLast length' };
+    throw HTTPError(400, 'Incorrect nameLast length');
   }
 
   // Create handleStr
@@ -62,13 +65,17 @@ function authRegisterV2(email: string, password: string, nameFirst: string, name
 
   const Id = data.users.length + 1;
 
+  // Encrypt password
+
+  const pass = encrypt(password)
+
   const user: users = {
     uId: Id,
     email: email,
     nameFirst: nameFirst,
     nameLast: nameLast,
     handleStr: nameConcat,
-    password: password,
+    password: pass,
     token: [nameConcat]
   };
 
@@ -76,8 +83,11 @@ function authRegisterV2(email: string, password: string, nameFirst: string, name
 
   setData(data);
 
+  // Hash token 
+  const hashedToken = hashToken(nameConcat)
+
   return {
-    token: nameConcat,
+    token: hashedToken, // Replace with hash
     authUserId: Id,
   };
 }
@@ -95,21 +105,18 @@ function authRegisterV2(email: string, password: string, nameFirst: string, name
  * @returns {authUserId: Number} authUserId - Unqiue ID of the user created
  * @returns {error: 'string'} Error Message - Error message describing the error caus
  */
-function authLoginV2(email: string, password: string): authUserId | error {
+function authLoginV3(email: string, password: string): authUserId | error {
   const data = getData();
 
   // Error Block & find Object with details
-  if (data.users === undefined) {
-    return { error: 'user does not exist' };
-  }
-
   const found = data.users.find(element => element.email === email);
   const indexUser = data.users.findIndex(element => element.email === email);
-  const foundPass = data.users.find(element => element.password === password);
+
+  const foundPass = findPassword(password);
   if (found === undefined) {
-    return { error: 'Email does not belong to a user' };
-  } else if (foundPass === undefined) {
-    return { error: 'Password Incorrect' };
+    throw HTTPError(400, 'Email does not belong to a user');
+  } else if (foundPass === false) {
+    throw HTTPError(400, 'Password Incorrect');
   }
 
   const randNum = Math.floor(Math.random() * Date.now());
@@ -121,25 +128,33 @@ function authLoginV2(email: string, password: string): authUserId | error {
 
   setData(data);
 
+  // Hash the token and return it
+
+  const hashedToken = hashToken(randToken);
+
   return {
-    token: randToken,
+    token: hashedToken,
     authUserId: found.uId,
   };
 }
 
-function authLogoutV1(token: string) {
+function authLogoutV2(token: string) {
   const data = getData();
-  const userIndex = data.users.findIndex(user => user.token.includes(token));
+
+
+  const userIndex = userIndexToken(token);
 
   if (userIndex !== -1) {
-    const tokenIndex = data.users[userIndex].token.findIndex(element => element === token);
+    const tokenIndex = data.users[userIndex].token.findIndex(element => hashToken(element) === token);
     data.users[userIndex].token.splice(tokenIndex, 1);
     setData(data);
   } else {
-    return { error: 'Incorrect token' };
+    throw HTTPError(403, 'Incorrect token');
   }
 
   return {};
 }
 
-export { authRegisterV2, authLoginV2, authLogoutV1 };
+export { authRegisterV3, authLoginV3, authLogoutV2 };
+
+

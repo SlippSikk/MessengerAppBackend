@@ -22,7 +22,7 @@ Example usage
     setData(store)
 */
 
-// Use get() to access the data
+// Use getData() to access the data
 function getData() {
   if (fs.existsSync('./database.json')) {
     const dbstr = fs.readFileSync('./database.json');

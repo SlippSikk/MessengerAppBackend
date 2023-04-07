@@ -1,5 +1,14 @@
 import { getData } from './dataStore';
-import { channel, user, dms } from './interfaces';
+import { channel, user, dms, password, users } from './interfaces';
+
+import md5 from 'md5';
+import crypto from 'crypto'
+
+// Global Variables
+const randomWord = "yT95GGuk3FGVzcaFfPXb"
+const algorithm = 'aes-256-cbc';
+const key = crypto.randomBytes(32);
+const iv = crypto.randomBytes(16);
 
 // NOTE: checkExsists param "array" needs attention
 
@@ -99,9 +108,11 @@ export const isOwnerByToken = (channelId: number, token: string): boolean => {
  * @param {token:string}
  * @return {true/false}
  */
-export const isTokenValid = (token: string): boolean => {
-  return !!getUIdFromToken(token);
-};
+
+///////////// DEPRECATED //////////////////
+// export const isTokenValid = (token: string): boolean => {
+//   return !!getUIdFromToken(token);
+// };
 
 /**
  * @returns messageId thats unique
@@ -123,13 +134,13 @@ export const createMessageId = (): number => {
  * @returns returns the uId from a token
  * , or returns false
  */
-export const getUIdFromToken = (token: string): number | boolean => {
+export const getUIdFromToken = (token: string): number => {
   const data = getData();
-  const foundToken = data.users.find(element => element.token.find(element => element === token));
+  const foundToken = data.users.find(element => element.token.find(element => hashToken(element) === token));
 
-  if (foundToken === undefined) {
-    return false;
-  }
+  // if (foundToken === undefined) {
+  //   return false;
+  // }
   return foundToken.uId;
 };
 
@@ -216,7 +227,11 @@ export const isMessageInDM = (messageId: number): boolean => {
   }
   return false;
 };
-
+/**
+ * 
+ * @param messageId 
+ * @returns dmIndex
+ */
 export const findDMIndexWithMessage = (messageId: number): number => {
   const data = getData();
   for (let dmIndex = 0; dmIndex < data.channels.length; dmIndex++) {
@@ -226,3 +241,63 @@ export const findDMIndexWithMessage = (messageId: number): number => {
   }
   return -1;
 };
+
+export const hashToken = (str: string): string => {
+  return md5(str + randomWord);
+}
+
+export const validateToken = (hash: string): boolean => {
+  let data = getData();
+  const found = data.users.find(element => element.token.find(element => hashToken(element) === hash));
+
+  if (found !== undefined) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export const userIndexToken = (hash: string): number => {
+  let data = getData();
+  return data.users.findIndex(element => element.token.find(element => hashToken(element) === hash));
+}
+
+export const userObjToken = (hash: string): users => {
+  let data = getData();
+  return data.users.find(element => element.token.find(element => hashToken(element) === hash));
+}
+
+export function encrypt(text: string): password {
+  let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
+  let encrypted = cipher.update(text);
+  encrypted = Buffer.concat([encrypted, cipher.final()]);
+  return {
+    iv: iv.toString('hex'),
+    encryptedData: encrypted.toString('hex')
+  };
+}
+
+export function decrypt(text: password): string {
+  let iv = Buffer.from(text.iv, 'hex');
+  let encryptedText = Buffer.from(text.encryptedData, 'hex');
+
+  let decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
+
+  let decrypted = decipher.update(encryptedText);
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+
+  return decrypted.toString();
+}
+
+export const findPassword = (pass: string): boolean => {
+
+  let data = getData();
+
+  const foundPassword = data.users.find(element => decrypt(element.password) === pass)
+
+  if (foundPassword != undefined) {
+    return true;
+  } else {
+    return false;
+  }
+}
