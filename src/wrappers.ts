@@ -62,7 +62,7 @@ export function requestAuthLogout(token: string) {
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  return JSON.parse(res.body as string);
 }
 
 export function requestChannelLeave(token: string, channelId: number) {
