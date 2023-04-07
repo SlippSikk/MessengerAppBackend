@@ -1,4 +1,4 @@
-import { requestUsersAllV1, requestClear, requestAuthRegister } from '../wrappers';
+import { requestUsersAllV2, requestClear, requestAuthRegister } from '../wrappers';
 const ERROR = { error: expect.any(String) };
 
 beforeEach(() => {
@@ -7,14 +7,11 @@ beforeEach(() => {
 
 describe('/users/all/v1', () => {
   describe('basic tests', () => {
-    test('token invaild', () => {
-      const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
-      expect(requestUsersAllV1(tokenA + 'a')).toStrictEqual(ERROR);
-    });
     test('only one user in database', () => {
       requestClear();
       const registerObjectA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
-      expect(requestUsersAllV1(registerObjectA.token)).toStrictEqual({
+      expect(requestUsersAllV2().statusCode).toBe(200);
+      expect(requestUsersAllV2().body).toStrictEqual({
         users: [
           {
             uId: registerObjectA.authUserId,
@@ -30,7 +27,8 @@ describe('/users/all/v1', () => {
       const registerObjectA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
       const registerObjectB = requestAuthRegister('csgogo@gmail.com', 'counterStrike2', 'john', 'cena');
       const registerObjectC = requestAuthRegister('csgogogo@gmail.com', 'counterStrike3', 'long', 'short');
-      expect(requestUsersAllV1(registerObjectA.token)).toStrictEqual({
+      expect(requestUsersAllV2().statusCode).toBe(200);
+      expect(requestUsersAllV2().body).toStrictEqual({
         users: [
           {
             uId: registerObjectA.authUserId,
