@@ -4,10 +4,10 @@ test('Invalid channelId', () => {
 // const token = req.header('token');
 // const { other, data } = req.body;
 /*
-export function requestMessageReact(token: string, messageId: number, reactId: number) {
+export function requestMessageUnreact(token: string, messageId: number, reactId: number) {
   const res = request(
     'POST',
-    SERVER_URL + '/message/react/v1',
+    SERVER_URL + 'message/unreact/v1',
     {
       json: {
         token,
@@ -19,7 +19,7 @@ export function requestMessageReact(token: string, messageId: number, reactId: n
 
   return JSON.parse(res.getBody() as string);
 }
-app.post('/message/react/v1', (req: Request, res: Response) => {
+app.post('message/unreact/v1', (req: Request, res: Response) => {
   const token = req.header('token');
   const { messageId, reactId } = req.body;
 
@@ -42,6 +42,7 @@ beforeEach(() => {
   channelId1 = requestChannelsCreate(registered1.token, 'nest', true).channelId;
   channelId2 = requestChannelsCreate(registered2.token, 'shed', true).channelId;
 });
+
 describe('Error Cases', () => {
   test('Invalid messageId', () => {
     expect(requestMessagUnreact(token, messageId * messageId + 1, reactId)).toStrictEqual(ERROR);
@@ -52,8 +53,8 @@ describe('Error Cases', () => {
   test('Invalid reactId', () => {
     expect(requestMessageUnreact(token, messageId, 2)).toStrictEqual(ERROR);
   });
-  test('Message already has the current reactId', () => {
-    requestMessageReact(token, messageId, reactId)
+  test('Message does not have the current reactId', () => {
+    requestMessageUnreact(token, messageId, reactId);
     expect(requestMessageUnreact(token, messageId, reactId)).toStrictEqual(ERROR);
   });
 });
@@ -68,30 +69,30 @@ describe('Function Testing', () => {
     const mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').messageId;
   });
   test('React in channel msg', () => {
-    expect(requestMessageReact(token, messageId, reactId)).toStrictEqual({});
+    expect(requestMessageUnreact(token, messageId, reactId)).toStrictEqual({});
     const a = requestChannelMessages(registered1.token, channelId1, 0);
     expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
     expect(a.messages[0].message.reacts.user.uId).toStrictEqual(registered1);
   });
   test('React in dm msg', () => {
-    expect(requestMessageReact(token, messageId, reactId)).toStrictEqual({});
+    expect(requestMessageUnreact(token, messageId, reactId)).toStrictEqual({});
     const a = requestDmMessages(registered1.token, dmId2, 0);
     expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
     expect(a.messages[0].message.reacts.user.uId).toStrictEqual(registered1);
   });
-  test('Double reacts in channel msg', () => {
-    expect(requestMessageReact(token, messageId, reactId)).toStrictEqual({});
-    expect(requestMessageReact(token, messageId, reactId)).toStrictEqual(ERROR);
+  test('Double unreacts in channel msg', () => {
+    expect(requestMessageUnreact(token, messageId, reactId)).toStrictEqual({});
+    expect(requestMessageUnreact(token, messageId, reactId)).toStrictEqual(ERROR);
     const a = requestChannelMessages(registered1.token, channelId1, 0);
     expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
-    expect(a.messages[0].message.reacts.user.uId).toStrictEqual(registered1);
+    expect(a.messages[0].message.reacts.allUsers.length).toStrictEqual(0);
   });
-  test('Double reacts in dm msg', () => {
-    expect(requestMessageReact(token, messageId, reactId)).toStrictEqual({});
-    expect(requestMessageReact(token, messageId, reactId)).toStrictEqual(ERROR);
+  test('Double unreacts in dm msg', () => {
+    expect(requestMessageUnreact(token, messageId, reactId)).toStrictEqual({});
+    expect(requestMessageUnreact(token, messageId, reactId)).toStrictEqual(ERROR);
     const a = requestDmMessages(registered1.token, dmId2, 0);
     expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
-    expect(a.messages[0].message.reacts.user.uId).toStrictEqual(registered1);
+    expect(a.messages[0].message.reacts.allUsers.length).toStrictEqual(0);
   });
 });
 */
