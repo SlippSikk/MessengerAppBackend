@@ -127,8 +127,8 @@ app.get('/dm/list/v1', (req: Request, res: Response) => {
 });
 
 app.get('/dm/details/v1', (req: Request, res: Response) => {
-  const token = req.query.token as string;
   const dmId = req.query.dmId as string;
+  const token = req.header('token');
 
   return res.json(dmDetailsV1(token, parseInt(dmId)));
 });

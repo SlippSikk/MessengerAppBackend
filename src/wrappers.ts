@@ -144,12 +144,17 @@ export function requestDmDetails(token: string, dmId: number) {
     'GET',
     SERVER_URL + '/dm/details/v1',
     {
+      headers: { token },
       qs: {
-        token, dmId
-      }
+        dmId
+      },
+      timeout: 100
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+  
+  return {body, statusCode};
 }
 
 export function requestDmRemove(token: string, dmId: number) {

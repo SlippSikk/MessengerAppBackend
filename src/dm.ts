@@ -211,21 +211,14 @@ export function dmDetailsV1(token: string, dmId: number): error | dmDetails {
   // errors:
   // case: token is invalid
   if (validateToken(token) === false) {
-    return { error: 'Token is not valid1' };
-  }
+    throw HTTPError(403, 'Token is not valid1');
 
-  // if (data.users.findIndex(element => element.token.includes(token)) === -1) {
-  //   return { error: 'token is invalid2' };
-  // }
-
-  if (userIndexToken(token) === -1) {
-    return { error: 'token is invalid2' };
   }
 
   // case: dmId does not refer to a valid DM
   const findDm = data.dms.find(dm => dm.dmId === dmId);
   if (findDm === undefined) {
-    return { error: 'dmId is not valid' };
+    throw HTTPError(400, 'dmId is not valid');
   }
 
   // get the user's details with the given token
@@ -236,7 +229,7 @@ export function dmDetailsV1(token: string, dmId: number): error | dmDetails {
   const hasToken = findDm.members.find(user => user.uId === currUser.uId);
   // const hasToken = findDm.members.find(currUser);
   if (hasToken === undefined) {
-    return { error: 'User is not a member of the DM' };
+    throw HTTPError(403, 'User is not a member of the DM');
   }
 
   // return
