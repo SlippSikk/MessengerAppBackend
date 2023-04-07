@@ -21,11 +21,11 @@ describe('Incorrect Login', () => {
     { testName: 'incorrect password', email: 'adam.baqaie@gmail.com', password: 'hello1' },
     { testName: 'incorrect password', email: 'Johne@gmail.com', password: 'hello1' },
   ])('Input has $testName', ({ email, password }) => {
-    expect(requestAuthLogin(email, password)).toStrictEqual({ error: expect.any(String) });
+    expect(requestAuthLogin(email, password).error).toStrictEqual({ message: expect.any(String) });
   });
 
   test('No Users', () => {
     requestClear();
-    expect(requestAuthLogin('adam.b@gmail.com', 'password')).toStrictEqual({ error: expect.any(String) });
+    expect(requestAuthLogin('adam.b@gmail.com', 'password').error).toStrictEqual({ message: expect.any(String) });
   });
 });
