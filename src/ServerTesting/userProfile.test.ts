@@ -1,4 +1,4 @@
-import { requestClear, requestUserProfileV2, requestAuthRegister } from '../wrappers';
+import { requestClear, requestUserProfileV3, requestAuthRegister } from '../wrappers';
 const ERROR = { error: expect.any(String) };
 
 beforeEach(() => {
@@ -6,21 +6,18 @@ beforeEach(() => {
 });
 
 describe('/user/profile/v2', () => {
-  describe('error', () => {
-    requestClear();
-    const registerObjectA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
-    test.each([
-      { token: registerObjectA.token + 'A', uId: registerObjectA.authUserId },
-      { token: registerObjectA.token, uId: registerObjectA.authUserId + 1 },
-    ])('token=$token, uId=$uId', ({ token, uId }) => {
-      expect(requestUserProfileV2(token, uId)).toStrictEqual(ERROR);
+    test('Uid is invaild', () => {
+      requestClear();
+      const registerObject = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
+      expect(requestUserProfileV3(registerObject.authUserId + 1).statusCode).toBe(400);
+      expect(requestUserProfileV3(registerObject.authUserId + 1).body.error).toStrictEqual({ message: expect.any(String) })
     });
-  });
 
   test('viewing someone himself', () => {
     requestClear();
     const registerObjectA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
-    expect(requestUserProfileV2(registerObjectA.token, registerObjectA.authUserId)).toStrictEqual({
+    expect(requestUserProfileV3(registerObjectA.authUserId).statusCode).toBe(200);
+    expect(requestUserProfileV3(registerObjectA.authUserId).body).toStrictEqual({
       user: {
         uId: registerObjectA.authUserId,
         email: 'csgo@gmail.com',
@@ -32,9 +29,10 @@ describe('/user/profile/v2', () => {
   });
   test('viewing others', () => {
     requestClear();
-    const registerObjectA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
     const registerObjectB = requestAuthRegister('csgoFaze@gmail.com', 'counterStrike', 'boost', 'run');
-    expect(requestUserProfileV2(registerObjectA.token, registerObjectB.authUserId)).toStrictEqual({
+    const registerObjectA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
+    expect(requestUserProfileV3(registerObjectB.authUserId).statusCode).toBe(200);
+    expect(requestUserProfileV3(registerObjectB.authUserId).body).toStrictEqual({
       user: {
         uId: registerObjectB.authUserId,
         email: 'csgoFaze@gmail.com',
@@ -45,3 +43,4 @@ describe('/user/profile/v2', () => {
     });
   });
 });
+
