@@ -2,7 +2,7 @@ import { getData, setData } from './dataStore';
 import validator from 'validator';
 import { users, authUserId, error } from './interfaces';
 import HTTPError from 'http-errors';
-import { decrypt, encrypt, findPassword, hashToken, userIndexToken } from './helper';
+import { encrypt, findPassword, hashToken, userIndexToken } from './helper';
 
 
 /**
@@ -109,18 +109,14 @@ function authLoginV3(email: string, password: string): authUserId | error {
   const data = getData();
 
   // Error Block & find Object with details
-  if (data.users === undefined) {
-    return { error: 'user does not exist' };
-  }
-
   const found = data.users.find(element => element.email === email);
   const indexUser = data.users.findIndex(element => element.email === email);
 
   const foundPass = findPassword(password);
   if (found === undefined) {
-    return { error: 'Email does not belong to a user' };
+    throw HTTPError(400, 'Email does not belong to a user');
   } else if (foundPass === false) {
-    return { error: 'Password Incorrect' };
+    throw HTTPError(400, 'Password Incorrect');
   }
 
   const randNum = Math.floor(Math.random() * Date.now());
