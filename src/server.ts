@@ -114,7 +114,8 @@ app.post('/auth/logout/v2', (req: Request, res: Response) => {
 });
 
 app.post('/dm/create/v2', (req: Request, res: Response) => {
-  const { token, uIds } = req.body;
+  const { uIds } = req.body;
+  const token = req.header('token');
 
   return res.json(dmCreateV2(token, uIds));
 });

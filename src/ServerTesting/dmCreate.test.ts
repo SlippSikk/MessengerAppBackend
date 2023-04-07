@@ -61,15 +61,15 @@ describe('Correct Dm Create', () => {
 
 describe('Incorrect Dm Create', () => {
   test('Invalid uId', () => {
-    expect(requestDmCreate(registered.token, [registered2.authUserId, (registered.authUserId + Date.now()) * 2])).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmCreate(registered.token, [registered2.authUserId, (registered.authUserId + Date.now()) * 2]).error).toStrictEqual({ message: expect.any(String) });
   });
   test('Duplicate uId', () => {
-    expect(requestDmCreate(registered.token, [registered2.authUserId, registered2.authUserId])).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmCreate(registered.token, [registered2.authUserId, registered2.authUserId]).error).toStrictEqual({ message: expect.any(String) });
   });
   test('authorised user in uIds', () => {
-    expect(requestDmCreate(registered.token, [registered2.authUserId, registered.authUserId])).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmCreate(registered.token, [registered2.authUserId, registered.authUserId]).error).toStrictEqual({ message: expect.any(String) });
   });
   test('Invalid token', () => {
-    expect(requestDmCreate((registered2.token + registered.token + Date.now()), uIds)).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmCreate((registered2.token + registered.token + Date.now()), uIds).error).toStrictEqual({ message: expect.any(String) });
   });
 });
