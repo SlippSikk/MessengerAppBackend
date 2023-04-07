@@ -157,14 +157,15 @@ export function requestDmRemove(token: string, dmId: number) {
     'DELETE',
     `${url}:${port}/dm/remove/v2`,
     {
+      headers: { token },
       qs: {
-        token,
         dmId
-      }
+      },
+      timeout: 100
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  return JSON.parse(res.body as string);
 }
 
 export function requestChannelJoin(token: string, channelId: number) {

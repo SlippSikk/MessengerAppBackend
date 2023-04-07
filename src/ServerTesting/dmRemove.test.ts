@@ -47,15 +47,15 @@ describe('Correct Dm Remove', () => {
 
 describe('Incorrect Dm Remove', () => {
   test('Invalid dmId', () => {
-    expect(requestDmRemove(registered.token, (dmId2 * Date.now()))).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmRemove(registered.token, (dmId2 * Date.now())).error).toStrictEqual({ message: expect.any(String) });
   });
   test('authId is not creator', () => {
-    expect(requestDmRemove(registered2.token, dmId)).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmRemove(registered2.token, dmId).error).toStrictEqual({ message: expect.any(String) });
   });
   test('Invalid dmId', () => {
-    expect(requestDmRemove(registered.token, dmId2)).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmRemove(registered.token, dmId2).error).toStrictEqual({ message: expect.any(String) });
   });
   test('Invalid dmId', () => {
-    expect(requestDmRemove((registered2.token + registered.token + Date.now()), dmId)).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmRemove((registered2.token + registered.token + Date.now()), dmId).error).toStrictEqual({ message: expect.any(String) });
   });
 });

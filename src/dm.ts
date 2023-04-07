@@ -180,18 +180,18 @@ export function dmRemoveV2(token: string, dmId: number) {
   // Error Cases
   const foundDm = data.dms.find(element => element.dmId === dmId);
   if (foundDm === undefined) {
-    return { error: 'dmId does not exist' };
+    throw HTTPError(400, 'dmId does not exist');
   }
   if (validateToken(token) !== true) {
-    return { error: 'Token is not valid' };
+    throw HTTPError(403, 'Token is not valid');
   }
   const creatorId = getUIdFromToken(token);
   if (creatorId !== foundDm.creator.uId) {
-    return { error: 'authorised user is not the creator' };
+    throw HTTPError(403, 'authorised user is not the creator');
   }
   const foundCreator = foundDm.members.find(element => element.uId === creatorId);
   if (foundCreator === undefined) {
-    return { error: 'authorised user no longer in the DM' };
+    throw HTTPError(403, 'authorised user no longer in the DM');
   }
 
   // Removing dm
