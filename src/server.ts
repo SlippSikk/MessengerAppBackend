@@ -171,27 +171,27 @@ app.get('/channels/listall/v2', (req: Request, res: Response) => {
   return res.json(channelsListAllV2(token));
 });
 
-app.put('/user/profile/sethandle/v1', (req: Request, res: Response) => {
+app.put('/user/profile/sethandle/v2', (req: Request, res: Response) => {
   const { token, handleStr } = req.body;
   return res.json(userProfileSethandleV1(token, handleStr));
 });
 
-app.put('/user/profile/setemail/v1', (req: Request, res: Response) => { //
+app.put('/user/profile/setemail/v2', (req: Request, res: Response) => { //
   const { token, email } = req.body;
   return res.json(userProfileSetemailV1(token, email));
 });
 
-app.put('/user/profile/setname/v1', (req: Request, res: Response) => { // everything about setname is fine... weird
+app.put('/user/profile/setname/v2', (req: Request, res: Response) => { // everything about setname is fine... weird
   const { token, nameFirst, nameLast } = req.body;
   return res.json(userProfileSetnameV1(token, nameFirst, nameLast));
 });
 
-app.get('/users/all/v1', (req: Request, res: Response) => {
+app.get('/users/all/v2', (req: Request, res: Response) => {
   const token = req.query.token as string;
   return res.json(usersAllV1(token));
 });
 
-app.get('/user/profile/v2', (req: Request, res: Response) => {
+app.get('/user/profile/v3', (req: Request, res: Response) => {
   const token = req.query.token as string;
   const uId = parseInt(req.query.uId as string);
   return res.json(userProfileV2(token, uId));
