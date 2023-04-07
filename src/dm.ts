@@ -2,6 +2,7 @@
 import { error, dmId, user, dms, dmDetails, dmsOutput, dmMessages } from './interfaces';
 import { validateToken, isUserIdValid, getHandle, getUser, getUIdFromToken, getDm, userObjToken, userIndexToken } from './helper';
 import { getData, setData } from './dataStore';
+import HTTPError from 'http-errors';
 
 export function dmMessagesV1(token: string, dmId: number, start: number): error | dmMessages {
   // get data from dataStore
@@ -152,15 +153,15 @@ export function dmLeaveV2(token: string, dmId: number) {
   // Error Cases
   const foundDm = data.dms.find(element => element.dmId === dmId);
   if (foundDm === undefined) {
-    return { error: 'dmId does not exist' };
+    throw HTTPError(400, 'dmId does not exist');
   }
   if (validateToken(token) !== true) {
-    return { error: 'Token is not valid' };
+    throw HTTPError(403, 'Token is not valid');
   }
   const authId = getUIdFromToken(token);
   const foundAuth = foundDm.members.find(element => element.uId === authId);
   if (foundAuth === undefined) {
-    return { error: 'authorised user no longer in the DM' };
+    throw HTTPError(403, 'authorised user no longer in the DM');
   }
 
   // remove authorised user

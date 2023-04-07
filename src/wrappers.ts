@@ -128,11 +128,12 @@ export function requestDmLeave(token: string, dmId: number) {
       json: {
         token,
         dmId
-      }
+      },
+      timeout: 100
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  return JSON.parse(res.body as string);
 }
 
 export function requestDmDetails(token: string, dmId: number) {
