@@ -2,10 +2,10 @@ import { getData } from './dataStore';
 import { channel, user, dms, password, users } from './interfaces';
 
 import md5 from 'md5';
-import crypto from 'crypto'
+import crypto from 'crypto';
 
 // Global Variables
-const randomWord = "yT95GGuk3FGVzcaFfPXb"
+const randomWord = 'yT95GGuk3FGVzcaFfPXb';
 const algorithm = 'aes-256-cbc';
 const key = crypto.randomBytes(32);
 const iv = crypto.randomBytes(16);
@@ -109,7 +109,7 @@ export const isOwnerByToken = (channelId: number, token: string): boolean => {
  * @return {true/false}
  */
 
-///////////// DEPRECATED //////////////////
+// /////////// DEPRECATED //////////////////
 // export const isTokenValid = (token: string): boolean => {
 //   return !!getUIdFromToken(token);
 // };
