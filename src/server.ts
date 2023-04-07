@@ -4,7 +4,7 @@ import { authRegisterV3, authLoginV3, authLogoutV2 } from './auth';
 import { dmCreateV2, dmLeaveV2, dmRemoveV2, dmDetailsV1, dmMessagesV1, dmListV1 } from './dm';
 import { channelsListAllV2, channelsListV2, channelsCreateV2 } from './channels';
 import { channelDetailsV2, channelLeaveV1, channelAddownerV1, channelInviteV2, channelJoinV2, channelRemoveOwnerV1, channelMessagesV2 } from './channel';
-import { userProfileSethandleV1, userProfileSetemailV1, userProfileSetnameV1, usersAllV1, userProfileV2 } from './users';
+import { userProfileSethandleV2, userProfileSetemailV2, userProfileSetnameV2, usersAllV2, userProfileV3 } from './users';
 import { messageSenddmV1, messageSendV1, messageEditV1, messageRemoveV1 } from './message';
 
 import { clearV1 } from './other';
@@ -172,34 +172,33 @@ app.get('/channels/listall/v2', (req: Request, res: Response) => {
 });
 
 app.put('/user/profile/sethandle/v2', (req: Request, res: Response) => {
-  const { token, handleStr } = req.body;
-  return res.json(userProfileSethandleV1(token, handleStr));
-});
+    const { handleStr } = req.body;
+    return res.json(userProfileSethandleV2(handleStr));
+  });
+  
+  app.put('/user/profile/setemail/v2', (req: Request, res: Response) => { //
+    const { email } = req.body;
+    return res.json(userProfileSetemailV2(email));
+  });
+  
+  app.put('/user/profile/setname/v2', (req: Request, res: Response) => { // everything about setname is fine... weird
+    const { nameFirst, nameLast } = req.body;
+    return res.json(userProfileSetnameV2(nameFirst, nameLast));
+  });
+  
+  app.get('/users/all/v2', (req: Request, res: Response) => {
+    return res.json(usersAllV2());
+  });
+  
+  app.get('/user/profile/v3', (req: Request, res: Response) => {
+    const uId = parseInt(req.query.uId as string);
+    return res.json(userProfileV3(uId));
+  });
+  
+  app.delete('/clear/v1', (req: Request, res: Response) => {
+    return res.json(clearV1());
+  });
 
-app.put('/user/profile/setemail/v2', (req: Request, res: Response) => { //
-  const { token, email } = req.body;
-  return res.json(userProfileSetemailV1(token, email));
-});
-
-app.put('/user/profile/setname/v2', (req: Request, res: Response) => { // everything about setname is fine... weird
-  const { token, nameFirst, nameLast } = req.body;
-  return res.json(userProfileSetnameV1(token, nameFirst, nameLast));
-});
-
-app.get('/users/all/v2', (req: Request, res: Response) => {
-  const token = req.query.token as string;
-  return res.json(usersAllV1(token));
-});
-
-app.get('/user/profile/v3', (req: Request, res: Response) => {
-  const token = req.query.token as string;
-  const uId = parseInt(req.query.uId as string);
-  return res.json(userProfileV2(token, uId));
-});
-
-app.delete('/clear/v1', (req: Request, res: Response) => {
-  return res.json(clearV1());
-});
 
 // Keep this BENEATH route definitions
 // handles errors nicely
