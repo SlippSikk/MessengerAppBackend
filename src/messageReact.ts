@@ -1,6 +1,9 @@
+/*
+import { receiveMessageOnPort } from 'worker_threads';
 import { getData, setData } from './dataStore';
-import { isTokenValid, isMessageInChannel, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember } from './helper';
-import { isDmIdValid, createMessageId, isChannelIdValid } from './helper';
+import { isTokenValid, isMessageInChannel, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember, getUser } from './helper';
+import { isDmIdValid, createMessageId, isChannelIdValid, getMessage } from './helper';
+import { dataTs, channel, dms, messages } from './interfaces';
 
 /**
  * @param token
@@ -8,7 +11,8 @@ import { isDmIdValid, createMessageId, isChannelIdValid } from './helper';
  * @param message
  * @returns
  */
-export const messageSenddmV1 = (token: string, dmId: number, message: string) => {
+/*
+export const messageReactV1 = (token: string, messageId: number, reactId: number) => {
   const data: dataTs = getData();
 
   if (!isDmIdValid(dmId)) {
@@ -23,15 +27,13 @@ export const messageSenddmV1 = (token: string, dmId: number, message: string) =>
   if (!isDmMember(dmId, token)) {
     return { error: 'user is not member of channel' };
   }
-  const messageId = createMessageId();
-  const uId = getUIdFromToken(token) as number;
-  const dmIndex: number = data.dms.findIndex(dm => dm.dmId === dmId);
-  data.dms[dmIndex].messages.push({
-    messageId: messageId,
-    uId: uId,
-    message: message,
-    timeSent: ~~(new Date().getTime() / 1000)
-  });
+  const msg = getMessage(messageId) as messages;
+  const indexReactId = reactId - 1;
+  msg.reacts[indexReactId].allUsers.push(
+    getUser(getUIdFromToken(token) as number)
+  );
+
   setData(data);
   return { messageId: messageId };
 };
+*/

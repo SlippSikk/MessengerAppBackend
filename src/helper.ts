@@ -1,5 +1,5 @@
 import { getData } from './dataStore';
-import { channel, user, dms } from './interfaces';
+import { channel, user, dms, dataTs } from './interfaces';
 
 // NOTE: checkExsists param "array" needs attention
 
@@ -225,4 +225,26 @@ export const findDMIndexWithMessage = (messageId: number): number => {
     }
   }
   return -1;
+};
+/**
+ * @param {number} messageId
+ * @returns {object} msg object
+ * @summary Gets message object
+ */
+export const getMessage = (messageId: number) => {
+  const data: dataTs = getData();
+  let msg;
+  for (const channel of data.channels) {
+    msg = channel.messages.find(message => message.messageId === messageId);
+    if (msg) {
+      return msg;
+    }
+  }
+  for (const dm of data.dms) {
+    msg = dm.messages.find(message => message.messageId === messageId);
+    if (msg) {
+      return msg;
+    }
+  }
+  return false;
 };
