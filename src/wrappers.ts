@@ -1,5 +1,4 @@
 import request from 'sync-request';
-import { dmId } from './interfaces';
 import { port, url } from './config.json';
 const SERVER_URL = `${url}:${port}`;
 
@@ -29,11 +28,13 @@ export function requestAuthLogin(email: string, password: string) {
       json: {
         email,
         password
-      }
+      },
+
+      timeout: 100
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  return JSON.parse(res.body as string);
 }
 
 export function requestChannelAddowner(token: string, channelId: number, uId: number) {
@@ -56,13 +57,14 @@ export function requestAuthLogout(token: string) {
     'POST',
     `${url}:${port}/auth/logout/v2`,
     {
-      json: {
+      headers: {
         token
-      }
+      },
+      timeout: 100
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  return JSON.parse(res.body as string);
 }
 
 export function requestChannelLeave(token: string, channelId: number) {
@@ -105,19 +107,20 @@ export function requestDmMessages(token: string, dmId: number, start: number) {
   return JSON.parse(res.getBody() as string);
 }
 
-export function requestDmCreate(token: string, uIds: number[]): dmId {
+export function requestDmCreate(token: string, uIds: number[]) {
   const res = request(
     'POST',
     `${url}:${port}/dm/create/v2`,
     {
+      headers: { token },
       json: {
-        token,
         uIds
-      }
+      },
+      timeout: 100
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  return JSON.parse(res.body as string);
 }
 
 export function requestDmLeave(token: string, dmId: number) {
@@ -321,6 +324,7 @@ export function requestChannelsCreate(token: string, name: string, isPublic: boo
     'POST',
     SERVER_URL + '/channels/create/v2',
     {
+
       json: {
         token, name, isPublic
       }
