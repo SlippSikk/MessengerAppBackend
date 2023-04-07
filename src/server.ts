@@ -115,12 +115,10 @@ app.post('/auth/logout/v2', (req: Request, res: Response) => {
 });
 
 app.post('/dm/create/v2', (req: Request, res: Response) => {
-  const { token, uIds } = req.body;
-  const Ids = uIds.map(function (x: string) {
-    return parseInt(x, 10);
-  });
+  const { uIds } = req.body;
+  const token = req.header('token');
 
-  return res.json(dmCreateV2(token, Ids));
+  return res.json(dmCreateV2(token, uIds));
 });
 
 app.get('/dm/list/v1', (req: Request, res: Response) => {
