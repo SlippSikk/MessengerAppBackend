@@ -109,8 +109,8 @@ export function requestDmCreate(token: string, uIds: number[]) {
     'POST',
     `${url}:${port}/dm/create/v2`,
     {
+      headers: { token },
       json: {
-        token,
         uIds
       },
       timeout: 100
