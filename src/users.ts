@@ -2,7 +2,7 @@
 import { getData, setData } from './dataStore';
 import validator from 'validator';
 import HTTPError from 'http-errors';
-import { hashToken, userObjToken } from './helper';
+import { hashToken, userObjToken, validateToken } from './helper';
 
 /**
  * For a valid user, returns information about their user ID,
@@ -21,7 +21,9 @@ import { hashToken, userObjToken } from './helper';
 
 export function userProfileSetemailV2(token: string,email:string) {
   const data = getData();
-  const Token = hashToken(token);
+  if(!validateToken){
+    throw HTTPError(400, "token is not valid");
+  }
   if (!(validator.isEmail(email))) {
     throw HTTPError(400, "email is not valid");
   }
@@ -29,10 +31,7 @@ export function userProfileSetemailV2(token: string,email:string) {
   if (userObjectEmail !== undefined) {
     throw HTTPError(400, "email is in use");
   }
-  userObjToken(Token).email = email;
-
-//   const userObject = data.users.find(a => a.token.includes(token));  
-//   userObject.email = email;  // how could I find the object to change the email??
+  userObjToken(token).email = email;
   setData(data);
   return {};
 }
@@ -44,6 +43,9 @@ export function userProfileSetemailV2(token: string,email:string) {
 
 export function userProfileSethandleV2(token: string,handleStr:string) {
   const data = getData();
+  if(!validateToken){
+    throw HTTPError(400, "token is not valid");
+  }
   const userObjectHandleStr = data.users.find(a => a.handleStr === handleStr);
   if (userObjectHandleStr !== undefined) {
     throw HTTPError(400, "handle is in use");
@@ -52,13 +54,10 @@ export function userProfileSethandleV2(token: string,handleStr:string) {
   if (!noAlphanumeric.test(handleStr)) {
     throw HTTPError(400, "handleStr can not include non alphanumeric");
   }
-
   if ((handleStr.length > 20) || (handleStr.length < 3)) {
     throw HTTPError(400, "length of handleStr is not between 3 and 20 characters inclusive");
   }
-
-  const userObject = data.users.find(a => a.token.includes(token));
-  userObject.handleStr = handleStr;
+  userObjToken(token).handleStr = handleStr;
   setData(data);
   return {};
 }
@@ -72,15 +71,18 @@ export function userProfileSethandleV2(token: string,handleStr:string) {
 
 export function userProfileSetnameV2(token: string, nameFirst:string, nameLast:string) {
   const data = getData();
+  if(!validateToken){
+    throw HTTPError(400, "token is not valid");
+  }
   if ((nameFirst.length > 50) || (nameFirst.length < 1)) {
     throw HTTPError(400, "length of nameFirst is not between 1 and 50 characters inclusive"); 
   }
   if ((nameLast.length > 50) || (nameLast.length < 1)) {
     throw HTTPError(400, "length of nameLast is not between 1 and 50 characters inclusive");
   }
-  const userObject = data.users.find(a => a.token.includes(token)); // I guess it could work :D
-  userObject.nameFirst = nameFirst;
-  userObject.nameLast = nameLast;
+  
+  userObjToken(token).nameFirst = nameFirst;
+  userObjToken(token).nameLast = nameLast;
   setData(data);
   return {};
 }
