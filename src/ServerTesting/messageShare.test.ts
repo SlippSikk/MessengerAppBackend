@@ -1,7 +1,7 @@
 test('Invalid channelId', () => {
   expect(1 + 1).toStrictEqual(2);
 });
-/
+/*
 export function requestMessageShare(token: string, ogMessageId: number, message: string, channelId: number, dmId: number) {
   const res = request(
     'POST',
@@ -99,4 +99,4 @@ describe('Function Testing', () => {
     expect(a.messages[0].message).toContain('Hi my ducklings');
   });
 });
-* /
+*/
