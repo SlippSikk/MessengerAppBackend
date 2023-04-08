@@ -84,7 +84,7 @@ export function requestChannelLeave(token: string, channelId: number) {
 export function requestDmDetails(token: string, dmId: number) {
   const res = request(
     'GET',
-    SERVER_URL + '/dm/details/v1',
+    SERVER_URL + '/dm/details/v2',
     {
       headers: { token },
       qs: {
@@ -102,7 +102,7 @@ export function requestDmDetails(token: string, dmId: number) {
 export function requestDmList(token: string) {
   const res = request(
     'GET',
-    SERVER_URL + '/dm/list/v1',
+    SERVER_URL + '/dm/list/v2',
     {
       headers: { token },
       qs: {
@@ -119,7 +119,7 @@ export function requestDmList(token: string) {
 export function requestDmMessages(token: string, dmId: number, start: number) {
   const res = request(
     'GET',
-    SERVER_URL + '/dm/messages/v1',
+    SERVER_URL + '/dm/messages/v2',
     {
       headers: { token },
       qs: {
@@ -337,7 +337,7 @@ export function requestChannelDetails(token: string, channelId: number) {
 export function requestChannelsCreate(token: string, name: string, isPublic: boolean) {
   const res = request(
     'POST',
-    SERVER_URL + '/channels/create/v2',
+    SERVER_URL + '/channels/create/v3',
     {
       headers: { token },
       json: {
@@ -354,7 +354,7 @@ export function requestChannelsCreate(token: string, name: string, isPublic: boo
 export function requestChannelsListAll(token: string) {
   const res = request(
     'GET',
-    SERVER_URL + '/channels/listall/v2',
+    SERVER_URL + '/channels/listall/v3',
     {
       headers: { token },
       qs: {
@@ -370,7 +370,7 @@ export function requestChannelsListAll(token: string) {
 export function requestChannelsList(token: string) {
   const res = request(
     'GET',
-    SERVER_URL + '/channels/list/v2',
+    SERVER_URL + '/channels/list/v3',
     {
       headers: { token },
       qs: {

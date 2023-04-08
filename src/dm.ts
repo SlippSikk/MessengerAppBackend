@@ -4,7 +4,7 @@ import { validateToken, isUserIdValid, getHandle, getUser, getUIdFromToken, getD
 import { getData, setData } from './dataStore';
 import HTTPError from 'http-errors';
 
-export function dmMessagesV1(token: string, dmId: number, start: number): error | dmMessages {
+export function dmMessagesV2(token: string, dmId: number, start: number): error | dmMessages {
   // get data from dataStore
   const data = getData();
 
@@ -56,7 +56,7 @@ export function dmMessagesV1(token: string, dmId: number, start: number): error 
   };
 }
 
-export function dmListV1(token: string): { dms: dmsOutput[] } | error {
+export function dmListV2(token: string): { dms: dmsOutput[] } | error {
   // error case: invalid token
   if (validateToken(token) !== true) {
     throw HTTPError(403, 'Token is not valid');
@@ -204,7 +204,7 @@ export function dmRemoveV2(token: string, dmId: number) {
   return {};
 }
 
-export function dmDetailsV1(token: string, dmId: number): error | dmDetails {
+export function dmDetailsV2(token: string, dmId: number): error | dmDetails {
   // get data from dataStore
   const data = getData();
 
