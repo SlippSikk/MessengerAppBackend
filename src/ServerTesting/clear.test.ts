@@ -4,8 +4,7 @@ import { requestClear, requestAuthRegister, requestUsersAllV2 } from '../wrapper
 
 describe('correct return value', () => {
   test('correct return value', () => {
-    expect(requestClear().statusCode).toBe(200);
-    expect(requestClear().body).toStrictEqual({});
+    expect(requestClear()).toStrictEqual({});
   });
   test('delete all users', () => {
     const registerObjectC = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
@@ -20,7 +19,8 @@ describe('correct return value', () => {
         }
       ]
     });
-    expect(requestUsersAllV2(registerObjectC.token).statusCode).toBe(400);
+    requestClear()
+    expect(requestUsersAllV2(registerObjectC.token).statusCode).toBe(403);
     expect(requestUsersAllV2(registerObjectC.token).body.error).toStrictEqual({ message: expect.any(String) })
   });
 });

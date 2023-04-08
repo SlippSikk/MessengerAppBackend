@@ -395,10 +395,10 @@ export function requestClear() {
 
     }
   );
-  const body = JSON.parse(res.getBody() as string);
-  const statusCode = res.statusCode
-  return {body, statusCode}
+
+  return JSON.parse(res.getBody() as string);
 }
+
 
 export function requestUsersAllV2(token:string) {
   const res = request(
