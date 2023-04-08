@@ -1,20 +1,26 @@
-/
+/*
 import { getData, setData } from './dataStore';
-import { isOwner, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember, getUser } from './helper';
+import { isOwner, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember, getUser, userIndexToken } from './helper';
 import { isDmIdValid, isDmOwner, isChannelIdValid, getMessage } from './helper';
 import { dataTs, channel, dms, messages } from './interfaces';
 // HELPER FUNCTIONS ADD LATER
 
-const getChannelIdFromMessageId = (messageId: number) => {
-
+const getChannelFromMessageId = (messageId: number): channel => {
+  const data: dataTs = getData();
+  return data.channels.find(channel => channel.messages.find(message => message.messageId === messageId));
 };
 
-const getDmIdFromMessageId = (messageId: number) => {
-
+const getDmFromMessageId = (messageId: number): dms => {
+  const data: dataTs = getData();
+  return data.dms.find(dm => dm.messages.find(message => message.messageId === messageId));
 };
 
-const getMessage = (messageId: number) => {
+const getMessage = (messageId: number): messages => {
+  return isYieldExpression;
+};
 
+const isDmOwner = (dmId: number, uId: number): boolean => {
+  return true;
 };
 /**
  * @param token
@@ -22,33 +28,39 @@ const getMessage = (messageId: number) => {
  * @param message
  * @returns
  */
+/*
 export const messagePinV1 = (token: string, messageId: number) => {
   const data: dataTs = getData();
   let inChannel = true;
   let inDm = true;
-  let channelId: number, dmId: number;
-  // --------- CHECKS IF IS MESSAGEID ISVALID -----------------------
-  // Checks if messageId is in channel or a dm
-  if (isDmIdValid(messageId)) {
+  // MESSAGE OBJECT = either channel or dm
+  let dms;
+  let channel = getChannelFromMessageId(messageId);
+  if (!channel) {
+    dms = getDmFromMessageId(messageId);
     inChannel = false;
   }
-  if (isChannelIdValid(messageId)) {
+  if (!dms) {
     inDm = false;
   }
+  // --------- CHECKS IF IS MESSAGEID ISVALID -----------------------
+  // Checks if messageId is in channel or a dm
   if (inChannel && inDm) {
     return { error: 'Invalid messageId' };
   }
   const uId = getUIdFromToken(token);
   // Check if user is in Channel
+  let channelId: number;
   if (inChannel) {
-    channelId = getChannelIdFromMessageId(messageId) as number;
+    channelId = channel.channelId;
     if (!isMember(channelId, uId)) {
       return { error: 'not a member of messageId' };
     }
   }
   // Check if user is in dm
+  let dmId: number;
   if (inDm) {
-    dmId = getDmIdFromMessageId(messageId) as number;
+    dmId = dms.dmId;
     if (!isDmMember(dmId, token)) {
       return { error: 'not a member of messageId' };
     }
@@ -71,3 +83,4 @@ export const messagePinV1 = (token: string, messageId: number) => {
   setData(data);
   return {};
 };
+*/
