@@ -109,18 +109,15 @@ app.post('/auth/login/v3', (req: Request, res: Response) => {
 });
 
 app.post('/auth/logout/v2', (req: Request, res: Response) => {
-  const { token } = req.body;
-
+  const token = req.header('token');
   return res.json(authLogoutV2(token));
 });
 
 app.post('/dm/create/v2', (req: Request, res: Response) => {
-  const { token, uIds } = req.body;
-  const Ids = uIds.map(function (x: string) {
-    return parseInt(x, 10);
-  });
+  const { uIds } = req.body;
+  const token = req.header('token');
 
-  return res.json(dmCreateV2(token, Ids));
+  return res.json(dmCreateV2(token, uIds));
 });
 
 app.get('/dm/list/v1', (req: Request, res: Response) => {
@@ -137,14 +134,15 @@ app.get('/dm/details/v1', (req: Request, res: Response) => {
 });
 
 app.delete('/dm/remove/v2', (req: Request, res: Response) => {
-  const token = req.query.token as string;
+  const token = req.header('token');
   const dmId = req.query.dmId as string;
 
   return res.json(dmRemoveV2(token, parseInt(dmId)));
 });
 
 app.post('/dm/leave/v2', (req: Request, res: Response) => {
-  const { token, dmId } = req.body;
+  const { dmId } = req.body;
+  const token = req.header('token');
 
   return res.json(dmLeaveV2(token, parseInt(dmId)));
 });
