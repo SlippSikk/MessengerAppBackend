@@ -7,11 +7,17 @@ beforeEach(() => {
 
 describe('/users/all/v1', () => {
   describe('basic tests', () => {
+    test('token is invaild', () => {
+      requestClear();
+      const registerObject = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
+      expect(requestUsersAllV2(registerObject.token).statusCode).toBe(400);
+      expect(requestUsersAllV2(registerObject.token).body.error).toStrictEqual({ message: expect.any(String) })
+    });
     test('only one user in database', () => {
       requestClear();
       const registerObjectA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
-      expect(requestUsersAllV2().statusCode).toBe(200);
-      expect(requestUsersAllV2().body).toStrictEqual({
+      expect(requestUsersAllV2(registerObjectA.token).statusCode).toBe(200);
+      expect(requestUsersAllV2(registerObjectA.token).body).toStrictEqual({
         users: [
           {
             uId: registerObjectA.authUserId,
@@ -27,8 +33,8 @@ describe('/users/all/v1', () => {
       const registerObjectA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
       const registerObjectB = requestAuthRegister('csgogo@gmail.com', 'counterStrike2', 'john', 'cena');
       const registerObjectC = requestAuthRegister('csgogogo@gmail.com', 'counterStrike3', 'long', 'short');
-      expect(requestUsersAllV2().statusCode).toBe(200);
-      expect(requestUsersAllV2().body).toStrictEqual({
+      expect(requestUsersAllV2(registerObjectC.token).statusCode).toBe(200);
+      expect(requestUsersAllV2(registerObjectC.token).body).toStrictEqual({
         users: [
           {
             uId: registerObjectA.authUserId,

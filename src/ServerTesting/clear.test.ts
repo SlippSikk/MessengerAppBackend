@@ -9,7 +9,7 @@ describe('correct return value', () => {
   });
   test('delete all users', () => {
     const registerObjectC = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
-    expect(requestUsersAllV2().body).toStrictEqual({
+    expect(requestUsersAllV2(registerObjectC.token).body).toStrictEqual({
       users: [
         {
           uId: registerObjectC.authUserId,
@@ -20,11 +20,8 @@ describe('correct return value', () => {
         }
       ]
     });
-    requestClear();
-    expect(requestClear().statusCode).toBe(200);
-    expect(requestUsersAllV2().body).toStrictEqual({
-      users: []
-    });
+    expect(requestUsersAllV2(registerObjectC.token).statusCode).toBe(400);
+    expect(requestUsersAllV2(registerObjectC.token).body.error).toStrictEqual({ message: expect.any(String) })
   });
 });
 

@@ -19,7 +19,7 @@ import { encrypt, findPassword, hashToken, userIndexToken } from './helper';
  * @returns {}
  */
 
-export function userProfileSetemailV2(email:string) {
+export function userProfileSetemailV2(token: string,email:string) {
   const data = getData();
   if (!(validator.isEmail(email))) {
     throw HTTPError(400, "email is not valid");
@@ -39,7 +39,7 @@ export function userProfileSetemailV2(email:string) {
  * @returns {}
  */
 
-export function userProfileSethandleV2(handleStr:string) {
+export function userProfileSethandleV2(token: string,handleStr:string) {
   const data = getData();
   const userObjectHandleStr = data.users.find(a => a.handleStr === handleStr);
   if (userObjectHandleStr !== undefined) {
@@ -67,7 +67,7 @@ export function userProfileSethandleV2(handleStr:string) {
  * @returns {}
  */
 
-export function userProfileSetnameV2(nameFirst:string, nameLast:string) {
+export function userProfileSetnameV2(token: string, nameFirst:string, nameLast:string) {
   const data = getData();
   if ((nameFirst.length > 50) || (nameFirst.length < 1)) {
     throw HTTPError(400, "length of nameFirst is not between 1 and 50 characters inclusive"); 
@@ -86,7 +86,7 @@ export function userProfileSetnameV2(nameFirst:string, nameLast:string) {
  * @returns {{users}}
  */
 
-export function usersAllV2() {
+export function usersAllV2(token: string) {
   const data = getData();
   const users = data.users
     .map(p => ({
@@ -104,7 +104,7 @@ export function usersAllV2() {
  * @returns {user}
  */
 
-export function userProfileV3(uId:number) {
+export function userProfileV3(token: string, uId:number) {
   const data = getData();
   const idToView = data.users.find(a => a.uId === uId);
   if (idToView === undefined) {

@@ -173,26 +173,31 @@ app.get('/channels/listall/v2', (req: Request, res: Response) => {
 
 app.put('/user/profile/sethandle/v2', (req: Request, res: Response) => {
     const { handleStr } = req.body;
-    return res.json(userProfileSethandleV2(handleStr));
+    const token = req.header('token');
+    return res.json(userProfileSethandleV2(token, handleStr));
   });
   
   app.put('/user/profile/setemail/v2', (req: Request, res: Response) => { //
     const { email } = req.body;
-    return res.json(userProfileSetemailV2(email));
+    const token = req.header('token');
+    return res.json(userProfileSetemailV2(token, email));
   });
   
   app.put('/user/profile/setname/v2', (req: Request, res: Response) => { // everything about setname is fine... weird
     const { nameFirst, nameLast } = req.body;
-    return res.json(userProfileSetnameV2(nameFirst, nameLast));
+    const token = req.header('token');
+    return res.json(userProfileSetnameV2(token, nameFirst, nameLast));
   });
   
   app.get('/users/all/v2', (req: Request, res: Response) => {
-    return res.json(usersAllV2());
+    const token = req.header('token');
+    return res.json(usersAllV2(token));
   });
   
   app.get('/user/profile/v3', (req: Request, res: Response) => {
     const uId = parseInt(req.query.uId as string);
-    return res.json(userProfileV3(uId));
+    const token = req.header('token');
+    return res.json(userProfileV3(token, uId));
   });
   
   app.delete('/clear/v1', (req: Request, res: Response) => {
