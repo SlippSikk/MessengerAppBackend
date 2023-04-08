@@ -2,7 +2,7 @@
 import { getData, setData } from './dataStore';
 import validator from 'validator';
 import HTTPError from 'http-errors';
-import { encrypt, findPassword, hashToken, userIndexToken } from './helper';
+import { hashToken, userObjToken } from './helper';
 
 /**
  * For a valid user, returns information about their user ID,
@@ -21,6 +21,7 @@ import { encrypt, findPassword, hashToken, userIndexToken } from './helper';
 
 export function userProfileSetemailV2(token: string,email:string) {
   const data = getData();
+  const Token = hashToken(token);
   if (!(validator.isEmail(email))) {
     throw HTTPError(400, "email is not valid");
   }
@@ -28,6 +29,8 @@ export function userProfileSetemailV2(token: string,email:string) {
   if (userObjectEmail !== undefined) {
     throw HTTPError(400, "email is in use");
   }
+  userObjToken(Token).email = email;
+
 //   const userObject = data.users.find(a => a.token.includes(token));  
 //   userObject.email = email;  // how could I find the object to change the email??
   setData(data);
