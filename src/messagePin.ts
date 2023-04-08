@@ -3,6 +3,7 @@ import { getData, setData } from './dataStore';
 import { isOwner, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember, getUser, userIndexToken } from './helper';
 import { isDmIdValid, isDmOwner, isChannelIdValid, getMessage } from './helper';
 import { dataTs, channel, dms, messages } from './interfaces';
+import HTTPError from 'http-errors';
 // HELPER FUNCTIONS ADD LATER
 
 const getChannelFromMessageId = (messageId: number): channel => {
@@ -54,7 +55,7 @@ export const messagePinV1 = (token: string, messageId: number) => {
   if (inChannel) {
     channelId = channel.channelId;
     if (!isMember(channelId, uId)) {
-      return { error: 'not a member of messageId' };
+      throw HTTPError(400, 'not a member of messageId');
     }
   }
   // Check if user is in dm
@@ -62,22 +63,23 @@ export const messagePinV1 = (token: string, messageId: number) => {
   if (inDm) {
     dmId = dms.dmId;
     if (!isDmMember(dmId, token)) {
-      return { error: 'not a member of messageId' };
+      throw HTTPError(400, 'not a member of messageId');
     }
   }
   const msg = getMessage(messageId) as messages;
   // --------- CHECKS IF IS PINNED -----------------------
   if (msg.isPinned === true) {
-    return { error: 'Already Pinned' };
+    throw HTTPError(400, 'Already pinned');
   }
   // ----------CHECKS OWNER PERMISSION--------------------
   // IN CHANNEL
   if (!isOwner(channelId, uId) && uId !== 1 && inChannel) {
-    return { error: 'no Owner permission' };
+    throw HTTPError(403, 'no Owner permission');
+
   }
   // IN DM
   if (!isDmOwner(dmId, uId) && inDm) {
-    return { error: 'no Owner permission' };
+    throw HTTPError(403, 'no Owner permission');
   }
   msg.isPinned = true;
   setData(data);

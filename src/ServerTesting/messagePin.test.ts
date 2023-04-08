@@ -7,14 +7,15 @@ export function requestMessagePin(token: string, messageId: number) {
     'POST',
     SERVER_URL + '/message/pin/v1',
     {
+      headers: { token },
       json: {
-        token,
-        messageId,
+        messageId
       }
     }
   );
-
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.getBody() as string);
+  const statusCode = res.statusCode;
+  return { body, statusCode };
 }
 app.post('/message/pin/v1', (req: Request, res: Response) => {
   const token = req.header('token');
@@ -25,8 +26,7 @@ app.post('/message/pin/v1', (req: Request, res: Response) => {
 import { requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate, requestChannelJoin } from '../wrappers';
 import { requestChannelMessages, requestMessagePin, requestMessageSenddm, requestDmCreate, requestDmMessages } from '../wrappers';
 import { authUserId } from '../interfaces';
-const ERROR = { code: 400, error: expect.any(String) };
-const ERROR403 = { code: 403, error: expect.any(String) };
+const ERROR = { error: expect.any(String) };
 
 let registered1: authUserId;
 let registered2: authUserId;
@@ -49,13 +49,13 @@ beforeEach(() => {
 });
 describe('Error Cases', () => {
   test('Invalid messageId', () => {
-    expect(requestMessagePin(registered1.token, mIdChannel * mIdDm + 1)).toStrictEqual(ERROR);
+    expect(requestMessagePin(registered1.token, mIdChannel * mIdDm + 1).statusCode).toStrictEqual(400);
   });
   test('(Channel) user is not in messageId', () => {
-    expect(requestMessagePin(registered3.token, mIdChannel)).toStrictEqual(ERROR);
+    expect(requestMessagePin(registered3.token, mIdChannel).statusCode).toStrictEqual(400);
   });
   test('(DM) user is not in messageId', () => {
-    expect(requestMessagePin(registered3.token, mIdDm)).toStrictEqual(ERROR);
+    expect(requestMessagePin(registered3.token, mIdDm).statusCode).toStrictEqual(400);
   });
   test('Global owner can Pin', () => {
     const mIdChannel2 = requestMessageSend(registered2.token, channelId2, 'How to become a dog').messageId;
@@ -63,22 +63,22 @@ describe('Error Cases', () => {
   });
   test('(Channel) Message already pinned ', () => {
     requestMessagePin(registered1.token, mIdChannel);
-    expect(requestMessagePin(registered1.token, mIdChannel)).toStrictEqual(ERROR);
+    expect(requestMessagePin(registered1.token, mIdChannel).statusCode).toStrictEqual(400);
     const a = requestChannelMessages(registered1.token, channelId1, 0);
     expect(a.messages[0].message.isPinned).toStrictEqual(true);
   });
   test('(DM) Message already pinned ', () => {
     requestMessagePin(registered1.token, mIdDm)
-    expect(requestMessagePin(registered1.token, mIdDm)).toStrictEqual(ERROR);
+    expect(requestMessagePin(registered1.token, mIdDm).statusCode).toStrictEqual(400);
     const a = requestDmMessages(registered1.token, dmId, 0);
     expect(a.messages[0].message.isPinned).toStrictEqual(true);
   });
   test('(Channel) User does not have owner permission ', () => {
     requestChannelJoin(registered2.token, channelId1);
-    expect(requestMessagePin(registered2.token, mIdChannel)).toStrictEqual(ERROR403);
+    expect(requestMessagePin(registered2.token, mIdChannel).statusCode).toStrictEqual(403);
   });
   test('(DM)User does not have owner permission', () => {
-    expect(requestMessagePin(registered1.token, mIdDm)).toStrictEqual(ERROR403);
+    expect(requestMessagePin(registered1.token, mIdDm).statusCode).toStrictEqual(403);
   });
 });
 
