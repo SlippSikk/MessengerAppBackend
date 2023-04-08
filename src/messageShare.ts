@@ -1,8 +1,9 @@
+/*
 import { getData, setData } from './dataStore';
-import { validateToken, isMessageInChannel, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember } from './helper';
-import { isDmIdValid, createMessageId, isChannelIdValid, validateToken } from './helper';
-import { dataTs, channel, dms, messages } from './interfaces';
-import { messageEditV1, messageSendV2, messageSendmV2 } from './message';
+import { validateToken, getUIdFromToken, isMember, isDmMember } from './helper';
+import { isDmIdValid, isChannelIdValid } from './helper';
+import { dataTs, channel, dms } from './interfaces';
+import { messageSendV2, messageSenddmV2 } from './message';
 import HTTPError from 'http-errors';
 
 const getChannelFromMessageId = (messageId: number): channel => {
@@ -60,3 +61,4 @@ export const messageShareV1 = (token: string, ogMessageId: number, message: stri
   setData(data);
   return { sharedMessageId: sharedMessageId };
 };
+*/
