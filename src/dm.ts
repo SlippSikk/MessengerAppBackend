@@ -1,6 +1,6 @@
 
 import { error, dmId, user, dms, dmDetails, dmsOutput, dmMessages } from './interfaces';
-import { validateToken, isUserIdValid, getHandle, getUser, getUIdFromToken, getDm, userObjToken, userIndexToken } from './helper';
+import { validateToken, isUserIdValid, getHandle, getUser, getUIdFromToken, getDm, userObjToken } from './helper';
 import { getData, setData } from './dataStore';
 import HTTPError from 'http-errors';
 
@@ -11,18 +11,18 @@ export function dmMessagesV1(token: string, dmId: number, start: number): error 
   // errors:
   // case: token is invalid
   if (validateToken(token) !== true) {
-    throw HTTPError(403, 'Token is not valid');    
+    throw HTTPError(403, 'Token is not valid');
   }
 
   // case: dmId does not refer to a valid DM
   const findDm = data.dms.find(dm => dm.dmId === dmId);
   if (findDm === undefined) {
-    throw HTTPError(400, 'dmId is not valid');    
+    throw HTTPError(400, 'dmId is not valid');
   }
 
   // case: start is greater than the total number of messages in the channel
   if (start > findDm.messages.length) {
-    throw HTTPError(400, 'Start is greater than the total number of messages in the channel');    
+    throw HTTPError(400, 'Start is greater than the total number of messages in the channel');
   }
 
   // get the user's details with the given token
@@ -33,7 +33,7 @@ export function dmMessagesV1(token: string, dmId: number, start: number): error 
   const hasToken = findDm.members.find(user => user.uId === currUser.uId);
   // const hasToken = findDm.members.find(currUser);
   if (hasToken === undefined) {
-    throw HTTPError(403, 'User is not a member of the DM');    
+    throw HTTPError(403, 'User is not a member of the DM');
   }
 
   // Set end
@@ -212,7 +212,6 @@ export function dmDetailsV1(token: string, dmId: number): error | dmDetails {
   // case: token is invalid
   if (validateToken(token) === false) {
     throw HTTPError(403, 'Token is not valid');
-
   }
 
   // case: dmId does not refer to a valid DM

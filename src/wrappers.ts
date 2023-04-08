@@ -95,8 +95,8 @@ export function requestDmDetails(token: string, dmId: number) {
   );
   const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode;
-  
-  return {body, statusCode};
+
+  return { body, statusCode };
 }
 
 export function requestDmList(token: string) {
@@ -112,8 +112,8 @@ export function requestDmList(token: string) {
   );
   const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode;
-  
-  return {body, statusCode};
+
+  return { body, statusCode };
 }
 
 export function requestDmMessages(token: string, dmId: number, start: number) {
@@ -130,8 +130,8 @@ export function requestDmMessages(token: string, dmId: number, start: number) {
   );
   const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode;
-  
-  return {body, statusCode};
+
+  return { body, statusCode };
 }
 
 export function requestDmCreate(token: string, uIds: number[]) {
@@ -345,10 +345,10 @@ export function requestChannelsCreate(token: string, name: string, isPublic: boo
       }
     }
   );
-    const body = JSON.parse(res.body as string);
-    const statusCode = res.statusCode;
-    
-    return {body, statusCode};
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
 export function requestChannelsListAll(token: string) {
@@ -363,8 +363,8 @@ export function requestChannelsListAll(token: string) {
   );
   const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode;
-  
-  return {body, statusCode};
+
+  return { body, statusCode };
 }
 
 export function requestChannelsList(token: string) {
@@ -379,8 +379,8 @@ export function requestChannelsList(token: string) {
   );
   const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode;
-  
-  return {body, statusCode};
+
+  return { body, statusCode };
 }
 
 export function requestClear() {

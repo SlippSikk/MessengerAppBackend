@@ -38,7 +38,6 @@ describe('dmMessages Error', () => {
   test('Test 1: Invalid Token', () => {
     expect(requestDmMessages(registered2.token + registered.token + registered3.token + registered4.token + registered5.token, dmId, 0).statusCode).toBe(403);
     expect(requestDmMessages(registered2.token + registered.token + registered3.token + registered4.token + registered5.token, dmId, 0).body.error).toStrictEqual({ message: expect.any(String) });
-
   });
 
   test('Test 2: Invalid dmId', () => {

@@ -4,7 +4,6 @@ import { getUIdFromToken, userIndexToken, validateToken } from './helper';
 import { error, channel, channelId, channels } from './interfaces';
 import HTTPError from 'http-errors';
 
-
 /**
  * Summary:
  * When given a valid token, name, and privacy setting,
@@ -30,17 +29,17 @@ export function channelsCreateV2(token: string, name: string, isPublic: boolean)
   // Error cases:
   // name is less than 1 character
   if (name.length < 1) {
-    throw HTTPError(400, 'name is less than 1 character');    
+    throw HTTPError(400, 'name is less than 1 character');
   }
 
   // name is more than 20 characters
   if (name.length > 20) {
-    throw HTTPError(400, 'name is more than 20 characters');    
+    throw HTTPError(400, 'name is more than 20 characters');
   }
 
   // token is invalid
   if (!validateToken(token)) {
-    throw HTTPError(403, 'Token is not valid');    
+    throw HTTPError(403, 'Token is not valid');
   }
 
   // Find and assign a suitable channelId
@@ -106,7 +105,7 @@ export function channelsListV2(token: string): { channels: channels[] } | error 
   // const userIndex = data.users.findIndex(element => element.token.includes(token));
   const userIndex = userIndexToken(token);
   if (userIndex === -1) {
-    throw HTTPError(403, 'Token is not valid');    
+    throw HTTPError(403, 'Token is not valid');
   }
 
   const userId = data.users[userIndex].uId;
@@ -141,7 +140,7 @@ export function channelsListAllV2(token: string): { channels: channels[] } | err
   // const userIndex = data.users.findIndex(element => element.token.includes(token));
   const userIndex = userIndexToken(token);
   if (userIndex === -1) {
-    throw HTTPError(403, 'Token is not valid');    
+    throw HTTPError(403, 'Token is not valid');
   }
 
   const allChannels: channels[] = [];
