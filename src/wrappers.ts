@@ -228,14 +228,18 @@ export function requestChannelMessages(token: string, channelId: number, start: 
 
   return JSON.parse(res.getBody() as string);
 }
-export function requestUserProfileV3(uId: number) {
+export function requestUserProfileV3(token:string,uId: number) {
   const res = request(
     'GET',
     `${url}:${port}/user/profile/v3`,
     {
+      headers: {
+        token
+      },
       qs: {
         uId: uId
-      }
+      },
+      timeout: 2000
     }
   );
   const body = JSON.parse(res.getBody() as string);
@@ -365,16 +369,19 @@ export function requestClear() {
 
     }
   );
-
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.getBody() as string);
+  const statusCode = res.statusCode
+  return {body, statusCode}
 }
 
-export function requestUsersAllV2() {
+export function requestUsersAllV2(token:string) {
   const res = request(
     'GET',
     SERVER_URL + '/users/all/v2',
     {
-     
+      headers: { token },
+      qs: {}, //wait..should it be qs?
+      timeout: 2000
     }
   );
   const body = JSON.parse(res.getBody() as string);
@@ -382,14 +389,16 @@ export function requestUsersAllV2() {
   return {body, statusCode}
 }
 
-export function requestSetNameV2(nameFirst: string, nameLast: string) {
+export function requestSetNameV2(token:string, nameFirst: string, nameLast: string) {
   const res = request(
     'PUT',
     SERVER_URL + '/user/profile/setname/v2',
     {
+      headers: { token },
       json: {
       nameFirst, nameLast
-      }
+      },
+      timeout: 2000
     }
   );
   const body = JSON.parse(res.getBody() as string);
@@ -397,14 +406,16 @@ export function requestSetNameV2(nameFirst: string, nameLast: string) {
   return {body, statusCode}
 }
 
-export function requestuserSetemailV2(email: string) {
+export function requestuserSetemailV2(token:string, email: string) {
   const res = request(
     'PUT',
     SERVER_URL + '/user/profile/setemail/v2',
     {
+      headers: { token },
       json: {
       email
-      }
+      },
+      timeout: 2000
     }
   );
   const body = JSON.parse(res.getBody() as string);
@@ -412,14 +423,16 @@ export function requestuserSetemailV2(email: string) {
   return {body, statusCode}
 }
 
-export function requestuserProfileSethandleV2(handleStr: string) {
+export function requestuserProfileSethandleV2(token:string, handleStr: string) {
   const res = request(
     'PUT',
     SERVER_URL + '/user/profile/sethandle/v2',
     {
+      headers: { token },
       json: {
       handleStr
-      }
+      },
+      timeout: 2000
     }
   );
   const body = JSON.parse(res.getBody() as string);
