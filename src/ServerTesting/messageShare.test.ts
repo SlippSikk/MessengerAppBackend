@@ -84,7 +84,7 @@ describe('Error Cases', () => {
 });
 
 describe('Function Testing', () => {
-  // ogMessageId = in bracket 
+  // ogMessageId = in bracket
   test('Shared to Channel (dm)', () => {
     expect(requestMessageShare(registered1.token, mIdDm, message, channelId1, -1)).toStrictEqual({ sharedMessageId: expect.any(Number) });
     const a = requestChannelMessages(registered1.token, channelId1, 0);
