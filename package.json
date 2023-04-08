@@ -1,6 +1,13 @@
 {
     "scripts": {
         "test": "jest --testMatch '**/?(*.)+(test).ts'",
+        "test_handle": "jest src/serverTesting/setHandle.test.ts",
+        "test_name":"jest src/ServerTesting/setName.test.ts",
+        "test_mail": "jest src/ServerTesting/setEmail.test.ts",
+        "test_allUser": "jest src/ServerTesting/userAll.test.ts",
+        "test_profile": "jest src/ServerTesting/userProfile.test.ts",
+        "test_clear": "jest src/ServerTesting/clear.test.ts",
+        "test_chListAll": "jest src/ServerTesting/channelsListAll.test.ts",
         "tsc": "tsc --project tsconfig.json",
         "lint": "eslint src/**/*.ts",
         "lint-fix": "eslint --fix src/**/*.ts",
