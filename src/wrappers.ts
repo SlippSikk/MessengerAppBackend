@@ -446,3 +446,56 @@ export function requestuserProfileSethandleV1(token: string, handleStr: string) 
   );
   return JSON.parse(res.getBody() as string);
 }
+
+/*
+export function requestStandupStart(token: string, channelId: number, length: number) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/standup/start/v1',
+    {
+      headers: { token },
+      json: {
+        channelId, length
+      }
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+
+export function requestStandupActive(token: string, channelId: number) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/standup/active/v1',
+    {
+      headers: { token },
+      qs: {
+        channelId
+      }
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+
+export function requestStandupSend(token: string, channelId: number, message: string) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/standup/send/v1',
+    {
+      headers: { token },
+      json: {
+        channelId, message
+      }
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+*/
