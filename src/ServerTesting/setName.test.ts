@@ -1,9 +1,6 @@
 import { requestClear, requestAuthRegister, requestSetNameV2, requestUserProfileV3 } from '../wrappers';
-const ERROR = { error: expect.any(String) };
-
 beforeEach(() => {
   requestClear();
-  const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
 });
 
 describe('/user/profile/setname/v1', () => {
@@ -17,39 +14,39 @@ describe('/user/profile/setname/v1', () => {
     test('token is invaild', () => {
       requestClear();
       const tokenA = requestAuthRegister('csgo3@gmail.com', 'counterStrike', 'de', 'bug').token;
-      expect(requestSetNameV2(tokenA + 'A', 'HeiHeiHei','Ichiru').statusCode).toBe(403);
-      expect(requestSetNameV2(tokenA + 'A', 'HeiHeiHei','Ichiru').body.error).toStrictEqual({ message: expect.any(String) })
+      expect(requestSetNameV2(tokenA + 'A', 'HeiHeiHei', 'Ichiru').statusCode).toBe(403);
+      expect(requestSetNameV2(tokenA + 'A', 'HeiHeiHei', 'Ichiru').body.error).toStrictEqual({ message: expect.any(String) });
     });
     test('nameFirst is too long', () => {
       requestClear();
       const tokenA = requestAuthRegister('csgo3@gmail.com', 'counterStrike', 'de', 'bug').token;
-      expect(requestSetNameV2(tokenA, 'ILoveAnimationGirlAndTheyAreMyWaifuHeiHeiHeiHeiHeiHei','Ichiru').statusCode).toBe(400);
-      expect(requestSetNameV2(tokenA, 'ILoveAnimationGirlAndTheyAreMyWaifuHeiHeiHeiHeiHeiHei','Ichiru').body.error).toStrictEqual({ message: expect.any(String) })
+      expect(requestSetNameV2(tokenA, 'ILoveAnimationGirlAndTheyAreMyWaifuHeiHeiHeiHeiHeiHei', 'Ichiru').statusCode).toBe(400);
+      expect(requestSetNameV2(tokenA, 'ILoveAnimationGirlAndTheyAreMyWaifuHeiHeiHeiHeiHeiHei', 'Ichiru').body.error).toStrictEqual({ message: expect.any(String) });
     });
     test('nameLast is too long', () => {
       requestClear();
       const tokenA = requestAuthRegister('csgo3@gmail.com', 'counterStrike', 'de', 'bug').token;
-      expect(requestSetNameV2(tokenA, 'Ichiru','ILoveAnimationGirlAndTheyAreMyWaifuHeiHeiHeiHeiHeiHei').statusCode).toBe(400);
-      expect(requestSetNameV2(tokenA, 'Ichiru','ILoveAnimationGirlAndTheyAreMyWaifuHeiHeiHeiHeiHeiHei').body.error).toStrictEqual({ message: expect.any(String) })
+      expect(requestSetNameV2(tokenA, 'Ichiru', 'ILoveAnimationGirlAndTheyAreMyWaifuHeiHeiHeiHeiHeiHei').statusCode).toBe(400);
+      expect(requestSetNameV2(tokenA, 'Ichiru', 'ILoveAnimationGirlAndTheyAreMyWaifuHeiHeiHeiHeiHeiHei').body.error).toStrictEqual({ message: expect.any(String) });
     });
     test('nameFirst is empty', () => {
       requestClear();
       const tokenA = requestAuthRegister('csgo3@gmail.com', 'counterStrike', 'de', 'bug').token;
-      expect(requestSetNameV2(tokenA, '','Ichiru').statusCode).toBe(400);
-      expect(requestSetNameV2(tokenA, '','Ichiru').body.error).toStrictEqual({ message: expect.any(String) })
+      expect(requestSetNameV2(tokenA, '', 'Ichiru').statusCode).toBe(400);
+      expect(requestSetNameV2(tokenA, '', 'Ichiru').body.error).toStrictEqual({ message: expect.any(String) });
     });
     test('nameLast is empty', () => {
       requestClear();
       const tokenA = requestAuthRegister('csgo3@gmail.com', 'counterStrike', 'de', 'bug').token;
       expect(requestSetNameV2(tokenA, 'Ichiru', '').statusCode).toBe(400);
-      expect(requestSetNameV2(tokenA, 'Ichiru', '').body.error).toStrictEqual({ message: expect.any(String) })
+      expect(requestSetNameV2(tokenA, 'Ichiru', '').body.error).toStrictEqual({ message: expect.any(String) });
     });
   });
 
   test('return value', () => {
     requestClear();
     const tokenA = requestAuthRegister('csgo3@gmail.com', 'counterStrike', 'de', 'bug').token;
-    expect(requestSetNameV2(tokenA, 'DeathLoop', 'ABCD').body).toStrictEqual({})
+    expect(requestSetNameV2(tokenA, 'DeathLoop', 'ABCD').body).toStrictEqual({});
   });
   test('reset the name', () => {
     requestClear();

@@ -1,43 +1,39 @@
 import { requestUserProfileV3, requestClear, requestuserProfileSethandleV2, requestAuthRegister } from '../wrappers';
-const ERROR = { error: expect.any(String) };
 beforeEach(() => {
   requestClear();
-  const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;  //why before each never work???
 });
-
 describe('/user/profile/sethandle/v1', () => {
   describe('error', () => {
     test('the token is invaild', () => {
       requestClear();
       const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
       expect(requestuserProfileSethandleV2(tokenA + 'A', 'AIIsLove').statusCode).toBe(403);
-      expect(requestuserProfileSethandleV2(tokenA + 'A', 'AIIsLove').body.error).toStrictEqual({ message: expect.any(String) })
+      expect(requestuserProfileSethandleV2(tokenA + 'A', 'AIIsLove').body.error).toStrictEqual({ message: expect.any(String) });
     });
     test('the length of new handle smaller than 3', () => {
       requestClear();
       const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
       expect(requestuserProfileSethandleV2(tokenA, 'AI').statusCode).toBe(400);
-      expect(requestuserProfileSethandleV2(tokenA, 'AI').body.error).toStrictEqual({ message: expect.any(String) })
+      expect(requestuserProfileSethandleV2(tokenA, 'AI').body.error).toStrictEqual({ message: expect.any(String) });
     });
     test('the length of new handle greater than 20', () => {
       requestClear();
       const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
       expect(requestuserProfileSethandleV2(tokenA, 'ILoveAnimationGirlAndTheyAreMyWaifu').statusCode).toBe(400);
-      expect(requestuserProfileSethandleV2(tokenA, 'ILoveAnimationGirlAndTheyAreMyWaifu').body.error).toStrictEqual({ message: expect.any(String) })
+      expect(requestuserProfileSethandleV2(tokenA, 'ILoveAnimationGirlAndTheyAreMyWaifu').body.error).toStrictEqual({ message: expect.any(String) });
     });
     test('handleStr include non alphanumeric', () => {
       requestClear();
       const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
       expect(requestuserProfileSethandleV2(tokenA, ':d%^$#!@$#%^').statusCode).toBe(400);
-      expect(requestuserProfileSethandleV2(tokenA, ':d%^$#!@$#%^').body.error).toStrictEqual({ message: expect.any(String) })
+      expect(requestuserProfileSethandleV2(tokenA, ':d%^$#!@$#%^').body.error).toStrictEqual({ message: expect.any(String) });
     });
-
   });
 
   test('return value', () => {
     requestClear();
     const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
-    expect(requestuserProfileSethandleV2(tokenA, 'AbCats').body).toStrictEqual({})
+    expect(requestuserProfileSethandleV2(tokenA, 'AbCats').body).toStrictEqual({});
   });
 
   test('reset the handle', () => {
@@ -53,6 +49,5 @@ describe('/user/profile/sethandle/v1', () => {
         handleStr: 'AbCats'
       }
     });
-
   });
 });

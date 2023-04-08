@@ -1,5 +1,4 @@
 
-import { port, url } from '../config.json';
 import { requestClear, requestAuthRegister, requestUsersAllV2 } from '../wrappers';
 
 describe('correct return value', () => {
@@ -19,9 +18,9 @@ describe('correct return value', () => {
         }
       ]
     });
-    requestClear()
+    requestClear();
     expect(requestUsersAllV2(registerObjectC.token).statusCode).toBe(403);
-    expect(requestUsersAllV2(registerObjectC.token).body.error).toStrictEqual({ message: expect.any(String) })
+    expect(requestUsersAllV2(registerObjectC.token).body.error).toStrictEqual({ message: expect.any(String) });
   });
 });
 
