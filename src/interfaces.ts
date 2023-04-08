@@ -16,18 +16,24 @@ interface user {
     handleStr: string,
 }
 
+// export interface shortMessages {
+//     messageId: number,
+//     uId: number,
+//     message: string,
+//     timeSent: number
+//     isPinned: boolean
+// }
 interface messages {
     messageId: number,
     uId: number,
     message: string,
     timeSent: number
-    reacts: [{
-        reactId: 1,
-        allUsers: user[]
-    }],
-    isPinned: boolean
+    // reacts: [{
+    //     reactId: 1,
+    //     allUsers: user[]
+    // }],
+    // isPinned: boolean
 }
-
 interface channels {
     channelId: number
     name: string
@@ -80,6 +86,6 @@ type error = { error: string };
 type channelId = { channelId: number }
 
 export {
-    users, channels, user, messages, dataTs, authUserId, error, channel,
-    dmMessages, dmDetails, dmsOutput, dmId, dms, channelId
+  users, channels, user, messages, dataTs, authUserId, error, channel,
+  dmMessages, dmDetails, dmsOutput, dmId, dms, channelId
 };
