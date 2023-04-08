@@ -13,8 +13,8 @@ beforeEach(() => {
   requestClear();
   registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
   registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
-  channelId1 = requestChannelsCreate(registered1.token, 'nest', true).channelId;
-  channelId2 = requestChannelsCreate(registered2.token, 'shed', true).channelId;
+  channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
+  channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
 });
 describe('Error Cases', () => {
   test('Invalid channelId', () => {
