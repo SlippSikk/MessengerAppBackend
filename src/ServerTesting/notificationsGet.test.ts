@@ -3,6 +3,12 @@
 // import { requestChannelMessages } from '../wrappers';
 // import { authUserId } from '../interfaces';
 
+//////////////////////// delete me /////////////////////////
+test('stub', () => {
+    expect(1 + 1).toStrictEqual(2);
+})
+
+////////////////////////////////////////////////////////////
 
 // let registered1: authUserId;
 // let registered2: authUserId;

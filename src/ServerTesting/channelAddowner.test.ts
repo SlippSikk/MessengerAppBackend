@@ -14,8 +14,8 @@ beforeEach(() => {
   registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
   registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
   registered3 = requestAuthRegister('dog@gmail.com', 'doggy123', 'dog', 'drown');
-  channelId1 = requestChannelsCreate(registered1.token, 'nest', true).channelId;
-  channelId2 = requestChannelsCreate(registered2.token, 'shed', true).channelId;
+  channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
+  channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
 });
 // This Testing uses eucledian algorithm to assert that
 // the inputed auth userId is always unique and non exsisting

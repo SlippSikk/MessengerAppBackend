@@ -1,5 +1,4 @@
 import request from 'sync-request';
-import { dmId } from './interfaces';
 import { port, url } from './config.json';
 const SERVER_URL = `${url}:${port}`;
 
@@ -29,11 +28,13 @@ export function requestAuthLogin(email: string, password: string) {
       json: {
         email,
         password
-      }
+      },
+
+      timeout: 100
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  return JSON.parse(res.body as string);
 }
 
 export function requestChannelAddowner(token: string, channelId: number, uId: number) {
@@ -56,13 +57,14 @@ export function requestAuthLogout(token: string) {
     'POST',
     `${url}:${port}/auth/logout/v2`,
     {
-      json: {
+      headers: {
         token
-      }
+      },
+      timeout: 100
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  return JSON.parse(res.body as string);
 }
 
 export function requestChannelLeave(token: string, channelId: number) {
@@ -79,45 +81,73 @@ export function requestChannelLeave(token: string, channelId: number) {
   return JSON.parse(res.getBody() as string);
 }
 
+export function requestDmDetails(token: string, dmId: number) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/dm/details/v2',
+    {
+      headers: { token },
+      qs: {
+        dmId
+      },
+      timeout: 100
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+
 export function requestDmList(token: string) {
   const res = request(
     'GET',
-    SERVER_URL + '/dm/list/v1',
+    SERVER_URL + '/dm/list/v2',
     {
+      headers: { token },
       qs: {
-        token
-      }
+      },
+      timeout: 100
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
 export function requestDmMessages(token: string, dmId: number, start: number) {
   const res = request(
     'GET',
-    SERVER_URL + '/dm/messages/v1',
+    SERVER_URL + '/dm/messages/v2',
     {
+      headers: { token },
       qs: {
-        token, dmId, start
-      }
+        dmId, start
+      },
+      timeout: 100
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
-export function requestDmCreate(token: string, uIds: number[]): dmId {
+export function requestDmCreate(token: string, uIds: number[]) {
   const res = request(
     'POST',
     `${url}:${port}/dm/create/v2`,
     {
+      headers: { token },
       json: {
-        token,
         uIds
-      }
+      },
+      timeout: 100
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  return JSON.parse(res.body as string);
 }
 
 export function requestDmLeave(token: string, dmId: number) {
@@ -125,27 +155,15 @@ export function requestDmLeave(token: string, dmId: number) {
     'POST',
     `${url}:${port}/dm/leave/v2`,
     {
+      headers: { token },
       json: {
-        token,
         dmId
-      }
+      },
+      timeout: 100
     }
   );
 
-  return JSON.parse(res.getBody() as string);
-}
-
-export function requestDmDetails(token: string, dmId: number) {
-  const res = request(
-    'GET',
-    SERVER_URL + '/dm/details/v1',
-    {
-      qs: {
-        token, dmId
-      }
-    }
-  );
-  return JSON.parse(res.getBody() as string);
+  return JSON.parse(res.body as string);
 }
 
 export function requestDmRemove(token: string, dmId: number) {
@@ -153,14 +171,15 @@ export function requestDmRemove(token: string, dmId: number) {
     'DELETE',
     `${url}:${port}/dm/remove/v2`,
     {
+      headers: { token },
       qs: {
-        token,
         dmId
-      }
+      },
+      timeout: 100
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  return JSON.parse(res.body as string);
 }
 
 export function requestChannelJoin(token: string, channelId: number) {
@@ -318,40 +337,50 @@ export function requestChannelDetails(token: string, channelId: number) {
 export function requestChannelsCreate(token: string, name: string, isPublic: boolean) {
   const res = request(
     'POST',
-    SERVER_URL + '/channels/create/v2',
+    SERVER_URL + '/channels/create/v3',
     {
+      headers: { token },
       json: {
-        token, name, isPublic
+        name, isPublic
       }
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
 export function requestChannelsListAll(token: string) {
   const res = request(
     'GET',
-    SERVER_URL + '/channels/listall/v2',
+    SERVER_URL + '/channels/listall/v3',
     {
+      headers: { token },
       qs: {
-        token
       }
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
 export function requestChannelsList(token: string) {
   const res = request(
     'GET',
-    SERVER_URL + '/channels/list/v2',
+    SERVER_URL + '/channels/list/v3',
     {
+      headers: { token },
       qs: {
-        token
       }
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
 export function requestClear() {
