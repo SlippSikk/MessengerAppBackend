@@ -96,4 +96,4 @@ describe('Function Testing', () => {
     expect(a.messages[0].message.isPinned).toStrictEqual(false);
   });
 });
-* /
+*/
