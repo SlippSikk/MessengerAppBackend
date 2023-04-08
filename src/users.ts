@@ -62,7 +62,7 @@ export function userProfileSethandleV1(token: string, handleStr: string) {
     return { error: 'length of handleStr is not between 3 and 20 characters inclusive' };
   }
 
-  const userIndex = userIndexToken(token);;
+  const userIndex = userIndexToken(token);
   data.users[userIndex].handleStr = handleStr;
   setData(data);
   return {};

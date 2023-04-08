@@ -4,7 +4,6 @@ import { users, authUserId, error } from './interfaces';
 import HTTPError from 'http-errors';
 import { encrypt, findPassword, hashToken, userIndexToken } from './helper';
 
-
 /**
  * Summary: Registers a user returning their unique Id
  *
@@ -149,7 +148,6 @@ function authLoginV3(email: string, password: string): authUserId | error {
 function authLogoutV2(token: string) {
   const data = getData();
 
-
   const userIndex = userIndexToken(token);
 
   if (userIndex !== -1) {
@@ -164,5 +162,3 @@ function authLogoutV2(token: string) {
 }
 
 export { authRegisterV3, authLoginV3, authLogoutV2 };
-
-

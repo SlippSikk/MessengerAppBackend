@@ -23,7 +23,7 @@ describe('Invalid inputs', () => {
     authToken3 = user3.token;
     authId3 = user3.authUserId;
 
-    channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).channelId;
+    channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).body.channelId;
     requestChannelJoin(authToken2, channelId1);
     requestChannelJoin(authToken3, channelId1);
     messageId1 = requestMessageSend(authToken1, channelId1, 'First message').messageId;
@@ -80,7 +80,7 @@ describe('Valid inputs', () => {
     authToken3 = user3.token;
     authId3 = user3.authUserId;
 
-    channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).channelId;
+    channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).body.channelId;
     requestChannelJoin(authToken2, channelId1);
     requestChannelJoin(authToken3, channelId1);
     messageId1 = requestMessageSend(authToken1, channelId1, 'First message').messageId;
@@ -103,7 +103,7 @@ describe('Valid inputs', () => {
       end: -1
     });
 
-    expect(requestDmMessages(authToken1, dmId1, 0)).toEqual({
+    expect(requestDmMessages(authToken1, dmId1, 0).body).toEqual({
       messages: [{
         messageId: dmMessageId1,
         uId: authId1,
@@ -132,7 +132,7 @@ describe('Valid inputs', () => {
       end: -1
     });
 
-    expect(requestDmMessages(authToken1, dmId1, 0)).toEqual({
+    expect(requestDmMessages(authToken1, dmId1, 0).body).toEqual({
       messages: [{
         messageId: dmMessageId2,
         uId: authId2,

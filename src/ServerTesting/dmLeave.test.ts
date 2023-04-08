@@ -33,14 +33,14 @@ describe('Correct Dm leave', () => {
 
   test('Correct Output DmList', () => {
     requestDmLeave(registered3.token, dmId);
-    expect(requestDmList(registered3.token)).toStrictEqual({
+    expect(requestDmList(registered3.token).body).toStrictEqual({
       dms: []
     });
   });
 
   test('Correct Output DmDetails', () => {
     requestDmLeave(registered.token, dmId2);
-    expect(requestDmDetails(registered.token, dmId2)).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmDetails(registered.token, dmId2).body.error).toStrictEqual({ message: expect.any(String) });
   });
 });
 
