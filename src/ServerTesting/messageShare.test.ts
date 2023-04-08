@@ -86,14 +86,14 @@ describe('Error Cases', () => {
 describe('Function Testing', () => {
   // ogMessageId = in bracket
   test('Shared to Channel (dm)', () => {
-    expect(requestMessageShare(registered1.token, mIdDm, message, channelId1, -1)).toStrictEqual({ sharedMessageId: expect.any(Number) });
+    expect(requestMessageShare(registered1.token, mIdDm, message, channelId1, -1).body).toStrictEqual({ sharedMessageId: expect.any(Number) });
     const a = requestChannelMessages(registered1.token, channelId1, 0);
     expect(a.messages[0].message).toContain(message);
     expect(a.messages[0].message).toContain('Hi my dogs');
 
   });
   test('Shared to Dm (channel)', () => {
-    expect(requestMessageShare(registered1.token, mIdChannel, message, -1, dmId)).toStrictEqual({ sharedMessageId: expect.any(Number) });
+    expect(requestMessageShare(registered1.token, mIdChannel, message, -1, dmId).body).toStrictEqual({ sharedMessageId: expect.any(Number) });
     const a = requestDmMessages(registered1.token, dmId, 0);
     expect(a.messages[0].message).toContain(message);
     expect(a.messages[0].message).toContain('Hi my ducklings');
