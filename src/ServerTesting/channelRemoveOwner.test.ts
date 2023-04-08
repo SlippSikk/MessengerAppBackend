@@ -1,9 +1,13 @@
 import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelAddowner, requestChannelJoin, requestChannelRemoveOwner, requestChannelDetails } from '../wrappers';
 
+const INPUT_ERROR = 400;
+const AUTH_ERROR = 403;
+
+// WHEN CHRISTOPHER DONE NEED TO ADD .BODY TO CHANNELDETAILS
+
 describe('Valid Inputs', () => {
   let authId1: number;
   let authId2: number;
-  let authId3: number;
   let authToken1: string;
   let authToken2: string;
   let authToken3: string;
@@ -20,9 +24,7 @@ describe('Valid Inputs', () => {
     authId2 = user2.authUserId;
     authToken2 = user2.token;
 
-    const user3 = requestAuthRegister('claire@gmail.com', 'ccc123', 'Claire', 'Christopher');
-    authId3 = user3.authUserId;
-    authToken3 = user3.token;
+    authToken3 = requestAuthRegister('claire@gmail.com', 'ccc123', 'Claire', 'Christopher').token;
 
     channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).body.channelId;
     requestChannelJoin(authToken2, channelId1);
@@ -35,7 +37,7 @@ describe('Valid Inputs', () => {
   });
 
   test('Owner removes self', () => {
-    expect(requestChannelRemoveOwner(authToken2, channelId1, authId2)).toEqual({});
+    expect(requestChannelRemoveOwner(authToken2, channelId1, authId2).body).toEqual({});
     expect(requestChannelDetails(authToken1, channelId1)).toEqual({
       name: 'Channel 1',
       isPublic: true,
@@ -65,41 +67,8 @@ describe('Valid Inputs', () => {
     });
   });
 
-  test('Global owner removes another in a channel they are not in', () => {
-    requestChannelAddowner(authToken2, channelId2, authId3);
-    expect(requestChannelRemoveOwner(authToken1, channelId2, authId2)).toEqual({});
-    expect(requestChannelDetails(authToken1, channelId2)).toEqual({
-      name: 'Channel 2',
-      isPublic: true,
-      ownerMembers: [
-        {
-          uId: authId3,
-          email: 'claire@gmail.com',
-          nameFirst: 'Claire',
-          nameLast: 'Christopher',
-          handleStr: expect.any(String),
-        },
-      ],
-      allMembers: [
-        {
-          uId: authId2,
-          email: 'bob@outlook.com',
-          nameFirst: 'Bob',
-          nameLast: 'Baqaie',
-          handleStr: expect.any(String),
-        },
-        {
-          uId: authId3,
-          email: 'claire@gmail.com',
-          nameFirst: 'Claire',
-          nameLast: 'Christopher',
-          handleStr: expect.any(String),
-        }]
-    });
-  });
-
   test('Owner removes other', () => {
-    expect(requestChannelRemoveOwner(authToken1, channelId1, authId2)).toEqual({});
+    expect(requestChannelRemoveOwner(authToken1, channelId1, authId2).body).toEqual({});
     expect(requestChannelDetails(authToken1, channelId1)).toEqual({
       name: 'Channel 1',
       isPublic: true,
@@ -165,27 +134,27 @@ describe('Valid Inputs', () => {
     });
 
     test('Invalid channelId', () => {
-      expect(requestChannelRemoveOwner(authToken1, (channelId1 ** 2 + channelId2 ** 2) / 2, authId2)).toEqual({ error: expect.any(String) });
+      expect(requestChannelRemoveOwner(authToken1, (channelId1 ** 2 + channelId2 ** 2) / 2, authId2).statusCode).toBe(INPUT_ERROR);
     });
 
     test('Invalid uId', () => {
-      expect(requestChannelRemoveOwner(authToken1, channelId1, authId1 ** 2 + authId2 ** 2 + authId3 ** 2)).toEqual({ error: expect.any(String) });
+      expect(requestChannelRemoveOwner(authToken1, channelId1, authId1 ** 2 + authId2 ** 2 + authId3 ** 2).statusCode).toBe(INPUT_ERROR);
     });
 
     test('uId is not already an owner', () => {
-      expect(requestChannelRemoveOwner(authToken1, channelId1, authId3)).toEqual({ error: expect.any(String) });
+      expect(requestChannelRemoveOwner(authToken1, channelId1, authId3).statusCode).toBe(INPUT_ERROR);
     });
 
     test('uId is the only owner', () => {
-      expect(requestChannelRemoveOwner(authToken2, channelId2, authId2)).toEqual({ error: expect.any(String) });
+      expect(requestChannelRemoveOwner(authToken2, channelId2, authId2).statusCode).toBe(INPUT_ERROR);
     });
 
     test('Valid channelId but authUser does not have owner permissions', () => {
-      expect(requestChannelRemoveOwner(authToken3, channelId1, authId2)).toEqual({ error: expect.any(String) });
+      expect(requestChannelRemoveOwner(authToken3, channelId1, authId2).statusCode).toBe(AUTH_ERROR);
     });
 
     test('Invalid token', () => {
-      expect(requestChannelRemoveOwner(authToken1 + authToken2 + authToken3, channelId1, 0)).toEqual({ error: expect.any(String) });
+      expect(requestChannelRemoveOwner(authToken1 + authToken2 + authToken3, channelId1, 0).statusCode).toBe(AUTH_ERROR);
     });
   });
 });

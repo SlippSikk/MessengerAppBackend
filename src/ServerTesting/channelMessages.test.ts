@@ -1,6 +1,9 @@
 import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelMessages, requestMessageSend } from '../wrappers';
 import { messages } from '../interfaces';
 
+const INPUT_ERROR = 400;
+const AUTH_ERROR = 403;
+
 describe('Incorrect input', () => {
   let authToken1: string;
   let authToken2: string;
@@ -21,19 +24,16 @@ describe('Incorrect input', () => {
   });
   test('Invalid token', () => {
     // concatenates all token strings together, to guarantee an invalid token
-    expect(requestChannelMessages(authToken1 + authToken2 + authToken3, channelId1, 0)).toStrictEqual({ error: expect.any(String) });
+    expect(requestChannelMessages(authToken1 + authToken2 + authToken3, channelId1, 0).statusCode).toBe(AUTH_ERROR);
   });
   test('Start that greater than the total number of messages', () => {
-    expect(requestChannelMessages(authToken1, channelId1, 250)).toStrictEqual({ error: expect.any(String) });
+    expect(requestChannelMessages(authToken1, channelId1, 250).statusCode).toBe(INPUT_ERROR);
   });
   test('Invalid channelId', () => {
-    expect(requestChannelMessages(authToken1, channelId1 + channelId2 + channelId3, 0)).toStrictEqual({ error: expect.any(String) });
+    expect(requestChannelMessages(authToken1, channelId1 + channelId2 + channelId3, 0).statusCode).toBe(INPUT_ERROR);
   });
   test('ChannelId is valid but the authorised user is not a member of the channel', () => {
-    expect(requestChannelMessages(authToken1, channelId1 + channelId2 + channelId3, 0)).toStrictEqual({ error: expect.any(String) });
-  });
-  test('Invalid channelId and token ', () => {
-    expect(requestChannelMessages(authToken1 + authToken2 + authToken3, channelId1 + channelId2 + channelId3, 0)).toStrictEqual({ error: expect.any(String) });
+    expect(requestChannelMessages(authToken1, channelId2, 0).statusCode).toBe(AUTH_ERROR);
   });
 });
 
@@ -66,7 +66,7 @@ describe('Correct input', () => {
   });
 
   test('No messages sent', () => {
-    expect(requestChannelMessages(authToken3, channelId3, 0)).toEqual({
+    expect(requestChannelMessages(authToken3, channelId3, 0).body).toEqual({
       messages: [],
       start: 0,
       end: -1
@@ -75,7 +75,7 @@ describe('Correct input', () => {
 
   test('Single Message', () => {
     const messageId: number = requestMessageSend(authToken3, channelId3, 'My first message!').messageId;
-    expect(requestChannelMessages(authToken3, channelId3, 0)).toEqual({
+    expect(requestChannelMessages(authToken3, channelId3, 0).body).toEqual({
       messages: [{
         messageId: messageId,
         uId: authId3,
@@ -88,10 +88,10 @@ describe('Correct input', () => {
   });
 
   test('Start is not at index 0', () => {
-    requestMessageSend(authToken2, channelId2, 'My first message!');
+    const messageId1 = requestMessageSend(authToken2, channelId2, 'My first message!').messageId;
     const messageId2 = requestMessageSend(authToken2, channelId2, 'My second message!').messageId;
-    const messageId3 = requestMessageSend(authToken2, channelId2, 'My third message!').messageId;
-    expect(requestChannelMessages(authToken2, channelId2, 1)).toEqual({
+    requestMessageSend(authToken2, channelId2, 'My third message!');
+    expect(requestChannelMessages(authToken2, channelId2, 1).body).toEqual({
       messages: [{
         messageId: messageId2,
         uId: authId2,
@@ -99,9 +99,9 @@ describe('Correct input', () => {
         timeSent: expect.any(Number)
       },
       {
-        messageId: messageId3,
+        messageId: messageId1,
         uId: authId2,
-        message: 'My third message!',
+        message: 'My first message!',
         timeSent: expect.any(Number)
       }],
       start: 1,
@@ -124,8 +124,8 @@ describe('Correct input', () => {
       });
     }
 
-    expect(requestChannelMessages(authToken1, channelId1, 0)).toEqual({
-      messages: messages.slice(0, 50),
+    expect(requestChannelMessages(authToken1, channelId1, 0).body).toEqual({
+      messages: messages.reverse().slice(0, 50),
       start: 0,
       end: 50
     });

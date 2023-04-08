@@ -2,9 +2,6 @@ test('placeholder', () => {
   expect(1 + 1).toEqual(2);
 });
 
-
-
-
 /*
 import { requestClear, requestAuthRegister, requestChannelsCreate, requestStandupStart, requestStandupActive, requestChannelJoin } from '../wrappers';
 
