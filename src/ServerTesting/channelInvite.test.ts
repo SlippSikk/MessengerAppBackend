@@ -22,7 +22,7 @@ describe('Members with different permissions inviting once', () => {
     authToken2 = user2.token;
 
     // channel2 is a regular channel
-    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).channelId;
+    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).body.channelId;
     const user3 = requestAuthRegister('chris@outlook.com', 'ccc123', 'Chris', 'Catman');
     authId3 = user3.authUserId;
     authToken3 = user3.token;
@@ -172,7 +172,7 @@ describe('ERRORS: Reinviting users', () => {
     authToken2 = user2.token;
 
     // channel2 is a regular channel
-    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).channelId;
+    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).body.channelId;
 
     authId3 = requestAuthRegister('chris@outlook.com', 'ccc123', 'Chris', 'Catman').authUserId;
   });
@@ -249,7 +249,7 @@ describe('Miscallaneous errors', () => {
     authToken2 = user2.token;
 
     // channel2 is a regular channel
-    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).channelId;
+    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).body.channelId;
 
     const user3 = requestAuthRegister('chris@outlook.com', 'ccc123', 'Chris', 'Catman');
     authId3 = user3.authUserId;

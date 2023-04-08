@@ -24,11 +24,11 @@ describe('Valid Inputs', () => {
     authId3 = user3.authUserId;
     authToken3 = user3.token;
 
-    channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).channelId;
+    channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).body.channelId;
     requestChannelJoin(authToken2, channelId1);
     requestChannelAddowner(authToken1, channelId1, authId2);
 
-    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).channelId;
+    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).body.channelId;
     requestChannelJoin(authToken3, channelId2);
     // Channel1: [Owners: authId1, authId2], [Members: authId1, authId2]
     // Channel2: [Owners: authId2], [Members: authId2, authId3]
@@ -153,12 +153,12 @@ describe('Valid Inputs', () => {
       authId3 = user3.authUserId;
       authToken3 = user3.token;
 
-      channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).channelId;
+      channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).body.channelId;
       requestChannelJoin(authToken2, channelId1);
       requestChannelAddowner(authToken1, channelId1, authId2);
       requestChannelJoin(authToken3, channelId1);
 
-      channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).channelId;
+      channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).body.channelId;
       requestChannelJoin(authToken3, channelId2);
     // Channel1: [Owners: authId1, authId2], [Members: authId1, authId2, authId3]
     // Channel2: [Owners: authId2], [Members: authId2, authId3]

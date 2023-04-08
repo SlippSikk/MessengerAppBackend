@@ -4,7 +4,6 @@ import { users, authUserId, error } from './interfaces';
 import HTTPError from 'http-errors';
 import { encrypt, findPassword, hashToken, userIndexToken } from './helper';
 
-
 /**
  * Summary: Registers a user returning their unique Id
  *
@@ -63,11 +62,19 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
     foundHandle = data.users.find(element => element.handleStr === nameConcat);
   }
 
-  const Id = data.users.length + 1;
+  // Assign appropriate authId number
+  let Id: number = data.users.length + 1;
+  if (data.users.length === 0) {
+    Id = 1;
+  } else if (data.users.length > 0) {
+    Id = data.users[data.users.length - 1].uId + 1;
+  }
 
   // Encrypt password
-
   const pass = encrypt(password)
+
+  // Hash token
+  const hashedToken = hashToken(nameConcat)
 
   const user: users = {
     uId: Id,
@@ -76,7 +83,7 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
     nameLast: nameLast,
     handleStr: nameConcat,
     password: pass,
-    token: [nameConcat]
+    token: [hashedToken]
   };
 
   data.users.push(user);
@@ -84,10 +91,9 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
   setData(data);
 
   // Hash token 
-  const hashedToken = hashToken(nameConcat)
 
   return {
-    token: hashedToken, // Replace with hash
+    token: nameConcat, // Replace with hash
     authUserId: Id,
   };
 }
@@ -123,17 +129,18 @@ function authLoginV3(email: string, password: string): authUserId | error {
   const randToken = randNum.toString();
 
   // let foundToken = data.users.find(element => element.token.find(element => element === randToken))
+  const hashedToken = hashToken(randToken);
 
-  data.users[indexUser].token.push(randToken);
+  data.users[indexUser].token.push(hashedToken);
 
   setData(data);
 
   // Hash the token and return it
 
-  const hashedToken = hashToken(randToken);
+
 
   return {
-    token: hashedToken,
+    token: randToken,
     authUserId: found.uId,
   };
 }
@@ -141,11 +148,10 @@ function authLoginV3(email: string, password: string): authUserId | error {
 function authLogoutV2(token: string) {
   const data = getData();
 
-
   const userIndex = userIndexToken(token);
 
   if (userIndex !== -1) {
-    const tokenIndex = data.users[userIndex].token.findIndex(element => hashToken(element) === token);
+    const tokenIndex = data.users[userIndex].token.findIndex(element => element === hashToken(token));
     data.users[userIndex].token.splice(tokenIndex, 1);
     setData(data);
   } else {
@@ -156,5 +162,3 @@ function authLogoutV2(token: string) {
 }
 
 export { authRegisterV3, authLoginV3, authLogoutV2 };
-
-

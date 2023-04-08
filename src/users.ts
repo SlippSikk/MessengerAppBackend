@@ -2,7 +2,7 @@
 import { getData, setData } from './dataStore';
 import validator from 'validator';
 import HTTPError from 'http-errors';
-import { hashToken, userObjToken, validateToken } from './helper';
+import { hashToken, userObjToken, validateToken, userIndexToken } from './helper';
 
 /**
  * For a valid user, returns information about their user ID,
@@ -57,7 +57,9 @@ export function userProfileSethandleV2(token: string,handleStr:string) {
   if ((handleStr.length > 20) || (handleStr.length < 3)) {
     throw HTTPError(400, "length of handleStr is not between 3 and 20 characters inclusive");
   }
-  userObjToken(token).handleStr = handleStr;
+  const userIndex = userIndexToken(token);
+  data.users[userIndex].handleStr = handleStr;
+
   setData(data);
   return {};
 }
