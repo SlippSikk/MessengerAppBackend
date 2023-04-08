@@ -258,7 +258,7 @@ export function requestUserProfileV3(token:string,uId: number) {
       timeout: 2000
     }
   );
-  const body = JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode
   return {body, statusCode}
 }
@@ -410,7 +410,7 @@ export function requestUsersAllV2(token:string) {
       timeout: 2000
     }
   );
-  const body = JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode
   return {body, statusCode}
 }
@@ -427,7 +427,7 @@ export function requestSetNameV2(token:string, nameFirst: string, nameLast: stri
       timeout: 2000
     }
   );
-  const body = JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode
   return {body, statusCode}
 }
@@ -444,7 +444,7 @@ export function requestuserSetemailV2(token:string, email: string) {
       timeout: 2000
     }
   );
-  const body = JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode
   return {body, statusCode}
 }
@@ -457,11 +457,10 @@ export function requestuserProfileSethandleV2(token:string, handleStr: string) {
       headers: { token },
       json: {
       handleStr
-      },
-      timeout: 2000
+      }
     }
   );
-  const body = JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode
   return {body, statusCode}
 }

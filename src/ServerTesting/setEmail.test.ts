@@ -32,7 +32,6 @@ describe('/user/profile/setemail/v2', () => {
   test('return value', () => {
     requestClear();
     const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
-    expect(requestuserSetemailV2(tokenA, 'Eatham@gmail.com').statusCode).toBe(200);
     expect(requestuserSetemailV2(tokenA, 'Eatham@gmail.com').body).toStrictEqual({})
   });
   test('reset the email', () => {
@@ -48,7 +47,6 @@ describe('/user/profile/setemail/v2', () => {
         handleStr: 'abcde'
       }
     });
-    expect(requestuserSetemailV2(registerObject.token, 'Eatham@gmail.com').statusCode).toBe(200);
     requestClear();
   });
 });

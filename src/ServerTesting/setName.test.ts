@@ -49,14 +49,12 @@ describe('/user/profile/setname/v1', () => {
   test('return value', () => {
     requestClear();
     const tokenA = requestAuthRegister('csgo3@gmail.com', 'counterStrike', 'de', 'bug').token;
-    expect(requestSetNameV2(tokenA, 'DeathLoop', 'ABCD').statusCode).toBe(200);
     expect(requestSetNameV2(tokenA, 'DeathLoop', 'ABCD').body).toStrictEqual({})
   });
   test('reset the name', () => {
     requestClear();
     const registerObject = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
     requestSetNameV2(registerObject.token, 'Ichiru', 'Shirase');
-    expect(requestSetNameV2(registerObject.token, 'Ichiru', 'Shirase').statusCode).toBe(200);
     expect(requestUserProfileV3(registerObject.token, registerObject.authUserId).body).toStrictEqual({
       user: {
         uId: registerObject.authUserId,

@@ -37,7 +37,6 @@ describe('/user/profile/sethandle/v1', () => {
   test('return value', () => {
     requestClear();
     const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
-    expect(requestuserProfileSethandleV2(tokenA, 'AbCats').statusCode).toBe(200);
     expect(requestuserProfileSethandleV2(tokenA, 'AbCats').body).toStrictEqual({})
   });
 
@@ -45,7 +44,6 @@ describe('/user/profile/sethandle/v1', () => {
     requestClear();
     const registerObject = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
     requestuserProfileSethandleV2(registerObject.token, 'AbCats');
-    expect(requestuserProfileSethandleV2(registerObject.token, 'AbCats').statusCode).toBe(200);
     expect(requestUserProfileV3(registerObject.token, registerObject.authUserId).body).toStrictEqual({
       user: {
         uId: registerObject.authUserId,

@@ -173,9 +173,9 @@ app.get('/channels/listall/v3', (req: Request, res: Response) => {
 });
 
 app.put('/user/profile/sethandle/v2', (req: Request, res: Response) => {
-    const { handleStr } = req.body;
-    const token = req.header('token') as string;
-    return res.json(userProfileSethandleV2(token, handleStr));
+  const token = req.header('token') as string;  
+  const  handleStr = req.body.handleStr;
+  return res.json(userProfileSethandleV2(token, handleStr));
   });
   
   app.put('/user/profile/setemail/v2', (req: Request, res: Response) => { //

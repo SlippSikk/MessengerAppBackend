@@ -31,7 +31,8 @@ export function userProfileSetemailV2(token: string,email:string) {
   if (userObjectEmail !== undefined) {
     throw HTTPError(400, "email is in use");
   }
-  userObjToken(token).email = email;
+  const userIndex = userIndexToken(token);
+  data.users[userIndex].email = email;
   setData(data);
   return {};
 }
@@ -82,9 +83,9 @@ export function userProfileSetnameV2(token: string, nameFirst:string, nameLast:s
   if ((nameLast.length > 50) || (nameLast.length < 1)) {
     throw HTTPError(400, "length of nameLast is not between 1 and 50 characters inclusive");
   }
-  
-  userObjToken(token).nameFirst = nameFirst;
-  userObjToken(token).nameLast = nameLast;
+  const userIndex = userIndexToken(token);
+  data.users[userIndex].nameFirst = nameFirst;
+  data.users[userIndex].nameLast = nameLast;
   setData(data);
   return {};
 }
