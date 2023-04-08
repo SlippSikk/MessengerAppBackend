@@ -9,7 +9,7 @@ describe('/user/profile/setemail/v2', () => {
     test('token is invaild', () => {
       requestClear();
       const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
-      expect(requestuserSetemailV2(tokenA + 'A', 'AI').statusCode).toBe(400);
+      expect(requestuserSetemailV2(tokenA + 'A', 'AI').statusCode).toBe(403);
       expect(requestuserSetemailV2(tokenA + 'A', 'AI').body.error).toStrictEqual({ message: expect.any(String) })
     });
     test('input email is invaild', () => {

@@ -10,8 +10,8 @@ describe('/users/all/v1', () => {
     test('token is invaild', () => {
       requestClear();
       const registerObject = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
-      expect(requestUsersAllV2(registerObject.token).statusCode).toBe(400);
-      expect(requestUsersAllV2(registerObject.token).body.error).toStrictEqual({ message: expect.any(String) })
+      expect(requestUsersAllV2(registerObject.token + 'A').statusCode).toBe(403);
+      expect(requestUsersAllV2(registerObject.token + 'A').body.error).toStrictEqual({ message: expect.any(String) })
     });
     test('only one user in database', () => {
       requestClear();

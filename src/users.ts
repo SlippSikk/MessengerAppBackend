@@ -21,8 +21,8 @@ import { hashToken, userObjToken, validateToken, userIndexToken } from './helper
 
 export function userProfileSetemailV2(token: string,email:string) {
   const data = getData();
-  if(!validateToken){
-    throw HTTPError(400, "token is not valid");
+  if(!validateToken(token)){
+    throw HTTPError(403, "token is not valid");
   }
   if (!(validator.isEmail(email))) {
     throw HTTPError(400, "email is not valid");
@@ -43,8 +43,8 @@ export function userProfileSetemailV2(token: string,email:string) {
 
 export function userProfileSethandleV2(token: string,handleStr:string) {
   const data = getData();
-  if(!validateToken){
-    throw HTTPError(400, "token is not valid");
+  if(!validateToken(token)){
+    throw HTTPError(403, "token is not valid");
   }
   const userObjectHandleStr = data.users.find(a => a.handleStr === handleStr);
   if (userObjectHandleStr !== undefined) {
@@ -73,8 +73,8 @@ export function userProfileSethandleV2(token: string,handleStr:string) {
 
 export function userProfileSetnameV2(token: string, nameFirst:string, nameLast:string) {
   const data = getData();
-  if(!validateToken){
-    throw HTTPError(400, "token is not valid");
+  if(!validateToken(token)){
+    throw HTTPError(403, "token is not valid");
   }
   if ((nameFirst.length > 50) || (nameFirst.length < 1)) {
     throw HTTPError(400, "length of nameFirst is not between 1 and 50 characters inclusive"); 
@@ -95,6 +95,9 @@ export function userProfileSetnameV2(token: string, nameFirst:string, nameLast:s
 
 export function usersAllV2(token: string) {
   const data = getData();
+  if(!validateToken(token)){
+    throw HTTPError(403, "token is not valid");
+  }
   const users = data.users
     .map(p => ({
       uId: p.uId,
@@ -113,6 +116,9 @@ export function usersAllV2(token: string) {
 
 export function userProfileV3(token: string, uId:number) {
   const data = getData();
+  if(!validateToken(token)){
+    throw HTTPError(403, "token is not valid");
+  }
   const idToView = data.users.find(a => a.uId === uId);
   if (idToView === undefined) {
     throw HTTPError(400, "uId is not valid");

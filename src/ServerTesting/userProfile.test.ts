@@ -9,7 +9,7 @@ describe('/user/profile/v2', () => {
   test('token is invaild', () => {
     requestClear();
     const registerObject = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
-    expect(requestUserProfileV3(registerObject.token + 'A', registerObject.authUserId).statusCode).toBe(400);
+    expect(requestUserProfileV3(registerObject.token + 'A', registerObject.authUserId).statusCode).toBe(403);
     expect(requestUserProfileV3(registerObject.token + 'A', registerObject.authUserId).body.error).toStrictEqual({ message: expect.any(String) })
   });
     test('Uid is invaild', () => {

@@ -10,14 +10,14 @@ describe('/user/profile/setname/v1', () => {
   test('return value', () => {
     requestClear();
     const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
-    expect(requestSetNameV2(tokenA, 'DeathLoop', 'ABCD')).toStrictEqual({});// more tests needed when other function finished
+    expect(requestSetNameV2(tokenA, 'DeathLoop', 'ABCD').body).toStrictEqual({});// more tests needed when other function finished
   });
 
   describe('error', () => {
     test('token is invaild', () => {
       requestClear();
       const tokenA = requestAuthRegister('csgo3@gmail.com', 'counterStrike', 'de', 'bug').token;
-      expect(requestSetNameV2(tokenA + 'A', 'HeiHeiHei','Ichiru').statusCode).toBe(400);
+      expect(requestSetNameV2(tokenA + 'A', 'HeiHeiHei','Ichiru').statusCode).toBe(403);
       expect(requestSetNameV2(tokenA + 'A', 'HeiHeiHei','Ichiru').body.error).toStrictEqual({ message: expect.any(String) })
     });
     test('nameFirst is too long', () => {

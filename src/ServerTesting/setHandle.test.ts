@@ -10,7 +10,7 @@ describe('/user/profile/sethandle/v1', () => {
     test('the token is invaild', () => {
       requestClear();
       const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
-      expect(requestuserProfileSethandleV2(tokenA + 'A', 'AIIsLove').statusCode).toBe(400);
+      expect(requestuserProfileSethandleV2(tokenA + 'A', 'AIIsLove').statusCode).toBe(403);
       expect(requestuserProfileSethandleV2(tokenA + 'A', 'AIIsLove').body.error).toStrictEqual({ message: expect.any(String) })
     });
     test('the length of new handle smaller than 3', () => {

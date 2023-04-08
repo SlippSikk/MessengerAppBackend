@@ -107,32 +107,32 @@ app.post('/auth/login/v3', (req: Request, res: Response) => {
 });
 
 app.post('/auth/logout/v2', (req: Request, res: Response) => {
-  const token = req.header('token');
+  const token = req.header('token') as string;
   return res.json(authLogoutV2(token));
 });
 
 app.post('/dm/create/v2', (req: Request, res: Response) => {
   const { uIds } = req.body;
-  const token = req.header('token');
+  const token = req.header('token')as string;
 
   return res.json(dmCreateV2(token, uIds));
 });
 
 app.get('/dm/list/v2', (req: Request, res: Response) => {
-  const token = req.header('token');
+  const token = req.header('token')as string;
 
   return res.json(dmListV2(token));
 });
 
 app.get('/dm/details/v2', (req: Request, res: Response) => {
   const dmId = req.query.dmId as string;
-  const token = req.header('token');
+  const token = req.header('token')as string;
 
   return res.json(dmDetailsV2(token, parseInt(dmId)));
 });
 
 app.delete('/dm/remove/v2', (req: Request, res: Response) => {
-  const token = req.header('token');
+  const token = req.header('token')as string;
   const dmId = req.query.dmId as string;
 
   return res.json(dmRemoveV2(token, parseInt(dmId)));
@@ -140,13 +140,13 @@ app.delete('/dm/remove/v2', (req: Request, res: Response) => {
 
 app.post('/dm/leave/v2', (req: Request, res: Response) => {
   const { dmId } = req.body;
-  const token = req.header('token');
+  const token = req.header('token')as string;
 
   return res.json(dmLeaveV2(token, parseInt(dmId)));
 });
 
 app.get('/dm/messages/v2', (req: Request, res: Response) => {
-  const token = req.header('token');
+  const token = req.header('token')as string;
   const dmId = req.query.dmId as string;
   const start = req.query.start as string;
 
@@ -155,49 +155,49 @@ app.get('/dm/messages/v2', (req: Request, res: Response) => {
 
 app.post('/channels/create/v3', (req: Request, res: Response) => {
   const { name, isPublic } = req.body;
-  const token = req.header('token');
+  const token = req.header('token') as string;
 
   return res.json(channelsCreateV3(token, name, Boolean(isPublic)));
 });
 
 app.get('/channels/list/v3', (req: Request, res: Response) => {
-  const token = req.header('token');
+  const token = req.header('token') as string;
 
   return res.json(channelsListV3(token));
 });
 
 app.get('/channels/listall/v3', (req: Request, res: Response) => {
-  const token = req.header('token');
+  const token = req.header('token') as string;
 
   return res.json(channelsListAllV3(token));
 });
 
 app.put('/user/profile/sethandle/v2', (req: Request, res: Response) => {
     const { handleStr } = req.body;
-    const token = req.header('token');
+    const token = req.header('token') as string;
     return res.json(userProfileSethandleV2(token, handleStr));
   });
   
   app.put('/user/profile/setemail/v2', (req: Request, res: Response) => { //
     const { email } = req.body;
-    const token = req.header('token');
+    const token = req.header('token') as string;
     return res.json(userProfileSetemailV2(token, email));
   });
   
   app.put('/user/profile/setname/v2', (req: Request, res: Response) => { // everything about setname is fine... weird
     const { nameFirst, nameLast } = req.body;
-    const token = req.header('token');
+    const token = req.header('token') as string;
     return res.json(userProfileSetnameV2(token, nameFirst, nameLast));
   });
   
   app.get('/users/all/v2', (req: Request, res: Response) => {
-    const token = req.header('token');
+    const token = req.header('token') as string;
     return res.json(usersAllV2(token));
   });
   
   app.get('/user/profile/v3', (req: Request, res: Response) => {
     const uId = parseInt(req.query.uId as string);
-    const token = req.header('token');
+    const token = req.header('token') as string;
     return res.json(userProfileV3(token, uId));
   });
   
