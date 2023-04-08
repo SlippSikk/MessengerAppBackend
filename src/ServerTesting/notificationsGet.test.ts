@@ -2,7 +2,7 @@
 // import { requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate, requestDmCreate } from '../wrappers';
 // import { requestChannelMessages } from '../wrappers';
 // import { authUserId } from '../interfaces';
-// const ERROR = { error: expect.any(String) };
+
 
 // let registered1: authUserId;
 // let registered2: authUserId;
