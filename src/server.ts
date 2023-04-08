@@ -121,7 +121,7 @@ app.post('/dm/create/v2', (req: Request, res: Response) => {
 });
 
 app.get('/dm/list/v1', (req: Request, res: Response) => {
-  const token = req.query.token as string;
+  const token = req.header('token');
 
   return res.json(dmListV1(token));
 });
@@ -148,7 +148,7 @@ app.post('/dm/leave/v2', (req: Request, res: Response) => {
 });
 
 app.get('/dm/messages/v1', (req: Request, res: Response) => {
-  const token = req.query.token as string;
+  const token = req.header('token');
   const dmId = req.query.dmId as string;
   const start = req.query.start as string;
 

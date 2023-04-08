@@ -26,7 +26,7 @@ beforeEach(() => {
 
 describe('dmDetails Success', () => {
   test('Test 1', () => {
-    expect(requestDmMessages(registered2.token, dmId2, 0)).toStrictEqual({
+    expect(requestDmMessages(registered2.token, dmId2, 0).body).toStrictEqual({
       messages: [],
       start: 0,
       end: -1
@@ -36,18 +36,23 @@ describe('dmDetails Success', () => {
 
 describe('dmMessages Error', () => {
   test('Test 1: Invalid Token', () => {
-    expect(requestDmMessages(registered2.token + registered.token + registered3.token + registered4.token + registered5.token, dmId, 0)).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmMessages(registered2.token + registered.token + registered3.token + registered4.token + registered5.token, dmId, 0).statusCode).toBe(403);
+    expect(requestDmMessages(registered2.token + registered.token + registered3.token + registered4.token + registered5.token, dmId, 0).body.error).toStrictEqual({ message: expect.any(String) });
+
   });
 
   test('Test 2: Invalid dmId', () => {
-    expect(requestDmMessages(registered2.token, (dmId2 + dmId) * 111, 0)).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmMessages(registered2.token, (dmId2 + dmId) * 111, 0).statusCode).toBe(400);
+    expect(requestDmMessages(registered2.token, (dmId2 + dmId) * 111, 0).body.error).toStrictEqual({ message: expect.any(String) });
   });
 
   test('Test 3: Member is not in DM', () => {
-    expect(requestDmMessages(registered5.token, dmId, 0)).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmMessages(registered5.token, dmId, 0).statusCode).toBe(403);
+    expect(requestDmMessages(registered5.token, dmId, 0).body.error).toStrictEqual({ message: expect.any(String) });
   });
 
   test('Test 4: Start is too large', () => {
-    expect(requestDmMessages(registered2.token, dmId, 99999999999999)).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmMessages(registered2.token, dmId, 99999999999999).statusCode).toBe(400);
+    expect(requestDmMessages(registered2.token, dmId, 99999999999999).body.error).toStrictEqual({ message: expect.any(String) });
   });
 });

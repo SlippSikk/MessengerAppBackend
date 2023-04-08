@@ -81,17 +81,39 @@ export function requestChannelLeave(token: string, channelId: number) {
   return JSON.parse(res.getBody() as string);
 }
 
+export function requestDmDetails(token: string, dmId: number) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/dm/details/v1',
+    {
+      headers: { token },
+      qs: {
+        dmId
+      },
+      timeout: 100
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+  
+  return {body, statusCode};
+}
+
 export function requestDmList(token: string) {
   const res = request(
     'GET',
     SERVER_URL + '/dm/list/v1',
     {
+      headers: { token },
       qs: {
-        token
-      }
+      },
+      timeout: 100
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+  
+  return {body, statusCode};
 }
 
 export function requestDmMessages(token: string, dmId: number, start: number) {
@@ -99,12 +121,17 @@ export function requestDmMessages(token: string, dmId: number, start: number) {
     'GET',
     SERVER_URL + '/dm/messages/v1',
     {
+      headers: { token },
       qs: {
-        token, dmId, start
-      }
+        dmId, start
+      },
+      timeout: 100
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+  
+  return {body, statusCode};
 }
 
 export function requestDmCreate(token: string, uIds: number[]) {
@@ -137,24 +164,6 @@ export function requestDmLeave(token: string, dmId: number) {
   );
 
   return JSON.parse(res.body as string);
-}
-
-export function requestDmDetails(token: string, dmId: number) {
-  const res = request(
-    'GET',
-    SERVER_URL + '/dm/details/v1',
-    {
-      headers: { token },
-      qs: {
-        dmId
-      },
-      timeout: 100
-    }
-  );
-  const body = JSON.parse(res.body as string);
-  const statusCode = res.statusCode;
-  
-  return {body, statusCode};
 }
 
 export function requestDmRemove(token: string, dmId: number) {

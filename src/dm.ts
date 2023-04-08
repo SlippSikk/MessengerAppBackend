@@ -11,18 +11,18 @@ export function dmMessagesV1(token: string, dmId: number, start: number): error 
   // errors:
   // case: token is invalid
   if (validateToken(token) !== true) {
-    return { error: 'Token is not valid' };
+    throw HTTPError(403, 'Token is not valid');    
   }
 
   // case: dmId does not refer to a valid DM
   const findDm = data.dms.find(dm => dm.dmId === dmId);
   if (findDm === undefined) {
-    return { error: 'dmId is not valid' };
+    throw HTTPError(400, 'dmId is not valid');    
   }
 
   // case: start is greater than the total number of messages in the channel
   if (start > findDm.messages.length) {
-    return { error: 'Start is greater than the total number of messages in the channel' };
+    throw HTTPError(400, 'Start is greater than the total number of messages in the channel');    
   }
 
   // get the user's details with the given token
@@ -33,7 +33,7 @@ export function dmMessagesV1(token: string, dmId: number, start: number): error 
   const hasToken = findDm.members.find(user => user.uId === currUser.uId);
   // const hasToken = findDm.members.find(currUser);
   if (hasToken === undefined) {
-    return { error: 'User is not a member of the DM' };
+    throw HTTPError(403, 'User is not a member of the DM');    
   }
 
   // Set end
@@ -59,7 +59,7 @@ export function dmMessagesV1(token: string, dmId: number, start: number): error 
 export function dmListV1(token: string): { dms: dmsOutput[] } | error {
   // error case: invalid token
   if (validateToken(token) !== true) {
-    return { error: 'Token is not valid' };
+    throw HTTPError(403, 'Token is not valid');
   }
 
   // get data from dataStore
@@ -211,7 +211,7 @@ export function dmDetailsV1(token: string, dmId: number): error | dmDetails {
   // errors:
   // case: token is invalid
   if (validateToken(token) === false) {
-    throw HTTPError(403, 'Token is not valid1');
+    throw HTTPError(403, 'Token is not valid');
 
   }
 
@@ -222,12 +222,10 @@ export function dmDetailsV1(token: string, dmId: number): error | dmDetails {
   }
 
   // get the user's details with the given token
-  // const currUser = data.users.find(users => users.token.includes(token));
   const currUser = userObjToken(token);
 
   // case: dmId is valid and the authorised user is not a member of the DM
   const hasToken = findDm.members.find(user => user.uId === currUser.uId);
-  // const hasToken = findDm.members.find(currUser);
   if (hasToken === undefined) {
     throw HTTPError(403, 'User is not a member of the DM');
   }
