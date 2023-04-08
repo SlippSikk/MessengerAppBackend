@@ -15,13 +15,9 @@ const getDmFromMessageId = (messageId: number): dms => {
   const data: dataTs = getData();
   return data.dms.find(dm => dm.messages.find(message => message.messageId === messageId));
 };
-
-const getMessage = (messageId: number): messages => {
-  return isYieldExpression;
-};
-
 const isDmOwner = (dmId: number, uId: number): boolean => {
-  return true;
+  const dms: dms = getDm(dmId);
+  return dms.creator.uId === uId;
 };
 /**
  * @param token

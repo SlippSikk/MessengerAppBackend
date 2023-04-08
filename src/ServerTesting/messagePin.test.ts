@@ -21,7 +21,7 @@ app.post('/message/pin/v1', (req: Request, res: Response) => {
   const token = req.header('token');
   const { messageId } = req.body;
 
-  res.json(messageisPinnedV1(token, +messageId));
+  res.json(messagePinV1(token, +messageId));
 });
 import { requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate, requestChannelJoin } from '../wrappers';
 import { requestChannelMessages, requestMessagePin, requestMessageSenddm, requestDmCreate, requestDmMessages } from '../wrappers';
@@ -89,7 +89,7 @@ describe('Function Testing', () => {
     expect(a.messages[0].message.isPinned).toStrictEqual(true);
   });
   test('Pin in dm msg', () => {
-    expect(requestMessagePin(registered1.token, messageId)).toStrictEqual({});
+    expect(requestMessagePin(registered1.token, mIdDm)).toStrictEqual({});
     const a = requestDmMessages(registered1.token, dmId, 0);
     expect(a.messages[0].message.isPinned).toStrictEqual(true);
   });
