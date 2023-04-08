@@ -6,6 +6,7 @@ interface users {
     handleStr: string,
     password: password,
     token: string[],
+    notifications: notifications[]
 }
 
 interface user {
@@ -68,6 +69,12 @@ interface dataTs {
     dms: dms[]
 }
 
+interface notifications {
+    channelId: number,
+    dmId: number,
+    notificationMessage: string
+}
+
 type authUserId = { token: string, authUserId: number };
 
 type error = { error: string };
@@ -81,5 +88,5 @@ interface password {
 
 export {
     users, channels, user, messages, dataTs, authUserId, error, channel,
-    dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password
+    dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password, notifications
 };

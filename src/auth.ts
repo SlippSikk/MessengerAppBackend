@@ -76,7 +76,8 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
     nameLast: nameLast,
     handleStr: nameConcat,
     password: pass,
-    token: [nameConcat]
+    token: [nameConcat],
+    notifications: []
   };
 
   data.users.push(user);
