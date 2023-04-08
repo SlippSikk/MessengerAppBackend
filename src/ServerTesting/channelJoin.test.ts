@@ -21,8 +21,8 @@ describe('Valid joining sequences', () => {
     regularOwnerId = regularOwner.authUserId;
     regularOwnerToken = regularOwner.token;
 
-    publicChannelId = requestChannelsCreate(regularOwnerToken, 'Public Channel', true).channelId;
-    privateChannelId = requestChannelsCreate(regularOwnerToken, 'Private Channel', false).channelId;
+    publicChannelId = requestChannelsCreate(regularOwnerToken, 'Public Channel', true).body.channelId;
+    privateChannelId = requestChannelsCreate(regularOwnerToken, 'Private Channel', false).body.channelId;
 
     const regularUser = requestAuthRegister('chris@outlook.com', 'ccc123', 'Chris', 'Catman');
     regularUserId = regularUser.authUserId;
@@ -105,8 +105,8 @@ describe('InvalId joining sequences', () => {
     regularOwnerId = regularOwner.authUserId;
     regularOwnerToken = regularOwner.token;
 
-    publicChannelId = requestChannelsCreate(regularOwnerToken, 'Public Channel', true).channelId;
-    privateChannelId = requestChannelsCreate(regularOwnerToken, 'Private Channel', false).channelId;
+    publicChannelId = requestChannelsCreate(regularOwnerToken, 'Public Channel', true).body.channelId;
+    privateChannelId = requestChannelsCreate(regularOwnerToken, 'Private Channel', false).body.channelId;
 
     const regularUser = requestAuthRegister('chris@outlook.com', 'ccc123', 'Chris', 'Catman');
     regularUserId = regularUser.authUserId;

@@ -15,9 +15,9 @@ describe('Incorrect input', () => {
     authToken2 = requestAuthRegister('Ina@outlook.com', 'asdgf8', 'me', 'vasdui').token;
     authToken3 = requestAuthRegister('ichiru@qq.com', 'asduif8195', 'ichiru', 'shirase').token;
 
-    channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).channelId;
-    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).channelId;
-    channelId3 = requestChannelsCreate(authToken3, 'Channel 3', false).channelId;
+    channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).body.channelId;
+    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).body.channelId;
+    channelId3 = requestChannelsCreate(authToken3, 'Channel 3', false).body.channelId;
   });
   test('Invalid token', () => {
     // concatenates all token strings together, to guarantee an invalid token
@@ -60,9 +60,9 @@ describe('Correct input', () => {
     authToken3 = user3.token;
     authId3 = user3.authUserId;
 
-    channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).channelId;
-    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).channelId;
-    channelId3 = requestChannelsCreate(authToken3, 'Channel 3', false).channelId;
+    channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).body.channelId;
+    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).body.channelId;
+    channelId3 = requestChannelsCreate(authToken3, 'Channel 3', false).body.channelId;
   });
 
   test('No messages sent', () => {

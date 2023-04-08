@@ -25,7 +25,7 @@ beforeEach(() => {
 
 describe('DmList Success:', () => {
   test('Test 1', () => {
-    expect(requestDmList(registered3.token)).toStrictEqual({
+    expect(requestDmList(registered3.token).body).toStrictEqual({
       dms: [{
         dmId: dmId,
         name: 'adamb, cb, eb, fb'
@@ -34,7 +34,7 @@ describe('DmList Success:', () => {
   });
 
   test('Test 2', () => {
-    expect(requestDmList(registered2.token)).toStrictEqual({
+    expect(requestDmList(registered2.token).body).toStrictEqual({
       dms: [{
         dmId: dmId,
         name: 'adamb, cb, eb, fb'
@@ -49,8 +49,9 @@ describe('DmList Success:', () => {
 
 describe('DmList Error:', () => {
   test('Test 1: Invalid Token', () => {
-    expect(requestDmList(registered2.token + registered.token + registered3.token + registered4.token)).toStrictEqual(
-      { error: expect.any(String) }
+    expect(requestDmList(registered2.token + registered.token + registered3.token + registered4.token).statusCode).toBe(403);
+    expect(requestDmList(registered2.token + registered.token + registered3.token + registered4.token).body.error).toStrictEqual(
+      { message: expect.any(String) }
     );
   });
 });

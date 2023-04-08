@@ -1,3 +1,8 @@
+interface password {
+    iv: string,
+    encryptedData: string
+}
+
 interface users {
     uId: number,
     email: string,
@@ -74,12 +79,7 @@ type error = { error: string };
 
 type channelId = { channelId: number }
 
-interface password {
-    iv: string,
-    encryptedData: string
-};
-
 export {
-    users, channels, user, messages, dataTs, authUserId, error, channel,
-    dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password
+  users, channels, user, messages, dataTs, authUserId, error, channel,
+  dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password
 };
