@@ -136,7 +136,7 @@ export const createMessageId = (): number => {
  */
 export const getUIdFromToken = (token: string): number => {
   const data = getData();
-  const foundToken = data.users.find(element => element.token.find(element => hashToken(element) === token));
+  const foundToken = data.users.find(element => element.token.find(element => element === hashToken(token)));
 
   // if (foundToken === undefined) {
   //   return false;
@@ -246,9 +246,9 @@ export const hashToken = (str: string): string => {
   return md5(str + randomWord);
 };
 
-export const validateToken = (hash: string): boolean => {
-  const data = getData();
-  const found = data.users.find(element => element.token.find(element => hashToken(element) === hash));
+export const validateToken = (token: string): boolean => {
+  let data = getData();
+  const found = data.users.find(element => element.token.find(element => element === hashToken(token)));
 
   if (found !== undefined) {
     return true;
@@ -257,15 +257,15 @@ export const validateToken = (hash: string): boolean => {
   }
 };
 
-export const userIndexToken = (hash: string): number => {
-  const data = getData();
-  return data.users.findIndex(element => element.token.find(element => hashToken(element) === hash));
-};
+export const userIndexToken = (token: string): number => {
+  let data = getData();
+  return data.users.findIndex(element => element.token.find(element => element === hashToken(token)));
+}
 
-export const userObjToken = (hash: string): users => {
-  const data = getData();
-  return data.users.find(element => element.token.find(element => hashToken(element) === hash));
-};
+export const userObjToken = (token: string): users => {
+  let data = getData();
+  return data.users.find(element => element.token.find(element => element === hashToken(token)));
+}
 
 export function encrypt(text: string): password {
   const cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
