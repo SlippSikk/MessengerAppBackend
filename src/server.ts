@@ -156,19 +156,20 @@ app.get('/dm/messages/v1', (req: Request, res: Response) => {
 });
 
 app.post('/channels/create/v2', (req: Request, res: Response) => {
-  const { token, name, isPublic } = req.body;
+  const { name, isPublic } = req.body;
+  const token = req.header('token');
 
   return res.json(channelsCreateV2(token, name, Boolean(isPublic)));
 });
 
 app.get('/channels/list/v2', (req: Request, res: Response) => {
-  const token = req.query.token as string;
+  const token = req.header('token');
 
   return res.json(channelsListV2(token));
 });
 
 app.get('/channels/listall/v2', (req: Request, res: Response) => {
-  const token = req.query.token as string;
+  const token = req.header('token');
 
   return res.json(channelsListAllV2(token));
 });

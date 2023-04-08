@@ -339,13 +339,16 @@ export function requestChannelsCreate(token: string, name: string, isPublic: boo
     'POST',
     SERVER_URL + '/channels/create/v2',
     {
-
+      headers: { token },
       json: {
-        token, name, isPublic
+        name, isPublic
       }
     }
   );
-  return JSON.parse(res.getBody() as string);
+    const body = JSON.parse(res.body as string);
+    const statusCode = res.statusCode;
+    
+    return {body, statusCode};
 }
 
 export function requestChannelsListAll(token: string) {
@@ -353,12 +356,15 @@ export function requestChannelsListAll(token: string) {
     'GET',
     SERVER_URL + '/channels/listall/v2',
     {
+      headers: { token },
       qs: {
-        token
       }
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+  
+  return {body, statusCode};
 }
 
 export function requestChannelsList(token: string) {
@@ -366,12 +372,15 @@ export function requestChannelsList(token: string) {
     'GET',
     SERVER_URL + '/channels/list/v2',
     {
+      headers: { token },
       qs: {
-        token
       }
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+  
+  return {body, statusCode};
 }
 
 export function requestClear() {
