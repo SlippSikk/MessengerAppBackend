@@ -41,15 +41,15 @@ describe('Error Cases', () => {
 describe('Function Testing', () => {
   test('Send a message', () => {
     expect(requestMessageSend(registered1.token, channelId1, 'Hi my ducklings')).toStrictEqual({ messageId: expect.any(Number) });
-    const a = requestChannelMessages(registered1.token, channelId1, 0);
+    const a = requestChannelMessages(registered1.token, channelId1, 0).body;
     expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
   });
   test('Send two messages in the same channel', () => {
     expect(requestMessageSend(registered1.token, channelId1, 'Hi my ducklings')).toStrictEqual({ messageId: expect.any(Number) });
     expect(requestMessageSend(registered1.token, channelId1, 'How to get bread ?')).toStrictEqual({ messageId: expect.any(Number) });
-    const a = requestChannelMessages(registered1.token, channelId1, 0);
-    expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
-    expect(a.messages[1].message).toStrictEqual('How to get bread ?');
+    const a = requestChannelMessages(registered1.token, channelId1, 0).body;
+    expect(a.messages[1].message).toStrictEqual('Hi my ducklings');
+    expect(a.messages[0].message).toStrictEqual('How to get bread ?');
   });
   test('Send four messages in the two channels', () => {
     expect(requestMessageSend(registered1.token, channelId1, 'one')).toStrictEqual({ messageId: expect.any(Number) });
@@ -57,12 +57,12 @@ describe('Function Testing', () => {
     expect(requestMessageSend(registered1.token, channelId1, 'three')).toStrictEqual({ messageId: expect.any(Number) });
     expect(requestMessageSend(registered2.token, channelId2, 'four')).toStrictEqual({ messageId: expect.any(Number) });
 
-    const a = requestChannelMessages(registered1.token, channelId1, 0);
-    const b = requestChannelMessages(registered2.token, channelId2, 0);
+    const a = requestChannelMessages(registered1.token, channelId1, 0).body;
+    const b = requestChannelMessages(registered2.token, channelId2, 0).body;
 
-    expect(a.messages[0].message).toStrictEqual('one');
-    expect(a.messages[1].message).toStrictEqual('three');
-    expect(b.messages[0].message).toStrictEqual('two');
-    expect(b.messages[1].message).toStrictEqual('four');
+    expect(a.messages[1].message).toStrictEqual('one');
+    expect(a.messages[0].message).toStrictEqual('three');
+    expect(b.messages[1].message).toStrictEqual('two');
+    expect(b.messages[0].message).toStrictEqual('four');
   });
 });
