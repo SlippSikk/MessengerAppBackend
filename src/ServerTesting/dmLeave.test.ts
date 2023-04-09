@@ -33,28 +33,28 @@ describe('Correct Dm leave', () => {
 
   test('Correct Output DmList', () => {
     requestDmLeave(registered3.token, dmId);
-    expect(requestDmList(registered3.token)).toStrictEqual({
+    expect(requestDmList(registered3.token).body).toStrictEqual({
       dms: []
     });
   });
 
   test('Correct Output DmDetails', () => {
     requestDmLeave(registered.token, dmId2);
-    expect(requestDmDetails(registered.token, dmId2)).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmDetails(registered.token, dmId2).body.error).toStrictEqual({ message: expect.any(String) });
   });
 });
 
 describe('Incorrect Dm leave', () => {
   test('Invalid dmId', () => {
-    expect(requestDmLeave(registered.token, (dmId2 * Date.now()))).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmLeave(registered.token, (dmId2 * Date.now())).error).toStrictEqual({ message: expect.any(String) });
   });
 
   test('No longer member', () => {
     requestDmLeave(registered.token, dmId2);
-    expect(requestDmLeave(registered.token, dmId2)).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmLeave(registered.token, dmId2).error).toStrictEqual({ message: expect.any(String) });
   });
 
   test('Invalid Token', () => {
-    expect(requestDmLeave((registered2.token + registered.token + Date.now()), dmId)).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmLeave((registered2.token + registered.token + Date.now()), dmId).error).toStrictEqual({ message: expect.any(String) });
   });
 });

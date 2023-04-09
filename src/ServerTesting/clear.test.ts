@@ -23,7 +23,7 @@ function requestClear() {
 }
 
 function requestRegister(email: string, password: string, nameFirst: string, nameLast: string) {
-  return requestHelper('POST', '/auth/register/v2', { email, password, nameFirst, nameLast });
+  return requestHelper('POST', '/auth/register/v3', { email, password, nameFirst, nameLast });
 }
 
 function requestUserAllV1(token: string) {

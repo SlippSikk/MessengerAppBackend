@@ -1,7 +1,7 @@
 
 import { getData, setData } from './dataStore';
 import validator from 'validator';
-import { isTokenValid } from './helper';
+import { hashToken, userIndexToken, userObjToken, validateToken } from './helper';
 /**
  * For a valid user, returns information about their user ID,
  * email, first name, last name, and handle
@@ -18,9 +18,9 @@ import { isTokenValid } from './helper';
  * @returns {}
  */
 
-export function userProfileSetemailV1(token:string, email:string) {
+export function userProfileSetemailV1(token: string, email: string) {
   const data = getData();
-  if (isTokenValid(token) !== true) {
+  if (validateToken(token) !== true) {
     return { error: 'Token is not valid' };
   }
   if (!(validator.isEmail(email))) {
@@ -30,8 +30,9 @@ export function userProfileSetemailV1(token:string, email:string) {
   if (userObjectEmail !== undefined) {
     return { error: 'Email in use' };
   }
-  const userObject = data.users.find(a => a.token.includes(token));
-  userObject.email = email;
+
+  const userIndex = userIndexToken(token);
+  data.users[userIndex].email = email;
   setData(data);
   return {};
 }
@@ -42,9 +43,9 @@ export function userProfileSetemailV1(token:string, email:string) {
  * @returns {}
  */
 
-export function userProfileSethandleV1(token:string, handleStr:string) {
+export function userProfileSethandleV1(token: string, handleStr: string) {
   const data = getData();
-  if (isTokenValid(token) !== true) {
+  if (validateToken(token) !== true) {
     return { error: 'Token is not valid' };
   }
 
@@ -61,8 +62,8 @@ export function userProfileSethandleV1(token:string, handleStr:string) {
     return { error: 'length of handleStr is not between 3 and 20 characters inclusive' };
   }
 
-  const userObject = data.users.find(a => a.token.includes(token));
-  userObject.handleStr = handleStr;
+  const userIndex = userIndexToken(token);
+  data.users[userIndex].handleStr = handleStr;
   setData(data);
   return {};
 }
@@ -75,9 +76,9 @@ export function userProfileSethandleV1(token:string, handleStr:string) {
  * @returns {}
  */
 
-export function userProfileSetnameV1(token:string, nameFirst:string, nameLast:string) {
+export function userProfileSetnameV1(token: string, nameFirst: string, nameLast: string) {
   const data = getData();
-  if (isTokenValid(token) !== true) {
+  if (validateToken(token) !== true) {
     return { error: 'Token is not valid' };
   }
   if ((nameFirst.length > 50) || (nameFirst.length < 1)) {
@@ -86,9 +87,10 @@ export function userProfileSetnameV1(token:string, nameFirst:string, nameLast:st
   if ((nameLast.length > 50) || (nameLast.length < 1)) {
     return { error: 'length of nameLast is not between 1 and 50 characters inclusive' };
   }
-  const userObject = data.users.find(a => a.token.includes(token)); // I guess it could work :D
-  userObject.nameFirst = nameFirst;
-  userObject.nameLast = nameLast;
+
+  const userIndex = userIndexToken(token);
+  data.users[userIndex].nameFirst = nameFirst;
+  data.users[userIndex].nameLast = nameLast;
   setData(data);
   return {};
 }
@@ -98,9 +100,9 @@ export function userProfileSetnameV1(token:string, nameFirst:string, nameLast:st
  * @returns {{users}}
  */
 
-export function usersAllV1(token:string) {
+export function usersAllV1(token: string) {
   const data = getData();
-  if (isTokenValid(token) !== true) {
+  if (validateToken(token) !== true) {
     return { error: 'Token is not valid' };
   }
   const users = data.users
@@ -120,9 +122,9 @@ export function usersAllV1(token:string) {
  * @returns {user}
  */
 
-export function userProfileV2(token:string, uId:number) {
+export function userProfileV2(token: string, uId: number) {
   const data = getData();
-  if (isTokenValid(token) !== true) {
+  if (validateToken(token) !== true) {
     return { error: 'Token is not valid' };
   }
   const idToView = data.users.find(a => a.uId === uId);

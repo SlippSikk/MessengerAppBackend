@@ -23,6 +23,6 @@ describe('Correct token', () => {
 
 describe('Incorrect token', () => {
   test('incorrect token', () => {
-    expect(requestAuthLogout((token1 + token2 + Date.now()))).toStrictEqual({ error: expect.any(String) });
+    expect(requestAuthLogout((token1 + token2 + Date.now())).error).toStrictEqual({ message: expect.any(String) });
   });
 });
