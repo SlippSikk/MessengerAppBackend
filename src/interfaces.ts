@@ -11,7 +11,8 @@ interface users {
     handleStr: string,
     password: password,
     token: string[],
-    notifications: notifications[]
+    notifications: notifications[],
+    resetCode: number
 }
 
 interface user {
@@ -86,9 +87,9 @@ interface notifications {
     dmId: number,
     notificationMessage: string
 }
-type timeFinish = {timeFinish: number};
+type timeFinish = { timeFinish: number };
 
-type standupActive = {isActive: boolean, timeFinish: number};
+type standupActive = { isActive: boolean, timeFinish: number };
 
 type authUserId = { token: string, authUserId: number };
 
@@ -97,7 +98,7 @@ type error = { error: string };
 type channelId = { channelId: number }
 
 export {
-  users, channels, user, messages, dataTs, authUserId, error, channel,
-  dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password, standup,
-  timeFinish, standupActive, notifications
+    users, channels, user, messages, dataTs, authUserId, error, channel,
+    dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password, standup,
+    timeFinish, standupActive, notifications
 };
