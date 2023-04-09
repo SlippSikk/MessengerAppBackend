@@ -3,7 +3,7 @@ import { echo } from './echo';
 import { authRegisterV3, authLoginV3, authLogoutV2 } from './auth';
 import { dmCreateV2, dmLeaveV2, dmRemoveV2, dmDetailsV2, dmMessagesV2, dmListV2 } from './dm';
 import { channelsListAllV3, channelsListV3, channelsCreateV3 } from './channels';
-import { channelDetailsV2, channelLeaveV1, channelAddownerV1, channelInviteV3, channelJoinV3, channelRemoveOwnerV2, channelMessagesV3 } from './channel';
+import { channelDetailsV3, channelLeaveV1, channelAddownerV1, channelInviteV3, channelJoinV3, channelRemoveOwnerV2, channelMessagesV3 } from './channel';
 import { userProfileSethandleV1, userProfileSetemailV1, userProfileSetnameV1, usersAllV1, userProfileV2 } from './users';
 import { messageSenddmV1, messageSendV1, messageEditV1, messageRemoveV1 } from './message';
 import { standupActiveV1 } from './standup';
@@ -65,10 +65,10 @@ app.post('/channel/leave/v1', (req: Request, res: Response) => {
   res.json(channelLeaveV1(token, parseInt(channelId)));
 });
 
-app.get('/channel/details/v2', (req: Request, res: Response, next) => {
+app.get('/channel/details/v3', (req: Request, res: Response, next) => {
   const token = req.query.token as string;
   const channelId = parseInt(req.query.channelId as string);
-  res.json(channelDetailsV2(token, channelId));
+  res.json(channelDetailsV3(token, channelId));
 });
 
 app.post('/channel/join/v3', (req: Request, res: Response) => {

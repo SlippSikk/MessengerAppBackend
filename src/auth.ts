@@ -71,10 +71,10 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
   }
 
   // Encrypt password
-  const pass = encrypt(password)
+  const pass = encrypt(password);
 
   // Hash token
-  const hashedToken = hashToken(nameConcat)
+  const hashedToken = hashToken(nameConcat);
 
   const user: users = {
     uId: Id,
@@ -90,7 +90,6 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
   data.users.push(user);
 
   setData(data);
-
 
   return {
     token: nameConcat,
@@ -136,8 +135,6 @@ function authLoginV3(email: string, password: string): authUserId | error {
   setData(data);
 
   // Hash the token and return it
-
-
 
   return {
     token: randToken,

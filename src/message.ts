@@ -36,7 +36,6 @@ export function messageEditV1(token: string, messageId: number, message: string)
     setData(data);
     tagChannelNotification(message, data.channels[channelIndex].channelId, token);
     return {};
-
   } else if (isMessageInDM(messageId)) {
     const dmIndex: number = findDMIndexWithMessage(messageId);
     const dm: dms = data.dms[dmIndex];
@@ -58,7 +57,7 @@ export function messageEditV1(token: string, messageId: number, message: string)
       data.dms[dmIndex].messages[messageIndex].message = message;
     }
     setData(data);
-    tagDmNotification(message, data.dms[dmIndex].dmId, token)
+    tagDmNotification(message, data.dms[dmIndex].dmId, token);
     return {};
   }
 
@@ -102,7 +101,7 @@ export const messageSenddmV1 = (token: string, dmId: number, message: string) =>
     timeSent: ~~(new Date().getTime() / 1000)
   });
   setData(data);
-  tagDmNotification(message, dmId, token)
+  tagDmNotification(message, dmId, token);
   return { messageId: messageId };
 };
 
@@ -143,5 +142,3 @@ export const messageSendV1 = (token: string, channelId: number, message: string)
   tagChannelNotification(message, channelId, token);
   return { messageId: messageId };
 };
-
-

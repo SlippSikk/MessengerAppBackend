@@ -42,14 +42,17 @@ export function requestChannelAddowner(token: string, channelId: number, uId: nu
     'POST',
     SERVER_URL + '/channel/addowner/v1',
     {
+      headers: { token },
       json: {
-        token: token,
         channelId: channelId,
         uId: uId
       }
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
 export function requestAuthLogout(token: string) {
@@ -70,15 +73,18 @@ export function requestAuthLogout(token: string) {
 export function requestChannelLeave(token: string, channelId: number) {
   const res = request(
     'POST',
-    SERVER_URL + '/channel/leave/v1',
+    SERVER_URL + '/channel/leave/v2',
     {
+      headers: { token },
       json: {
-        token: token,
         channelId: channelId,
       }
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
 export function requestDmDetails(token: string, dmId: number) {
@@ -314,45 +320,54 @@ export function requestMessageRemove(token: string, messageId: number) {
 export function requestMessageSenddm(token: string, dmId: number, message: string) {
   const res = request(
     'POST',
-    SERVER_URL + '/message/senddm/v1',
+    SERVER_URL + '/message/senddm/v2',
     {
+      headers: { token },
       json: {
-        token: token,
         dmId: dmId,
         message: message
       }
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
 export function requestMessageSend(token: string, channelId: number, message: string) {
   const res = request(
     'POST',
-    SERVER_URL + '/message/send/v1',
+    SERVER_URL + '/message/send/v2',
     {
+      headers: { token },
       json: {
-        token: token,
         channelId: channelId,
         message: message
       }
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
 export function requestChannelDetails(token: string, channelId: number) {
   const res = request(
     'GET',
-    SERVER_URL + '/channel/details/v2',
+    SERVER_URL + '/channel/details/v3',
     {
+      headers: { token },
       qs: {
-        token: token,
         channelId: channelId,
       }
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
 export function requestChannelsCreate(token: string, name: string, isPublic: boolean) {
