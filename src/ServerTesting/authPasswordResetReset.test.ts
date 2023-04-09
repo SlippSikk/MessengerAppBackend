@@ -1,25 +1,27 @@
-// import { requestAuthRegister, requestClear, requestPasswordResetReset } from '../wrappers';
-// import { authUserId } from '../interfaces';
+import { requestAuthRegister, requestClear } from '../wrappers';
+import { requestAuthPasswordResetReset } from '../adamWrappers';
 
-///////////////////// delete this test /////////////////////
-test('stub test', () => {
-    expect(1 + 1).toStrictEqual(2);
-})
+// Global
+beforeEach(() => {
+  requestClear();
+  requestAuthRegister('adam.baqaie@gmail.com', 'adam123', 'Adamk', 'Baqaie');
+});
 
-////////////////////////////////////////////////////////////
-// // Global
-// let registered: authUserId;
-// beforeEach(() => {
-//     requestClear();
-//     registered = requestAuthRegister('adam.baqaie@gmail.com', 'adam123', 'Adamklklklk', 'Baqaieokokokokok');
-// });
+// describe('Correct Reset', () => {
 
-// describe('Incorrect Reset', () => {
-
-//     test('incorrect resetcode', () => {
-//         expect(requestPasswordResetReset(1234, 'hell11o').error).toStrictEqual({ message: expect.any(String) });
-//     });
-//     test('Short password', () => {
-//         expect(requestPasswordResetReset(1234, 'hello').error).toStrictEqual({ message: expect.any(String) });
+//     test('Correct resetcode', () => {
+//         expect(requestAuthPasswordResetReset('1234', 'hell11o').body.error).toStrictEqual({ message: expect.any(String) });
+//         expect(requestAuthPasswordResetReset('1234', 'hell11o').statusCode).toStrictEqual(400);
 //     });
 // });
+
+describe('Incorrect Reset', () => {
+  test('incorrect resetcode', () => {
+    expect(requestAuthPasswordResetReset('1234', 'hell11o').body.error).toStrictEqual({ message: expect.any(String) });
+    expect(requestAuthPasswordResetReset('1234', 'hell11o').statusCode).toStrictEqual(400);
+  });
+  test('Short password', () => {
+    expect(requestAuthPasswordResetReset('1234', 'hello').body.error).toStrictEqual({ message: expect.any(String) });
+    expect(requestAuthPasswordResetReset('1234', 'hello').statusCode).toStrictEqual(400);
+  });
+});

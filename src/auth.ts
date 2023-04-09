@@ -86,7 +86,7 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
     password: pass,
     token: [hashedToken],
     notifications: [],
-    resetCode: -1
+    resetCode: 'NO'
   };
 
   data.users.push(user);
@@ -166,7 +166,7 @@ function authLogoutV2(token: string) {
 function authPasswordResetRequestV1(email: string) {
   let data = getData();
   // Generate reset code
-  const resetCode = Math.floor(Math.random() * Date.now());
+  const resetCode = (Math.floor(Math.random() * Date.now())).toString();
 
   const userIndex = data.users.findIndex(element => element.email === email);
   data.users[userIndex].resetCode = resetCode;
@@ -195,5 +195,24 @@ function authPasswordResetRequestV1(email: string) {
   return {};
 }
 
+function authPasswordResetResetV1(resetCode: string, newPassword: string) {
+  let data = getData();
+  const userIndex = data.users.findIndex(element => element.resetCode === resetCode);
 
-export { authRegisterV3, authLoginV3, authLogoutV2, authPasswordResetRequestV1 };
+  if (userIndex === -1) {
+    throw HTTPError(400, "Invalid reset code");
+  }
+
+  if (newPassword.length < 6) {
+    throw HTTPError(400, "Password is too short (6 or more characters)");
+  }
+
+  data.users[userIndex].password = encrypt(newPassword);
+  data.users[userIndex].resetCode = 'NO';
+  setData(data);
+
+  return {};
+
+}
+
+export { authRegisterV3, authLoginV3, authLogoutV2, authPasswordResetRequestV1, authPasswordResetResetV1 };
