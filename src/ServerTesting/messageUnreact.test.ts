@@ -25,72 +25,77 @@ app.post('message/unreact/v1', (req: Request, res: Response) => {
 
   res.json(messageReactV1(token, +messageId, +reactId));
 });
-import { requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate} from '../wrappers';
-import { requestChannelMessages, requestMessageReact, requestMessageSenddm, requestDmCreate } from '../wrappers';
+import { requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate } from '../wrappers';
+import { requestChannelMessages, requestMessageReact, requestMessagUnreact, requestDmMessages, requestMessageSenddm, requestDmCreate } from '../wrappers';
 import { authUserId } from '../interfaces';
 const ERROR = { code: 400, error: expect.any(String) };
 
 let registered1: authUserId;
 let registered2: authUserId;
+let registered3: authUserId;
 let channelId1: number;
 let channelId2: number;
+let mIdChannel: number;
+let mIdDm: number;
+let dmId: number;
 
 beforeEach(() => {
   requestClear();
   registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
   registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+  registered3 = requestAuthRegister('hound@gmail.com', 'hound123', 'dog', 'drown');
   channelId1 = requestChannelsCreate(registered1.token, 'nest', true).channelId;
   channelId2 = requestChannelsCreate(registered2.token, 'shed', true).channelId;
+  dmId = requestDmCreate(registered2.token, [registered1.authUserId, registered2.authUserId]).dmId;
+  mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').messageId;
+  mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').messageId;
+  requestMessageReact(registered1.token, mIdChannel, 1);
+  requestMessageReact(registered1.token, mIdDm, 1);
 });
 
 describe('Error Cases', () => {
+  test('Invalid token', () => {
+    expect(requestMessagUnreact(registered1.token + registered2.token, mIdChannel, 1)).toStrictEqual(403);
+  });
   test('Invalid messageId', () => {
-    expect(requestMessagUnreact(token, messageId * messageId + 1, reactId)).toStrictEqual(ERROR);
+    expect(requestMessagUnreact(registered1.token, mIdChannel * mIdDm + 1, 1)).toStrictEqual(400);
   });
   test('user is not in channel/dm of messageId', () => {
-    expect(requestMessageUnreact(token, messageId, reactId)).toStrictEqual(ERROR);
+    expect(requestMessageUnreact(registered3.token, mIdChannel, 1)).toStrictEqual(400);
   });
   test('Invalid reactId', () => {
-    expect(requestMessageUnreact(token, messageId, 2)).toStrictEqual(ERROR);
+    expect(requestMessageUnreact(registered1.token, mIdChannel, 2)).toStrictEqual(400);
   });
   test('Message does not have the current reactId', () => {
-    requestMessageUnreact(token, messageId, reactId);
-    expect(requestMessageUnreact(token, messageId, reactId)).toStrictEqual(ERROR);
+    requestMessageUnreact(registered1.token, mIdChannel, 1);
+    expect(requestMessageUnreact(registered1.token, mIdChannel, 1)).toStrictEqual(400);
   });
 });
 
 describe('Function Testing', () => {
-  const mIdChannel: number;
-  const mIdDm: number;
-  const dmId: number;
-  beforeEach(() => {
-    dmId = requestDmCreate(registered2.token, [registered1.authUserId, registered2.authUserId]).dmId;
-    const mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').messageId;
-    const mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').messageId;
-  });
   test('React in channel msg', () => {
-    expect(requestMessageUnreact(token, messageId, reactId)).toStrictEqual({});
+    expect(requestMessageUnreact(registered1.token, mIdChannel, 1)).toStrictEqual({});
     const a = requestChannelMessages(registered1.token, channelId1, 0);
     expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
     expect(a.messages[0].message.reacts.user.uId).toStrictEqual(registered1);
   });
   test('React in dm msg', () => {
-    expect(requestMessageUnreact(token, messageId, reactId)).toStrictEqual({});
-    const a = requestDmMessages(registered1.token, dmId2, 0);
+    expect(requestMessageUnreact(registered1.token, mIdDm, 1)).toStrictEqual({});
+    const a = requestDmMessages(registered1.token, dmId, 0);
     expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
     expect(a.messages[0].message.reacts.user.uId).toStrictEqual(registered1);
   });
   test('Double unreacts in channel msg', () => {
-    expect(requestMessageUnreact(token, messageId, reactId)).toStrictEqual({});
-    expect(requestMessageUnreact(token, messageId, reactId)).toStrictEqual(ERROR);
+    expect(requestMessageUnreact(registered1.token, mIdChannel, 1)).toStrictEqual({});
+    expect(requestMessageUnreact(registered1.token, mIdChannel, 1)).toStrictEqual(400);
     const a = requestChannelMessages(registered1.token, channelId1, 0);
     expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
     expect(a.messages[0].message.reacts.allUsers.length).toStrictEqual(0);
   });
   test('Double unreacts in dm msg', () => {
-    expect(requestMessageUnreact(token, messageId, reactId)).toStrictEqual({});
-    expect(requestMessageUnreact(token, messageId, reactId)).toStrictEqual(ERROR);
-    const a = requestDmMessages(registered1.token, dmId2, 0);
+    expect(requestMessageUnreact(registered1.token, mIdDm, 1)).toStrictEqual({});
+    expect(requestMessageUnreact(registered1.token, mIdDm, 1)).toStrictEqual(400);
+    const a = requestDmMessages(registered1.token, dmId, 0);
     expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
     expect(a.messages[0].message.reacts.allUsers.length).toStrictEqual(0);
   });
