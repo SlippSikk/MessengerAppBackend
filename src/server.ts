@@ -214,7 +214,7 @@ app.get('/notifications/get/v1', (req: Request, res: Response) => {
 app.post('/auth/passwordreset/request/v1', (req: Request, res: Response) => {
   const { email } = req.body;
   return res.json(authPasswordResetRequestV1(email));
-})
+});
 
 app.delete('/clear/v1', (req: Request, res: Response) => {
   return res.json(clearV1());
