@@ -55,46 +55,30 @@ beforeEach(() => {
 
 describe('Error Cases', () => {
   test('Invalid token', () => {
-    expect(requestMessagUnreact(registered1.token + registered2.token, mIdChannel, 1)).toStrictEqual(403);
+    expect(requestMessagUnreact(registered1.token + registered2.token, mIdChannel, 1).statusCode).toStrictEqual(403);
   });
   test('Invalid messageId', () => {
-    expect(requestMessagUnreact(registered1.token, mIdChannel * mIdDm + 1, 1)).toStrictEqual(400);
+    expect(requestMessagUnreact(registered1.token, mIdChannel * mIdDm + 1, 1).statusCode).toStrictEqual(400);
   });
   test('user is not in channel/dm of messageId', () => {
-    expect(requestMessageUnreact(registered3.token, mIdChannel, 1)).toStrictEqual(400);
+    expect(requestMessageUnreact(registered3.token, mIdChannel, 1).statusCode).toStrictEqual(400);
   });
   test('Invalid reactId', () => {
-    expect(requestMessageUnreact(registered1.token, mIdChannel, 2)).toStrictEqual(400);
-  });
-  test('Message does not have the current reactId', () => {
-    requestMessageUnreact(registered1.token, mIdChannel, 1);
-    expect(requestMessageUnreact(registered1.token, mIdChannel, 1)).toStrictEqual(400);
+    expect(requestMessageUnreact(registered1.token, mIdChannel, 2).statusCode).toStrictEqual(400);
   });
 });
 
 describe('Function Testing', () => {
-  test('React in channel msg', () => {
-    expect(requestMessageUnreact(registered1.token, mIdChannel, 1)).toStrictEqual({});
-    const a = requestChannelMessages(registered1.token, channelId1, 0);
-    expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
-    expect(a.messages[0].message.reacts.user.uId).toStrictEqual(registered1);
-  });
-  test('React in dm msg', () => {
-    expect(requestMessageUnreact(registered1.token, mIdDm, 1)).toStrictEqual({});
-    const a = requestDmMessages(registered1.token, dmId, 0);
-    expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
-    expect(a.messages[0].message.reacts.user.uId).toStrictEqual(registered1);
-  });
   test('Double unreacts in channel msg', () => {
-    expect(requestMessageUnreact(registered1.token, mIdChannel, 1)).toStrictEqual({});
-    expect(requestMessageUnreact(registered1.token, mIdChannel, 1)).toStrictEqual(400);
+    expect(requestMessageUnreact(registered1.token, mIdChannel, 1).body).toStrictEqual({});
+    expect(requestMessageUnreact(registered1.token, mIdChannel, 1).statusCode).toStrictEqual(400);
     const a = requestChannelMessages(registered1.token, channelId1, 0);
     expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
     expect(a.messages[0].message.reacts.allUsers.length).toStrictEqual(0);
   });
   test('Double unreacts in dm msg', () => {
-    expect(requestMessageUnreact(registered1.token, mIdDm, 1)).toStrictEqual({});
-    expect(requestMessageUnreact(registered1.token, mIdDm, 1)).toStrictEqual(400);
+    expect(requestMessageUnreact(registered1.token, mIdDm, 1).body).toStrictEqual({});
+    expect(requestMessageUnreact(registered1.token, mIdDm, 1).statusCode).toStrictEqual(400);
     const a = requestDmMessages(registered1.token, dmId, 0);
     expect(a.messages[0].message.reacts.reactId).toStrictEqual(1);
     expect(a.messages[0].message.reacts.allUsers.length).toStrictEqual(0);
