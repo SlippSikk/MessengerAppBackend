@@ -45,9 +45,10 @@ interface channel {
 }
 
 interface standup {
-    messages: string[],
+    standupMessage: string,
     isActive: boolean,
-    timeFinish: number
+    timeFinish: number,
+    authUserId: number
 }
 
 type dmId = { dmId: number }
