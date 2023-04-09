@@ -98,7 +98,7 @@ describe('Function Testing', () => {
       }],
     });
     requestChannelJoin(registered3.token, channelId1);
-    expect(requestChannelDetails(registered1.token, channelId1)).toStrictEqual({
+    expect(requestChannelDetails(registered1.token, channelId1).body).toStrictEqual({
       name: 'first',
       isPublic: true,
       ownerMembers: [{
@@ -162,7 +162,7 @@ describe('Function Testing', () => {
       }],
     });
     requestChannelInvite(registered1.token, channelIdPrivate, registered2.authUserId);
-    expect(requestChannelDetails(registered1.token, channelIdPrivate)).toStrictEqual({
+    expect(requestChannelDetails(registered1.token, channelIdPrivate).body).toStrictEqual({
       name: 'third',
       isPublic: false,
       ownerMembers: [{

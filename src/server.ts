@@ -31,13 +31,15 @@ app.get('/echo', (req: Request, res: Response, next) => {
   return res.json(echo(data));
 });
 
-app.post('/message/send/v1', (req: Request, res: Response) => {
-  const { token, channelId, message } = req.body;
+app.post('/message/send/v2', (req: Request, res: Response) => {
+  const token = req.header('token');
+  const { channelId, message } = req.body;
   res.json(messageSendV1(token, parseInt(channelId), message));
 });
 
-app.post('/message/senddm/v1', (req: Request, res: Response) => {
-  const { token, dmId, message } = req.body;
+app.post('/message/senddm/v2', (req: Request, res: Response) => {
+  const token = req.header('token');
+  const { dmId, message } = req.body;
 
   res.json(messageSenddmV1(token, parseInt(dmId), message));
 });
@@ -55,18 +57,20 @@ app.delete('/message/remove/v1', (req: Request, res: Response) => {
   return res.json(messageRemoveV1(token, messageId));
 });
 
-app.post('/channel/addowner/v1', (req: Request, res: Response) => {
-  const { token, channelId, uId } = req.body;
+app.post('/channel/addowner/v2', (req: Request, res: Response) => {
+  const token = req.header('token');
+  const { channelId, uId } = req.body;
   res.json(channelAddownerV1(token, parseInt(channelId), parseInt(uId)));
 });
 
-app.post('/channel/leave/v1', (req: Request, res: Response) => {
-  const { token, channelId } = req.body;
+app.post('/channel/leave/v2', (req: Request, res: Response) => {
+  const token = req.header('token');
+  const { channelId } = req.body;
   res.json(channelLeaveV1(token, parseInt(channelId)));
 });
 
 app.get('/channel/details/v3', (req: Request, res: Response, next) => {
-  const token = req.query.token as string;
+  const token = req.header('token');
   const channelId = parseInt(req.query.channelId as string);
   res.json(channelDetailsV3(token, channelId));
 });
