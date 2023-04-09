@@ -247,7 +247,7 @@ export const hashToken = (str: string): string => {
 };
 
 export const validateToken = (token: string): boolean => {
-  let data = getData();
+  const data = getData();
   const found = data.users.find(element => element.token.find(element => element === hashToken(token)));
 
   if (found !== undefined) {
@@ -258,14 +258,14 @@ export const validateToken = (token: string): boolean => {
 };
 
 export const userIndexToken = (token: string): number => {
-  let data = getData();
+  const data = getData();
   return data.users.findIndex(element => element.token.find(element => element === hashToken(token)));
-}
+};
 
 export const userObjToken = (token: string): users => {
-  let data = getData();
+  const data = getData();
   return data.users.find(element => element.token.find(element => element === hashToken(token)));
-}
+};
 
 export function encrypt(text: string): password {
   const cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
@@ -299,7 +299,7 @@ export const findPassword = (pass: string): boolean => {
   } else {
     return false;
   }
-}
+};
 
 export const getIdFromMessage = (messageId: number) => {
   const data = getData();

@@ -1,8 +1,7 @@
 import HTTPError from 'http-errors';
 import { getData, setData } from './dataStore';
 import { standupActive, dataTs, channel, timeFinish } from './interfaces';
-import { getUIdFromToken, isChannelIdValid, isMember, validateToken, getChannel, getUser, createMessageId } from './helper';
-
+import { getUIdFromToken, isChannelIdValid, isMember, validateToken, getChannel, createMessageId } from './helper';
 
 function sendMessages(token: string, channelId: number, uId: number) {
   const channel: channel = getChannel(channelId) as channel;
@@ -33,24 +32,24 @@ export function standupStartV1(token: string, channelId: number, length: number)
   const data: dataTs = getData();
 
   if (!validateToken(token)) {
-    throw HTTPError(403, "Invalid token");
+    throw HTTPError(403, 'Invalid token');
   }
-  
+
   if (!isChannelIdValid(channelId)) {
-    throw HTTPError(400, "Invalid ChannelId");
+    throw HTTPError(400, 'Invalid ChannelId');
   }
 
   if (length < 0) {
-    throw HTTPError(400, "The length of a standup must be positive");
+    throw HTTPError(400, 'The length of a standup must be positive');
   }
 
   if (standupActiveV1(token, channelId).isActive) {
-    throw HTTPError(400, "A standup is already running in this channel");
+    throw HTTPError(400, 'A standup is already running in this channel');
   }
 
   const uId = getUIdFromToken(token);
   if (!isMember(channelId, uId)) {
-    throw HTTPError(403, "This user does not have the correct permissions");
+    throw HTTPError(403, 'This user does not have the correct permissions');
   }
 
   const timeFinish = Math.floor(Date.now() / 1000) + length;
@@ -63,30 +62,28 @@ export function standupStartV1(token: string, channelId: number, length: number)
   setData(data);
   setTimeout(() => sendMessages(token, channelId, uId), length * 1000);
 
-  return {timeFinish: timeFinish}
+  return { timeFinish: timeFinish };
 }
-
 
 export function standupActiveV1(token: string, channelId: number): standupActive {
   if (!isChannelIdValid(channelId)) {
-    throw HTTPError(400, "Invalid ChannelId");
+    throw HTTPError(400, 'Invalid ChannelId');
   }
 
   if (!validateToken(token)) {
-    throw HTTPError(403, "Invalid Token");
+    throw HTTPError(403, 'Invalid Token');
   }
 
   const uId: number = getUIdFromToken(token);
   if (!isMember(channelId, uId)) {
-    throw HTTPError(403, "This authorised user is not a member of this channel");
+    throw HTTPError(403, 'This authorised user is not a member of this channel');
   }
 
   const channel: channel = getChannel(channelId) as channel;
   const returnObj: standupActive = {
     isActive: channel.standup.isActive,
     timeFinish: channel.standup.timeFinish
-  }
-  
+  };
+
   return returnObj;
 }
-
