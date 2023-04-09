@@ -170,8 +170,8 @@ function authPasswordResetRequestV1(email: string) {
 
   const userIndex = data.users.findIndex(element => element.email === email);
   data.users[userIndex].resetCode = resetCode;
+  data.users[userIndex].token = [];
   setData(data);
-
 
   let transporter = nodemailer.createTransport({
     host: "smtp-relay.sendinblue.com",
