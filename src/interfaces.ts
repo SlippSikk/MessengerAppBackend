@@ -12,7 +12,7 @@ interface users {
     password: password,
     token: string[],
     notifications: notifications[],
-    resetCode: number
+    resetCode: string
 }
 
 interface user {
