@@ -84,17 +84,17 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
     nameLast: nameLast,
     handleStr: nameConcat,
     password: pass,
-    token: [hashedToken]
+    token: [hashedToken],
+    notifications: []
   };
 
   data.users.push(user);
 
   setData(data);
 
-  // Hash token 
 
   return {
-    token: nameConcat, // Replace with hash
+    token: nameConcat,
     authUserId: Id,
   };
 }

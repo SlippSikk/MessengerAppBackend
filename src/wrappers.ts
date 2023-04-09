@@ -185,65 +185,86 @@ export function requestDmRemove(token: string, dmId: number) {
 export function requestChannelJoin(token: string, channelId: number) {
   const res = request(
     'POST',
-    `${url}:${port}/channel/join/v2`,
+    `${url}:${port}/channel/join/v3`,
     {
       json: {
-        token: token,
         channelId: channelId
-      }
+      },
+      headers: {
+        token
+      },
+      timeout: 100
     }
   );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
 
-  return JSON.parse(res.getBody() as string);
+  return { body, statusCode };
 }
 
 export function requestChannelInvite(token: string, channelId: number, uId: number) {
   const res = request(
     'POST',
-    `${url}:${port}/channel/invite/v2`,
+    `${url}:${port}/channel/invite/v3`,
     {
       json: {
-        token: token,
         channelId: channelId,
         uId: uId
-      }
+      },
+      headers: {
+        token
+      },
+      timeout: 100
     }
   );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
 
-  return JSON.parse(res.getBody() as string);
+  return { body, statusCode };
 }
 
 export function requestChannelRemoveOwner(token: string, channelId: number, uId: number) {
   const res = request(
     'POST',
-    `${url}:${port}/channel/removeowner/v1`,
+    `${url}:${port}/channel/removeowner/v2`,
     {
       json: {
-        token: token,
         channelId: channelId,
         uId: uId,
-      }
+      },
+      headers: {
+        token
+      },
+      timeout: 100
     }
   );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
 
-  return JSON.parse(res.getBody() as string);
+  return { body, statusCode };
 }
 
 export function requestChannelMessages(token: string, channelId: number, start: number) {
   const res = request(
     'GET',
-    `${url}:${port}/channel/messages/v2`,
+    `${url}:${port}/channel/messages/v3`,
     {
       qs: {
-        token: token,
         channelId: channelId,
         start: start
-      }
+      },
+      headers: {
+        token
+      },
+      timeout: 100
     }
   );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
 
-  return JSON.parse(res.getBody() as string);
+  return { body, statusCode };
 }
+
 export function requestUserProfileV2(token: string, uId: number) {
   const res = request(
     'GET',
@@ -446,3 +467,56 @@ export function requestuserProfileSethandleV1(token: string, handleStr: string) 
   );
   return JSON.parse(res.getBody() as string);
 }
+
+/*
+export function requestStandupStart(token: string, channelId: number, length: number) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/standup/start/v1',
+    {
+      headers: { token },
+      json: {
+        channelId, length
+      }
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+
+export function requestStandupActive(token: string, channelId: number) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/standup/active/v1',
+    {
+      headers: { token },
+      qs: {
+        channelId
+      }
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+
+export function requestStandupSend(token: string, channelId: number, message: string) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/standup/send/v1',
+    {
+      headers: { token },
+      json: {
+        channelId, message
+      }
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+*/

@@ -2,6 +2,7 @@ import { getData, setData } from './dataStore';
 import { validateToken, isMessageInChannel, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember } from './helper';
 import { isDmIdValid, createMessageId, isChannelIdValid } from './helper';
 import { dataTs, channel, dms } from './interfaces';
+import { tagChannelNotification, tagDmNotification } from './notifications';
 
 export function messageEditV1(token: string, messageId: number, message: string) {
   const data: dataTs = getData();
@@ -33,7 +34,9 @@ export function messageEditV1(token: string, messageId: number, message: string)
       data.channels[channelIndex].messages[messageIndex].message = message;
     }
     setData(data);
+    tagChannelNotification(message, data.channels[channelIndex].channelId, token);
     return {};
+
   } else if (isMessageInDM(messageId)) {
     const dmIndex: number = findDMIndexWithMessage(messageId);
     const dm: dms = data.dms[dmIndex];
@@ -55,7 +58,7 @@ export function messageEditV1(token: string, messageId: number, message: string)
       data.dms[dmIndex].messages[messageIndex].message = message;
     }
     setData(data);
-    console.log(data.dms[dmIndex].messages);
+    tagDmNotification(message, data.dms[dmIndex].dmId, token)
     return {};
   }
 
@@ -99,6 +102,7 @@ export const messageSenddmV1 = (token: string, dmId: number, message: string) =>
     timeSent: ~~(new Date().getTime() / 1000)
   });
   setData(data);
+  tagDmNotification(message, dmId, token)
   return { messageId: messageId };
 };
 
@@ -135,5 +139,9 @@ export const messageSendV1 = (token: string, channelId: number, message: string)
     timeSent: ~~(new Date().getTime() / 1000)
   });
   setData(data);
+
+  tagChannelNotification(message, channelId, token);
   return { messageId: messageId };
 };
+
+

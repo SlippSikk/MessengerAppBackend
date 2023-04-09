@@ -299,4 +299,29 @@ export const findPassword = (pass: string): boolean => {
   } else {
     return false;
   }
+}
+
+export const getIdFromMessage = (messageId: number) => {
+  const data = getData();
+  let msg;
+  for (const channel of data.channels) {
+    msg = channel.messages.find(message => message.messageId === messageId);
+    if (msg) {
+      return {
+        type: 'channel',
+        Id: channel.channelId,
+        uId: msg.uId
+      };
+    }
+  }
+  for (const dm of data.dms) {
+    msg = dm.messages.find(message => message.messageId === messageId);
+    if (msg) {
+      return {
+        type: 'dm',
+        Id: dm.dmId,
+        uId: msg.uId
+      };
+    }
+  }
 };
