@@ -3,6 +3,7 @@ import validator from 'validator';
 import { users, authUserId, error } from './interfaces';
 import HTTPError from 'http-errors';
 import { encrypt, findPassword, hashToken, userIndexToken } from './helper';
+import nodemailer from 'nodemailer'
 
 /**
  * Summary: Registers a user returning their unique Id
@@ -161,4 +162,34 @@ function authLogoutV2(token: string) {
   return {};
 }
 
-export { authRegisterV3, authLoginV3, authLogoutV2 };
+function authPasswordResetRequestV1(email: string) {
+  let data = getData();
+  // Generate reset code
+  const resetCode = Math.floor(Math.random() * Date.now());
+
+  const userIndex = data.users.findIndex(element => element.email === email);
+  data.users[userIndex].
+
+
+  let transporter = nodemailer.createTransport({
+    host: "smtp-relay.sendinblue.com",
+    port: 587,
+    secure: false, // upgrade later with STARTTLS
+    auth: {
+      user: "ilyas.baqaie@gmail.com",
+      pass: "mayDqTZ8MILExjbQ",
+    },
+  });
+
+  let mailOptions = {
+    from: 'ilyas.baqaie@gmail.com',
+    to: email,
+    subject: 'Password Reset',
+    text: 'Here is your key to reset your password: '
+  };
+
+  transporter.sendMail(mailOptions)
+}
+
+
+export { authRegisterV3, authLoginV3, authLogoutV2, authPasswordResetRequestV1 };
