@@ -1,44 +1,13 @@
 
-import request, { HttpVerb } from 'sync-request';
-
-import { port, url } from '../config.json';
-
-const SERVER_URL = `${url}:${port}`;
-
-function requestHelper(method: HttpVerb, path: string, payload: object) {
-  let qs = {};
-  let json = {};
-  if (['GET', 'DELETE'].includes(method)) {
-    qs = payload;
-  } else {
-    // PUT/POST
-    json = payload;
-  }
-  const res = request(method, SERVER_URL + path, { qs, json, timeout: 20000 });
-  return JSON.parse(res.getBody('utf-8'));
-}
-
-function requestClear() {
-  return requestHelper('DELETE', '/clear/v1', {});
-}
-
-function requestRegister(email: string, password: string, nameFirst: string, nameLast: string) {
-  return requestHelper('POST', '/auth/register/v3', { email, password, nameFirst, nameLast });
-}
-
-function requestUserAllV1(token: string) {
-  return requestHelper('GET', '/users/all/v1', { token });
-}
+import { requestClear, requestAuthRegister, requestUsersAllV2 } from '../wrappers';
 
 describe('correct return value', () => {
   test('correct return value', () => {
     expect(requestClear()).toStrictEqual({});
   });
   test('delete all users', () => {
-    const registerObjectA = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
-    requestClear();
-    const registerObjectC = requestRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
-    expect(requestUserAllV1(registerObjectA.token)).toStrictEqual({
+    const registerObjectC = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
+    expect(requestUsersAllV2(registerObjectC.token).body).toStrictEqual({
       users: [
         {
           uId: registerObjectC.authUserId,
@@ -49,6 +18,9 @@ describe('correct return value', () => {
         }
       ]
     });
+    requestClear();
+    expect(requestUsersAllV2(registerObjectC.token).statusCode).toBe(403);
+    expect(requestUsersAllV2(registerObjectC.token).body.error).toStrictEqual({ message: expect.any(String) });
   });
 });
 
