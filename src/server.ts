@@ -1,6 +1,6 @@
 import express, { json, Request, Response } from 'express';
 import { echo } from './echo';
-import { authRegisterV3, authLoginV3, authLogoutV2, authPasswordResetRequestV1 } from './auth';
+import { authRegisterV3, authLoginV3, authLogoutV2, authPasswordResetRequestV1, authPasswordResetResetV1 } from './auth';
 import { dmCreateV2, dmLeaveV2, dmRemoveV2, dmDetailsV2, dmMessagesV2, dmListV2 } from './dm';
 import { channelsListAllV3, channelsListV3, channelsCreateV3 } from './channels';
 import { channelDetailsV3, channelLeaveV2, channelAddownerV2, channelInviteV3, channelJoinV3, channelRemoveOwnerV2, channelMessagesV3 } from './channel';
@@ -223,11 +223,13 @@ app.delete('/clear/v1', (req: Request, res: Response) => {
   return res.json(clearV1());
 });
 
-app.get('/standup/active/v1', (req: Request, res: Response) => {
-  const channelId = req.query.channelId as string;
-  const token = req.header('token');
+app.post('/auth/passwordreset/reset/v1', (req: Request, res: Response) => {
+  const { resetCode, newPassword } = req.body;
+  return res.json(authPasswordResetResetV1(resetCode, newPassword));
+})
 
-  return res.json(standupActiveV1(token, parseInt(channelId)));
+app.delete('/clear/v1', (req: Request, res: Response) => {
+  return res.json(clearV1());
 });
 
 
