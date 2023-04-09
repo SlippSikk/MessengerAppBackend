@@ -2,7 +2,7 @@
 import { requestAuthRegister, requestClear, requestChannelLeave, requestChannelsCreate, requestChannelJoin } from '../wrappers';
 import { requestChannelAddowner } from '../wrappers';
 import { authUserId } from '../interfaces';
-const ERROR = { error: expect.any(String) };
+// import { requestStandupStart } from '../wrappers';
 
 let registered1: authUserId;
 let registered2: authUserId;
@@ -19,35 +19,39 @@ beforeEach(() => {
 
 describe('Error Cases', () => {
   test('Invalid channelId', () => {
-    expect(requestChannelLeave(registered1.token, channelId1 * channelId2 + 1)).toStrictEqual(ERROR);
+    expect(requestChannelLeave(registered1.token, channelId1 * channelId2 + 1).statusCode).toStrictEqual(400);
   });
   test('User (token) is not a member of channel', () => {
-    expect(requestChannelLeave(registered1.token, channelId2)).toStrictEqual(ERROR);
+    expect(requestChannelLeave(registered1.token, channelId2).statusCode).toStrictEqual(403);
   });
   test('Invalid token', () => {
-    expect(requestChannelLeave(registered1.token + registered1.token + 'p', channelId1)).toStrictEqual(ERROR);
+    expect(requestChannelLeave(registered1.token + registered1.token + 'p', channelId1).statusCode).toStrictEqual(400);
   });
+  // test('Standup is active', () => {
+  //   requestStandupStart(channelId1, 10);
+  //   expect(requestChannelLeave(registered1.token, channelId1).statusCode).toStrictEqual(400);
+  // });
 });
 
 describe('Function Testing', () => {
   test('Member leaving', () => {
     requestChannelJoin(registered2.token, channelId1);
-    expect(requestChannelLeave(registered2.token, channelId1)).toStrictEqual({});
-    expect(requestChannelLeave(registered2.token, channelId1)).toStrictEqual(ERROR);
+    expect(requestChannelLeave(registered2.token, channelId1).body).toStrictEqual({});
+    expect(requestChannelLeave(registered2.token, channelId1).statusCode).toStrictEqual(403);
     requestChannelJoin(registered2.token, channelId1);
   });
   test('Owner leaves', () => {
-    expect(requestChannelLeave(registered1.token, channelId1)).toStrictEqual({});
-    expect(requestChannelLeave(registered1.token, channelId1)).toStrictEqual(ERROR);
+    expect(requestChannelLeave(registered1.token, channelId1).body).toStrictEqual({});
+    expect(requestChannelLeave(registered1.token, channelId1).statusCode).toStrictEqual(403);
     requestChannelJoin(registered1.token, channelId1);
     requestChannelJoin(registered2.token, channelId1);
     // Check if owner Id is removed when leaving the channel
-    expect(requestChannelAddowner(registered1.token, channelId1, registered2.authUserId)).toStrictEqual(ERROR);
+    expect(requestChannelAddowner(registered1.token, channelId1, registered2.authUserId).statusCode).toStrictEqual(403);
   });
   test('Owner leaves (not original owner)', () => {
     requestChannelJoin(registered2.token, channelId1);
-    expect(requestChannelAddowner(registered1.token, channelId1, registered2.authUserId)).toStrictEqual({});
-    expect(requestChannelLeave(registered2.token, channelId1)).toStrictEqual({});
-    expect(requestChannelAddowner(registered1.token, channelId1, registered2.authUserId)).toStrictEqual(ERROR);
+    expect(requestChannelAddowner(registered1.token, channelId1, registered2.authUserId).body).toStrictEqual({});
+    expect(requestChannelLeave(registered2.token, channelId1).body).toStrictEqual({});
+    expect(requestChannelAddowner(registered1.token, channelId1, registered2.authUserId).statusCode).toStrictEqual(400);
   });
 });

@@ -1,8 +1,11 @@
 {
     "scripts": {
-        "test": "",
+        "test": "\n npm run test3 \n npm run test2  ",
         "test1": "jest src/ServerTesting/channelDetails.test.ts",
         "test2": "jest src/ServerTesting/channelAddowner.test.ts",
+        "test3": "jest src/ServerTesting/channelLeave.test.ts",
+        "test4": "jest src/ServerTesting/messageSend.test.ts",
+        "test5": "jest src/ServerTesting/messageSenddm.test.ts",
         "tsc": "tsc --project tsconfig.json",
         "lint": "eslint src/**/*.ts",
         "lint-fix": "eslint --fix src/**/*.ts",

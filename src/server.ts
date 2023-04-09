@@ -3,9 +3,9 @@ import { echo } from './echo';
 import { authRegisterV3, authLoginV3, authLogoutV2 } from './auth';
 import { dmCreateV2, dmLeaveV2, dmRemoveV2, dmDetailsV2, dmMessagesV2, dmListV2 } from './dm';
 import { channelsListAllV3, channelsListV3, channelsCreateV3 } from './channels';
-import { channelDetailsV3, channelLeaveV1, channelAddownerV1, channelInviteV3, channelJoinV3, channelRemoveOwnerV2, channelMessagesV3 } from './channel';
+import { channelDetailsV3, channelLeaveV2, channelAddownerV2, channelInviteV3, channelJoinV3, channelRemoveOwnerV2, channelMessagesV3 } from './channel';
 import { userProfileSethandleV1, userProfileSetemailV1, userProfileSetnameV1, usersAllV1, userProfileV2 } from './users';
-import { messageSenddmV1, messageSendV1, messageEditV1, messageRemoveV1 } from './message';
+import { messageSenddmV2, messageSendV2, messageEditV1, messageRemoveV1 } from './message';
 import { standupActiveV1 } from './standup';
 import { clearV1 } from './other';
 import morgan from 'morgan';
@@ -34,14 +34,14 @@ app.get('/echo', (req: Request, res: Response, next) => {
 app.post('/message/send/v2', (req: Request, res: Response) => {
   const token = req.header('token');
   const { channelId, message } = req.body;
-  res.json(messageSendV1(token, parseInt(channelId), message));
+  res.json(messageSendV2(token, parseInt(channelId), message));
 });
 
 app.post('/message/senddm/v2', (req: Request, res: Response) => {
   const token = req.header('token');
   const { dmId, message } = req.body;
 
-  res.json(messageSenddmV1(token, parseInt(dmId), message));
+  res.json(messageSenddmV2(token, parseInt(dmId), message));
 });
 
 app.put('/message/edit/v1', (req: Request, res: Response) => {
@@ -60,13 +60,13 @@ app.delete('/message/remove/v1', (req: Request, res: Response) => {
 app.post('/channel/addowner/v2', (req: Request, res: Response) => {
   const token = req.header('token');
   const { channelId, uId } = req.body;
-  res.json(channelAddownerV1(token, parseInt(channelId), parseInt(uId)));
+  res.json(channelAddownerV2(token, parseInt(channelId), parseInt(uId)));
 });
 
 app.post('/channel/leave/v2', (req: Request, res: Response) => {
   const token = req.header('token');
   const { channelId } = req.body;
-  res.json(channelLeaveV1(token, parseInt(channelId)));
+  res.json(channelLeaveV2(token, parseInt(channelId)));
 });
 
 app.get('/channel/details/v3', (req: Request, res: Response, next) => {
