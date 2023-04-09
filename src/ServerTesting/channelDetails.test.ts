@@ -9,7 +9,7 @@ let channelId1: number;
 beforeEach(() => {
   requestClear();
   registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
-  channelId1 = requestChannelsCreate(registered1.token, 'first', true).channelId;
+  channelId1 = requestChannelsCreate(registered1.token, 'first', true).body.channelId;
 });
 
 describe('Error cases', () => {
@@ -47,7 +47,7 @@ describe('Function Testing', () => {
     });
   });
   test('non-public courseId', () => {
-    const channelIdPrivate = requestChannelsCreate(registered1.token, 'third', false).channelId;
+    const channelIdPrivate = requestChannelsCreate(registered1.token, 'third', false).body.channelId;
     expect(requestChannelDetails(registered1.token, channelIdPrivate)).toStrictEqual({
       name: 'third',
       isPublic: false,
@@ -135,7 +135,7 @@ describe('Function Testing', () => {
 
   test('Public courseId use ChannelInv', () => {
     const registered2 = requestAuthRegister('dog@gmail.com', 'hound123', 'dog', 'drown');
-    const channelIdPrivate = requestChannelsCreate(registered1.token, 'third', false).channelId;
+    const channelIdPrivate = requestChannelsCreate(registered1.token, 'third', false).body.channelId;
     requestChannelInvite(registered1.token, channelId1, registered2.authUserId);
     expect(requestChannelDetails(registered1.token, channelId1)).toStrictEqual({
       name: 'first',
