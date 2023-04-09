@@ -81,30 +81,57 @@ export function requestChannelLeave(token: string, channelId: number) {
   return JSON.parse(res.getBody() as string);
 }
 
+export function requestDmDetails(token: string, dmId: number) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/dm/details/v2',
+    {
+      headers: { token },
+      qs: {
+        dmId
+      },
+      timeout: 100
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+
 export function requestDmList(token: string) {
   const res = request(
     'GET',
-    SERVER_URL + '/dm/list/v1',
+    SERVER_URL + '/dm/list/v2',
     {
+      headers: { token },
       qs: {
-        token
-      }
+      },
+      timeout: 100
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
 export function requestDmMessages(token: string, dmId: number, start: number) {
   const res = request(
     'GET',
-    SERVER_URL + '/dm/messages/v1',
+    SERVER_URL + '/dm/messages/v2',
     {
+      headers: { token },
       qs: {
-        token, dmId, start
-      }
+        dmId, start
+      },
+      timeout: 100
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
 export function requestDmCreate(token: string, uIds: number[]) {
@@ -139,19 +166,6 @@ export function requestDmLeave(token: string, dmId: number) {
   return JSON.parse(res.body as string);
 }
 
-export function requestDmDetails(token: string, dmId: number) {
-  const res = request(
-    'GET',
-    SERVER_URL + '/dm/details/v1',
-    {
-      qs: {
-        token, dmId
-      }
-    }
-  );
-  return JSON.parse(res.getBody() as string);
-}
-
 export function requestDmRemove(token: string, dmId: number) {
   const res = request(
     'DELETE',
@@ -171,65 +185,86 @@ export function requestDmRemove(token: string, dmId: number) {
 export function requestChannelJoin(token: string, channelId: number) {
   const res = request(
     'POST',
-    `${url}:${port}/channel/join/v2`,
+    `${url}:${port}/channel/join/v3`,
     {
       json: {
-        token: token,
         channelId: channelId
-      }
+      },
+      headers: {
+        token
+      },
+      timeout: 100
     }
   );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
 
-  return JSON.parse(res.getBody() as string);
+  return { body, statusCode };
 }
 
 export function requestChannelInvite(token: string, channelId: number, uId: number) {
   const res = request(
     'POST',
-    `${url}:${port}/channel/invite/v2`,
+    `${url}:${port}/channel/invite/v3`,
     {
       json: {
-        token: token,
         channelId: channelId,
         uId: uId
-      }
+      },
+      headers: {
+        token
+      },
+      timeout: 100
     }
   );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
 
-  return JSON.parse(res.getBody() as string);
+  return { body, statusCode };
 }
 
 export function requestChannelRemoveOwner(token: string, channelId: number, uId: number) {
   const res = request(
     'POST',
-    `${url}:${port}/channel/removeowner/v1`,
+    `${url}:${port}/channel/removeowner/v2`,
     {
       json: {
-        token: token,
         channelId: channelId,
         uId: uId,
-      }
+      },
+      headers: {
+        token
+      },
+      timeout: 100
     }
   );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
 
-  return JSON.parse(res.getBody() as string);
+  return { body, statusCode };
 }
 
 export function requestChannelMessages(token: string, channelId: number, start: number) {
   const res = request(
     'GET',
-    `${url}:${port}/channel/messages/v2`,
+    `${url}:${port}/channel/messages/v3`,
     {
       qs: {
-        token: token,
         channelId: channelId,
         start: start
-      }
+      },
+      headers: {
+        token
+      },
+      timeout: 100
     }
   );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
 
-  return JSON.parse(res.getBody() as string);
+  return { body, statusCode };
 }
+
 export function requestUserProfileV2(token: string, uId: number) {
   const res = request(
     'GET',
@@ -323,41 +358,50 @@ export function requestChannelDetails(token: string, channelId: number) {
 export function requestChannelsCreate(token: string, name: string, isPublic: boolean) {
   const res = request(
     'POST',
-    SERVER_URL + '/channels/create/v2',
+    SERVER_URL + '/channels/create/v3',
     {
-
+      headers: { token },
       json: {
-        token, name, isPublic
+        name, isPublic
       }
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
 export function requestChannelsListAll(token: string) {
   const res = request(
     'GET',
-    SERVER_URL + '/channels/listall/v2',
+    SERVER_URL + '/channels/listall/v3',
     {
+      headers: { token },
       qs: {
-        token
       }
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
 export function requestChannelsList(token: string) {
   const res = request(
     'GET',
-    SERVER_URL + '/channels/list/v2',
+    SERVER_URL + '/channels/list/v3',
     {
+      headers: { token },
       qs: {
-        token
       }
     }
   );
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
 }
 
 export function requestClear() {
@@ -423,3 +467,56 @@ export function requestuserProfileSethandleV1(token: string, handleStr: string) 
   );
   return JSON.parse(res.getBody() as string);
 }
+
+/*
+export function requestStandupStart(token: string, channelId: number, length: number) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/standup/start/v1',
+    {
+      headers: { token },
+      json: {
+        channelId, length
+      }
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+
+export function requestStandupActive(token: string, channelId: number) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/standup/active/v1',
+    {
+      headers: { token },
+      qs: {
+        channelId
+      }
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+
+export function requestStandupSend(token: string, channelId: number, message: string) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/standup/send/v1',
+    {
+      headers: { token },
+      json: {
+        channelId, message
+      }
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+*/

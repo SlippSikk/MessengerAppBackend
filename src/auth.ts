@@ -3,7 +3,7 @@ import validator from 'validator';
 import { users, authUserId, error } from './interfaces';
 import HTTPError from 'http-errors';
 import { encrypt, findPassword, hashToken, userIndexToken } from './helper';
-
+import nodemailer from 'nodemailer'
 
 /**
  * Summary: Registers a user returning their unique Id
@@ -84,17 +84,18 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
     nameLast: nameLast,
     handleStr: nameConcat,
     password: pass,
-    token: [hashedToken]
+    token: [hashedToken],
+    notifications: [],
+    resetCode: -1
   };
 
   data.users.push(user);
 
   setData(data);
 
-  // Hash token 
 
   return {
-    token: nameConcat, // Replace with hash
+    token: nameConcat,
     authUserId: Id,
   };
 }
@@ -149,7 +150,6 @@ function authLoginV3(email: string, password: string): authUserId | error {
 function authLogoutV2(token: string) {
   const data = getData();
 
-
   const userIndex = userIndexToken(token);
 
   if (userIndex !== -1) {
@@ -163,6 +163,37 @@ function authLogoutV2(token: string) {
   return {};
 }
 
-export { authRegisterV3, authLoginV3, authLogoutV2 };
+function authPasswordResetRequestV1(email: string) {
+  let data = getData();
+  // Generate reset code
+  const resetCode = Math.floor(Math.random() * Date.now());
+
+  const userIndex = data.users.findIndex(element => element.email === email);
+  data.users[userIndex].resetCode = resetCode;
+  data.users[userIndex].token = [];
+  setData(data);
+
+  let transporter = nodemailer.createTransport({
+    host: "smtp-relay.sendinblue.com",
+    port: 587,
+    secure: false, // upgrade later with STARTTLS
+    auth: {
+      user: "ilyas.baqaie@gmail.com",
+      pass: "mayDqTZ8MILExjbQ",
+    },
+  });
+
+  let mailOptions = {
+    from: 'ilyas.baqaie@gmail.com',
+    to: email,
+    subject: 'Password Reset',
+    text: `Here is your key to reset your password: ${resetCode}`
+  };
+
+  transporter.sendMail(mailOptions)
+
+  return {};
+}
 
 
+export { authRegisterV3, authLoginV3, authLogoutV2, authPasswordResetRequestV1 };
