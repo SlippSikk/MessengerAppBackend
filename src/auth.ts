@@ -85,7 +85,8 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
     handleStr: nameConcat,
     password: pass,
     token: [hashedToken],
-    notifications: []
+    notifications: [],
+    resetCode: -1
   };
 
   data.users.push(user);
@@ -168,7 +169,8 @@ function authPasswordResetRequestV1(email: string) {
   const resetCode = Math.floor(Math.random() * Date.now());
 
   const userIndex = data.users.findIndex(element => element.email === email);
-  data.users[userIndex].
+  data.users[userIndex].resetCode = resetCode;
+  setData(data);
 
 
   let transporter = nodemailer.createTransport({
@@ -185,10 +187,12 @@ function authPasswordResetRequestV1(email: string) {
     from: 'ilyas.baqaie@gmail.com',
     to: email,
     subject: 'Password Reset',
-    text: 'Here is your key to reset your password: '
+    text: `Here is your key to reset your password: ${resetCode}`
   };
 
   transporter.sendMail(mailOptions)
+
+  return {};
 }
 
 
