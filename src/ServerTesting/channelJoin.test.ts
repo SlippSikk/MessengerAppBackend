@@ -1,5 +1,7 @@
-
 import { requestAuthRegister, requestChannelDetails, requestChannelsCreate, requestClear, requestChannelJoin } from '../wrappers';
+
+const INPUT_ERROR = 400;
+const AUTH_ERROR = 403;
 
 describe('Valid joining sequences', () => {
   let globalOwnerId: number;
@@ -30,7 +32,7 @@ describe('Valid joining sequences', () => {
   });
 
   test('Global owner joins private channel', () => {
-    expect(requestChannelJoin(globalOwnerToken, privateChannelId)).toEqual({});
+    expect(requestChannelJoin(globalOwnerToken, privateChannelId).body).toEqual({});
     expect(requestChannelDetails(globalOwnerToken, privateChannelId)).toEqual({
       name: 'Private Channel',
       isPublic: false,
@@ -59,7 +61,7 @@ describe('Valid joining sequences', () => {
   });
 
   test('Regular user joins public channel', () => {
-    expect(requestChannelJoin(regularUserToken, publicChannelId)).toEqual({});
+    expect(requestChannelJoin(regularUserToken, publicChannelId).body).toEqual({});
     expect(requestChannelDetails(regularUserToken, publicChannelId)).toEqual({
       name: 'Public Channel',
       isPublic: true,
@@ -114,8 +116,8 @@ describe('InvalId joining sequences', () => {
   });
 
   test('Regular user joins private channel', () => {
-    expect(requestChannelJoin(globalOwnerToken, publicChannelId)).toEqual({});
-    expect(requestChannelJoin(regularUserToken, privateChannelId)).toEqual({ error: expect.any(String) });
+    expect(requestChannelJoin(globalOwnerToken, publicChannelId).body).toEqual({});
+    expect(requestChannelJoin(regularUserToken, privateChannelId).statusCode).toBe(AUTH_ERROR);
     expect(requestChannelDetails(regularOwnerToken, privateChannelId)).toEqual({
       name: 'Private Channel',
       isPublic: false,
@@ -137,8 +139,8 @@ describe('InvalId joining sequences', () => {
   });
 
   test('Regular user joins multiple times', () => {
-    expect(requestChannelJoin(regularUserToken, publicChannelId)).toEqual({});
-    expect(requestChannelJoin(regularUserToken, publicChannelId)).toEqual({ error: expect.any(String) });
+    expect(requestChannelJoin(regularUserToken, publicChannelId).body).toEqual({});
+    expect(requestChannelJoin(regularUserToken, publicChannelId).statusCode).toBe(INPUT_ERROR);
     expect(requestChannelDetails(regularUserToken, publicChannelId)).toEqual({
       name: 'Public Channel',
       isPublic: true,
@@ -167,7 +169,7 @@ describe('InvalId joining sequences', () => {
   });
 
   test('Owner rejoins channel', () => {
-    expect(requestChannelJoin(regularOwnerToken, publicChannelId)).toEqual({ error: expect.any(String) });
+    expect(requestChannelJoin(regularOwnerToken, publicChannelId).statusCode).toBe(INPUT_ERROR);
     expect(requestChannelDetails(regularOwnerToken, publicChannelId)).toEqual({
       name: 'Public Channel',
       isPublic: true,
@@ -188,8 +190,8 @@ describe('InvalId joining sequences', () => {
     });
   });
 
-  test('InvalId userId', () => {
-    expect(requestChannelJoin('abc', publicChannelId)).toEqual({ error: expect.any(String) });
+  test('InvalId token', () => {
+    expect(requestChannelJoin('abc', publicChannelId).statusCode).toBe(AUTH_ERROR);
     expect(requestChannelDetails(regularOwnerToken, publicChannelId)).toEqual({
       name: 'Public Channel',
       isPublic: true,
@@ -211,7 +213,7 @@ describe('InvalId joining sequences', () => {
   });
 
   test('InvalId channelId', () => {
-    expect(requestChannelJoin(regularUserToken, publicChannelId + +privateChannelId + 1)).toEqual({ error: expect.any(String) });
+    expect(requestChannelJoin(regularUserToken, publicChannelId + privateChannelId + 1).statusCode).toBe(INPUT_ERROR);
     expect(requestChannelDetails(regularOwnerToken, publicChannelId)).toEqual({
       name: 'Public Channel',
       isPublic: true,
