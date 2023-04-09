@@ -520,3 +520,18 @@ export function requestStandupSend(token: string, channelId: number, message: st
   return { body, statusCode };
 }
 */
+export function requestMessagePin(token: string, messageId: number) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/message/pin/v1',
+    {
+      headers: { token },
+      json: {
+        messageId
+      }
+    }
+  );
+  const body = JSON.parse(res.getBody() as string);
+  const statusCode = res.statusCode;
+  return { body, statusCode };
+}

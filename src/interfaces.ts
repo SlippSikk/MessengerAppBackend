@@ -3,6 +3,12 @@ interface password {
     encryptedData: string
 }
 
+interface notifications {
+    channelId: number,
+    dmId: number,
+    notificationMessage: string
+}
+
 interface users {
     uId: number,
     email: string,
@@ -22,16 +28,34 @@ interface user {
     handleStr: string,
 }
 
+// interface messages {
+//     messageId: number,
+//     uId: number,
+//     message: string,
+//     timeSent: number
+// }
+
 interface messages {
     messageId: number,
     uId: number,
     message: string,
     timeSent: number
+    reacts: [{
+        reactId: 1,
+        allUsers: user[]
+    }],
+    isPinned: boolean
 }
 
 interface channels {
     channelId: number
     name: string
+}
+
+interface standup {
+    messages: string[],
+    isActive: boolean,
+    timeFinish: number
 }
 
 interface channel {
@@ -42,12 +66,6 @@ interface channel {
     allMembers: user[]
     messages: messages[]
     standup?: standup
-}
-
-interface standup {
-    messages: string[],
-    isActive: boolean,
-    timeFinish: number
 }
 
 type dmId = { dmId: number }
@@ -81,14 +99,9 @@ interface dataTs {
     dms: dms[]
 }
 
-interface notifications {
-    channelId: number,
-    dmId: number,
-    notificationMessage: string
-}
-type timeFinish = {timeFinish: number};
+type timeFinish = { timeFinish: number };
 
-type standupActive = {isActive: boolean, timeFinish: number};
+type standupActive = { isActive: boolean, timeFinish: number };
 
 type authUserId = { token: string, authUserId: number };
 
@@ -97,7 +110,7 @@ type error = { error: string };
 type channelId = { channelId: number }
 
 export {
-  users, channels, user, messages, dataTs, authUserId, error, channel,
-  dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password, standup,
-  timeFinish, standupActive, notifications
+    users, channels, user, messages, dataTs, authUserId, error, channel,
+    dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password, standup,
+    timeFinish, standupActive, notifications
 };

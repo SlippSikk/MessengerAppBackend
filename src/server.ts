@@ -6,6 +6,7 @@ import { channelsListAllV3, channelsListV3, channelsCreateV3 } from './channels'
 import { channelDetailsV2, channelLeaveV1, channelAddownerV1, channelInviteV3, channelJoinV3, channelRemoveOwnerV2, channelMessagesV3 } from './channel';
 import { userProfileSethandleV1, userProfileSetemailV1, userProfileSetnameV1, usersAllV1, userProfileV2 } from './users';
 import { messageSenddmV1, messageSendV1, messageEditV1, messageRemoveV1 } from './message';
+import { messagePinV1 } from './messagePin';
 import { standupActiveV1 } from './standup';
 import { clearV1 } from './other';
 import morgan from 'morgan';
@@ -218,6 +219,12 @@ app.get('/standup/active/v1', (req: Request, res: Response) => {
   return res.json(standupActiveV1(token, parseInt(channelId)));
 });
 
+app.post('/message/pin/v1', (req: Request, res: Response) => {
+  const token = req.header('token');
+  const { messageId } = req.body;
+
+  res.json(messagePinV1(token, +messageId));
+});
 // Keep this BENEATH route definitions
 // handles errors nicely
 app.use(errorHandler());
