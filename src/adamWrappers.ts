@@ -14,5 +14,20 @@ export function requestNotificationsGet(token: string) {
   const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode;
 
-  return { body, statusCode };
+    return { body, statusCode };
+}
+
+export function requestAuthPasswordResetRequest(email: string) {
+    const res = request(
+        'POST',
+        SERVER_URL + '/auth/passwordreset/request/v1',
+        {
+            json: { email },
+            timeout: 1000
+        }
+    );
+    const body = JSON.parse(res.body as string);
+    const statusCode = res.statusCode;
+
+    return { body, statusCode };
 }

@@ -1,6 +1,6 @@
 import express, { json, Request, Response } from 'express';
 import { echo } from './echo';
-import { authRegisterV3, authLoginV3, authLogoutV2 } from './auth';
+import { authRegisterV3, authLoginV3, authLogoutV2, authPasswordResetRequestV1 } from './auth';
 import { dmCreateV2, dmLeaveV2, dmRemoveV2, dmDetailsV2, dmMessagesV2, dmListV2 } from './dm';
 import { channelsListAllV3, channelsListV3, channelsCreateV3 } from './channels';
 import { channelDetailsV3, channelLeaveV2, channelAddownerV2, channelInviteV3, channelJoinV3, channelRemoveOwnerV2, channelMessagesV3 } from './channel';
@@ -210,6 +210,11 @@ app.get('/notifications/get/v1', (req: Request, res: Response) => {
   const token = req.header('token');
   return res.json(notificationsGet(token));
 });
+
+app.post('/auth/passwordreset/request/v1', (req: Request, res: Response) => {
+  const { email } = req.body;
+  return res.json(authPasswordResetRequestV1(email));
+})
 
 app.delete('/clear/v1', (req: Request, res: Response) => {
   return res.json(clearV1());
