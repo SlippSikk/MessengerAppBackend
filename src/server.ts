@@ -12,6 +12,7 @@ import morgan from 'morgan';
 import config from './config.json';
 import cors from 'cors';
 import errorHandler from 'middleware-http-errors';
+import { notificationsGet } from './notifications';
 
 // Set up web app
 const app = express();
@@ -199,6 +200,11 @@ app.get('/user/profile/v2', (req: Request, res: Response) => {
   const token = req.query.token as string;
   const uId = parseInt(req.query.uId as string);
   return res.json(userProfileV2(token, uId));
+});
+
+app.get('/notifications/get/v1', (req: Request, res: Response) => {
+  const token = req.header('token');
+  return res.json(notificationsGet(token));
 });
 
 app.delete('/clear/v1', (req: Request, res: Response) => {

@@ -2,6 +2,7 @@ import HTTPError from 'http-errors'
 import { getData, setData } from './dataStore';
 import { isChannelIdValid, validateToken, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser, isOwnerByToken } from './helper';
 import { user, channel, dataTs } from './interfaces';
+import { addNotification } from './notifications';
 
 export function channelJoinV3(token: string, channelId: number) {
   const data: dataTs = getData();
@@ -59,6 +60,7 @@ export function channelInviteV3(token: string, channelId: number, uId: number) {
   const userObj = getUser(uId);
   data.channels[channelIndex].allMembers.push(userObj);
   setData(data);
+  addNotification(uId, channelId, -1, token);
   return {};
 }
 
