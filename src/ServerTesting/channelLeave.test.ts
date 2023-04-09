@@ -38,7 +38,6 @@ describe('Function Testing', () => {
     requestChannelJoin(registered2.token, channelId1);
     expect(requestChannelLeave(registered2.token, channelId1).body).toStrictEqual({});
     expect(requestChannelLeave(registered2.token, channelId1).statusCode).toStrictEqual(403);
-    requestChannelJoin(registered2.token, channelId1);
   });
   test('Owner leaves', () => {
     expect(requestChannelLeave(registered1.token, channelId1).body).toStrictEqual({});

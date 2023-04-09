@@ -40,7 +40,7 @@ export function requestAuthLogin(email: string, password: string) {
 export function requestChannelAddowner(token: string, channelId: number, uId: number) {
   const res = request(
     'POST',
-    SERVER_URL + '/channel/addowner/v1',
+    SERVER_URL + '/channel/addowner/v2',
     {
       headers: { token },
       json: {

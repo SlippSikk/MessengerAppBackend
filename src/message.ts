@@ -3,7 +3,7 @@ import { validateToken, isMessageInChannel, findChannelIndexWithMessage, getUIdF
 import { isDmIdValid, createMessageId, isChannelIdValid } from './helper';
 import { dataTs, channel, dms } from './interfaces';
 import { tagChannelNotification, tagDmNotification } from './notifications';
-
+import HTTPError from 'http-errors';
 export function messageEditV1(token: string, messageId: number, message: string) {
   const data: dataTs = getData();
   if (message.length > 1000) {
@@ -76,20 +76,20 @@ export function messageRemoveV1(token: string, messageId: number) {
  * @returns
  */
 
-export const messageSenddmV1 = (token: string, dmId: number, message: string) => {
+export const messageSenddmV2 = (token: string, dmId: number, message: string) => {
   const data: dataTs = getData();
 
   if (!isDmIdValid(dmId)) {
-    return { error: 'Invalid dmId' };
+    throw HTTPError(400, 'Invalid dmId');
   }
   if (!(message.length >= 1 && message.length <= 1000)) {
-    return { error: 'message must be between 1 to 1000 letters' };
+    throw HTTPError(400, 'message must be between 1 to 1000 letters');
   }
   if (!validateToken(token)) {
-    return { error: 'invalid token' };
+    throw HTTPError(400, 'Invalid token');
   }
   if (!isDmMember(dmId, token)) {
-    return { error: 'user is not member of channel' };
+    throw HTTPError(403, 'user is not member of channel');
   }
   const messageId = createMessageId();
   const uId = getUIdFromToken(token) as number;
@@ -113,21 +113,21 @@ export const messageSenddmV1 = (token: string, dmId: number, message: string) =>
  * @returns
  */
 
-export const messageSendV1 = (token: string, channelId: number, message: string) => {
+export const messageSendV2 = (token: string, channelId: number, message: string) => {
   const data: dataTs = getData();
 
   if (!isChannelIdValid(channelId)) {
-    return { error: 'Invalid channelId' };
+    throw HTTPError(400, 'Invalid channelId');
   }
   if (!(message.length >= 1 && message.length <= 1000)) {
-    return { error: 'message must be between 1 to 1000 letters' };
+    throw HTTPError(400, 'message must be between 1 to 1000 letters');
   }
   if (!validateToken(token)) {
-    return { error: 'invalid token' };
+    throw HTTPError(400, 'Invalid token');
   }
   const uId = getUIdFromToken(token) as number;
   if (!isMember(channelId, uId)) {
-    return { error: 'user is not member of channel' };
+    throw HTTPError(403, 'user is not member of channel');
   }
   const messageId = createMessageId();
   const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);

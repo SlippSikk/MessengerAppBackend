@@ -1,10 +1,8 @@
 import HTTPError from 'http-errors';
-import { getData, setData } from './dataStore';
-import { standupActive, dataTs, channel } from './interfaces';
+import { standupActive, channel } from './interfaces';
 import { getUIdFromToken, isChannelIdValid, isMember, validateToken, getChannel } from './helper';
 
 export function standupActiveV1(token: string, channelId: number): standupActive {
-  const data: dataTs = getData();
   if (!isChannelIdValid(channelId)) {
     throw HTTPError(400, 'Invalid ChannelId');
   }

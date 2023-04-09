@@ -1,7 +1,9 @@
 
 import { getData, setData } from './dataStore';
 import validator from 'validator';
-import { hashToken, userIndexToken, userObjToken, validateToken } from './helper';
+import { userIndexToken, validateToken } from './helper';
+// import { hashToken, userObjToken } from './helper';
+
 /**
  * For a valid user, returns information about their user ID,
  * email, first name, last name, and handle
