@@ -5,6 +5,67 @@ import { dataTs, channel, dms, error, messageId } from './interfaces';
 import { tagChannelNotification, tagDmNotification } from './notifications';
 import HTTPError from 'http-errors';
 
+export function messageSendLaterDmV1 (token: string, dmId: number, message: string, timeSent: number): error | messageId {
+  const data: dataTs = getData();
+
+  // dmId does not refer to a valid DM
+  if (!isDmIdValid(dmId)) {
+    throw HTTPError(400, 'Invalid dmId');
+  }
+
+  // length of message is less than 1 or over 100 characters
+  if (!(message.length >= 1 && message.length <= 1000)) {
+    throw HTTPError(400, 'message must be between 1 to 1000 letters');
+  }
+
+  // invalid token
+  if (!validateToken(token)) {
+    throw HTTPError(403, 'Invalid token');
+  }
+
+  // dmId is valid and the authorised user is not a member of the DM they are trying to post to
+  if (!isDmMember(dmId, token)) {
+    throw HTTPError(403, 'user is not a mmeber of the DM');
+  }
+
+  // timeSent is a time in the past
+  if (timeSent * 1000 < new Date().getTime()) {
+    throw HTTPError(400, 'timeSent is a time in the past');
+  }
+
+  // stay in this loop until the delay has been met
+  for (;;) {
+    if (new Date().getTime() >= timeSent * 1000) {
+      break;
+    }
+  }
+
+  // prepare to make a new message
+  const messageId = createMessageId();
+  const uId = getUIdFromToken(token) as number;
+  const dmIndex: number = data.dms.findIndex(dm => dm.dmId === dmId);
+
+  // post message
+  data.dms[dmIndex].messages.push({
+    messageId: messageId,
+    uId: uId,
+    message: message,
+    timeSent: ~~(new Date().getTime() / 1000),
+    reacts: [{
+      reactId: 1,
+      allUsers: []
+    }],
+    isPinned: false
+  });
+
+  setData(data);
+
+  // notification
+  tagDmNotification(message, dmId, token);
+
+  return { messageId: messageId };
+}
+
 export function messageSendLaterV1 (token: string, channelId: number, message: string, timeSent: number): error | messageId {
   const data: dataTs = getData();
 
@@ -34,15 +95,18 @@ export function messageSendLaterV1 (token: string, channelId: number, message: s
     throw HTTPError(400, 'timeSent is a time in the past');
   }
 
+  // stay in this loop until the delay has been met
   for (;;) {
     if (new Date().getTime() >= timeSent * 1000) {
       break;
     }
   }
 
+  // prepare to create a new message
   const messageId = createMessageId();
   const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);
 
+  // post the message
   data.channels[channelIndex].messages.push({
     messageId: messageId,
     uId: uId,
@@ -57,6 +121,7 @@ export function messageSendLaterV1 (token: string, channelId: number, message: s
 
   setData(data);
 
+  // notification
   tagChannelNotification(message, channelId, token);
 
   return { messageId: messageId };
