@@ -2,6 +2,23 @@ import request from 'sync-request';
 import { port, url } from './config.json';
 const SERVER_URL = `${url}:${port}`;
 
+export function requestMessageSendLater(token: string, channelId: number, message: string, timeSent: number) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/message/sendlater/v1',
+    {
+      headers: { token },
+      json: {
+        channelId, message, timeSent
+      }
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+
 export function requestAuthRegister(email: string, password: string, nameFirst: string, nameLast: string) {
   const res = request(
     'POST',

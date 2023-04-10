@@ -1,9 +1,65 @@
 import { getData, setData } from './dataStore';
 import { validateToken, isMessageInChannel, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember } from './helper';
 import { isDmIdValid, createMessageId, isChannelIdValid } from './helper';
-import { dataTs, channel, dms } from './interfaces';
+import { dataTs, channel, dms, error, messageId } from './interfaces';
 import { tagChannelNotification, tagDmNotification } from './notifications';
 import HTTPError from 'http-errors';
+
+export function messageSendLaterV1 (token: string, channelId: number, message: string, timeSent: number): error | messageId {
+  const data: dataTs = getData();
+
+  // channelId does not refer to a valid channel
+  if (!isChannelIdValid(channelId)) {
+    throw HTTPError(400, 'Invalid channelId');
+  }
+
+  // length of message is less than 1 or over 1000 characters
+  if (!(message.length >= 1 && message.length <= 1000)) {
+    throw HTTPError(400, 'message must be between 1 to 1000 letters');
+  }
+
+  // Invalid token
+  if (!validateToken(token)) {
+    throw HTTPError(403, 'Invalid token');
+  }
+
+  // channelId is valid and the authorised user is not a member of the channel they are trying to post to
+  const uId = getUIdFromToken(token) as number;
+  if (!isMember(channelId, uId)) {
+    throw HTTPError(403, 'user is not member of channel');
+  }
+  
+
+  // timeSent is a time in the past 
+  if (timeSent * 1000 < new Date().getTime()) {
+    throw HTTPError (400, 'timeSent is a time in the past')
+  }
+
+  while (new Date().getTime() < timeSent * 1000) {
+  }
+
+  const messageId = createMessageId();
+  const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);
+
+  data.channels[channelIndex].messages.push({
+    messageId: messageId,
+    uId: uId,
+    message: message,
+    timeSent: ~~(new Date().getTime() / 1000),
+    reacts: [{
+      reactId: 1,
+      allUsers: []
+    }],
+    isPinned: false
+  });
+
+  setData(data);
+
+  tagChannelNotification(message, channelId, token);
+
+  return { messageId: messageId };
+}
+
 export function messageEditV1(token: string, messageId: number, message: string) {
   const data: dataTs = getData();
   if (message.length > 1000) {
