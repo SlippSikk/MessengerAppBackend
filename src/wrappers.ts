@@ -468,7 +468,7 @@ export function requestuserProfileSethandleV1(token: string, handleStr: string) 
   return JSON.parse(res.getBody() as string);
 }
 
-/*
+
 export function requestStandupStart(token: string, channelId: number, length: number) {
   const res = request(
     'POST',
@@ -477,7 +477,7 @@ export function requestStandupStart(token: string, channelId: number, length: nu
       headers: { token },
       json: {
         channelId, length
-      }
+      },
     }
   );
   const body = JSON.parse(res.body as string);
@@ -494,8 +494,8 @@ export function requestStandupActive(token: string, channelId: number) {
       headers: { token },
       qs: {
         channelId
-      }
-    }
+      },
+    },
   );
   const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode;
@@ -511,7 +511,7 @@ export function requestStandupSend(token: string, channelId: number, message: st
       headers: { token },
       json: {
         channelId, message
-      }
+      },
     }
   );
   const body = JSON.parse(res.body as string);
@@ -519,4 +519,3 @@ export function requestStandupSend(token: string, channelId: number, message: st
 
   return { body, statusCode };
 }
-*/

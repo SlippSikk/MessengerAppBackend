@@ -4,7 +4,7 @@ import { standupActive, dataTs, channel, timeFinish } from './interfaces';
 import { getUIdFromToken, isChannelIdValid, isMember, validateToken, getChannel, getUser, createMessageId } from './helper';
 
 
-function sendMessages(token: string, channelId: number, uId: number) {
+function sendMessages(channelId: number, uId: number) {
   const channel: channel = getChannel(channelId) as channel;
   const message: string = channel.standup.standupMessage;
 
@@ -61,7 +61,7 @@ export function standupStartV1(token: string, channelId: number, length: number)
   data.channels[channelIndex].standup.authUserId = uId;
 
   setData(data);
-  setTimeout(() => sendMessages(token, channelId, uId), length * 1000);
+  setTimeout(() => sendMessages(channelId, uId), length * 1000);
 
   return {timeFinish: timeFinish}
 }
@@ -90,3 +90,34 @@ export function standupActiveV1(token: string, channelId: number): standupActive
   return returnObj;
 }
 
+export function standupSendV1(token: string, channelId: number, message: string) {
+  const data: dataTs = getData();
+  if (!validateToken(token)) {
+    throw HTTPError(403, "Invalid token");
+  }
+  
+  if (!isChannelIdValid(channelId)) {
+    throw HTTPError(400, "Invalid ChannelId");
+  }
+
+  if (message.length > 1000) {
+    throw HTTPError(400, "Messages cannot be longer than 1000 characters");
+  }
+
+  if (!standupActiveV1(token, channelId).isActive) {
+    throw HTTPError(400, "A standup is not running in this channel");
+  }
+
+  const uId = getUIdFromToken(token);
+  if (!isMember(channelId, uId)) {
+    throw HTTPError(403, "This user does not have the correct permissions");
+  }
+
+  const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);
+  const userhandle: string = getUser(uId).handleStr;
+
+  data.channels[channelIndex].standup.standupMessage += userhandle + ": " + message + '\n';
+  setData(data);
+
+  return {};
+}

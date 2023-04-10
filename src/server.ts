@@ -6,7 +6,7 @@ import { channelsListAllV3, channelsListV3, channelsCreateV3 } from './channels'
 import { channelDetailsV2, channelLeaveV1, channelAddownerV1, channelInviteV3, channelJoinV3, channelRemoveOwnerV2, channelMessagesV3 } from './channel';
 import { userProfileSethandleV1, userProfileSetemailV1, userProfileSetnameV1, usersAllV1, userProfileV2 } from './users';
 import { messageSenddmV1, messageSendV1, messageEditV1, messageRemoveV1 } from './message';
-import { standupActiveV1 } from './standup';
+import { standupStartV1, standupActiveV1, standupSendV1 } from './standup';
 import { clearV1 } from './other';
 import morgan from 'morgan';
 import config from './config.json';
@@ -216,6 +216,13 @@ app.delete('/clear/v1', (req: Request, res: Response) => {
   return res.json(clearV1());
 });
 
+app.post('/standup/start/v1', (req: Request, res: Response) => {
+  const { channelId, length } = req.body;
+  const token = req.header('token');
+
+  return res.json(standupStartV1(token, parseInt(channelId), parseInt(length)));
+})
+
 app.get('/standup/active/v1', (req: Request, res: Response) => {
   const channelId = req.query.channelId as string;
   const token = req.header('token');
@@ -223,6 +230,12 @@ app.get('/standup/active/v1', (req: Request, res: Response) => {
   return res.json(standupActiveV1(token, parseInt(channelId)));
 });
 
+app.post('/standup/send/v1', (req: Request, res: Response) => {
+  const { channelId, message } = req.body;
+  const token = req.header('token');
+
+  return res.json(standupSendV1(token, parseInt(channelId), message));
+})
 // Keep this BENEATH route definitions
 // handles errors nicely
 app.use(errorHandler());

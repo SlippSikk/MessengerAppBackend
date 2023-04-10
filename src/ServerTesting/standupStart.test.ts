@@ -1,8 +1,4 @@
-test('Place holder', () => {
-  expect(1 + 1).toEqual(2);
-});
-
-/* import { requestClear, requestAuthRegister, requestChannelsCreate, requestStandupStart, requestStandupSend, requestChannelJoin, requestChannelMessages } from "../wrappers";
+import { requestClear, requestAuthRegister, requestChannelsCreate, requestStandupStart, requestChannelJoin, requestChannelMessages } from "../wrappers";
 
 const INPUT_ERROR = 400;
 const AUTH_ERROR = 403;
@@ -68,7 +64,7 @@ describe('Valid operation', () => {
   test('timeFinish is accurate', () => {
     const standup = requestStandupStart(authToken2, channelId1, 0.5);
     const now: number = Math.floor((new Date()).getTime() / 1000);
-    expect(standup.statusCode.tobe(OK));
+    expect(standup.statusCode).toBe(OK);
     const expectedTime: number = standup.body.timeFinish;
     expect(expectedTime).toBeGreaterThanOrEqual(now);
   })
@@ -76,11 +72,10 @@ describe('Valid operation', () => {
   test('No message sent', async() => {
     expect(requestStandupStart(authToken2, channelId1, 0.5).statusCode).toBe(OK);
     await sleep(600);
-    expect(requestChannelMessages(authToken2, channelId1, 0)).toEqual({
+    expect(requestChannelMessages(authToken2, channelId1, 0).body).toEqual({
       messages: [],
       start: 0,
       end: -1
     });
   })
 });
-*/
