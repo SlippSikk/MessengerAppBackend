@@ -2,7 +2,7 @@ import { getData, setData } from './dataStore';
 import { validateToken, isMessageInChannel, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember } from './helper';
 import { isDmIdValid, createMessageId, isChannelIdValid } from './helper';
 import { dataTs, channel, dms, error, messageId } from './interfaces';
-import { tagChannelNotification, tagDmNotification } from './notifications';
+import { tagChannelNotification, tagDmNotification, addNotification } from './notifications';
 import HTTPError from 'http-errors';
 
 export function messageSendLaterDmV1 (token: string, dmId: number, message: string, timeSent: number): error | messageId {
@@ -127,14 +127,14 @@ export function messageSendLaterV1 (token: string, channelId: number, message: s
   return { messageId: messageId };
 }
 
-export function messageEditV1(token: string, messageId: number, message: string) {
+export function messageEditV2(token: string, messageId: number, message: string) {
   const data: dataTs = getData();
   if (message.length > 1000) {
-    return { error: 'Messages cannot be longer than 1000 characters' };
+    throw HTTPError(400, 'Messages must be longer than 1000 characters');
   }
 
   if (!validateToken(token)) {
-    return { error: 'Invalid token' };
+    throw HTTPError(403, 'Invalid token');
   }
 
   if (isMessageInChannel(messageId)) {
@@ -143,11 +143,11 @@ export function messageEditV1(token: string, messageId: number, message: string)
     const currentMessage = channel.messages.find(message => message.messageId === messageId);
     const authUserId: number = getUIdFromToken(token) as number;
     if (!isMember(channel.channelId, authUserId) && authUserId !== 1) {
-      return { error: 'This user is not a member of this channel' };
+      throw HTTPError(403, 'This user is not a member of this channel');
     }
 
     if (!isOwnerByToken(channel.channelId, token) && currentMessage.uId !== authUserId && authUserId !== 1) {
-      return { error: 'authUser does not have correct privileges' };
+      throw HTTPError(403, 'User does not have correct permissions');
     }
 
     if (message.length === 0) {
@@ -157,8 +157,9 @@ export function messageEditV1(token: string, messageId: number, message: string)
       data.channels[channelIndex].messages[messageIndex].message = message;
     }
     setData(data);
-    tagChannelNotification(message, data.channels[channelIndex].channelId, token);
+    tagChannelNotification(message, channel.channelId, token);
     return {};
+
   } else if (isMessageInDM(messageId)) {
     const dmIndex: number = findDMIndexWithMessage(messageId);
     const dm: dms = data.dms[dmIndex];
@@ -166,11 +167,11 @@ export function messageEditV1(token: string, messageId: number, message: string)
     const authUserId: number = getUIdFromToken(token) as number;
 
     if (dm.creator.uId !== authUserId && currentMessage.uId !== authUserId) {
-      return { error: 'authUser does not have correct privileges' };
+      throw HTTPError(403, 'User does not have correct permissions');
     }
 
     if (dm.creator.uId !== authUserId && !isDmMember(dm.dmId, token)) {
-      console.log('This user is not a member of this DM');
+      throw HTTPError(403, 'This user is not a member of this DM');
     }
 
     if (message.length === 0) {
@@ -180,16 +181,17 @@ export function messageEditV1(token: string, messageId: number, message: string)
       data.dms[dmIndex].messages[messageIndex].message = message;
     }
     setData(data);
-    tagDmNotification(message, data.dms[dmIndex].dmId, token);
+    tagDmNotification(message, dm.dmId, token);
     return {};
   }
-
-  return { error: 'MessageID is invalid' };
+  
+  throw HTTPError(400, 'Invalid messageId');
 }
 
-export function messageRemoveV1(token: string, messageId: number) {
-  return messageEditV1(token, messageId, '');
+export function messageRemoveV2(token: string, messageId: number) {
+  return messageEditV2(token, messageId, '');
 }
+
 
 /**
  *

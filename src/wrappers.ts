@@ -323,36 +323,46 @@ export function requestUserProfileV3(token: string, uId: number) {
   const statusCode = res.statusCode;
   return { body, statusCode };
 }
+
+
 export function requestMessageEdit(token: string, messageId: number, message: string) {
   const res = request(
     'PUT',
-    `${url}:${port}/message/edit/v1`,
+    `${url}:${port}/message/edit/v2`,
     {
+      headers: {
+        token
+      },
       json: {
-        token: token,
         messageId: messageId,
         message: message,
-      }
+      },
+      timeout: 2000
     }
   );
-
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+  return { body, statusCode };
 }
 
 // PUT because messageEdit is called
 export function requestMessageRemove(token: string, messageId: number) {
   const res = request(
     'DELETE',
-    `${url}:${port}/message/remove/v1`,
+    `${url}:${port}/message/remove/v2`,
     {
+      headers: {
+        token
+      },
       qs: {
-        token: token,
         messageId: messageId,
       }
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+  return { body, statusCode };
 }
 
 export function requestMessageSenddm(token: string, dmId: number, message: string) {
