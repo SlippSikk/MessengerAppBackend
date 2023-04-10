@@ -1,7 +1,6 @@
 
 import { requestAuthRegister, requestClear, requestMessageSenddm, requestDmCreate, requestDmMessages } from '../wrappers';
 import { authUserId } from '../interfaces';
-const ERROR = { error: expect.any(String) };
 
 let registered1: authUserId;
 let registered2: authUserId;
@@ -24,11 +23,11 @@ beforeEach(() => {
 describe('Error Cases', () => {
   test('Invalid dm Id', () => {
     // console.log(requestMessageSenddm(registered1.token, dmId1 + 1, 'Hi my ducklings'));
-    expect(requestMessageSenddm(registered1.token, dmId1 + 1, 'Hi my ducklings')).toStrictEqual(ERROR);
+    expect(requestMessageSenddm(registered1.token, dmId1 + 1, 'Hi my ducklings').statusCode).toStrictEqual(400);
   });
   test('Message must be between 1 to 1000 letters', () => {
     // console.log((requestMessageSenddm(registered1.token, dmId1, '')));
-    expect(requestMessageSenddm(registered1.token, dmId1, '')).toStrictEqual(ERROR);
+    expect(requestMessageSenddm(registered1.token, dmId1, '').statusCode).toStrictEqual(400);
   });
   test('Message must be between 1 to 1000 letters', () => {
     let fullChar = '';
@@ -36,36 +35,36 @@ describe('Error Cases', () => {
       fullChar += 'p';
     }
     // console.log(requestMessageSenddm(registered1.token, dmId1, fullChar));
-    expect(requestMessageSenddm(registered1.token, dmId1, fullChar)).toStrictEqual(ERROR);
+    expect(requestMessageSenddm(registered1.token, dmId1, fullChar).statusCode).toStrictEqual(400);
   });
   test('User is not member of channel', () => {
     // console.log(requestMessageSenddm(registered5.token, dmId1, 'Lets dance'));
-    expect(requestMessageSenddm(registered5.token, dmId1, 'Lets dance')).toStrictEqual(ERROR);
+    expect(requestMessageSenddm(registered5.token, dmId1, 'Lets dance').statusCode).toStrictEqual(403);
   });
   test('Invalid token', () => {
     // console.log(requestMessageSenddm(registered1.token + 'p', dmId1, 'Lets dance'));
-    expect(requestMessageSenddm(registered1.token + 'p', dmId1, 'Lets dance')).toStrictEqual(ERROR);
+    expect(requestMessageSenddm(registered1.token + 'p', dmId1, 'Lets dance').statusCode).toStrictEqual(400);
   });
 });
 
 describe('Function Testing', () => {
   test('Send a dm', () => {
-    expect(requestMessageSenddm(registered1.token, dmId2, 'Hi my ducklings')).toStrictEqual({ messageId: expect.any(Number) });
-    const a = requestDmMessages(registered1.token, dmId2, 0);
+    expect(requestMessageSenddm(registered1.token, dmId2, 'Hi my ducklings').body).toStrictEqual({ messageId: expect.any(Number) });
+    const a = requestDmMessages(registered1.token, dmId2, 0).body;
     expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
   });
   test('Send two dms', () => {
-    expect(requestMessageSenddm(registered1.token, dmId2, 'Hi my ducklings')).toStrictEqual({ messageId: expect.any(Number) });
-    expect(requestMessageSenddm(registered1.token, dmId2, 'How to get bread ?')).toStrictEqual({ messageId: expect.any(Number) });
-    const a = requestDmMessages(registered1.token, dmId2, 0);
+    expect(requestMessageSenddm(registered1.token, dmId2, 'Hi my ducklings').body).toStrictEqual({ messageId: expect.any(Number) });
+    expect(requestMessageSenddm(registered1.token, dmId2, 'How to get bread ?').body).toStrictEqual({ messageId: expect.any(Number) });
+    const a = requestDmMessages(registered1.token, dmId2, 0).body;
     expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
     expect(a.messages[1].message).toStrictEqual('How to get bread ?');
   });
   test('send multiple dms to multiple people', () => {
     requestMessageSenddm(registered1.token, dmId2, 'Hi my ducklings');
     requestMessageSenddm(registered3.token, dmId1, 'How to get bread ?');
-    const a = requestDmMessages(registered1.token, dmId2, 0);
-    const b = requestDmMessages(registered3.token, dmId1, 0);
+    const a = requestDmMessages(registered1.token, dmId2, 0).body;
+    const b = requestDmMessages(registered3.token, dmId1, 0).body;
     expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
     expect(b.messages[0].message).toStrictEqual('How to get bread ?');
   });

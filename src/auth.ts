@@ -3,7 +3,7 @@ import validator from 'validator';
 import { users, authUserId, error } from './interfaces';
 import HTTPError from 'http-errors';
 import { encrypt, findPassword, hashToken, userIndexToken } from './helper';
-
+import nodemailer from 'nodemailer';
 
 /**
  * Summary: Registers a user returning their unique Id
@@ -72,10 +72,10 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
   }
 
   // Encrypt password
-  const pass = encrypt(password)
+  const pass = encrypt(password);
 
   // Hash token
-  const hashedToken = hashToken(nameConcat)
+  const hashedToken = hashToken(nameConcat);
 
   const user: users = {
     uId: Id,
@@ -84,17 +84,17 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
     nameLast: nameLast,
     handleStr: nameConcat,
     password: pass,
-    token: [hashedToken]
+    token: [hashedToken],
+    notifications: [],
+    resetCode: 'NO'
   };
 
   data.users.push(user);
 
   setData(data);
 
-  // Hash token 
-
   return {
-    token: nameConcat, // Replace with hash
+    token: nameConcat,
     authUserId: Id,
   };
 }
@@ -138,8 +138,6 @@ function authLoginV3(email: string, password: string): authUserId | error {
 
   // Hash the token and return it
 
-
-
   return {
     token: randToken,
     authUserId: found.uId,
@@ -148,7 +146,6 @@ function authLoginV3(email: string, password: string): authUserId | error {
 
 function authLogoutV2(token: string) {
   const data = getData();
-
 
   const userIndex = userIndexToken(token);
 
@@ -163,6 +160,55 @@ function authLogoutV2(token: string) {
   return {};
 }
 
-export { authRegisterV3, authLoginV3, authLogoutV2 };
+function authPasswordResetRequestV1(email: string) {
+  const data = getData();
+  // Generate reset code
+  const resetCode = (Math.floor(Math.random() * Date.now())).toString();
 
+  const userIndex = data.users.findIndex(element => element.email === email);
+  data.users[userIndex].resetCode = resetCode;
+  data.users[userIndex].token = [];
+  setData(data);
 
+  const transporter = nodemailer.createTransport({
+    host: 'smtp-relay.sendinblue.com',
+    port: 587,
+    secure: false, // upgrade later with STARTTLS
+    auth: {
+      user: 'ilyas.baqaie@gmail.com',
+      pass: 'mayDqTZ8MILExjbQ',
+    },
+  });
+
+  const mailOptions = {
+    from: 'ilyas.baqaie@gmail.com',
+    to: email,
+    subject: 'Password Reset',
+    text: `Here is your key to reset your password: ${resetCode}`
+  };
+
+  transporter.sendMail(mailOptions);
+
+  return {};
+}
+
+function authPasswordResetResetV1(resetCode: string, newPassword: string) {
+  const data = getData();
+  const userIndex = data.users.findIndex(element => element.resetCode === resetCode);
+
+  if (userIndex === -1) {
+    throw HTTPError(400, 'Invalid reset code');
+  }
+
+  if (newPassword.length < 6) {
+    throw HTTPError(400, 'Password is too short (6 or more characters)');
+  }
+
+  data.users[userIndex].password = encrypt(newPassword);
+  data.users[userIndex].resetCode = 'NO';
+  setData(data);
+
+  return {};
+}
+
+export { authRegisterV3, authLoginV3, authLogoutV2, authPasswordResetRequestV1, authPasswordResetResetV1 };
