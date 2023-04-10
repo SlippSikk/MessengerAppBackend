@@ -6,6 +6,7 @@ import { channelsListAllV3, channelsListV3, channelsCreateV3 } from './channels'
 import { channelDetailsV3, channelLeaveV2, channelAddownerV2, channelInviteV3, channelJoinV3, channelRemoveOwnerV2, channelMessagesV3 } from './channel';
 import { userProfileSethandleV2, userProfileSetemailV2, userProfileSetnameV2, usersAllV2, userProfileV3 } from './users';
 import { messageSenddmV2, messageSendV2, messageEditV1, messageRemoveV1 } from './message';
+import { messagePinV1 } from './messagePin';
 import { standupActiveV1 } from './standup';
 import { clearV1 } from './other';
 import morgan from 'morgan';
@@ -121,26 +122,26 @@ app.post('/auth/logout/v2', (req: Request, res: Response) => {
 
 app.post('/dm/create/v2', (req: Request, res: Response) => {
   const { uIds } = req.body;
-  const token = req.header('token')as string;
+  const token = req.header('token') as string;
 
   return res.json(dmCreateV2(token, uIds));
 });
 
 app.get('/dm/list/v2', (req: Request, res: Response) => {
-  const token = req.header('token')as string;
+  const token = req.header('token') as string;
 
   return res.json(dmListV2(token));
 });
 
 app.get('/dm/details/v2', (req: Request, res: Response) => {
   const dmId = req.query.dmId as string;
-  const token = req.header('token')as string;
+  const token = req.header('token') as string;
 
   return res.json(dmDetailsV2(token, parseInt(dmId)));
 });
 
 app.delete('/dm/remove/v2', (req: Request, res: Response) => {
-  const token = req.header('token')as string;
+  const token = req.header('token') as string;
   const dmId = req.query.dmId as string;
 
   return res.json(dmRemoveV2(token, parseInt(dmId)));
@@ -148,13 +149,13 @@ app.delete('/dm/remove/v2', (req: Request, res: Response) => {
 
 app.post('/dm/leave/v2', (req: Request, res: Response) => {
   const { dmId } = req.body;
-  const token = req.header('token')as string;
+  const token = req.header('token') as string;
 
   return res.json(dmLeaveV2(token, parseInt(dmId)));
 });
 
 app.get('/dm/messages/v2', (req: Request, res: Response) => {
-  const token = req.header('token')as string;
+  const token = req.header('token') as string;
   const dmId = req.query.dmId as string;
   const start = req.query.start as string;
 
@@ -181,33 +182,33 @@ app.get('/channels/listall/v3', (req: Request, res: Response) => {
 });
 
 app.put('/user/profile/sethandle/v2', (req: Request, res: Response) => {
-  const token = req.header('token') as string;  
-  const  handleStr = req.body.handleStr;
+  const token = req.header('token') as string;
+  const handleStr = req.body.handleStr;
   return res.json(userProfileSethandleV2(token, handleStr));
-  });
-  
-  app.put('/user/profile/setemail/v2', (req: Request, res: Response) => { //
-    const { email } = req.body;
-    const token = req.header('token') as string;
-    return res.json(userProfileSetemailV2(token, email));
-  });
-  
-  app.put('/user/profile/setname/v2', (req: Request, res: Response) => { // everything about setname is fine... weird
-    const { nameFirst, nameLast } = req.body;
-    const token = req.header('token') as string;
-    return res.json(userProfileSetnameV2(token, nameFirst, nameLast));
-  });
-  
-  app.get('/users/all/v2', (req: Request, res: Response) => {
-    const token = req.header('token') as string;
-    return res.json(usersAllV2(token));
-  });
-  
-  app.get('/user/profile/v3', (req: Request, res: Response) => {
-    const uId = parseInt(req.query.uId as string);
-    const token = req.header('token') as string;
-    return res.json(userProfileV3(token, uId));
-  });
+});
+
+app.put('/user/profile/setemail/v2', (req: Request, res: Response) => { //
+  const { email } = req.body;
+  const token = req.header('token') as string;
+  return res.json(userProfileSetemailV2(token, email));
+});
+
+app.put('/user/profile/setname/v2', (req: Request, res: Response) => { // everything about setname is fine... weird
+  const { nameFirst, nameLast } = req.body;
+  const token = req.header('token') as string;
+  return res.json(userProfileSetnameV2(token, nameFirst, nameLast));
+});
+
+app.get('/users/all/v2', (req: Request, res: Response) => {
+  const token = req.header('token') as string;
+  return res.json(usersAllV2(token));
+});
+
+app.get('/user/profile/v3', (req: Request, res: Response) => {
+  const uId = parseInt(req.query.uId as string);
+  const token = req.header('token') as string;
+  return res.json(userProfileV3(token, uId));
+});
 
 app.get('/notifications/get/v1', (req: Request, res: Response) => {
   const token = req.header('token');
@@ -226,12 +227,11 @@ app.delete('/clear/v1', (req: Request, res: Response) => {
 app.post('/auth/passwordreset/reset/v1', (req: Request, res: Response) => {
   const { resetCode, newPassword } = req.body;
   return res.json(authPasswordResetResetV1(resetCode, newPassword));
-})
+});
 
 app.delete('/clear/v1', (req: Request, res: Response) => {
   return res.json(clearV1());
 });
-
 
 app.get('/standup/active/v1', (req: Request, res: Response) => {
   const channelId = req.query.channelId as string;
@@ -240,6 +240,12 @@ app.get('/standup/active/v1', (req: Request, res: Response) => {
   return res.json(standupActiveV1(token, parseInt(channelId)));
 });
 
+app.post('/message/pin/v1', (req: Request, res: Response) => {
+  const token = req.header('token');
+  const { messageId } = req.body;
+
+  res.json(messagePinV1(token, +messageId));
+});
 // Keep this BENEATH route definitions
 // handles errors nicely
 app.use(errorHandler());

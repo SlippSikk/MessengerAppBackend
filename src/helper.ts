@@ -1,5 +1,5 @@
 import { getData } from './dataStore';
-import { channel, user, dms, password, users } from './interfaces';
+import { channel, user, dms, password, users, dataTs } from './interfaces';
 
 import md5 from 'md5';
 import crypto from 'crypto';
@@ -258,12 +258,12 @@ export const validateToken = (token: string): boolean => {
 };
 
 export const userIndexToken = (token: string): number => {
-  const data = getData();
+  const data: dataTs = getData();
   return data.users.findIndex(element => element.token.find(element => element === hashToken(token)));
 };
 
 export const userObjToken = (token: string): users => {
-  const data = getData();
+  const data: dataTs = getData();
   return data.users.find(element => element.token.find(element => element === hashToken(token)));
 };
 

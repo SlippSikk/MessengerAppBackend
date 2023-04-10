@@ -193,15 +193,15 @@ function authPasswordResetRequestV1(email: string) {
 }
 
 function authPasswordResetResetV1(resetCode: string, newPassword: string) {
-  let data = getData();
+  const data = getData();
   const userIndex = data.users.findIndex(element => element.resetCode === resetCode);
 
   if (userIndex === -1) {
-    throw HTTPError(400, "Invalid reset code");
+    throw HTTPError(400, 'Invalid reset code');
   }
 
   if (newPassword.length < 6) {
-    throw HTTPError(400, "Password is too short (6 or more characters)");
+    throw HTTPError(400, 'Password is too short (6 or more characters)');
   }
 
   data.users[userIndex].password = encrypt(newPassword);
@@ -209,7 +209,6 @@ function authPasswordResetResetV1(resetCode: string, newPassword: string) {
   setData(data);
 
   return {};
-
 }
 
 export { authRegisterV3, authLoginV3, authLogoutV2, authPasswordResetRequestV1, authPasswordResetResetV1 };

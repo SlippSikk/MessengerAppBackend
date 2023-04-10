@@ -8,6 +8,7 @@ interface notifications {
     dmId: number,
     notificationMessage: string
 }
+
 interface users {
     uId: number,
     email: string,
@@ -28,11 +29,23 @@ interface user {
     handleStr: string,
 }
 
+// interface messages {
+//     messageId: number,
+//     uId: number,
+//     message: string,
+//     timeSent: number
+// }
+
 interface messages {
     messageId: number,
     uId: number,
     message: string,
     timeSent: number
+    reacts: [{
+        reactId: 1,
+        allUsers: user[]
+    }],
+    isPinned: boolean
 }
 
 interface channels {

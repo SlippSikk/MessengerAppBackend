@@ -98,7 +98,12 @@ export const messageSenddmV2 = (token: string, dmId: number, message: string) =>
     messageId: messageId,
     uId: uId,
     message: message,
-    timeSent: ~~(new Date().getTime() / 1000)
+    timeSent: ~~(new Date().getTime() / 1000),
+    reacts: [{
+      reactId: 1,
+      allUsers: []
+    }],
+    isPinned: false
   });
   setData(data);
   tagDmNotification(message, dmId, token);
@@ -135,7 +140,12 @@ export const messageSendV2 = (token: string, channelId: number, message: string)
     messageId: messageId,
     uId: uId,
     message: message,
-    timeSent: ~~(new Date().getTime() / 1000)
+    timeSent: ~~(new Date().getTime() / 1000),
+    reacts: [{
+      reactId: 1,
+      allUsers: []
+    }],
+    isPinned: false
   });
   setData(data);
 

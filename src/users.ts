@@ -2,7 +2,7 @@
 import { getData, setData } from './dataStore';
 import validator from 'validator';
 import HTTPError from 'http-errors';
-import { hashToken, userObjToken, validateToken, userIndexToken } from './helper';
+import { validateToken, userIndexToken } from './helper';
 
 /**
  * For a valid user, returns information about their user ID,
@@ -19,17 +19,17 @@ import { hashToken, userObjToken, validateToken, userIndexToken } from './helper
  * @returns {}
  */
 
-export function userProfileSetemailV2(token: string,email:string) {
+export function userProfileSetemailV2(token: string, email: string) {
   const data = getData();
-  if(!validateToken(token)){
-    throw HTTPError(403, "token is not valid");
+  if (!validateToken(token)) {
+    throw HTTPError(403, 'token is not valid');
   }
   if (!(validator.isEmail(email))) {
-    throw HTTPError(400, "email is not valid");
+    throw HTTPError(400, 'email is not valid');
   }
   const userObjectEmail = data.users.find(a => a.email === email);
   if (userObjectEmail !== undefined) {
-    throw HTTPError(400, "email is in use");
+    throw HTTPError(400, 'email is in use');
   }
   const userIndex = userIndexToken(token);
   data.users[userIndex].email = email;
@@ -42,21 +42,21 @@ export function userProfileSetemailV2(token: string,email:string) {
  * @returns {}
  */
 
-export function userProfileSethandleV2(token: string,handleStr:string) {
+export function userProfileSethandleV2(token: string, handleStr: string) {
   const data = getData();
-  if(!validateToken(token)){
-    throw HTTPError(403, "token is not valid");
+  if (!validateToken(token)) {
+    throw HTTPError(403, 'token is not valid');
   }
   const userObjectHandleStr = data.users.find(a => a.handleStr === handleStr);
   if (userObjectHandleStr !== undefined) {
-    throw HTTPError(400, "handle is in use");
+    throw HTTPError(400, 'handle is in use');
   }
   const noAlphanumeric = /^[a-zA-Z0-9]+$/i;
   if (!noAlphanumeric.test(handleStr)) {
-    throw HTTPError(400, "handleStr can not include non alphanumeric");
+    throw HTTPError(400, 'handleStr can not include non alphanumeric');
   }
   if ((handleStr.length > 20) || (handleStr.length < 3)) {
-    throw HTTPError(400, "length of handleStr is not between 3 and 20 characters inclusive");
+    throw HTTPError(400, 'length of handleStr is not between 3 and 20 characters inclusive');
   }
   const userIndex = userIndexToken(token);
   data.users[userIndex].handleStr = handleStr;
@@ -72,16 +72,16 @@ export function userProfileSethandleV2(token: string,handleStr:string) {
  * @returns {}
  */
 
-export function userProfileSetnameV2(token: string, nameFirst:string, nameLast:string) {
+export function userProfileSetnameV2(token: string, nameFirst: string, nameLast: string) {
   const data = getData();
-  if(!validateToken(token)){
-    throw HTTPError(403, "token is not valid");
+  if (!validateToken(token)) {
+    throw HTTPError(403, 'token is not valid');
   }
   if ((nameFirst.length > 50) || (nameFirst.length < 1)) {
-    throw HTTPError(400, "length of nameFirst is not between 1 and 50 characters inclusive"); 
+    throw HTTPError(400, 'length of nameFirst is not between 1 and 50 characters inclusive');
   }
   if ((nameLast.length > 50) || (nameLast.length < 1)) {
-    throw HTTPError(400, "length of nameLast is not between 1 and 50 characters inclusive");
+    throw HTTPError(400, 'length of nameLast is not between 1 and 50 characters inclusive');
   }
   const userIndex = userIndexToken(token);
   data.users[userIndex].nameFirst = nameFirst;
@@ -96,8 +96,8 @@ export function userProfileSetnameV2(token: string, nameFirst:string, nameLast:s
 
 export function usersAllV2(token: string) {
   const data = getData();
-  if(!validateToken(token)){
-    throw HTTPError(403, "token is not valid");
+  if (!validateToken(token)) {
+    throw HTTPError(403, 'token is not valid');
   }
   const users = data.users
     .map(p => ({
@@ -115,14 +115,14 @@ export function usersAllV2(token: string) {
  * @returns {user}
  */
 
-export function userProfileV3(token: string, uId:number) {
+export function userProfileV3(token: string, uId: number) {
   const data = getData();
-  if(!validateToken(token)){
-    throw HTTPError(403, "token is not valid");
+  if (!validateToken(token)) {
+    throw HTTPError(403, 'token is not valid');
   }
   const idToView = data.users.find(a => a.uId === uId);
   if (idToView === undefined) {
-    throw HTTPError(400, "uId is not valid");
+    throw HTTPError(400, 'uId is not valid');
   }
   return {
     user: {
@@ -134,4 +134,3 @@ export function userProfileV3(token: string, uId:number) {
     }
   };
 }
-

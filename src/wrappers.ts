@@ -271,8 +271,7 @@ export function requestChannelMessages(token: string, channelId: number, start: 
   return { body, statusCode };
 }
 
-export function requestUserProfileV3(token:string,uId: number) {
-
+export function requestUserProfileV3(token: string, uId: number) {
   const res = request(
     'GET',
     `${url}:${port}/user/profile/v3`,
@@ -287,8 +286,8 @@ export function requestUserProfileV3(token:string,uId: number) {
     }
   );
   const body = JSON.parse(res.body as string);
-  const statusCode = res.statusCode
-  return {body, statusCode}
+  const statusCode = res.statusCode;
+  return { body, statusCode };
 }
 export function requestMessageEdit(token: string, messageId: number, message: string) {
   const res = request(
@@ -436,70 +435,69 @@ export function requestClear() {
   return JSON.parse(res.getBody() as string);
 }
 
-
-export function requestUsersAllV2(token:string) {
+export function requestUsersAllV2(token: string) {
   const res = request(
     'GET',
     SERVER_URL + '/users/all/v2',
     {
       headers: { token },
-      qs: {}, //wait..should it be qs?
+      qs: {}, // wait..should it be qs?
       timeout: 2000
     }
   );
   const body = JSON.parse(res.body as string);
-  const statusCode = res.statusCode
-  return {body, statusCode}
+  const statusCode = res.statusCode;
+  return { body, statusCode };
 }
 
-export function requestSetNameV2(token:string, nameFirst: string, nameLast: string) {
+export function requestSetNameV2(token: string, nameFirst: string, nameLast: string) {
   const res = request(
     'PUT',
     SERVER_URL + '/user/profile/setname/v2',
     {
       headers: { token },
       json: {
-      nameFirst, nameLast
+        nameFirst, nameLast
       },
       timeout: 2000
     }
   );
   const body = JSON.parse(res.body as string);
-  const statusCode = res.statusCode
-  return {body, statusCode}
+  const statusCode = res.statusCode;
+  return { body, statusCode };
 }
 
-export function requestuserSetemailV2(token:string, email: string) {
+export function requestuserSetemailV2(token: string, email: string) {
   const res = request(
     'PUT',
     SERVER_URL + '/user/profile/setemail/v2',
     {
       headers: { token },
       json: {
-      email
+        email
       },
       timeout: 2000
     }
   );
   const body = JSON.parse(res.body as string);
-  const statusCode = res.statusCode
-  return {body, statusCode}
+  const statusCode = res.statusCode;
+  return { body, statusCode };
 }
 
-export function requestuserProfileSethandleV2(token:string, handleStr: string) {
+export function requestuserProfileSethandleV2(token: string, handleStr: string) {
   const res = request(
     'PUT',
     SERVER_URL + '/user/profile/sethandle/v2',
     {
       headers: { token },
       json: {
-      handleStr
+        handleStr
       }
     }
   );
   const body = JSON.parse(res.body as string);
-  const statusCode = res.statusCode
-  return {body, statusCode}
+  const statusCode = res.statusCode;
+  return { body, statusCode };
 }
 
 /*
@@ -554,3 +552,18 @@ export function requestStandupSend(token: string, channelId: number, message: st
   return { body, statusCode };
 }
 */
+export function requestMessagePin(token: string, messageId: number) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/message/pin/v1',
+    {
+      headers: { token },
+      json: {
+        messageId
+      }
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+  return { body, statusCode };
+}

@@ -18,7 +18,12 @@ function sendMessages(token: string, channelId: number, uId: number) {
     messageId: messageId,
     uId: uId,
     message: message,
-    timeSent: ~~(new Date().getTime() / 1000)
+    timeSent: ~~(new Date().getTime() / 1000),
+    reacts: [{
+      reactId: 1,
+      allUsers: []
+    }],
+    isPinned: false
   });
 
   data.channels[channelIndex].standup.isActive = false;
