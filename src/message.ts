@@ -28,14 +28,16 @@ export function messageSendLaterV1 (token: string, channelId: number, message: s
   if (!isMember(channelId, uId)) {
     throw HTTPError(403, 'user is not member of channel');
   }
-  
 
-  // timeSent is a time in the past 
+  // timeSent is a time in the past
   if (timeSent * 1000 < new Date().getTime()) {
-    throw HTTPError (400, 'timeSent is a time in the past')
+    throw HTTPError(400, 'timeSent is a time in the past');
   }
 
-  while (new Date().getTime() < timeSent * 1000) {
+  for (;;) {
+    if (new Date().getTime() >= timeSent * 1000) {
+      break;
+    }
   }
 
   const messageId = createMessageId();

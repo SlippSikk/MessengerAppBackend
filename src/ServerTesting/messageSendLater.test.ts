@@ -19,13 +19,13 @@ beforeEach(() => {
 
 describe('Error Cases', () => {
   test('Invalid channelId', () => {
-    const timeSent = new Date().getTime() / 1000 + 500
+    const timeSent = new Date().getTime() / 1000 + 500;
     expect(requestMessageSendLater(registered1.token, channelId1 * channelId2 + 1, 'Hi my ducklings', timeSent).statusCode).toBe(400);
     expect(requestMessageSendLater(registered1.token, channelId1 * channelId2 + 1, 'Hi my ducklings', timeSent).body.error).toStrictEqual(ERROR);
   });
 
   test('Message must be between 1 to 1000 letters', () => {
-    const timeSent = new Date().getTime() / 1000 + 500
+    const timeSent = new Date().getTime() / 1000 + 500;
     expect(requestMessageSendLater(registered1.token, channelId1, '', timeSent).statusCode).toBe(400);
     expect(requestMessageSendLater(registered1.token, channelId1, '', timeSent).body.error).toStrictEqual(ERROR);
   });
@@ -35,25 +35,25 @@ describe('Error Cases', () => {
     for (let i = 0; i < 1001; i++) {
       fullChar += 'p';
     }
-    const timeSent = new Date().getTime() / 1000 + 500
+    const timeSent = new Date().getTime() / 1000 + 500;
     expect(requestMessageSendLater(registered1.token, channelId1, fullChar, timeSent).statusCode).toBe(400);
     expect(requestMessageSendLater(registered1.token, channelId1, fullChar, timeSent).body.error).toStrictEqual(ERROR);
   });
 
   test('Invalid token', () => {
-    const timeSent = new Date().getTime() / 1000 + 500
+    const timeSent = new Date().getTime() / 1000 + 500;
     expect(requestMessageSendLater(registered1.token + registered2.token + 'p', channelId1, 'Lets dance', timeSent).statusCode).toBe(403);
     expect(requestMessageSendLater(registered1.token + registered2.token + 'p', channelId1, 'Lets dance', timeSent).body.error).toStrictEqual(ERROR);
   });
 
   test('User is not member of channel', () => {
-    const timeSent = new Date().getTime() / 1000 + 500
+    const timeSent = new Date().getTime() / 1000 + 500;
     expect(requestMessageSendLater(registered1.token, channelId2, 'Lets dance', timeSent).statusCode).toBe(403);
     expect(requestMessageSendLater(registered1.token, channelId2, 'Lets dance', timeSent).body.error).toStrictEqual(ERROR);
   });
 
   test('timeSent is in the past', () => {
-    const timeSent = new Date().getTime() / 1000 - 500
+    const timeSent = new Date().getTime() / 1000 - 500;
     expect(requestMessageSendLater(registered1.token, channelId1, 'Lets dance', timeSent).statusCode).toBe(400);
     expect(requestMessageSendLater(registered1.token, channelId1, 'Lets dance', timeSent).body.error).toStrictEqual(ERROR);
   });
@@ -61,7 +61,7 @@ describe('Error Cases', () => {
 
 describe('Function Testing', () => {
   test('Send a message', () => {
-    const timeSent = (new Date().getTime() / 1000) + 5
+    const timeSent = (new Date().getTime() / 1000) + 5;
     expect(requestMessageSendLater(registered1.token, channelId1, 'Hi my ducklings', timeSent).body).toStrictEqual({ messageId: expect.any(Number) });
     const a = requestChannelMessages(registered1.token, channelId1, 0).body;
     expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
@@ -69,8 +69,8 @@ describe('Function Testing', () => {
   });
 
   test('Send two messages in the same channel', () => {
-    const timeSent = (new Date().getTime() / 1000) + 1
-    const timeSent2 = (new Date().getTime() / 1000) + 2
+    const timeSent = (new Date().getTime() / 1000) + 1;
+    const timeSent2 = (new Date().getTime() / 1000) + 2;
 
     expect(requestMessageSendLater(registered1.token, channelId1, 'Hi my ducklings', timeSent).body).toStrictEqual({ messageId: expect.any(Number) });
     expect(requestMessageSendLater(registered1.token, channelId1, 'How to get bread ?', timeSent2).body).toStrictEqual({ messageId: expect.any(Number) });
@@ -84,10 +84,10 @@ describe('Function Testing', () => {
   });
 
   test('Send four messages in the two channels', () => {
-    const timeSent = (new Date().getTime() / 1000) + 1
-    const timeSent2 = timeSent + 2
-    const timeSent3 = timeSent2 + 3
-    const timeSent4 = timeSent3 + 4
+    const timeSent = (new Date().getTime() / 1000) + 1;
+    const timeSent2 = timeSent + 2;
+    const timeSent3 = timeSent2 + 3;
+    const timeSent4 = timeSent3 + 4;
     expect(requestMessageSendLater(registered1.token, channelId1, 'one', timeSent).body).toStrictEqual({ messageId: expect.any(Number) });
     expect(requestMessageSendLater(registered2.token, channelId2, 'two', timeSent2).body).toStrictEqual({ messageId: expect.any(Number) });
     expect(requestMessageSendLater(registered1.token, channelId1, 'three', timeSent3).body).toStrictEqual({ messageId: expect.any(Number) });
