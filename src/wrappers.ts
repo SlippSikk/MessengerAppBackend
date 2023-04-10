@@ -2,6 +2,40 @@ import request from 'sync-request';
 import { port, url } from './config.json';
 const SERVER_URL = `${url}:${port}`;
 
+export function requestMessageSendLater(token: string, channelId: number, message: string, timeSent: number) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/message/sendlater/v1',
+    {
+      headers: { token },
+      json: {
+        channelId, message, timeSent
+      }
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+
+export function requestMessageSendLaterDm(token: string, dmId: number, message: string, timeSent: number) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/message/sendlaterdm/v1',
+    {
+      headers: { token },
+      json: {
+        dmId, message, timeSent
+      }
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+
 export function requestAuthRegister(email: string, password: string, nameFirst: string, nameLast: string) {
   const res = request(
     'POST',
@@ -289,36 +323,46 @@ export function requestUserProfileV3(token: string, uId: number) {
   const statusCode = res.statusCode;
   return { body, statusCode };
 }
+
+
 export function requestMessageEdit(token: string, messageId: number, message: string) {
   const res = request(
     'PUT',
-    `${url}:${port}/message/edit/v1`,
+    `${url}:${port}/message/edit/v2`,
     {
+      headers: {
+        token
+      },
       json: {
-        token: token,
         messageId: messageId,
         message: message,
-      }
+      },
+      timeout: 2000
     }
   );
-
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+  return { body, statusCode };
 }
 
 // PUT because messageEdit is called
 export function requestMessageRemove(token: string, messageId: number) {
   const res = request(
     'DELETE',
-    `${url}:${port}/message/remove/v1`,
+    `${url}:${port}/message/remove/v2`,
     {
+      headers: {
+        token
+      },
       qs: {
-        token: token,
         messageId: messageId,
       }
     }
   );
 
-  return JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+  return { body, statusCode };
 }
 
 export function requestMessageSenddm(token: string, dmId: number, message: string) {
