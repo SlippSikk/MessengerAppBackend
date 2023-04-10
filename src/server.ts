@@ -7,6 +7,7 @@ import { channelDetailsV3, channelLeaveV2, channelAddownerV2, channelInviteV3, c
 import { userProfileSethandleV2, userProfileSetemailV2, userProfileSetnameV2, usersAllV2, userProfileV3 } from './users';
 import { messageSenddmV2, messageSendV2, messageEditV1, messageRemoveV1 } from './message';
 import { messagePinV1 } from './messagePin';
+import { messageUnpinV1 } from './messageUnpin';
 import { standupActiveV1 } from './standup';
 import { clearV1 } from './other';
 import morgan from 'morgan';
@@ -245,6 +246,12 @@ app.post('/message/pin/v1', (req: Request, res: Response) => {
   const { messageId } = req.body;
 
   res.json(messagePinV1(token, +messageId));
+});
+app.post('/message/unpin/v1', (req: Request, res: Response) => {
+  const token = req.header('token');
+  const { messageId } = req.body;
+
+  res.json(messageUnpinV1(token, +messageId));
 });
 // Keep this BENEATH route definitions
 // handles errors nicely

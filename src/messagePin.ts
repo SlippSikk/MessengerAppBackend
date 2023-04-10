@@ -86,9 +86,6 @@ export const messagePinV1 = (token: string, messageId: number) => {
     }
   }
   const msg = getMessage(messageId) as messages;
-  console.log(msg);
-  console.log(msg.isPinned);
-
   // --------- CHECKS IF IS PINNED -----------------------
   if (msg.isPinned === true) {
     throw HTTPError(400, 'Already pinned');
@@ -126,8 +123,6 @@ export const messagePinV1 = (token: string, messageId: number) => {
     }
     data.dms[dmIndex].messages[mIndex].isPinned = true;
   }
-
-  console.log('this is first' + msg.isPinned);
   setData(data);
   return {};
 };
