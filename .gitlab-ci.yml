@@ -6,6 +6,12 @@ stages:
 before_script:
   - npm install
 
+linting:
+  stage: checks
+  script:
+    - npm run lint-fix
+    - npm run lint
+
 tests with coverage:
   stage: checks
   script:

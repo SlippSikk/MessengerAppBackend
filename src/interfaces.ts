@@ -1,11 +1,24 @@
+interface password {
+    iv: string,
+    encryptedData: string
+}
+
+interface notifications {
+    channelId: number,
+    dmId: number,
+    notificationMessage: string
+}
+
 interface users {
     uId: number,
     email: string,
     nameFirst: string,
     nameLast: string,
     handleStr: string,
-    password: string,
+    password: password,
     token: string[],
+    notifications: notifications[],
+    resetCode: string
 }
 
 interface user {
@@ -16,27 +29,34 @@ interface user {
     handleStr: string,
 }
 
-// export interface shortMessages {
+// interface messages {
 //     messageId: number,
 //     uId: number,
 //     message: string,
 //     timeSent: number
-//     isPinned: boolean
 // }
+
 interface messages {
     messageId: number,
     uId: number,
     message: string,
     timeSent: number
-    // reacts: [{
-    //     reactId: 1,
-    //     allUsers: user[]
-    // }],
-    // isPinned: boolean
+    reacts: [{
+        reactId: 1,
+        allUsers: user[]
+    }],
+    isPinned: boolean
 }
 interface channels {
     channelId: number
     name: string
+}
+
+interface standup {
+    standupMessage: string,
+    isActive: boolean,
+    timeFinish: number,
+    authUserId: number
 }
 
 interface channel {
@@ -46,6 +66,7 @@ interface channel {
     ownerMembers: user[]
     allMembers: user[]
     messages: messages[]
+    standup?: standup
 }
 
 type dmId = { dmId: number }
@@ -79,13 +100,20 @@ interface dataTs {
     dms: dms[]
 }
 
+type timeFinish = { timeFinish: number };
+
+type standupActive = { isActive: boolean, timeFinish: number };
+
 type authUserId = { token: string, authUserId: number };
 
 type error = { error: string };
 
 type channelId = { channelId: number }
 
+type messageId = { messageId: number }
+
 export {
   users, channels, user, messages, dataTs, authUserId, error, channel,
-  dmMessages, dmDetails, dmsOutput, dmId, dms, channelId
+  dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password, standup,
+  timeFinish, standupActive, notifications, messageId
 };

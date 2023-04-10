@@ -27,7 +27,7 @@ beforeEach(() => {
 
 describe('dmDetails Success', () => {
   test('Test 1', () => {
-    expect(requestDmDetails(registered2.token, dmId2)).toStrictEqual({
+    expect(requestDmDetails(registered2.token, dmId2).body).toStrictEqual({
       name: 'adamb, cb',
       members: [{
         uId: registered.authUserId,
@@ -44,19 +44,23 @@ describe('dmDetails Success', () => {
         handleStr: 'cb'
       }]
     });
+    expect(requestDmDetails(registered2.token, dmId2).statusCode).toBe(200);
   });
 });
 
 describe('dmDetails Error', () => {
   test('Test 1: Invalid Token', () => {
-    expect(requestDmDetails(registered2.token + registered.token + registered3.token + registered4.token + registered5.token, dmId)).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmDetails(registered5.token, dmId).statusCode).toBe(403);
+    expect(requestDmDetails(registered5.token, dmId).body.error).toStrictEqual({ message: expect.any(String) });
   });
 
   test('Test 2: Invalid dmId', () => {
-    expect(requestDmDetails(registered2.token, (dmId2 + dmId) * 111)).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmDetails(registered5.token, dmId + dmId2).statusCode).toBe(400);
+    expect(requestDmDetails(registered5.token, dmId + dmId2).body.error).toStrictEqual({ message: expect.any(String) });
   });
 
   test('Test 3: Member is not in DM', () => {
-    expect(requestDmDetails(registered5.token, dmId)).toStrictEqual({ error: expect.any(String) });
+    expect(requestDmDetails(registered5.token, dmId).statusCode).toBe(403);
+    expect(requestDmDetails(registered5.token, dmId).body.error).toStrictEqual({ message: expect.any(String) });
   });
 });

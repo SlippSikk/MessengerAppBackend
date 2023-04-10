@@ -1,6 +1,9 @@
 import { getData, setData } from './dataStore';
 import validator from 'validator';
 import { users, authUserId, error } from './interfaces';
+import HTTPError from 'http-errors';
+import { encrypt, findPassword, hashToken, userIndexToken } from './helper';
+import nodemailer from 'nodemailer';
 
 /**
  * Summary: Registers a user returning their unique Id
@@ -24,21 +27,21 @@ import { users, authUserId, error } from './interfaces';
  * @returns {error: 'string'} Error Message - Error message describing the error cause
  **/
 
-function authRegisterV2(email: string, password: string, nameFirst: string, nameLast: string): authUserId | error {
+function authRegisterV3(email: string, password: string, nameFirst: string, nameLast: string): authUserId | error {
   const data = getData();
 
   // Error Block
   const found = data.users.find(element => element.email === email);
   if (!(validator.isEmail(email))) {
-    return { error: 'Invalid Email' };
+    throw HTTPError(400, 'Invalid Email');
   } else if (found !== undefined) {
-    return { error: 'Email in use' };
+    throw HTTPError(400, 'Email in use');
   } else if (password.length < 6) {
-    return { error: 'Password too short' };
+    throw HTTPError(400, 'Password too short');
   } else if (nameFirst.length < 1 || nameFirst.length > 50) {
-    return { error: 'Incorrect nameFirst length' };
+    throw HTTPError(400, 'Incorrect nameFirst length');
   } else if (nameLast.length < 1 || nameLast.length > 50) {
-    return { error: 'Incorrect nameLast length' };
+    throw HTTPError(400, 'Incorrect nameLast length');
   }
 
   // Create handleStr
@@ -60,7 +63,19 @@ function authRegisterV2(email: string, password: string, nameFirst: string, name
     foundHandle = data.users.find(element => element.handleStr === nameConcat);
   }
 
-  const Id = data.users.length + 1;
+  // Assign appropriate authId number
+  let Id: number = data.users.length + 1;
+  if (data.users.length === 0) {
+    Id = 1;
+  } else if (data.users.length > 0) {
+    Id = data.users[data.users.length - 1].uId + 1;
+  }
+
+  // Encrypt password
+  const pass = encrypt(password);
+
+  // Hash token
+  const hashedToken = hashToken(nameConcat);
 
   const user: users = {
     uId: Id,
@@ -68,8 +83,10 @@ function authRegisterV2(email: string, password: string, nameFirst: string, name
     nameFirst: nameFirst,
     nameLast: nameLast,
     handleStr: nameConcat,
-    password: password,
-    token: [nameConcat]
+    password: pass,
+    token: [hashedToken],
+    notifications: [],
+    resetCode: 'NO'
   };
 
   data.users.push(user);
@@ -95,31 +112,31 @@ function authRegisterV2(email: string, password: string, nameFirst: string, name
  * @returns {authUserId: Number} authUserId - Unqiue ID of the user created
  * @returns {error: 'string'} Error Message - Error message describing the error caus
  */
-function authLoginV2(email: string, password: string): authUserId | error {
+function authLoginV3(email: string, password: string): authUserId | error {
   const data = getData();
 
   // Error Block & find Object with details
-  if (data.users === undefined) {
-    return { error: 'user does not exist' };
-  }
-
   const found = data.users.find(element => element.email === email);
   const indexUser = data.users.findIndex(element => element.email === email);
-  const foundPass = data.users.find(element => element.password === password);
+
+  const foundPass = findPassword(password);
   if (found === undefined) {
-    return { error: 'Email does not belong to a user' };
-  } else if (foundPass === undefined) {
-    return { error: 'Password Incorrect' };
+    throw HTTPError(400, 'Email does not belong to a user');
+  } else if (foundPass === false) {
+    throw HTTPError(400, 'Password Incorrect');
   }
 
   const randNum = Math.floor(Math.random() * Date.now());
   const randToken = randNum.toString();
 
   // let foundToken = data.users.find(element => element.token.find(element => element === randToken))
+  const hashedToken = hashToken(randToken);
 
-  data.users[indexUser].token.push(randToken);
+  data.users[indexUser].token.push(hashedToken);
 
   setData(data);
+
+  // Hash the token and return it
 
   return {
     token: randToken,
@@ -127,19 +144,71 @@ function authLoginV2(email: string, password: string): authUserId | error {
   };
 }
 
-function authLogoutV1(token: string) {
+function authLogoutV2(token: string) {
   const data = getData();
-  const userIndex = data.users.findIndex(user => user.token.includes(token));
+
+  const userIndex = userIndexToken(token);
 
   if (userIndex !== -1) {
-    const tokenIndex = data.users[userIndex].token.findIndex(element => element === token);
+    const tokenIndex = data.users[userIndex].token.findIndex(element => element === hashToken(token));
     data.users[userIndex].token.splice(tokenIndex, 1);
     setData(data);
   } else {
-    return { error: 'Incorrect token' };
+    throw HTTPError(403, 'Incorrect token');
   }
 
   return {};
 }
 
-export { authRegisterV2, authLoginV2, authLogoutV1 };
+function authPasswordResetRequestV1(email: string) {
+  const data = getData();
+  // Generate reset code
+  const resetCode = (Math.floor(Math.random() * Date.now())).toString();
+
+  const userIndex = data.users.findIndex(element => element.email === email);
+  data.users[userIndex].resetCode = resetCode;
+  data.users[userIndex].token = [];
+  setData(data);
+
+  const transporter = nodemailer.createTransport({
+    host: 'smtp-relay.sendinblue.com',
+    port: 587,
+    secure: false, // upgrade later with STARTTLS
+    auth: {
+      user: 'ilyas.baqaie@gmail.com',
+      pass: 'mayDqTZ8MILExjbQ',
+    },
+  });
+
+  const mailOptions = {
+    from: 'ilyas.baqaie@gmail.com',
+    to: email,
+    subject: 'Password Reset',
+    text: `Here is your key to reset your password: ${resetCode}`
+  };
+
+  transporter.sendMail(mailOptions);
+
+  return {};
+}
+
+function authPasswordResetResetV1(resetCode: string, newPassword: string) {
+  const data = getData();
+  const userIndex = data.users.findIndex(element => element.resetCode === resetCode);
+
+  if (userIndex === -1) {
+    throw HTTPError(400, 'Invalid reset code');
+  }
+
+  if (newPassword.length < 6) {
+    throw HTTPError(400, 'Password is too short (6 or more characters)');
+  }
+
+  data.users[userIndex].password = encrypt(newPassword);
+  data.users[userIndex].resetCode = 'NO';
+  setData(data);
+
+  return {};
+}
+
+export { authRegisterV3, authLoginV3, authLogoutV2, authPasswordResetRequestV1, authPasswordResetResetV1 };
