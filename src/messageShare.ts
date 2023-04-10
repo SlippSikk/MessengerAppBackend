@@ -1,23 +1,34 @@
-/*
-import { getData, setData } from './dataStore';
+import { getData } from './dataStore';
 import { validateToken, getUIdFromToken, isMember, isDmMember } from './helper';
 import { isDmIdValid, isChannelIdValid } from './helper';
-import { dataTs, channel, dms } from './interfaces';
+import { dataTs, messages } from './interfaces';
 import { messageSendV2, messageSenddmV2 } from './message';
 import HTTPError from 'http-errors';
 
-const getChannelFromMessageId = (messageId: number): channel => {
+/**
+ * @param {number} messageId
+ * @returns {object} msg object
+ * @summary Gets message object
+ */
+export const getMessage = (messageId: number): messages | boolean => {
   const data: dataTs = getData();
-  return data.channels.find(channel => channel.messages.find(message => message.messageId === messageId));
-};
-
-const getDmFromMessageId = (messageId: number): dms => {
-  const data: dataTs = getData();
-  return data.dms.find(dm => dm.messages.find(message => message.messageId === messageId));
+  let msg;
+  for (const channel of data.channels) {
+    msg = channel.messages.find(message => message.messageId === messageId);
+    if (msg) {
+      return msg;
+    }
+  }
+  for (const dm of data.dms) {
+    msg = dm.messages.find(message => message.messageId === messageId);
+    if (msg) {
+      return msg;
+    }
+  }
+  return false;
 };
 
 export const messageShareV1 = (token: string, ogMessageId: number, message: string, channelId: number, dmId: number) => {
-  const data: dataTs = getData();
   let toChannel = false;
   let toDms = false;
   if (!validateToken(token)) {
@@ -26,11 +37,16 @@ export const messageShareV1 = (token: string, ogMessageId: number, message: stri
   if (channelId === -1 && dmId === -1) {
     throw HTTPError(400, 'both channelId and dmId is -1');
   }
+  if (!(channelId === -1 || dmId === -1)) {
+    throw HTTPError(400, 'either channelId/dmId must be -1');
+  }
   if (!isChannelIdValid(channelId) && !isDmIdValid(dmId)) {
     throw HTTPError(400, 'Invalid dmId/channelId');
   }
   (channelId === -1) ? toDms = true : toChannel = true;
-  if (!getChannelFromMessageId(ogMessageId) && !getDmFromMessageId(ogMessageId)) {
+  // -------------- Test ogMessageId -------------------------------
+  const ogMessage = (getMessage(ogMessageId) as messages).message;
+  if (!ogMessage) {
     throw HTTPError(400, 'Invalid ogMessageId');
   }
   if (!(message.length <= 1000)) {
@@ -47,9 +63,6 @@ export const messageShareV1 = (token: string, ogMessageId: number, message: stri
       throw HTTPError(403, 'user not a member of Dms');
     }
   }
-
-  // ////////////////////////////////////////////////////////////////
-
   const note = `${ogMessage}, Note: ${message}`;
   let sharedMessageId;
   if (toChannel) {
@@ -58,7 +71,5 @@ export const messageShareV1 = (token: string, ogMessageId: number, message: stri
   if (toDms) {
     sharedMessageId = messageSenddmV2(token, dmId, note).messageId;
   }
-  setData(data);
   return { sharedMessageId: sharedMessageId };
 };
-*/

@@ -33,3 +33,22 @@ export function requestMessageUnpin(token: string, messageId: number) {
   const statusCode = res.statusCode;
   return { body, statusCode };
 }
+
+export function requestMessageShare(token: string, ogMessageId: number, message: string, channelId: number, dmId: number) {
+  const res = request(
+    'POST',
+    SERVER_URL + 'message/share/v1',
+    {
+      headers: { token },
+      json: {
+        ogMessageId,
+        message,
+        channelId,
+        dmId
+      }
+    }
+  );
+  const body = JSON.parse(res.getBody() as string);
+  const statusCode = res.statusCode;
+  return { body, statusCode };
+}
