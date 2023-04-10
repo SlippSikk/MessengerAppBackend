@@ -5,7 +5,7 @@ import { dmCreateV2, dmLeaveV2, dmRemoveV2, dmDetailsV2, dmMessagesV2, dmListV2 
 import { channelsListAllV3, channelsListV3, channelsCreateV3 } from './channels';
 import { channelDetailsV3, channelLeaveV2, channelAddownerV2, channelInviteV3, channelJoinV3, channelRemoveOwnerV2, channelMessagesV3 } from './channel';
 import { userProfileSethandleV2, userProfileSetemailV2, userProfileSetnameV2, usersAllV2, userProfileV3 } from './users';
-import { messageSenddmV2, messageSendV2, messageEditV1, messageRemoveV1 } from './message';
+import { messageSenddmV2, messageSendV2, messageEditV1, messageRemoveV1, messageSendLaterV1 } from './message';
 import { messagePinV1 } from './messagePin';
 import { messageUnpinV1 } from './messageUnpin';
 import { standupActiveV1 } from './standup';
@@ -31,6 +31,13 @@ const HOST: string = process.env.IP || 'localhost';
 app.get('/echo', (req: Request, res: Response, next) => {
   const data = req.query.echo as string;
   return res.json(echo(data));
+});
+
+app.post('/message/sendlater/v1', (req: Request, res: Response) => {
+  const { channelId, message, timeSent } = req.body;
+  const token = req.header('token');
+
+  res.json(messageSendLaterV1(token, parseInt(channelId), message, timeSent));
 });
 
 app.post('/message/send/v2', (req: Request, res: Response) => {
