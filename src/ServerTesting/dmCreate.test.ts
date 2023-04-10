@@ -30,7 +30,7 @@ describe('Correct Dm Create', () => {
   });
 
   test('Correct Output DmList', () => {
-    expect(requestDmList(registered3.token)).toStrictEqual({
+    expect(requestDmList(registered3.token).body).toStrictEqual({
       dms: [{
         dmId: dmId,
         name: 'adamb, cb, eb, fb'
@@ -39,7 +39,7 @@ describe('Correct Dm Create', () => {
   });
 
   test('Correct Output DmDetails', () => {
-    expect(requestDmDetails(registered2.token, dmId2)).toStrictEqual({
+    expect(requestDmDetails(registered2.token, dmId2).body).toStrictEqual({
       name: 'adamb, cb',
       members: [{
         uId: registered.authUserId,
