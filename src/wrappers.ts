@@ -495,6 +495,7 @@ export function requestStandupActive(token: string, channelId: number) {
       qs: {
         channelId
       },
+      timeout: 2000
     },
   );
   const body = JSON.parse(res.body as string);

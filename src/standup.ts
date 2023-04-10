@@ -4,28 +4,32 @@ import { standupActive, dataTs, channel, timeFinish } from './interfaces';
 import { getUIdFromToken, isChannelIdValid, isMember, validateToken, getChannel, getUser, createMessageId } from './helper';
 
 
-function sendMessages(channelId: number, uId: number) {
+function sendMessages(channelId: number, uId: number, timeFinish: number) {
+  console.log("Actual time finish", Math.floor(Date.now() / 1000))
   const channel: channel = getChannel(channelId) as channel;
   const message: string = channel.standup.standupMessage;
-
-  if (message.length === 0) {
-    return {};
-  }
-
+  console.log('message: ', message)
   const data: dataTs = getData();
-  const messageId = createMessageId();
   const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);
-  data.channels[channelIndex].messages.push({
-    messageId: messageId,
-    uId: uId,
-    message: message,
-    timeSent: ~~(new Date().getTime() / 1000)
-  });
 
   data.channels[channelIndex].standup.isActive = false;
   data.channels[channelIndex].standup.timeFinish = null;
   data.channels[channelIndex].standup.authUserId = null;
   data.channels[channelIndex].standup.standupMessage = '';
+
+  if (message.length === 0) {
+    setData(data);
+    return {};
+  }
+
+  const messageId = createMessageId();
+  data.channels[channelIndex].messages.push({
+    messageId: messageId,
+    uId: uId,
+    message: message,
+    timeSent: timeFinish
+  });
+
   setData(data);
 }
 
@@ -61,7 +65,11 @@ export function standupStartV1(token: string, channelId: number, length: number)
   data.channels[channelIndex].standup.authUserId = uId;
 
   setData(data);
-  setTimeout(() => sendMessages(channelId, uId), length * 1000);
+  console.log("Expected time finish: ", timeFinish)
+  setTimeout(
+    () => sendMessages(channelId, uId, timeFinish),
+    length * 1000
+  );
 
   return {timeFinish: timeFinish}
 }
@@ -91,6 +99,7 @@ export function standupActiveV1(token: string, channelId: number): standupActive
 }
 
 export function standupSendV1(token: string, channelId: number, message: string) {
+  console.log(message, 'time: ', Math.floor(Date.now() / 1000))
   const data: dataTs = getData();
   if (!validateToken(token)) {
     throw HTTPError(403, "Invalid token");

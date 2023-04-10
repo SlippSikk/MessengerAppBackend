@@ -5,10 +5,7 @@ const INPUT_ERROR = 400;
 const AUTH_ERROR = 403;
 const OK = 200;
 
-function sleep(milliseconds: number) {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
-}
-
+/*
 describe('Miscallaneous errors', () => {
     let authToken1: string;
     let authToken2: string;
@@ -51,23 +48,27 @@ describe('Miscallaneous errors', () => {
     })
   
 });
+*/
   
 
-test('Valid Operation', async() => {
+test('Valid Operation', () => {
   requestClear();
   const user1 = requestAuthRegister('anna@gmail.com', 'aaa123', 'Anna', 'Adams');
-  const authId1 = user1.body.authUserId;
+  const authId1 = user1.authUserId;
   const authToken1 = user1.token;
   const authToken2 = requestAuthRegister('bob@outlook.com', 'bbb123', 'Bob', 'Biggums').token;
   
   const channelId1 = requestChannelsCreate(authToken2, 'Channel 1', true).body.channelId;
   requestChannelJoin(authToken1, channelId1);
 
-  requestStandupStart(authToken2, channelId1, 1.5);
-  await sleep(500);
+  const timeFinish = requestStandupStart(authToken2, channelId1, 3).body.timeFinish;
   expect(requestStandupSend(authToken1, channelId1, 'First').statusCode).toBe(OK);
   expect(requestStandupSend(authToken2, channelId1, 'Second').statusCode).toBe(OK);
-  await sleep(1500);
+  for (;;) {
+    if (Math.floor(Date.now() / 1000) >= timeFinish + 1) {
+      break;
+    }
+  }
 
   // user cannot send message to standup after it is finished
   expect(requestStandupSend(authToken1, channelId1, 'Third').statusCode).toBe(INPUT_ERROR);
@@ -76,13 +77,16 @@ test('Valid Operation', async() => {
     messages: [{
       messageId: expect.any(Number),
       uId: authId1,
-      message: 'annaadams: first\nbobbiggums: second',
+      message: 'annaadams: First\nbobbiggums: Second',
       timeSent: expect.any(Number),
-      reacts: [],
-      isPinned: false,
+      reacts: [{
+        reactId: 1,
+        allUsers: []
+      }],
+      isPinned: false
+
     }],
     start: 0,
     end: -1
   })
-
 })

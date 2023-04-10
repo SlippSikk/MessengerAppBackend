@@ -54,7 +54,7 @@ describe('Regular operation', () => {
   });
 
   test('Standup active', () => {
-    const timeFinish: number = requestStandupStart(authToken1, channelId1, 0.5).body.timeFinish;
+    const timeFinish: number = requestStandupStart(authToken1, channelId1, 5).body.timeFinish;
     expect(requestStandupActive(authToken1, channelId1).body).toStrictEqual({
       isActive: true,
       timeFinish: timeFinish
