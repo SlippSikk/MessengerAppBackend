@@ -43,13 +43,12 @@ export const getMessage = (messageId: number): messages | boolean => {
 };
 
 /**
- * @param token
- * @param dmId
- * @param message
- * @returns
- */
-
-export const messagePinV1 = (token: string, messageId: number) => {
+* @param token
+* @param dmId
+* @param message
+* @returns
+*/
+export const messageUnpinV1 = (token: string, messageId: number) => {
   const data: dataTs = getData();
   let inChannel = true;
   let inDm = true;
@@ -87,8 +86,8 @@ export const messagePinV1 = (token: string, messageId: number) => {
   }
   const msg = getMessage(messageId) as messages;
   // --------- CHECKS IF IS PINNED -----------------------
-  if (msg.isPinned === true) {
-    throw HTTPError(400, 'Already pinned');
+  if (msg.isPinned === false) {
+    throw HTTPError(400, 'message was not pinned');
   }
   // ----------CHECKS OWNER PERMISSION--------------------
   // IN CHANNEL
@@ -99,7 +98,7 @@ export const messagePinV1 = (token: string, messageId: number) => {
   if (inDm && !isDmOwner(dmId, uId)) {
     throw HTTPError(403, 'no Owner permission');
   }
-  // ------------ Set isPinned to true -------------------
+  // ------------ Set isPinned to false -------------------
   if (inChannel) {
     let mIndex;
     const channelIndex = findChannelIndexWithMessage(messageId);
@@ -110,7 +109,7 @@ export const messagePinV1 = (token: string, messageId: number) => {
         break;
       }
     }
-    data.channels[channelIndex].messages[mIndex].isPinned = true;
+    data.channels[channelIndex].messages[mIndex].isPinned = false;
   } else {
     let mIndex;
     const dmIndex = findDMIndexWithMessage(messageId);
@@ -121,7 +120,7 @@ export const messagePinV1 = (token: string, messageId: number) => {
         break;
       }
     }
-    data.dms[dmIndex].messages[mIndex].isPinned = true;
+    data.dms[dmIndex].messages[mIndex].isPinned = false;
   }
   setData(data);
   return {};
