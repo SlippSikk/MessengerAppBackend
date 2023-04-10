@@ -50,7 +50,7 @@ export function dmMessagesV2(token: string, dmId: number, start: number): error 
 
   // return
   return {
-    messages: findDm.messages.slice(start, endrange),
+    messages: findDm.messages.reverse().slice(start, endrange),
     start: start,
     end: end
   };

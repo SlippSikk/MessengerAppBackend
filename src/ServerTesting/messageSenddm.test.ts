@@ -57,8 +57,8 @@ describe('Function Testing', () => {
     expect(requestMessageSenddm(registered1.token, dmId2, 'Hi my ducklings').body).toStrictEqual({ messageId: expect.any(Number) });
     expect(requestMessageSenddm(registered1.token, dmId2, 'How to get bread ?').body).toStrictEqual({ messageId: expect.any(Number) });
     const a = requestDmMessages(registered1.token, dmId2, 0).body;
-    expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
-    expect(a.messages[1].message).toStrictEqual('How to get bread ?');
+    expect(a.messages[1].message).toStrictEqual('Hi my ducklings');
+    expect(a.messages[0].message).toStrictEqual('How to get bread ?');
   });
   test('send multiple dms to multiple people', () => {
     requestMessageSenddm(registered1.token, dmId2, 'Hi my ducklings');
