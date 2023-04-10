@@ -1,29 +1,5 @@
-test('Invalid channelId', () => {
-  expect(1 + 1).toStrictEqual(2);
-});
-// export function requestMessagePin(token: string, messageId: number) {
-//   const res = request(
-//     'POST',
-//     SERVER_URL + '/message/pin/v1',
-//     {
-//       headers: { token },
-//       json: {
-//         messageId
-//       }
-//     }
-//   );
-//   const body = JSON.parse(res.getBody() as string);
-//   const statusCode = res.statusCode;
-//   return { body, statusCode };
-// }
-// app.post('/message/pin/v1', (req: Request, res: Response) => {
-//   const token = req.header('token');
-//   const { messageId } = req.body;
-
-//   res.json(messagePinV1(token, +messageId));
-// });
-import { requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate } from '../wrappers';
-import { requestChannelMessages, requestMessagePin, requestMessageSenddm, requestDmCreate } from '../wrappers';
+import { requestAuthRegister, requestChannelJoin, requestClear, requestMessageSend, requestChannelsCreate } from '../wrappers';
+import { requestChannelMessages, requestMessagePin, requestMessageSenddm, requestDmCreate, requestDmMessages } from '../wrappers';
 import { authUserId } from '../interfaces';
 
 let registered1: authUserId;
@@ -41,11 +17,11 @@ beforeEach(() => {
   registered3 = requestAuthRegister('dog@gmail.com', 'hound123', 'dog', 'drown');
   channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
   channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
-  dmId = requestDmCreate(registered2.token, [registered1.authUserId, registered2.authUserId]).dmId;
+  dmId = requestDmCreate(registered2.token, [registered1.authUserId]).dmId;
   mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').body.messageId;
   mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').body.messageId;
 });
-describe('Error Cases', () => {
+describe('Error Cases and Function Testing', () => {
   test('Invalid messageId', () => {
     expect(requestMessagePin(registered1.token, mIdChannel * mIdDm + 1).statusCode).toStrictEqual(400);
   });
@@ -60,35 +36,22 @@ describe('Error Cases', () => {
     expect(requestMessagePin(registered1.token, mIdChannel2).body).toStrictEqual({});
   });
   test('(Channel) Message already pinned ', () => {
-    console.log(requestMessagePin(registered1.token, mIdChannel));
+    expect(requestMessagePin(registered1.token, mIdChannel).body).toStrictEqual({});
     expect(requestMessagePin(registered1.token, mIdChannel).statusCode).toStrictEqual(400);
     const a = requestChannelMessages(registered1.token, channelId1, 0).body;
-    expect(a.messages[0].message.isPinned).toStrictEqual(true);
+    expect(a.messages[0].isPinned).toStrictEqual(true);
   });
-  // test('(DM) Message already pinned ', () => {
-  //   requestMessagePin(registered1.token, mIdDm);
-  //   expect(requestMessagePin(registered1.token, mIdDm).statusCode).toStrictEqual(400);
-  //   const a = requestDmMessages(registered1.token, dmId, 0).body;
-  //   expect(a.messages[0].message.isPinned).toStrictEqual(true);
-  // });
-  // test('(Channel) User does not have owner permission ', () => {
-  //   requestChannelJoin(registered2.token, channelId1);
-  //   expect(requestMessagePin(registered2.token, mIdChannel).statusCode).toStrictEqual(403);
-  // });
-  // test('(DM)User does not have owner permission', () => {
-  //   expect(requestMessagePin(registered1.token, mIdDm).statusCode).toStrictEqual(403);
-  // });
+  test('(DM) Message already pinned ', () => {
+    expect(requestMessagePin(registered2.token, mIdDm).body).toStrictEqual({});
+    expect(requestMessagePin(registered2.token, mIdDm).statusCode).toStrictEqual(400);
+    const a = requestDmMessages(registered2.token, dmId, 0).body;
+    expect(a.messages[0].isPinned).toStrictEqual(true);
+  });
+  test('(Channel) User does not have owner permission ', () => {
+    requestChannelJoin(registered2.token, channelId1);
+    expect(requestMessagePin(registered2.token, mIdChannel).statusCode).toStrictEqual(403);
+  });
+  test('(DM)User does not have owner permission', () => {
+    expect(requestMessagePin(registered1.token, mIdDm).statusCode).toStrictEqual(403);
+  });
 });
-
-// describe('Function Testing', () => {
-//   test('Pin channel msg', () => {
-//     expect(requestMessagePin(registered1.token, mIdChannel).body).toStrictEqual({});
-//     const a = requestChannelMessages(registered1.token, channelId1, 0).body;
-//     expect(a.messages[0].message.isPinned).toStrictEqual(true);
-//   });
-//   test('Pin in dm msg', () => {
-//     expect(requestMessagePin(registered1.token, mIdDm).body).toStrictEqual({});
-//     const a = requestDmMessages(registered1.token, dmId, 0).body;
-//     expect(a.messages[0].message.isPinned).toStrictEqual(true);
-//   });
-// });

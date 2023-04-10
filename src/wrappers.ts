@@ -563,7 +563,7 @@ export function requestMessagePin(token: string, messageId: number) {
       }
     }
   );
-  const body = JSON.parse(res.getBody() as string);
+  const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode;
   return { body, statusCode };
 }

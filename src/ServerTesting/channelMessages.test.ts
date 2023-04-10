@@ -80,7 +80,12 @@ describe('Correct input', () => {
         messageId: messageId,
         uId: authId3,
         message: 'My first message!',
-        timeSent: expect.any(Number)
+        timeSent: expect.any(Number),
+        reacts: [{
+          reactId: 1,
+          allUsers: []
+        }],
+        isPinned: false
       }],
       start: 0,
       end: -1
@@ -96,13 +101,23 @@ describe('Correct input', () => {
         messageId: messageId2,
         uId: authId2,
         message: 'My second message!',
-        timeSent: expect.any(Number)
+        timeSent: expect.any(Number),
+        reacts: [{
+          reactId: 1,
+          allUsers: []
+        }],
+        isPinned: false
       },
       {
         messageId: messageId1,
         uId: authId2,
         message: 'My first message!',
-        timeSent: expect.any(Number)
+        timeSent: expect.any(Number),
+        reacts: [{
+          reactId: 1,
+          allUsers: []
+        }],
+        isPinned: false
       }],
       start: 1,
       end: -1
@@ -120,7 +135,12 @@ describe('Correct input', () => {
         messageId: messageId,
         uId: authId1,
         message: currentMessage,
-        timeSent: expect.any(Number)
+        timeSent: expect.any(Number),
+        reacts: [{
+          reactId: 1,
+          allUsers: []
+        }],
+        isPinned: false
       });
     }
 

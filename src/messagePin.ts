@@ -1,5 +1,5 @@
 import { getData, setData } from './dataStore';
-import { isOwner, getUIdFromToken, isMember, isDmMember } from './helper';
+import { isOwner, getUIdFromToken, isMember, isDmMember, findChannelIndexWithMessage, findDMIndexWithMessage } from './helper';
 // import { isDmOwner, getMessage } from './helper';
 import { getDm } from './helper';
 import { dataTs, channel, dms, messages } from './interfaces';
@@ -24,7 +24,7 @@ const isDmOwner = (dmId: number, uId: number): boolean => {
  * @returns {object} msg object
  * @summary Gets message object
  */
-export const getMessage = (messageId: number) => {
+export const getMessage = (messageId: number): messages | boolean => {
   const data: dataTs = getData();
   let msg;
   for (const channel of data.channels) {
@@ -65,15 +65,15 @@ export const messagePinV1 = (token: string, messageId: number) => {
   }
   // --------- CHECKS IF IS MESSAGEID ISVALID -----------------------
   // Checks if messageId is in channel or a dm
-  if (inChannel && inDm) {
-    return { error: 'Invalid messageId' };
+  if ((!inChannel && !inDm) || (inChannel && inDm)) {
+    throw HTTPError(400, 'Invalid messageId');
   }
   const uId = getUIdFromToken(token);
   // Check if user is in Channel
   let channelId: number;
   if (inChannel) {
     channelId = channel.channelId;
-    if (!isMember(channelId, uId)) {
+    if (!isMember(channelId, uId) && uId !== 1) {
       throw HTTPError(400, 'not a member of messageId');
     }
   }
@@ -87,6 +87,8 @@ export const messagePinV1 = (token: string, messageId: number) => {
   }
   const msg = getMessage(messageId) as messages;
   console.log(msg);
+  console.log(msg.isPinned);
+
   // --------- CHECKS IF IS PINNED -----------------------
   if (msg.isPinned === true) {
     throw HTTPError(400, 'Already pinned');
@@ -100,7 +102,32 @@ export const messagePinV1 = (token: string, messageId: number) => {
   if (inDm && !isDmOwner(dmId, uId)) {
     throw HTTPError(403, 'no Owner permission');
   }
-  msg.isPinned = true;
+  // ------------ Set isPinned to true -------------------
+  if (inChannel) {
+    let mIndex;
+    const channelIndex = findChannelIndexWithMessage(messageId);
+    const len = data.channels[channelIndex].messages.length;
+    for (let i = 0; i < len; i++) {
+      if (data.channels[channelIndex].messages[i].messageId === messageId) {
+        mIndex = i;
+        break;
+      }
+    }
+    data.channels[channelIndex].messages[mIndex].isPinned = true;
+  } else {
+    let mIndex;
+    const dmIndex = findDMIndexWithMessage(messageId);
+    const len = data.dms[dmIndex].messages.length;
+    for (let i = 0; i < len; i++) {
+      if (data.dms[dmIndex].messages[i].messageId === messageId) {
+        mIndex = i;
+        break;
+      }
+    }
+    data.dms[dmIndex].messages[mIndex].isPinned = true;
+  }
+
+  console.log('this is first' + msg.isPinned);
   setData(data);
   return {};
 };
