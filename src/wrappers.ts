@@ -19,6 +19,23 @@ export function requestMessageSendLater(token: string, channelId: number, messag
   return { body, statusCode };
 }
 
+export function requestMessageSendLaterDm(token: string, dmId: number, message: string, timeSent: number) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/message/sendlaterdm/v1',
+    {
+      headers: { token },
+      json: {
+        dmId, message, timeSent
+      }
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+
 export function requestAuthRegister(email: string, password: string, nameFirst: string, nameLast: string) {
   const res = request(
     'POST',
