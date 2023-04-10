@@ -22,8 +22,8 @@ test('Invalid channelId', () => {
 
 //   res.json(messagePinV1(token, +messageId));
 // });
-import { requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate, requestChannelJoin } from '../wrappers';
-import { requestChannelMessages, requestMessagePin, requestMessageSenddm, requestDmCreate, requestDmMessages } from '../wrappers';
+import { requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate } from '../wrappers';
+import { requestChannelMessages, requestMessagePin, requestMessageSenddm, requestDmCreate } from '../wrappers';
 import { authUserId } from '../interfaces';
 
 let registered1: authUserId;
@@ -42,8 +42,8 @@ beforeEach(() => {
   channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
   channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
   dmId = requestDmCreate(registered2.token, [registered1.authUserId, registered2.authUserId]).dmId;
-  mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').messageId;
-  mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').messageId;
+  mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').body.messageId;
+  mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').body.messageId;
 });
 describe('Error Cases', () => {
   test('Invalid messageId', () => {
@@ -56,7 +56,7 @@ describe('Error Cases', () => {
     expect(requestMessagePin(registered3.token, mIdDm).statusCode).toStrictEqual(400);
   });
   test('Global owner can Pin', () => {
-    const mIdChannel2 = requestMessageSend(registered2.token, channelId2, 'How to become a dog').messageId;
+    const mIdChannel2 = requestMessageSend(registered2.token, channelId2, 'How to become a dog').body.messageId;
     expect(requestMessagePin(registered1.token, mIdChannel2).body).toStrictEqual({});
   });
   test('(Channel) Message already pinned ', () => {

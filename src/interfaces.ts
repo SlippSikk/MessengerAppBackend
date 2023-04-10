@@ -17,7 +17,8 @@ interface users {
     handleStr: string,
     password: password,
     token: string[],
-    notifications: notifications[]
+    notifications: notifications[],
+    resetCode: string
 }
 
 interface user {
@@ -53,9 +54,10 @@ interface channels {
 }
 
 interface standup {
-    messages: string[],
+    standupMessage: string,
     isActive: boolean,
-    timeFinish: number
+    timeFinish: number,
+    authUserId: number
 }
 
 interface channel {
@@ -110,7 +112,7 @@ type error = { error: string };
 type channelId = { channelId: number }
 
 export {
-    users, channels, user, messages, dataTs, authUserId, error, channel,
-    dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password, standup,
-    timeFinish, standupActive, notifications
+  users, channels, user, messages, dataTs, authUserId, error, channel,
+  dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password, standup,
+  timeFinish, standupActive, notifications
 };

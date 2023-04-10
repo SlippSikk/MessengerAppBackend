@@ -29,7 +29,7 @@ describe('Members with different permissions inviting once', () => {
 
   test('Regular owner invites global owner', () => {
     expect(requestChannelInvite(authToken2, channelId2, globalOwnerId).body).toEqual({});
-    expect(requestChannelDetails(authToken2, channelId2)).toEqual({
+    expect(requestChannelDetails(authToken2, channelId2).body).toEqual({
       name: 'Channel 2',
       isPublic: true,
       ownerMembers: [{
@@ -58,7 +58,7 @@ describe('Members with different permissions inviting once', () => {
 
   test('Regular owner invites another regular user', () => {
     expect(requestChannelInvite(authToken2, channelId2, authId3).body).toEqual({});
-    expect(requestChannelDetails(authToken2, channelId2)).toEqual({
+    expect(requestChannelDetails(authToken2, channelId2).body).toEqual({
       name: 'Channel 2',
       isPublic: true,
       ownerMembers: [{
@@ -90,7 +90,7 @@ describe('Members with different permissions inviting once', () => {
 
     expect(requestChannelInvite(authToken2, channelId2, authId3).body).toEqual({});
     expect(requestChannelInvite(authToken3, channelId2, authId4).body).toEqual({});
-    expect(requestChannelDetails(authToken3, channelId2)).toEqual({
+    expect(requestChannelDetails(authToken3, channelId2).body).toEqual({
       name: 'Channel 2',
       isPublic: true,
       ownerMembers: [{
@@ -149,7 +149,7 @@ describe('ERRORS: Reinviting users', () => {
 
   test('Owner reinvites themselves', () => {
     expect(requestChannelInvite(authToken2, channelId2, authId2).statusCode).toBe(INPUT_ERROR);
-    expect(requestChannelDetails(authToken2, channelId2)).toEqual({
+    expect(requestChannelDetails(authToken2, channelId2).body).toEqual({
       name: 'Channel 2',
       isPublic: true,
       ownerMembers: [{
@@ -172,7 +172,7 @@ describe('ERRORS: Reinviting users', () => {
   test('Owner reinvites another user', () => {
     expect(requestChannelInvite(authToken2, channelId2, authId3).body).toEqual({});
     expect(requestChannelInvite(authToken2, channelId2, authId3).statusCode).toBe(INPUT_ERROR);
-    expect(requestChannelDetails(authToken2, channelId2)).toEqual({
+    expect(requestChannelDetails(authToken2, channelId2).body).toEqual({
       name: 'Channel 2',
       isPublic: true,
       ownerMembers: [{

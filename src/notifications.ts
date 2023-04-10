@@ -4,7 +4,6 @@ import { getData, setData } from './dataStore';
 import { userObjToken, validateToken } from './helper';
 import { notifications } from './interfaces';
 // import { getIdFromMessage } from './helper';
-
 // : notifications[] (add to function return type)
 export function notificationsGet(token: string): { notifications: notifications[] } {
   if (!validateToken(token)) {

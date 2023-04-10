@@ -1,33 +1,46 @@
-import { requestUserProfileV2, requestClear, requestuserProfileSethandleV1, requestAuthRegister } from '../wrappers';
-const ERROR = { error: expect.any(String) };
-
+import { requestUserProfileV3, requestClear, requestuserProfileSethandleV2, requestAuthRegister } from '../wrappers';
+beforeEach(() => {
+  requestClear();
+});
 describe('/user/profile/sethandle/v1', () => {
-  beforeEach(() => {
-    requestClear();
-  });
-
   describe('error', () => {
-    requestClear();
-    const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
-    test.each([
-      { token: tokenA + 'A', handleStr: 'Unsw1531' },
-      { token: tokenA, handleStr: 'AI' },
-      { token: tokenA, handleStr: 'ILoveAnimationGirlAndTheyAreMyWaifu' },
-      { token: tokenA, handleStr: ':d%^$#!@$#%^' },
-    ])('token=$token, handleStr=$handleStr', ({ token, handleStr }) => {
-      expect(requestuserProfileSethandleV1(token, handleStr)).toStrictEqual(ERROR);
+    test('the token is invaild', () => {
+      requestClear();
+      const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
+      expect(requestuserProfileSethandleV2(tokenA + 'A', 'AIIsLove').statusCode).toBe(403);
+      expect(requestuserProfileSethandleV2(tokenA + 'A', 'AIIsLove').body.error).toStrictEqual({ message: expect.any(String) });
+    });
+    test('the length of new handle smaller than 3', () => {
+      requestClear();
+      const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
+      expect(requestuserProfileSethandleV2(tokenA, 'AI').statusCode).toBe(400);
+      expect(requestuserProfileSethandleV2(tokenA, 'AI').body.error).toStrictEqual({ message: expect.any(String) });
+    });
+    test('the length of new handle greater than 20', () => {
+      requestClear();
+      const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
+      expect(requestuserProfileSethandleV2(tokenA, 'ILoveAnimationGirlAndTheyAreMyWaifu').statusCode).toBe(400);
+      expect(requestuserProfileSethandleV2(tokenA, 'ILoveAnimationGirlAndTheyAreMyWaifu').body.error).toStrictEqual({ message: expect.any(String) });
+    });
+    test('handleStr include non alphanumeric', () => {
+      requestClear();
+      const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
+      expect(requestuserProfileSethandleV2(tokenA, ':d%^$#!@$#%^').statusCode).toBe(400);
+      expect(requestuserProfileSethandleV2(tokenA, ':d%^$#!@$#%^').body.error).toStrictEqual({ message: expect.any(String) });
     });
   });
 
   test('return value', () => {
-    const tokenA = requestAuthRegister('csgo2@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
-    expect(requestuserProfileSethandleV1(tokenA, 'DeathLoop')).toStrictEqual({});// more tests needed when other function finished
+    requestClear();
+    const tokenA = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE').token;
+    expect(requestuserProfileSethandleV2(tokenA, 'AbCats').body).toStrictEqual({});
   });
 
   test('reset the handle', () => {
+    requestClear();
     const registerObject = requestAuthRegister('csgo@gmail.com', 'counterStrike', 'Ab', 'CDE');
-    requestuserProfileSethandleV1(registerObject.token, 'AbCats');
-    expect(requestUserProfileV2(registerObject.token, registerObject.authUserId)).toStrictEqual({
+    requestuserProfileSethandleV2(registerObject.token, 'AbCats');
+    expect(requestUserProfileV3(registerObject.token, registerObject.authUserId).body).toStrictEqual({
       user: {
         uId: registerObject.authUserId,
         email: 'csgo@gmail.com',
