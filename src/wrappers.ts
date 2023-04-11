@@ -324,7 +324,6 @@ export function requestUserProfileV3(token: string, uId: number) {
   return { body, statusCode };
 }
 
-
 export function requestMessageEdit(token: string, messageId: number, message: string) {
   const res = request(
     'PUT',
@@ -642,6 +641,24 @@ export function requestMessageShare(token: string, ogMessageId: number, message:
       }
     }
   );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+  return { body, statusCode };
+}
+
+export function requestMessageReact(token: string, messageId: number, reactId: number) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/message/react/v1',
+    {
+      headers: { token },
+      json: {
+        messageId,
+        reactId
+      }
+    }
+  );
+
   const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode;
   return { body, statusCode };
