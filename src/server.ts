@@ -16,7 +16,7 @@ import config from './config.json';
 import cors from 'cors';
 import errorHandler from 'middleware-http-errors';
 import { notificationsGet } from './notifications';
-import { PermissionChange } from './changePermission'
+import { PermissionChange } from './PermissionChange'
 // Set up web app
 const app = express();
 // Use middleware that allows us to access the JSON body of requests
