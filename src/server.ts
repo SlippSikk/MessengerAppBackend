@@ -278,8 +278,8 @@ app.post('/message/share/v1', (req: Request, res: Response) => {
   res.json(messageShareV1(token, ogMessageId, message, channelId, dmId));
 });
 
-app.post('admin/userpermission/change/v1', (req: Request, res: Response) => {
-  const token = req.header('token') as string;
+app.post('/admin/userpermission/change/v1', (req: Request, res: Response) => {
+  const token = req.header('token');
   const { uId, permissionId } = req.body;
   return res.json(PermissionChange(token, uId, permissionId));
 });

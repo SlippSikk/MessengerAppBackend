@@ -7,16 +7,18 @@ export function requestPermissionChange(token: string, uId: number, permissionId
       'POST',
       `${url}:${port}/admin/userpermission/change/v1`,
       {
-        headers: {
-          token
-        },
+        
         json: {
           uId: uId,
           permissionId: permissionId,
         },
-        timeout: 2000
+        headers: {
+          token
+        },
+        timeout: 100
       }
     );
-  
-    return JSON.parse(res.body as string);
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+  return { body, statusCode };
 }
