@@ -1,38 +1,118 @@
-/*
-import { receiveMessageOnPort } from 'worker_threads';
 import { getData, setData } from './dataStore';
-import { isTokenValid, isMessageInChannel, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember, getUser } from './helper';
-import { isDmIdValid, createMessageId, validateToken, getMessage } from './helper';
-import { dataTs, channel, dms, messages, user } from './interfaces';
+import { getUIdFromToken, findChannelIndexWithMessage, findDMIndexWithMessage } from './helper';
+import { validateToken, isMember, isDmMember } from './helper';
+import { dataTs, messages, channel, dms } from './interfaces';
 import HTTPError from 'http-errors';
+
+const getChannelFromMessageId = (messageId: number): channel => {
+  const data: dataTs = getData();
+  return data.channels.find(channel => channel.messages.find(message => message.messageId === messageId));
+};
+
+const getDmFromMessageId = (messageId: number): dms => {
+  const data: dataTs = getData();
+  return data.dms.find(dm => dm.messages.find(message => message.messageId === messageId));
+};
+/**
+ * @param {number} messageId
+ * @returns {object} msg object
+ * @summary Gets message object
+ */
+export const getMessage = (messageId: number): messages | boolean => {
+  const data: dataTs = getData();
+  let msg;
+  for (const channel of data.channels) {
+    msg = channel.messages.find(message => message.messageId === messageId);
+    if (msg) {
+      return msg;
+    }
+  }
+  for (const dm of data.dms) {
+    msg = dm.messages.find(message => message.messageId === messageId);
+    if (msg) {
+      return msg;
+    }
+  }
+  return false;
+};
 /**
  * @param token
  * @param dmId
  * @param message
- * @returns
+ * @summary unReacts reaction of reactId, which is in a message from messageId
  */
-/*
+
 export const messageUnreactV1 = (token: string, messageId: number, reactId: number) => {
-  const data: dataTs = getData();
   if (!validateToken(token)) {
     throw HTTPError(403, 'Invalid token');
   }
-  const msg = getMessage(messageId) as messages;
-  if (!msg) {
+  const data: dataTs = getData();
+  let inChannel = true;
+  let inDm = true;
+  let dms;
+  const channel = getChannelFromMessageId(messageId);
+  if (!channel) {
+    dms = getDmFromMessageId(messageId);
+    inChannel = false;
+  }
+  if (!dms) {
+    inDm = false;
+  }
+  // --------- CHECKS IF IS MESSAGEID ISVALID -----------------------
+  // Checks if messageId is in channel or a dm
+  if ((!inChannel && !inDm) || (inChannel && inDm)) {
     throw HTTPError(400, 'Invalid messageId');
+  }
+  const uId = getUIdFromToken(token);
+  // Check if user is in Channel
+  let channelId: number;
+  if (inChannel) {
+    channelId = channel.channelId;
+    if (!isMember(channelId, uId) && uId !== 1) {
+      throw HTTPError(400, 'not a member of messageId');
+    }
+  }
+  // Check if user is in dm
+  let dmId: number;
+  if (inDm) {
+    dmId = dms.dmId;
+    if (!isDmMember(dmId, token)) {
+      throw HTTPError(400, 'not a member of messageId');
+    }
   }
   if (reactId !== 1) {
     throw HTTPError(400, 'Invalid ReactId');
   }
+  const msg = getMessage(messageId) as messages;
   const indexReactId = reactId - 1;
-  const uId = getUIdFromToken(token) as number;
   if (!msg.reacts[indexReactId].allUsers.find(user => user.uId === uId)) {
-    throw HTTPError(400, 'no Reaction');
+    throw HTTPError(400, 'no reactions');
   }
-  ////////////////////////////
-  const indexToRemove = msg.reacts[indexReactId].allUsers.findIndex(user => user.uId === getUIdFromToken(token) as number);
-  msg.reacts[indexReactId].allUsers.splice(indexToRemove, 1);
+  // const user = getUser(uId);
+  const indexToRemove = msg.reacts[indexReactId].allUsers.findIndex(user => user.uId === uId);
+  if (inChannel) {
+    let mIndex;
+    const channelIndex = findChannelIndexWithMessage(messageId);
+    const len = data.channels[channelIndex].messages.length;
+    for (let i = 0; i < len; i++) {
+      if (data.channels[channelIndex].messages[i].messageId === messageId) {
+        mIndex = i;
+        break;
+      }
+    }
+    data.channels[channelIndex].messages[mIndex].reacts[0].allUsers.splice(indexToRemove, 1);
+  } else {
+    let mIndex;
+    const dmIndex = findDMIndexWithMessage(messageId);
+    const len = data.dms[dmIndex].messages.length;
+    for (let i = 0; i < len; i++) {
+      if (data.dms[dmIndex].messages[i].messageId === messageId) {
+        mIndex = i;
+        break;
+      }
+    }
+    data.dms[dmIndex].messages[mIndex].reacts[0].allUsers.splice(indexToRemove, 1);
+  }
   setData(data);
   return {};
 };
-*/
