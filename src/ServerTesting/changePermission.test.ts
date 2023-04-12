@@ -21,15 +21,6 @@ describe('test only for changePermission', () => {
 
     const user3 = requestAuthRegister('claire@gmail.com', 'ccc123', 'Claire', 'Christopher');
     authToken3 = user3.token;
-
-    channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).body.channelId;
-    requestChannelJoin(authToken2, channelId1);
-    requestChannelAddowner(authToken1, channelId1, authId2);
-
-    channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).body.channelId;
-    requestChannelJoin(authToken3, channelId2);
-    // Channel1: [Owners: authId1, authId2], [Members: authId1, authId2]
-    // Channel2: [Owners: authId2], [Members: authId2, authId3]
   });
 
   test('Backstab: The initial global owner upgrade a member perimission and then he downgrade the ex-owner ', () => {
@@ -69,16 +60,6 @@ describe('test only for changePermission', () => {
       const user3 = requestAuthRegister('claire@gmail.com', 'ccc123', 'Claire', 'Christopher');
       authId3 = user3.authUserId;
       authToken3 = user3.token;
-
-      channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).body.channelId;
-      requestChannelJoin(authToken2, channelId1);
-      requestChannelAddowner(authToken1, channelId1, authId2);
-      requestChannelJoin(authToken3, channelId1);
-
-      channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).body.channelId;
-      requestChannelJoin(authToken3, channelId2);
-      // Channel1: [Owners: authId1, authId2], [Members: authId1, authId2, authId3]
-      // Channel2: [Owners: authId2], [Members: authId2, authId3]
     });
 
     test('Invalid uId', () => {
