@@ -296,7 +296,7 @@ export function requestChannelMessages(token: string, channelId: number, start: 
       headers: {
         token
       },
-      timeout: 3000
+      timeout: 100
     }
   );
   const body = JSON.parse(res.body as string);
