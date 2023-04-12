@@ -142,7 +142,12 @@ export function channelMessagesV3(token: string, channelId: number, start: numbe
 }
 
 /**
- * @summary Makes uId owner of channelId
+ * @param token
+ * @param channelId
+ * @param uId
+ * @returns none
+ * @method POST
+ * @summary Makes user with user ID uId an owner of the channel.
  */
 export const channelAddownerV2 = (token: string, channelId: number, uId: number) => {
   const data: dataTs = getData();
@@ -174,11 +179,14 @@ export const channelAddownerV2 = (token: string, channelId: number, uId: number)
 };
 
 /**
- * @param {number} authUserId
- * @param {number} channelId
- * @returns {name, isPublic, ownerMembers, allMembers}
+ * @param token
+ * @param channelId
+ * @returns { name, isPublic, ownerMembers, allMembers }
+ * @method GET
+ * @summary
+ * Given a channel with ID channelId that the authorised user
+ * is a member of, provides basic details about the channel.
  */
-
 export const channelDetailsV3 = (token: string, channelId: number) => {
   if (!isChannelIdValid(channelId)) {
     throw HTTPError(400, 'Invalid ChannelId');
@@ -200,11 +208,17 @@ export const channelDetailsV3 = (token: string, channelId: number) => {
 };
 
 /**
- * @param {string} token
- * @param {number} channelId
- * @returns {{}}
+ *
+ * @param token
+ * @param channelId
+ * @returns none
+ * @method POST
+ * @summary
+ * Given a channel with ID channelId that the authorised user is a
+ * member of, removes them as a member of the channel. Their
+ * messages should remain in the channel. If the only channel
+ * owner leaves, the channel will remain.
  */
-
 export const channelLeaveV2 = (token: string, channelId: number) => {
   const data: dataTs = getData();
   if (!isChannelIdValid(channelId)) {
