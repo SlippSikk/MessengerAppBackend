@@ -1,10 +1,8 @@
-import { requestPermissionChange } from '../XujiWrap'
-import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelAddowner, requestChannelJoin, requestChannelDetails } from '../wrappers';
-import {userIndexUid,isGlobalOwnerFromToken,getPermissionIdFromUid,isGlobalOwnerFromUid} from '../helper'
+import { requestPermissionChange } from '../XujiWrap';
+import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelAddowner, requestChannelJoin } from '../wrappers';
 describe('test only for changePermission', () => {
   let authId1: number;
   let authId2: number;
-  let authId3: number;
   let authToken1: string;
   let authToken2: string;
   let authToken3: string;
@@ -22,7 +20,6 @@ describe('test only for changePermission', () => {
     authToken2 = user2.token;
 
     const user3 = requestAuthRegister('claire@gmail.com', 'ccc123', 'Claire', 'Christopher');
-    authId3 = user3.authUserId;
     authToken3 = user3.token;
 
     channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).body.channelId;
@@ -40,7 +37,7 @@ describe('test only for changePermission', () => {
     expect(requestPermissionChange(authToken2, authId1, 2).body).toEqual({});
     expect(requestPermissionChange(authToken1, authId2, 2).statusCode).toBe(403);
   });
-  
+
   test('global owner try to demoted himself to a user', () => {
     expect(requestPermissionChange(authToken1, authId2, 1).body).toEqual({});
     expect(requestPermissionChange(authToken1, authId1, 2).body).toEqual({});
@@ -62,12 +59,12 @@ describe('test only for changePermission', () => {
       const user1 = requestAuthRegister('anna@gmail.com', 'aaa123', 'Anna', 'Albert');
       authId1 = user1.authUserId;
       authToken1 = user1.token;
-      authPId1 = user1.permissionId
+      authPId1 = user1.permissionId;
 
       const user2 = requestAuthRegister('bob@outlook.com', 'bbb123', 'Bob', 'Baqaie');
       authId2 = user2.authUserId;
       authToken2 = user2.token;
-      authPId2 = user2.permissionId
+      authPId2 = user2.permissionId;
 
       const user3 = requestAuthRegister('claire@gmail.com', 'ccc123', 'Claire', 'Christopher');
       authId3 = user3.authUserId;
@@ -85,7 +82,7 @@ describe('test only for changePermission', () => {
     });
 
     test('Invalid uId', () => {
-      expect(requestPermissionChange(authToken1, (authId1  + authId2 + authId3), 1).statusCode).toBe(400);
+      expect(requestPermissionChange(authToken1, (authId1 + authId2 + authId3), 1).statusCode).toBe(400);
     });
 
     test('Invalid token', () => {
@@ -100,15 +97,13 @@ describe('test only for changePermission', () => {
       expect(requestPermissionChange(authToken1, authId2, 1).body).toEqual({});
       expect(requestPermissionChange(authToken2, authId1, 1).statusCode).toBe(400);
     });
-    
+
     test('only global owner try to demoted himself to a user', () => {
       expect(requestPermissionChange(authToken1, authId1, 2).statusCode).toBe(400);
     });
 
     test('Invalid permissionId', () => {
-      expect(requestPermissionChange(authToken1, authId2, authPId1 + authPId2 ).statusCode).toBe(400);
+      expect(requestPermissionChange(authToken1, authId2, authPId1 + authPId2).statusCode).toBe(400);
     });
   });
 });
-
-
