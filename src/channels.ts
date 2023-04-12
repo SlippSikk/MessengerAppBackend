@@ -71,7 +71,13 @@ export function channelsCreateV3(token: string, name: string, isPublic: boolean)
       nameLast: data.users[userIndex].nameLast,
       handleStr: data.users[userIndex].handleStr,
     }],
-    messages: []
+    messages: [],
+    standup: {
+      standupMessage: '',
+      isActive: false,
+      timeFinish: null,
+      authUserId: null
+    }
   };
 
   data.channels.push(newChannel);

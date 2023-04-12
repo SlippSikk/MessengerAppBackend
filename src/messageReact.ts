@@ -1,10 +1,8 @@
 import { getData, setData } from './dataStore';
-import { isOwner, getUIdFromToken, isMember, isDmMember, findChannelIndexWithMessage, findDMIndexWithMessage } from './helper';
-// import { isDmOwner, getMessage } from './helper';
-import { getDm } from './helper';
-import { dataTs, channel, dms, messages } from './interfaces';
+import { getUIdFromToken, getUser, findChannelIndexWithMessage, findDMIndexWithMessage } from './helper';
+import { validateToken, isMember, isDmMember } from './helper';
+import { dataTs, messages, channel, dms } from './interfaces';
 import HTTPError from 'http-errors';
-// HELPER FUNCTIONS ADD LATER
 
 const getChannelFromMessageId = (messageId: number): channel => {
   const data: dataTs = getData();
@@ -14,10 +12,6 @@ const getChannelFromMessageId = (messageId: number): channel => {
 const getDmFromMessageId = (messageId: number): dms => {
   const data: dataTs = getData();
   return data.dms.find(dm => dm.messages.find(message => message.messageId === messageId));
-};
-const isDmOwner = (dmId: number, uId: number): boolean => {
-  const dms: dms = getDm(dmId) as dms;
-  return dms.creator.uId === uId;
 };
 
 export const getMessage = (messageId: number): messages | boolean => {
@@ -39,19 +33,22 @@ export const getMessage = (messageId: number): messages | boolean => {
 };
 
 /**
- *
  * @param token
  * @param messageId
+ * @param reactId
  * @returns none
  * @method POST
  * @summary
- * Given a message within a channel or DM, marks it as "pinned".
+ * Given a message within a channel or
+ * DM the authorised user is part of, adds a "react" to that particular message.
  */
-export const messagePinV1 = (token: string, messageId: number) => {
+export const messageReactV1 = (token: string, messageId: number, reactId: number) => {
+  if (!validateToken(token)) {
+    throw HTTPError(403, 'Invalid token');
+  }
   const data: dataTs = getData();
   let inChannel = true;
   let inDm = true;
-  // MESSAGE OBJECT = either channel or dm
   let dms;
   const channel = getChannelFromMessageId(messageId);
   if (!channel) {
@@ -83,21 +80,15 @@ export const messagePinV1 = (token: string, messageId: number) => {
       throw HTTPError(400, 'not a member of messageId');
     }
   }
+  if (reactId !== 1) {
+    throw HTTPError(400, 'Invalid ReactId');
+  }
   const msg = getMessage(messageId) as messages;
-  // --------- CHECKS IF IS PINNED -----------------------
-  if (msg.isPinned === true) {
-    throw HTTPError(400, 'Already pinned');
+  const indexReactId = reactId - 1;
+  if (msg.reacts[indexReactId].allUsers.find(user => user.uId === uId)) {
+    throw HTTPError(400, 'Already reacted');
   }
-  // ----------CHECKS OWNER PERMISSION--------------------
-  // IN CHANNEL
-  if (inChannel && !isOwner(channelId, uId) && uId !== 1) {
-    throw HTTPError(403, 'no Owner permission');
-  }
-  // IN DM
-  if (inDm && !isDmOwner(dmId, uId)) {
-    throw HTTPError(403, 'no Owner permission');
-  }
-  // ------------ Set isPinned to true -------------------
+  const user = getUser(uId);
   if (inChannel) {
     let mIndex;
     const channelIndex = findChannelIndexWithMessage(messageId);
@@ -108,7 +99,7 @@ export const messagePinV1 = (token: string, messageId: number) => {
         break;
       }
     }
-    data.channels[channelIndex].messages[mIndex].isPinned = true;
+    data.channels[channelIndex].messages[mIndex].reacts[0].allUsers.push(user);
   } else {
     let mIndex;
     const dmIndex = findDMIndexWithMessage(messageId);
@@ -119,7 +110,7 @@ export const messagePinV1 = (token: string, messageId: number) => {
         break;
       }
     }
-    data.dms[dmIndex].messages[mIndex].isPinned = true;
+    data.dms[dmIndex].messages[mIndex].reacts[0].allUsers.push(user);
   }
   setData(data);
   return {};

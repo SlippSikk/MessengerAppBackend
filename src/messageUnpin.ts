@@ -19,10 +19,11 @@ const isDmOwner = (dmId: number, uId: number): boolean => {
   const dms: dms = getDm(dmId) as dms;
   return dms.creator.uId === uId;
 };
+
 /**
- * @param {number} messageId
- * @returns {object} msg object
- * @summary Gets message object
+ * @param messageId
+ * @returns
+ * Given a message within a channel or DM, removes its mark as "pinned".
  */
 export const getMessage = (messageId: number): messages | boolean => {
   const data: dataTs = getData();
@@ -43,11 +44,14 @@ export const getMessage = (messageId: number): messages | boolean => {
 };
 
 /**
-* @param token
-* @param dmId
-* @param message
-* @returns
-*/
+ *
+ * @param token
+ * @param messageId
+ * @returns none
+ * @method POST
+ * @summary
+ * Given a message within a channel or DM, removes its mark as "pinned".
+ */
 export const messageUnpinV1 = (token: string, messageId: number) => {
   const data: dataTs = getData();
   let inChannel = true;

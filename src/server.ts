@@ -9,6 +9,9 @@ import { messageSenddmV2, messageSendV2, messageEditV2, messageRemoveV2, message
 import { messagePinV1 } from './messagePin';
 import { messageUnpinV1 } from './messageUnpin';
 import { messageShareV1 } from './messageShare';
+import { standupStartV1, standupActiveV1, standupSendV1 } from './standup';
+import { messageReactV1 } from './messageReact';
+import { messageUnreactV1 } from './messageUnreact';
 import { standupActiveV1 } from './standup';
 import { clearV1 } from './other';
 import morgan from 'morgan';
@@ -64,7 +67,6 @@ app.post('/message/senddm/v2', (req: Request, res: Response) => {
 app.put('/message/edit/v2', (req: Request, res: Response) => {
   const { messageId, message } = req.body;
   const token = req.header('token');
-
 
   return res.json(messageEditV2(token, parseInt(messageId), message));
 });
@@ -251,6 +253,13 @@ app.delete('/clear/v1', (req: Request, res: Response) => {
   return res.json(clearV1());
 });
 
+app.post('/standup/start/v1', (req: Request, res: Response) => {
+  const { channelId, length } = req.body;
+  const token = req.header('token');
+
+  return res.json(standupStartV1(token, parseInt(channelId), parseInt(length)));
+})
+
 app.get('/standup/active/v1', (req: Request, res: Response) => {
   const channelId = req.query.channelId as string;
   const token = req.header('token');
@@ -258,6 +267,12 @@ app.get('/standup/active/v1', (req: Request, res: Response) => {
   return res.json(standupActiveV1(token, parseInt(channelId)));
 });
 
+app.post('/standup/send/v1', (req: Request, res: Response) => {
+  const { channelId, message } = req.body;
+  const token = req.header('token');
+
+  return res.json(standupSendV1(token, parseInt(channelId), message));
+})
 app.post('/message/pin/v1', (req: Request, res: Response) => {
   const token = req.header('token');
   const { messageId } = req.body;
@@ -278,12 +293,28 @@ app.post('/message/share/v1', (req: Request, res: Response) => {
   res.json(messageShareV1(token, ogMessageId, message, channelId, dmId));
 });
 
+
 app.post('/admin/userpermission/change/v1', (req: Request, res: Response) => {
   const token = req.header('token');
   const { uId, permissionId } = req.body;
   return res.json(PermissionChange(token, uId, permissionId));
 });
 
+
+
+app.post('/message/react/v1', (req: Request, res: Response) => {
+  const token = req.header('token');
+  const { messageId, reactId } = req.body;
+
+  res.json(messageReactV1(token, +messageId, +reactId));
+});
+
+app.post('/message/unreact/v1', (req: Request, res: Response) => {
+  const token = req.header('token');
+  const { messageId, reactId } = req.body;
+
+  res.json(messageUnreactV1(token, +messageId, +reactId));
+});
 
 // Keep this BENEATH route definitions
 // handles errors nicely
