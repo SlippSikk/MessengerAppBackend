@@ -22,7 +22,7 @@ export function PermissionChange(token: string, uId: number, permissionId:number
         throw HTTPError(400, 'the user already has this permission level!');
     }
     let newArrays = data.users.filter(function(item){
-        return item.permissionId === permissionId
+        return item.permissionId === 1;
     });
     if (newArrays.length === 1 && uId === getUIdFromToken(token) && permissionId === 2){
         throw HTTPError(400, 'You are the only global user now and you can not demote yourself!');

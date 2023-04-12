@@ -41,6 +41,11 @@ describe('test only for changePermission', () => {
     expect(requestPermissionChange(authToken1, authId2, 2).statusCode).toBe(403);
   });
   
+  test('global owner try to demoted himself to a user', () => {
+    expect(requestPermissionChange(authToken1, authId2, 1).body).toEqual({});
+    expect(requestPermissionChange(authToken1, authId1, 2).body).toEqual({});
+  });
+
   describe('test only about register and permission ', () => {
     let authId1: number;
     let authId2: number;
@@ -95,10 +100,7 @@ describe('test only for changePermission', () => {
       expect(requestPermissionChange(authToken1, authId2, 1).body).toEqual({});
       expect(requestPermissionChange(authToken2, authId1, 1).statusCode).toBe(400);
     });
-    test('global owner try to demoted himself to a user', () => {
-      expect(requestPermissionChange(authToken1, authId2, 1).body).toEqual({});
-      expect(requestPermissionChange(authToken1, authId1, 2).statusCode).toBe(400);
-    });
+    
     test('only global owner try to demoted himself to a user', () => {
       expect(requestPermissionChange(authToken1, authId1, 2).statusCode).toBe(400);
     });
