@@ -13,11 +13,7 @@ const getDmFromMessageId = (messageId: number): dms => {
   const data: dataTs = getData();
   return data.dms.find(dm => dm.messages.find(message => message.messageId === messageId));
 };
-/**
- * @param {number} messageId
- * @returns {object} msg object
- * @summary Gets message object
- */
+
 export const getMessage = (messageId: number): messages | boolean => {
   const data: dataTs = getData();
   let msg;
@@ -38,11 +34,14 @@ export const getMessage = (messageId: number): messages | boolean => {
 
 /**
  * @param token
- * @param dmId
- * @param message
- * @returns
+ * @param messageId
+ * @param reactId
+ * @returns none
+ * @method POST
+ * @summary
+ * Given a message within a channel or
+ * DM the authorised user is part of, adds a "react" to that particular message.
  */
-
 export const messageReactV1 = (token: string, messageId: number, reactId: number) => {
   if (!validateToken(token)) {
     throw HTTPError(403, 'Invalid token');

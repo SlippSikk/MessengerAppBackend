@@ -192,13 +192,17 @@ export function messageRemoveV2(token: string, messageId: number) {
 }
 
 /**
- *
  * @param token
  * @param dmId
  * @param message
- * @returns
+ * @returns { messageId }
+ * @method POST
+ * @summary
+ * Sends a message from authorised user to the DM specified by dmId.
+ * Note: Each message should have its own unique ID, i.e. no messages
+ * should share an ID with another message, even if that other message
+ * is in a different channel or DM.
  */
-
 export const messageSenddmV2 = (token: string, dmId: number, message: string) => {
   const data: dataTs = getData();
 
@@ -234,11 +238,15 @@ export const messageSenddmV2 = (token: string, dmId: number, message: string) =>
 };
 
 /**
- *
  * @param token
  * @param channelId
  * @param message
- * @returns
+ * @returns { messageId }
+ * @method POST
+ * @summary
+ *  Sends a message from the authorised user to the channel specified by channelId.
+ *  Note: Each message should have its own unique ID, i.e. no messages should share an ID
+ *  with another message, even if that other message is in a different channel or DM.
  */
 
 export const messageSendV2 = (token: string, channelId: number, message: string) => {

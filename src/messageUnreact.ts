@@ -37,11 +37,14 @@ export const getMessage = (messageId: number): messages | boolean => {
 };
 /**
  * @param token
- * @param dmId
- * @param message
- * @summary unReacts reaction of reactId, which is in a message from messageId
+ * @param messageId
+ * @param reactId
+ * @returns none
+ * @method POST
+ * @summary
+ * Given a message within a channel
+ * or DM the authorised user is part of, removes a "react" to that particular message.
  */
-
 export const messageUnreactV1 = (token: string, messageId: number, reactId: number) => {
   if (!validateToken(token)) {
     throw HTTPError(403, 'Invalid token');
