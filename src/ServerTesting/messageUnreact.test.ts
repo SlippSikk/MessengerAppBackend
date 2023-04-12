@@ -1,28 +1,3 @@
-// export function requestMessageUnreact(token: string, messageId: number, reactId: number) {
-//   const res = request(
-//     'POST',
-//     SERVER_URL + 'message/unreact/v1',
-//     {
-//   headers: { token },
-//       json: {
-//
-//         messageId,
-//         number
-//       }
-//     }
-//   );
-// const body = JSON.parse(res.body as string);
-// const statusCode = res.statusCode;
-
-// return { body, statusCode };
-
-// }
-// app.post('message/unreact/v1', (req: Request, res: Response) => {
-//   const token = req.header('token');
-//   const { messageId, reactId } = req.body;
-
-//   res.json(messageUnreactV1(token, +messageId, +reactId));
-// });
 import { requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate } from '../wrappers';
 import { requestChannelMessages, requestMessageReact, requestMessageUnreact, requestDmMessages, requestMessageSenddm, requestDmCreate } from '../wrappers';
 import { authUserId } from '../interfaces';
@@ -71,13 +46,13 @@ describe('Function Testing', () => {
     expect(requestMessageUnreact(registered1.token, mIdChannel, 1).statusCode).toStrictEqual(400);
     const a = requestChannelMessages(registered1.token, channelId1, 0).body;
     expect(a.messages[0].reacts[0].reactId).toStrictEqual(1);
-    expect(a.messages[0].reacts[0].allUsers[0].uId).toStrictEqual(0);
+    expect(a.messages[0].reacts[0].allUsers.length).toStrictEqual(0);
   });
   test('Double unreacts in dm msg', () => {
     expect(requestMessageUnreact(registered1.token, mIdDm, 1).body).toStrictEqual({});
     expect(requestMessageUnreact(registered1.token, mIdDm, 1).statusCode).toStrictEqual(400);
     const a = requestDmMessages(registered2.token, dmId, 0).body;
     expect(a.messages[0].reacts[0].reactId).toStrictEqual(1);
-    expect(a.messages[0].reacts[0].allUsers[0].uId).toStrictEqual(0);
+    expect(a.messages[0].reacts[0].allUsers.length).toStrictEqual(0);
   });
 });
