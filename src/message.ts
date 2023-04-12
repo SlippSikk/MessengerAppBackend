@@ -1,6 +1,6 @@
 import { getData, setData } from './dataStore';
 import { validateToken, isMessageInChannel, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember } from './helper';
-import { isDmIdValid, createMessageId, isChannelIdValid } from './helper';
+import { isDmIdValid, createMessageId, isChannelIdValid,isGlobalOwnerFromToken } from './helper';
 import { dataTs, channel, dms, error, messageId } from './interfaces';
 import { tagChannelNotification, tagDmNotification } from './notifications';
 import HTTPError from 'http-errors';
@@ -142,11 +142,11 @@ export function messageEditV2(token: string, messageId: number, message: string)
     const channel: channel = data.channels[channelIndex];
     const currentMessage = channel.messages.find(message => message.messageId === messageId);
     const authUserId: number = getUIdFromToken(token) as number;
-    if (!isMember(channel.channelId, authUserId) && authUserId !== 1) {
+    if (!isMember(channel.channelId, authUserId)) {
       throw HTTPError(403, 'This user is not a member of this channel');
     }
 
-    if (!isOwnerByToken(channel.channelId, token) && currentMessage.uId !== authUserId && authUserId !== 1) {
+    if (!isOwnerByToken(channel.channelId, token) && currentMessage.uId !== authUserId && !isGlobalOwnerFromToken(token)) {
       throw HTTPError(403, 'User does not have correct permissions');
     }
 

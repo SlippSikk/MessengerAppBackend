@@ -1,5 +1,5 @@
 import { getData, setData } from './dataStore';
-import { isOwner, getUIdFromToken, isMember, isDmMember, findChannelIndexWithMessage, findDMIndexWithMessage } from './helper';
+import { isOwner, getUIdFromToken, isMember, isDmMember, findChannelIndexWithMessage, findDMIndexWithMessage, isGlobalOwnerFromUid } from './helper';
 // import { isDmOwner, getMessage } from './helper';
 import { getDm } from './helper';
 import { dataTs, channel, dms, messages } from './interfaces';
@@ -95,7 +95,7 @@ export const messageUnpinV1 = (token: string, messageId: number) => {
   }
   // ----------CHECKS OWNER PERMISSION--------------------
   // IN CHANNEL
-  if (inChannel && !isOwner(channelId, uId) && uId !== 1) {
+  if (inChannel && !isOwner(channelId, uId) && !isGlobalOwnerFromUid(uId)) {
     throw HTTPError(403, 'no Owner permission');
   }
   // IN DM
