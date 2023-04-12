@@ -2,10 +2,10 @@ import { getData, setData } from './dataStore';
 import { validateToken, isMessageInChannel, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember } from './helper';
 import { isDmIdValid, createMessageId, isChannelIdValid } from './helper';
 import { dataTs, channel, dms, error, messageId } from './interfaces';
-import { tagChannelNotification, tagDmNotification, addNotification } from './notifications';
+import { tagChannelNotification, tagDmNotification } from './notifications';
 import HTTPError from 'http-errors';
 
-export function messageSendLaterDmV1 (token: string, dmId: number, message: string, timeSent: number): error | messageId {
+export function messageSendLaterDmV1(token: string, dmId: number, message: string, timeSent: number): error | messageId {
   const data: dataTs = getData();
 
   // dmId does not refer to a valid DM
@@ -34,7 +34,7 @@ export function messageSendLaterDmV1 (token: string, dmId: number, message: stri
   }
 
   // stay in this loop until the delay has been met
-  for (;;) {
+  for (; ;) {
     if (new Date().getTime() >= timeSent * 1000) {
       break;
     }
@@ -66,7 +66,7 @@ export function messageSendLaterDmV1 (token: string, dmId: number, message: stri
   return { messageId: messageId };
 }
 
-export function messageSendLaterV1 (token: string, channelId: number, message: string, timeSent: number): error | messageId {
+export function messageSendLaterV1(token: string, channelId: number, message: string, timeSent: number): error | messageId {
   const data: dataTs = getData();
 
   // channelId does not refer to a valid channel
@@ -96,7 +96,7 @@ export function messageSendLaterV1 (token: string, channelId: number, message: s
   }
 
   // stay in this loop until the delay has been met
-  for (;;) {
+  for (; ;) {
     if (new Date().getTime() >= timeSent * 1000) {
       break;
     }
@@ -159,7 +159,6 @@ export function messageEditV2(token: string, messageId: number, message: string)
     setData(data);
     tagChannelNotification(message, channel.channelId, token);
     return {};
-
   } else if (isMessageInDM(messageId)) {
     const dmIndex: number = findDMIndexWithMessage(messageId);
     const dm: dms = data.dms[dmIndex];
@@ -184,14 +183,13 @@ export function messageEditV2(token: string, messageId: number, message: string)
     tagDmNotification(message, dm.dmId, token);
     return {};
   }
-  
+
   throw HTTPError(400, 'Invalid messageId');
 }
 
 export function messageRemoveV2(token: string, messageId: number) {
   return messageEditV2(token, messageId, '');
 }
-
 
 /**
  *

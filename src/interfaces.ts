@@ -47,7 +47,6 @@ interface messages {
     }],
     isPinned: boolean
 }
-
 interface channels {
     channelId: number
     name: string

@@ -10,6 +10,7 @@ import { messagePinV1 } from './messagePin';
 import { messageUnpinV1 } from './messageUnpin';
 import { messageShareV1 } from './messageShare';
 import { standupStartV1, standupActiveV1, standupSendV1 } from './standup';
+import { messageReactV1 } from './messageReact';
 import { clearV1 } from './other';
 import morgan from 'morgan';
 import config from './config.json';
@@ -64,7 +65,6 @@ app.post('/message/senddm/v2', (req: Request, res: Response) => {
 app.put('/message/edit/v2', (req: Request, res: Response) => {
   const { messageId, message } = req.body;
   const token = req.header('token');
-
 
   return res.json(messageEditV2(token, parseInt(messageId), message));
 });
@@ -289,6 +289,13 @@ app.post('/message/share/v1', (req: Request, res: Response) => {
   const { ogMessageId, message, channelId, dmId } = req.body;
 
   res.json(messageShareV1(token, ogMessageId, message, channelId, dmId));
+});
+
+app.post('/message/react/v1', (req: Request, res: Response) => {
+  const token = req.header('token');
+  const { messageId, reactId } = req.body;
+
+  res.json(messageReactV1(token, +messageId, +reactId));
 });
 // Keep this BENEATH route definitions
 // handles errors nicely
