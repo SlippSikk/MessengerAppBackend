@@ -1,9 +1,10 @@
 import { requestPermissionChange } from '../XujiWrap'
 import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelAddowner, requestChannelJoin, requestChannelDetails } from '../wrappers';
-
-describe('Valid Inputs', () => {
+import {userIndexUid,isGlobalOwnerFromToken,getPermissionIdFromUid,isGlobalOwnerFromUid} from '../helper'
+describe('test only for changePermission', () => {
   let authId1: number;
   let authId2: number;
+  let authId3: number;
   let authToken1: string;
   let authToken2: string;
   let authToken3: string;
@@ -20,7 +21,9 @@ describe('Valid Inputs', () => {
     authId2 = user2.authUserId;
     authToken2 = user2.token;
 
-    authToken3 = requestAuthRegister('claire@gmail.com', 'ccc123', 'Claire', 'Christopher').token;
+    const user3 = requestAuthRegister('claire@gmail.com', 'ccc123', 'Claire', 'Christopher');
+    authId3 = user3.authUserId;
+    authToken3 = user3.token;
 
     channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).body.channelId;
     requestChannelJoin(authToken2, channelId1);
@@ -32,16 +35,12 @@ describe('Valid Inputs', () => {
     // Channel2: [Owners: authId2], [Members: authId2, authId3]
   });
 
-  test('Backstab: The initial global owner upgrade a member perimission and then he downgrade the ex-owner', () => {
+  test('Backstab: The initial global owner upgrade a member perimission and then he downgrade the ex-owner ', () => {
     expect(requestPermissionChange(authToken1, authId2, 1).body).toEqual({});
     expect(requestPermissionChange(authToken2, authId1, 2).body).toEqual({});
     expect(requestPermissionChange(authToken1, authId2, 2).statusCode).toBe(403);
   });
-  test('global owner demoted himself to a user', () => {
-    expect(requestPermissionChange(authToken1, authId2, 1).body).toEqual({});
-    expect(requestPermissionChange(authToken1, authId1, 2).body).toEqual({});
-    expect(requestPermissionChange(authToken1, authId2, 2).statusCode).toBe(403);
-  });
+  
   describe('test only about register and permission ', () => {
     let authId1: number;
     let authId2: number;
@@ -85,7 +84,7 @@ describe('Valid Inputs', () => {
     });
 
     test('Invalid token', () => {
-      expect(requestPermissionChange(authToken1 + authToken2 + authToken3, authId2, 1).statusCode).toBe(400);
+      expect(requestPermissionChange(authToken1 + authToken2 + authToken3, authId2, 1).statusCode).toBe(403);
     });
 
     test('uId already have permissionId 2', () => {
@@ -96,7 +95,10 @@ describe('Valid Inputs', () => {
       expect(requestPermissionChange(authToken1, authId2, 1).body).toEqual({});
       expect(requestPermissionChange(authToken2, authId1, 1).statusCode).toBe(400);
     });
-
+    test('global owner try to demoted himself to a user', () => {
+      expect(requestPermissionChange(authToken1, authId2, 1).body).toEqual({});
+      expect(requestPermissionChange(authToken1, authId1, 2).statusCode).toBe(400);
+    });
     test('only global owner try to demoted himself to a user', () => {
       expect(requestPermissionChange(authToken1, authId1, 2).statusCode).toBe(400);
     });

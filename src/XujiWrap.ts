@@ -18,8 +18,8 @@ export function requestPermissionChange(token: string, uId: number, permissionId
     }
   );
   const body = JSON.parse(res.body as string);  //
-  
+  const statusCode = res.statusCode;
 
-  return { body};
+  return { body, statusCode };
 }
 
