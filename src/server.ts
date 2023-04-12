@@ -9,6 +9,7 @@ import { messageSenddmV2, messageSendV2, messageEditV2, messageRemoveV2, message
 import { messagePinV1 } from './messagePin';
 import { messageUnpinV1 } from './messageUnpin';
 import { messageShareV1 } from './messageShare';
+import { standupStartV1, standupActiveV1, standupSendV1 } from './standup';
 import { messageReactV1 } from './messageReact';
 import { messageUnreactV1 } from './messageUnreact';
 import { standupActiveV1 } from './standup';
@@ -252,6 +253,13 @@ app.delete('/clear/v1', (req: Request, res: Response) => {
   return res.json(clearV1());
 });
 
+app.post('/standup/start/v1', (req: Request, res: Response) => {
+  const { channelId, length } = req.body;
+  const token = req.header('token');
+
+  return res.json(standupStartV1(token, parseInt(channelId), parseInt(length)));
+})
+
 app.get('/standup/active/v1', (req: Request, res: Response) => {
   const channelId = req.query.channelId as string;
   const token = req.header('token');
@@ -259,6 +267,12 @@ app.get('/standup/active/v1', (req: Request, res: Response) => {
   return res.json(standupActiveV1(token, parseInt(channelId)));
 });
 
+app.post('/standup/send/v1', (req: Request, res: Response) => {
+  const { channelId, message } = req.body;
+  const token = req.header('token');
+
+  return res.json(standupSendV1(token, parseInt(channelId), message));
+})
 app.post('/message/pin/v1', (req: Request, res: Response) => {
   const token = req.header('token');
   const { messageId } = req.body;

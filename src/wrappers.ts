@@ -543,7 +543,7 @@ export function requestuserProfileSethandleV2(token: string, handleStr: string) 
   return { body, statusCode };
 }
 
-/*
+
 export function requestStandupStart(token: string, channelId: number, length: number) {
   const res = request(
     'POST',
@@ -552,7 +552,7 @@ export function requestStandupStart(token: string, channelId: number, length: nu
       headers: { token },
       json: {
         channelId, length
-      }
+      },
     }
   );
   const body = JSON.parse(res.body as string);
@@ -569,8 +569,9 @@ export function requestStandupActive(token: string, channelId: number) {
       headers: { token },
       qs: {
         channelId
-      }
-    }
+      },
+      timeout: 2000
+    },
   );
   const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode;
@@ -586,7 +587,7 @@ export function requestStandupSend(token: string, channelId: number, message: st
       headers: { token },
       json: {
         channelId, message
-      }
+      },
     }
   );
   const body = JSON.parse(res.body as string);
@@ -594,7 +595,7 @@ export function requestStandupSend(token: string, channelId: number, message: st
 
   return { body, statusCode };
 }
-*/
+
 export function requestMessagePin(token: string, messageId: number) {
   const res = request(
     'POST',
