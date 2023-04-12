@@ -104,7 +104,7 @@ export function requestAuthLogout(token: string) {
   return JSON.parse(res.body as string);
 }
 
-export function requestChannelLeave(token: string, channelId: number) {
+export function requestChanLeavenel(token: string, channelId: number) {
   const res = request(
     'POST',
     SERVER_URL + '/channel/leave/v2',

@@ -2,6 +2,7 @@
 import { requestAuthRegister, requestClear, requestChannelLeave, requestChannelsCreate, requestChannelJoin } from '../wrappers';
 import { requestChannelAddowner } from '../wrappers';
 import { authUserId } from '../interfaces';
+import { requestPermissionChange } from '../XujiWrap';
 // import { requestStandupStart } from '../wrappers';
 
 let registered1: authUserId;
@@ -45,6 +46,9 @@ describe('Function Testing', () => {
     requestChannelJoin(registered1.token, channelId1);
     requestChannelJoin(registered2.token, channelId1);
     // Check if owner Id is removed when leaving the channel
+    requestPermissionChange(registered1.token, registered2.authUserId, 1);
+    requestPermissionChange(registered2.token, registered1.authUserId, 2);
+    // now in this channel, user1(not global owner)is the only owner, user2 is global owner but not channel owner
     expect(requestChannelAddowner(registered1.token, channelId1, registered2.authUserId).statusCode).toStrictEqual(403);
   });
   test('Owner leaves (not original owner)', () => {

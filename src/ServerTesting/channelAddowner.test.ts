@@ -1,7 +1,7 @@
 
-import { requestAuthRegister, requestClear, requestChannelAddowner, requestChannelsCreate, requestChannelJoin } from '../wrappers';
+import { requestAuthRegister, requestClear, requestChannelAddowner, requestChannelsCreate, requestChannelJoin, requestChannelRemoveOwner, requestChanLeavenel } from '../wrappers';
 import { authUserId } from '../interfaces';
-
+import { requestPermissionChange } from '../XujiWrap';
 let registered1: authUserId;
 let registered2: authUserId;
 let registered3: authUserId;
@@ -67,5 +67,29 @@ describe('Function Testing', () => {
 
     // Test if registered 3 has no acces S
     expect(requestChannelAddowner(registered3.token, channelId1, registered2.authUserId).statusCode).toStrictEqual(400);
+  });
+});
+
+describe('Owner permission test', () => {
+  test('global owner(not the channel owner)have the same permission as channel owner', () => {
+    requestPermissionChange(registered1.token, registered2.authUserId, 1);
+    requestChannelJoin(registered3.token, channelId1);
+    requestChannelJoin(registered2.token, channelId1);
+    expect(requestChannelAddowner(registered2.token, channelId1, registered3.authUserId).body).toStrictEqual({});
+  });
+  test('global owner is not in the list of owner', () => {
+    requestPermissionChange(registered1.token, registered2.authUserId, 1);
+    requestChannelJoin(registered3.token, channelId1);
+    requestChannelJoin(registered2.token, channelId1);
+    expect(requestChannelRemoveOwner(registered1.token, channelId1, registered2.authUserId).statusCode).toBe(400);
+  });
+  test('global owner leave the channel and see if he dont have owner permission anymore', () => {
+    requestPermissionChange(registered1.token, registered2.authUserId, 1);
+    requestChannelJoin(registered3.token, channelId1);
+    requestChannelJoin(registered2.token, channelId1);
+    expect(requestChannelAddowner(registered2.token, channelId1, registered2.authUserId).body).toStrictEqual({});
+    requestChanLeavenel(registered2.token, channelId1);
+    expect(requestChanLeavenel(registered2.token, channelId1).statusCode).toStrictEqual(403);
+    expect(requestChannelAddowner(registered2.token, channelId1, registered3.authUserId).statusCode).toStrictEqual(400);
   });
 });
