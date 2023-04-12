@@ -1,5 +1,5 @@
 import { getData, setData } from './dataStore';
-import { getUIdFromToken, getUser, findChannelIndexWithMessage, findDMIndexWithMessage } from './helper';
+import { getUIdFromToken, findChannelIndexWithMessage, findDMIndexWithMessage } from './helper';
 import { validateToken, isMember, isDmMember } from './helper';
 import { dataTs, messages, channel, dms } from './interfaces';
 import HTTPError from 'http-errors';
@@ -13,7 +13,11 @@ const getDmFromMessageId = (messageId: number): dms => {
   const data: dataTs = getData();
   return data.dms.find(dm => dm.messages.find(message => message.messageId === messageId));
 };
-
+/**
+ * @param {number} messageId
+ * @returns {object} msg object
+ * @summary Gets message object
+ */
 export const getMessage = (messageId: number): messages | boolean => {
   const data: dataTs = getData();
   let msg;
@@ -31,7 +35,6 @@ export const getMessage = (messageId: number): messages | boolean => {
   }
   return false;
 };
-
 /**
  * @param token
  * @param messageId
@@ -39,10 +42,10 @@ export const getMessage = (messageId: number): messages | boolean => {
  * @returns none
  * @method POST
  * @summary
- * Given a message within a channel or
- * DM the authorised user is part of, adds a "react" to that particular message.
+ * Given a message within a channel
+ * or DM the authorised user is part of, removes a "react" to that particular message.
  */
-export const messageReactV1 = (token: string, messageId: number, reactId: number) => {
+export const messageUnreactV1 = (token: string, messageId: number, reactId: number) => {
   if (!validateToken(token)) {
     throw HTTPError(403, 'Invalid token');
   }
@@ -85,10 +88,11 @@ export const messageReactV1 = (token: string, messageId: number, reactId: number
   }
   const msg = getMessage(messageId) as messages;
   const indexReactId = reactId - 1;
-  if (msg.reacts[indexReactId].allUsers.find(user => user.uId === uId)) {
-    throw HTTPError(400, 'Already reacted');
+  if (!msg.reacts[indexReactId].allUsers.find(user => user.uId === uId)) {
+    throw HTTPError(400, 'no reactions');
   }
-  const user = getUser(uId);
+  // const user = getUser(uId);
+  const indexToRemove = msg.reacts[indexReactId].allUsers.findIndex(user => user.uId === uId);
   if (inChannel) {
     let mIndex;
     const channelIndex = findChannelIndexWithMessage(messageId);
@@ -99,7 +103,7 @@ export const messageReactV1 = (token: string, messageId: number, reactId: number
         break;
       }
     }
-    data.channels[channelIndex].messages[mIndex].reacts[0].allUsers.push(user);
+    data.channels[channelIndex].messages[mIndex].reacts[0].allUsers.splice(indexToRemove, 1);
   } else {
     let mIndex;
     const dmIndex = findDMIndexWithMessage(messageId);
@@ -110,7 +114,7 @@ export const messageReactV1 = (token: string, messageId: number, reactId: number
         break;
       }
     }
-    data.dms[dmIndex].messages[mIndex].reacts[0].allUsers.push(user);
+    data.dms[dmIndex].messages[mIndex].reacts[0].allUsers.splice(indexToRemove, 1);
   }
   setData(data);
   return {};

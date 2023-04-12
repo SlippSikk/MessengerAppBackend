@@ -11,6 +11,8 @@ import { messageUnpinV1 } from './messageUnpin';
 import { messageShareV1 } from './messageShare';
 import { standupStartV1, standupActiveV1, standupSendV1 } from './standup';
 import { messageReactV1 } from './messageReact';
+import { messageUnreactV1 } from './messageUnreact';
+import { standupActiveV1 } from './standup';
 import { clearV1 } from './other';
 import morgan from 'morgan';
 import config from './config.json';
@@ -296,6 +298,13 @@ app.post('/message/react/v1', (req: Request, res: Response) => {
   const { messageId, reactId } = req.body;
 
   res.json(messageReactV1(token, +messageId, +reactId));
+});
+
+app.post('/message/unreact/v1', (req: Request, res: Response) => {
+  const token = req.header('token');
+  const { messageId, reactId } = req.body;
+
+  res.json(messageUnreactV1(token, +messageId, +reactId));
 });
 // Keep this BENEATH route definitions
 // handles errors nicely
