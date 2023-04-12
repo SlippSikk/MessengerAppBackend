@@ -74,13 +74,18 @@ describe('Correct input', () => {
   });
 
   test('Single Message', () => {
-    const messageId: number = requestMessageSend(authToken3, channelId3, 'My first message!').messageId;
+    const messageId: number = requestMessageSend(authToken3, channelId3, 'My first message!').body.messageId;
     expect(requestChannelMessages(authToken3, channelId3, 0).body).toEqual({
       messages: [{
         messageId: messageId,
         uId: authId3,
         message: 'My first message!',
-        timeSent: expect.any(Number)
+        timeSent: expect.any(Number),
+        reacts: [{
+          reactId: 1,
+          allUsers: []
+        }],
+        isPinned: false
       }],
       start: 0,
       end: -1
@@ -88,21 +93,31 @@ describe('Correct input', () => {
   });
 
   test('Start is not at index 0', () => {
-    const messageId1 = requestMessageSend(authToken2, channelId2, 'My first message!').messageId;
-    const messageId2 = requestMessageSend(authToken2, channelId2, 'My second message!').messageId;
+    const messageId1 = requestMessageSend(authToken2, channelId2, 'My first message!').body.messageId;
+    const messageId2 = requestMessageSend(authToken2, channelId2, 'My second message!').body.messageId;
     requestMessageSend(authToken2, channelId2, 'My third message!');
     expect(requestChannelMessages(authToken2, channelId2, 1).body).toEqual({
       messages: [{
         messageId: messageId2,
         uId: authId2,
         message: 'My second message!',
-        timeSent: expect.any(Number)
+        timeSent: expect.any(Number),
+        reacts: [{
+          reactId: 1,
+          allUsers: []
+        }],
+        isPinned: false
       },
       {
         messageId: messageId1,
         uId: authId2,
         message: 'My first message!',
-        timeSent: expect.any(Number)
+        timeSent: expect.any(Number),
+        reacts: [{
+          reactId: 1,
+          allUsers: []
+        }],
+        isPinned: false
       }],
       start: 1,
       end: -1
@@ -114,13 +129,18 @@ describe('Correct input', () => {
     const messages: messages[] = [];
     for (let i = 0; i < 55; i++) {
       const currentMessage = i.toString();
-      const messageId: number = requestMessageSend(authToken1, channelId1, currentMessage).messageId;
+      const messageId: number = requestMessageSend(authToken1, channelId1, currentMessage).body.messageId;
 
       messages.push({
         messageId: messageId,
         uId: authId1,
         message: currentMessage,
-        timeSent: expect.any(Number)
+        timeSent: expect.any(Number),
+        reacts: [{
+          reactId: 1,
+          allUsers: []
+        }],
+        isPinned: false
       });
     }
 

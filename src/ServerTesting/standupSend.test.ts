@@ -1,78 +1,77 @@
-
-import { requestClear, requestAuthRegister, requestChannelsCreate, requestStandupStart, requestStandupSend, requestChannelJoin, requestChannelMessages } from "../wrappers";
+import { requestClear, requestAuthRegister, requestChannelsCreate, requestStandupStart, requestStandupSend, requestChannelJoin, requestChannelMessages } from '../wrappers';
 
 const INPUT_ERROR = 400;
 const AUTH_ERROR = 403;
 const OK = 200;
 
-/*
+function sleep(milliseconds: number) {
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
+}
+
 describe('Miscallaneous errors', () => {
-    let authToken1: string;
-    let authToken2: string;
-    let authToken3: string;
-    let channelId1: number
-  
-    beforeEach(() => {
-      requestClear();
-      authToken1 = requestAuthRegister('anna@gmail.com', 'aaa123', 'Anna', 'Adams').token;
-      authToken2 = requestAuthRegister('bob@outlook.com', 'bbb123', 'Bob', 'Biggums').token;
-      authToken3 = requestAuthRegister('chris@outlook.com', 'ccc123', 'Chris', 'Catman').token;
-      
-      channelId1 = requestChannelsCreate(authToken2, 'Channel 1', true).body.channelId;
-      requestChannelJoin(authToken3, channelId1);
-    });
+  let authToken1: string;
+  let authToken2: string;
+  let authToken3: string;
+  let channelId1: number;
 
-    test('Invalid token', () => {
-      requestStandupStart(authToken2, channelId1, 1)
-      expect(requestStandupSend(authToken1 + authToken2 + authToken3, channelId1, 'test').statusCode).toBe(AUTH_ERROR);
-    })
+  beforeEach(() => {
+    requestClear();
+    authToken1 = requestAuthRegister('anna@gmail.com', 'aaa123', 'Anna', 'Adams').token;
+    authToken2 = requestAuthRegister('bob@outlook.com', 'bbb123', 'Bob', 'Biggums').token;
+    authToken3 = requestAuthRegister('chris@outlook.com', 'ccc123', 'Chris', 'Catman').token;
 
-    test('Invalid channel Id', () => {
-      requestStandupStart(authToken2, channelId1, 1)
-      expect(requestStandupSend(authToken3, channelId1 + 1, 'test').statusCode).toBe(INPUT_ERROR);
-    })
+    channelId1 = requestChannelsCreate(authToken2, 'Channel 1', true).body.channelId;
+    requestChannelJoin(authToken3, channelId1);
+  });
 
-    test('Valid channel Id but user not a member', () => {
-      requestStandupStart(authToken2, channelId1, 1)
-      expect(requestStandupSend(authToken1, channelId1, 'test').statusCode).toBe(AUTH_ERROR);
-    })
+  test('Invalid token', async() => {
+    requestStandupStart(authToken2, channelId1, 1);
+    expect(requestStandupSend(authToken1 + authToken2 + authToken3, channelId1, 'test').statusCode).toBe(AUTH_ERROR);
+    await sleep(1000);
+  });
 
-    test('Length is over 1000 characters', () => {
-      const longString = Array(1002).join('x');
-      requestStandupStart(authToken2, channelId1, 1)
-      expect(requestStandupSend(authToken3, channelId1, longString).statusCode).toBe(INPUT_ERROR);
-    })
+  test('Invalid channel Id', async() => {
+    requestStandupStart(authToken2, channelId1, 1);
+    expect(requestStandupSend(authToken3, channelId1 + 1, 'test').statusCode).toBe(INPUT_ERROR);
+    await sleep(1000);
+  });
 
-    test('No standup is active', () => {
-      expect(requestStandupSend(authToken2, channelId1, 'test').statusCode).toBe(INPUT_ERROR);
-    })
-  
+  test('Valid channel Id but user not a member', async() => {
+    requestStandupStart(authToken2, channelId1, 1);
+    expect(requestStandupSend(authToken1, channelId1, 'test').statusCode).toBe(AUTH_ERROR);
+    await sleep(1000);
+  });
+
+  test('Length is over 1000 characters', async() => {
+    const longString = Array(1002).join('x');
+    requestStandupStart(authToken2, channelId1, 1);
+    expect(requestStandupSend(authToken3, channelId1, longString).statusCode).toBe(INPUT_ERROR);
+    await sleep(1000);
+  });
+
+  test('No standup is active', () => {
+    expect(requestStandupSend(authToken2, channelId1, 'test').statusCode).toBe(INPUT_ERROR);
+  });
 });
-*/
-  
 
-test('Valid Operation', () => {
+test('Valid Operation', async() => {
   requestClear();
   const user1 = requestAuthRegister('anna@gmail.com', 'aaa123', 'Anna', 'Adams');
   const authId1 = user1.authUserId;
   const authToken1 = user1.token;
   const authToken2 = requestAuthRegister('bob@outlook.com', 'bbb123', 'Bob', 'Biggums').token;
-  
+
   const channelId1 = requestChannelsCreate(authToken2, 'Channel 1', true).body.channelId;
   requestChannelJoin(authToken1, channelId1);
 
-  const timeFinish = requestStandupStart(authToken2, channelId1, 3).body.timeFinish;
+  requestStandupStart(authToken1, channelId1, 1);
   expect(requestStandupSend(authToken1, channelId1, 'First').statusCode).toBe(OK);
   expect(requestStandupSend(authToken2, channelId1, 'Second').statusCode).toBe(OK);
-  for (;;) {
-    if (Math.floor(Date.now() / 1000) >= timeFinish + 1) {
-      break;
-    }
-  }
+  await sleep(1000);
 
   // user cannot send message to standup after it is finished
   expect(requestStandupSend(authToken1, channelId1, 'Third').statusCode).toBe(INPUT_ERROR);
-  
+
   expect(requestChannelMessages(authToken2, channelId1, 0).body).toStrictEqual({
     messages: [{
       messageId: expect.any(Number),
@@ -88,5 +87,5 @@ test('Valid Operation', () => {
     }],
     start: 0,
     end: -1
-  })
-})
+  });
+});

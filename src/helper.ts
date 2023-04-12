@@ -1,5 +1,5 @@
-import { getData } from './dataStore';
-import { channel, user, dms, password, users } from './interfaces';
+import { getData, setData } from './dataStore';
+import { channel, user, dms, password, users, dataTs } from './interfaces';
 
 import md5 from 'md5';
 import crypto from 'crypto';
@@ -247,7 +247,7 @@ export const hashToken = (str: string): string => {
 };
 
 export const validateToken = (token: string): boolean => {
-  let data = getData();
+  const data = getData();
   const found = data.users.find(element => element.token.find(element => element === hashToken(token)));
 
   if (found !== undefined) {
@@ -258,14 +258,14 @@ export const validateToken = (token: string): boolean => {
 };
 
 export const userIndexToken = (token: string): number => {
-  let data = getData();
+  const data: dataTs = getData();
   return data.users.findIndex(element => element.token.find(element => element === hashToken(token)));
-}
+};
 
 export const userObjToken = (token: string): users => {
-  let data = getData();
+  const data: dataTs = getData();
   return data.users.find(element => element.token.find(element => element === hashToken(token)));
-}
+};
 
 export function encrypt(text: string): password {
   const cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
@@ -299,7 +299,7 @@ export const findPassword = (pass: string): boolean => {
   } else {
     return false;
   }
-}
+};
 
 export const getIdFromMessage = (messageId: number) => {
   const data = getData();
@@ -325,3 +325,50 @@ export const getIdFromMessage = (messageId: number) => {
     }
   }
 };
+
+/** 
+ * Summary: Sends all buffered standup messages at the end of a standup
+ * 
+ * Description:
+ * Once timeFinish has been reached for the standup, this function is called.
+ * Searches for the channel via the specified channelId and stores the message
+ * in a variable. Resets the standup to an empty status before pushing the 
+ * message to the channel's messages, using parameters inputted in the function.
+ * 
+ * @param {number} channelId - Channel's unique ID
+ * @param {number} uId - User's unique ID
+ * @param {number} timeFinish - Standup's expected time to finish.
+ */
+
+export function sendMessages(channelId: number, uId: number, timeFinish: number) {
+  const channel: channel = getChannel(channelId) as channel;
+  let message: string = channel.standup.standupMessage.trim();
+  
+  const data: dataTs = getData();
+  const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);
+
+  data.channels[channelIndex].standup.isActive = false;
+  data.channels[channelIndex].standup.timeFinish = null;
+  data.channels[channelIndex].standup.authUserId = null;
+  data.channels[channelIndex].standup.standupMessage = '';
+
+  if (message.length === 0) {
+    setData(data);
+    return {};
+  }
+
+  const messageId = createMessageId();
+  data.channels[channelIndex].messages.push({
+    messageId: messageId,
+    uId: uId,
+    message: message,
+    timeSent: timeFinish,
+    reacts: [{
+      reactId: 1,
+      allUsers: []
+    }],
+    isPinned: false
+  });
+
+  setData(data);
+}

@@ -38,7 +38,7 @@ describe('Valid Inputs', () => {
 
   test('Owner removes self', () => {
     expect(requestChannelRemoveOwner(authToken2, channelId1, authId2).body).toEqual({});
-    expect(requestChannelDetails(authToken1, channelId1)).toEqual({
+    expect(requestChannelDetails(authToken1, channelId1).body).toEqual({
       name: 'Channel 1',
       isPublic: true,
       ownerMembers: [{
@@ -69,7 +69,7 @@ describe('Valid Inputs', () => {
 
   test('Owner removes other', () => {
     expect(requestChannelRemoveOwner(authToken1, channelId1, authId2).body).toEqual({});
-    expect(requestChannelDetails(authToken1, channelId1)).toEqual({
+    expect(requestChannelDetails(authToken1, channelId1).body).toEqual({
       name: 'Channel 1',
       isPublic: true,
       ownerMembers: [{
@@ -129,8 +129,8 @@ describe('Valid Inputs', () => {
 
       channelId2 = requestChannelsCreate(authToken2, 'Channel 2', true).body.channelId;
       requestChannelJoin(authToken3, channelId2);
-    // Channel1: [Owners: authId1, authId2], [Members: authId1, authId2, authId3]
-    // Channel2: [Owners: authId2], [Members: authId2, authId3]
+      // Channel1: [Owners: authId1, authId2], [Members: authId1, authId2, authId3]
+      // Channel2: [Owners: authId2], [Members: authId2, authId3]
     });
 
     test('Invalid channelId', () => {

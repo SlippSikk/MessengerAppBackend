@@ -16,7 +16,7 @@ beforeEach(() => {
   channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
   requestChannelInvite(registered1.token, channelId1, registered2.authUserId);
   dmId1 = requestDmCreate(registered1.token, [registered2.authUserId]).dmId;
-  messageId1 = requestMessageSend(registered2.token, channelId1, '@duckdash, Hi my ducklings').messageId;
+  messageId1 = requestMessageSend(registered2.token, channelId1, '@duckdash, Hi my ducklings').body.messageId;
   requestMessageSend(registered1.token, channelId1, '@duckdash! @duckdash! Reminder!!');
   requestMessageSenddm(registered1.token, dmId1, 'hello @duckdash');
 });
