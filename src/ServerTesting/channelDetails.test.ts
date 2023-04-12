@@ -1,7 +1,6 @@
 
 import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelJoin, requestChannelInvite, requestChannelDetails } from '../wrappers';
 import { authUserId } from '../interfaces';
-const ERROR = { error: expect.any(String) };
 
 let registered1: authUserId;
 let channelId1: number;
@@ -9,25 +8,25 @@ let channelId1: number;
 beforeEach(() => {
   requestClear();
   registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
-  channelId1 = requestChannelsCreate(registered1.token, 'first', true).channelId;
+  channelId1 = requestChannelsCreate(registered1.token, 'first', true).body.channelId;
 });
 
 describe('Error cases', () => {
   test('Test for Invalid authUserId', () => {
-    expect(requestChannelDetails(registered1.token + 'p', channelId1)).toStrictEqual(ERROR);
+    expect(requestChannelDetails(registered1.token + 'p', channelId1).statusCode).toStrictEqual(400);
   });
   test('Test for Invalid courseId', () => {
-    expect(requestChannelDetails(registered1.token, channelId1 + 1)).toStrictEqual(ERROR);
+    expect(requestChannelDetails(registered1.token, channelId1 + 1).statusCode).toStrictEqual(400);
   });
   test('Test for not a member', () => {
     const registered2 = requestAuthRegister('dog@gmail.com', 'hound123', 'dog', 'drown');
-    expect(requestChannelDetails(registered2.token, channelId1)).toStrictEqual(ERROR);
+    expect(requestChannelDetails(registered2.token, channelId1).statusCode).toStrictEqual(403);
   });
 });
 
 describe('Function Testing', () => {
   test('In public courseId ', () => {
-    expect(requestChannelDetails(registered1.token, channelId1)).toStrictEqual({
+    expect(requestChannelDetails(registered1.token, channelId1).body).toStrictEqual({
       name: 'first',
       isPublic: true,
       ownerMembers: [{
@@ -47,8 +46,8 @@ describe('Function Testing', () => {
     });
   });
   test('non-public courseId', () => {
-    const channelIdPrivate = requestChannelsCreate(registered1.token, 'third', false).channelId;
-    expect(requestChannelDetails(registered1.token, channelIdPrivate)).toStrictEqual({
+    const channelIdPrivate = requestChannelsCreate(registered1.token, 'third', false).body.channelId;
+    expect(requestChannelDetails(registered1.token, channelIdPrivate).body).toStrictEqual({
       name: 'third',
       isPublic: false,
       ownerMembers: [{
@@ -73,7 +72,7 @@ describe('Function Testing', () => {
     const registered3 = requestAuthRegister('donkey@gmail.com', '123456', 'donkey', 'fly');
     requestChannelJoin(registered2.token, channelId1);
     requestChannelDetails(registered1.token, channelId1);
-    expect(requestChannelDetails(registered1.token, channelId1)).toStrictEqual({
+    expect(requestChannelDetails(registered1.token, channelId1).body).toStrictEqual({
       name: 'first',
       isPublic: true,
       ownerMembers: [{
@@ -99,7 +98,7 @@ describe('Function Testing', () => {
       }],
     });
     requestChannelJoin(registered3.token, channelId1);
-    expect(requestChannelDetails(registered1.token, channelId1)).toStrictEqual({
+    expect(requestChannelDetails(registered1.token, channelId1).body).toStrictEqual({
       name: 'first',
       isPublic: true,
       ownerMembers: [{
@@ -135,9 +134,9 @@ describe('Function Testing', () => {
 
   test('Public courseId use ChannelInv', () => {
     const registered2 = requestAuthRegister('dog@gmail.com', 'hound123', 'dog', 'drown');
-    const channelIdPrivate = requestChannelsCreate(registered1.token, 'third', false).channelId;
+    const channelIdPrivate = requestChannelsCreate(registered1.token, 'third', false).body.channelId;
     requestChannelInvite(registered1.token, channelId1, registered2.authUserId);
-    expect(requestChannelDetails(registered1.token, channelId1)).toStrictEqual({
+    expect(requestChannelDetails(registered1.token, channelId1).body).toStrictEqual({
       name: 'first',
       isPublic: true,
       ownerMembers: [{
@@ -163,7 +162,7 @@ describe('Function Testing', () => {
       }],
     });
     requestChannelInvite(registered1.token, channelIdPrivate, registered2.authUserId);
-    expect(requestChannelDetails(registered1.token, channelIdPrivate)).toStrictEqual({
+    expect(requestChannelDetails(registered1.token, channelIdPrivate).body).toStrictEqual({
       name: 'third',
       isPublic: false,
       ownerMembers: [{

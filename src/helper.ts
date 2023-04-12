@@ -1,11 +1,11 @@
 import { getData } from './dataStore';
-import { channel, user, dms, password, users } from './interfaces';
+import { channel, user, dms, password, users, dataTs } from './interfaces';
 
 import md5 from 'md5';
-import crypto from 'crypto'
+import crypto from 'crypto';
 
 // Global Variables
-const randomWord = "yT95GGuk3FGVzcaFfPXb"
+const randomWord = 'yT95GGuk3FGVzcaFfPXb';
 const algorithm = 'aes-256-cbc';
 const key = crypto.randomBytes(32);
 const iv = crypto.randomBytes(16);
@@ -109,7 +109,7 @@ export const isOwnerByToken = (channelId: number, token: string): boolean => {
  * @return {true/false}
  */
 
-///////////// DEPRECATED //////////////////
+/// ////////// DEPRECATED //////////////////
 // export const isTokenValid = (token: string): boolean => {
 //   return !!getUIdFromToken(token);
 // };
@@ -136,7 +136,7 @@ export const createMessageId = (): number => {
  */
 export const getUIdFromToken = (token: string): number => {
   const data = getData();
-  const foundToken = data.users.find(element => element.token.find(element => hashToken(element) === token));
+  const foundToken = data.users.find(element => element.token.find(element => element === hashToken(token)));
 
   // if (foundToken === undefined) {
   //   return false;
@@ -228,8 +228,8 @@ export const isMessageInDM = (messageId: number): boolean => {
   return false;
 };
 /**
- * 
- * @param messageId 
+ *
+ * @param messageId
  * @returns dmIndex
  */
 export const findDMIndexWithMessage = (messageId: number): number => {
@@ -244,31 +244,31 @@ export const findDMIndexWithMessage = (messageId: number): number => {
 
 export const hashToken = (str: string): string => {
   return md5(str + randomWord);
-}
+};
 
-export const validateToken = (hash: string): boolean => {
-  let data = getData();
-  const found = data.users.find(element => element.token.find(element => hashToken(element) === hash));
+export const validateToken = (token: string): boolean => {
+  const data = getData();
+  const found = data.users.find(element => element.token.find(element => element === hashToken(token)));
 
   if (found !== undefined) {
     return true;
   } else {
     return false;
   }
-}
+};
 
-export const userIndexToken = (hash: string): number => {
-  let data = getData();
-  return data.users.findIndex(element => element.token.find(element => hashToken(element) === hash));
-}
+export const userIndexToken = (token: string): number => {
+  const data: dataTs = getData();
+  return data.users.findIndex(element => element.token.find(element => element === hashToken(token)));
+};
 
-export const userObjToken = (hash: string): users => {
-  let data = getData();
-  return data.users.find(element => element.token.find(element => hashToken(element) === hash));
-}
+export const userObjToken = (token: string): users => {
+  const data: dataTs = getData();
+  return data.users.find(element => element.token.find(element => element === hashToken(token)));
+};
 
 export function encrypt(text: string): password {
-  let cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
+  const cipher = crypto.createCipheriv(algorithm, Buffer.from(key), iv);
   let encrypted = cipher.update(text);
   encrypted = Buffer.concat([encrypted, cipher.final()]);
   return {
@@ -278,10 +278,10 @@ export function encrypt(text: string): password {
 }
 
 export function decrypt(text: password): string {
-  let iv = Buffer.from(text.iv, 'hex');
-  let encryptedText = Buffer.from(text.encryptedData, 'hex');
+  const iv = Buffer.from(text.iv, 'hex');
+  const encryptedText = Buffer.from(text.encryptedData, 'hex');
 
-  let decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
+  const decipher = crypto.createDecipheriv(algorithm, Buffer.from(key), iv);
 
   let decrypted = decipher.update(encryptedText);
   decrypted = Buffer.concat([decrypted, decipher.final()]);
@@ -290,14 +290,38 @@ export function decrypt(text: password): string {
 }
 
 export const findPassword = (pass: string): boolean => {
+  const data = getData();
 
-  let data = getData();
+  const foundPassword = data.users.find(element => decrypt(element.password) === pass);
 
-  const foundPassword = data.users.find(element => decrypt(element.password) === pass)
-
-  if (foundPassword != undefined) {
+  if (foundPassword !== undefined) {
     return true;
   } else {
     return false;
   }
-}
+};
+
+export const getIdFromMessage = (messageId: number) => {
+  const data = getData();
+  let msg;
+  for (const channel of data.channels) {
+    msg = channel.messages.find(message => message.messageId === messageId);
+    if (msg) {
+      return {
+        type: 'channel',
+        Id: channel.channelId,
+        uId: msg.uId
+      };
+    }
+  }
+  for (const dm of data.dms) {
+    msg = dm.messages.find(message => message.messageId === messageId);
+    if (msg) {
+      return {
+        type: 'dm',
+        Id: dm.dmId,
+        uId: msg.uId
+      };
+    }
+  }
+};
