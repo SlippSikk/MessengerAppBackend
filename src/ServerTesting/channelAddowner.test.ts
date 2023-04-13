@@ -90,6 +90,6 @@ describe('Owner permission test', () => {
     expect(requestChannelAddowner(registered2.token, channelId1, registered2.authUserId).body).toStrictEqual({});
     requestChanLeavenel(registered2.token, channelId1);
     expect(requestChanLeavenel(registered2.token, channelId1).statusCode).toStrictEqual(403);
-    expect(requestChannelAddowner(registered2.token, channelId1, registered3.authUserId).statusCode).toStrictEqual(400);
+    expect(requestChannelAddowner(registered2.token, channelId1, registered3.authUserId).statusCode).toStrictEqual(403);
   });
 });

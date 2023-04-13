@@ -71,7 +71,7 @@ export const messagePinV1 = (token: string, messageId: number) => {
   let channelId: number;
   if (inChannel) {
     channelId = channel.channelId;
-    if (!isMember(channelId, uId) && uId !== 1) {
+    if (!isMember(channelId, uId)) {
       throw HTTPError(400, 'not a member of messageId');
     }
   }

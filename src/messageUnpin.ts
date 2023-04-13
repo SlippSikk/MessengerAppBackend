@@ -76,8 +76,8 @@ export const messageUnpinV1 = (token: string, messageId: number) => {
   let channelId: number;
   if (inChannel) {
     channelId = channel.channelId;
-    if (!isMember(channelId, uId) && uId !== 1) {
-      throw HTTPError(400, 'not a member of messageId');
+    if (!isMember(channelId, uId)) {
+      throw HTTPError(403, 'not a member of messageId');
     }
   }
   // Check if user is in dm

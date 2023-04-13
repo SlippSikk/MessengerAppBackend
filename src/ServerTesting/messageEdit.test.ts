@@ -1,5 +1,5 @@
 import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelMessages, requestMessageSend, requestDmCreate, requestMessageSenddm, requestChannelJoin, requestMessageEdit, requestDmMessages } from '../wrappers';
-
+import { requestPermissionChange } from '../XujiWrap';
 const INPUT_ERROR = 400;
 const AUTH_ERROR = 403;
 
@@ -7,6 +7,7 @@ describe('Invalid inputs', () => {
   let authToken1: string;
   let authToken2: string;
   let authToken3: string;
+  let authId1: number;
   let authId2: number;
   let authId3: number;
   let channelId1: number;
@@ -18,7 +19,7 @@ describe('Invalid inputs', () => {
     requestClear();
     const user1 = requestAuthRegister('anna@gmail.com', 'aaa123', 'Anna', 'Albert');
     authToken1 = user1.token;
-
+    authId1 = user1.authUserId;
     const user2 = requestAuthRegister('bob@outlook.com', 'bbb123', 'Bob', 'Billington');
     authToken2 = user2.token;
     authId2 = user2.authUserId;
@@ -49,6 +50,19 @@ describe('Invalid inputs', () => {
   test('AuthUser did not send message and does not have owner permissions', () => {
     expect(requestMessageEdit(authToken2, messageId1, 'My new message').statusCode).toBe(AUTH_ERROR);
     expect(requestMessageEdit(authToken2, dmMessageId1, 'My new DM').statusCode).toBe(AUTH_ERROR);
+  });
+  
+  test('After changing the permissions, authUser did not send message and does not have owner permissions', () => {
+    expect(requestPermissionChange(authToken1, authId2, 1).body).toStrictEqual({})
+    expect(requestPermissionChange(authToken2, authId1, 2).body).toStrictEqual({})
+    expect(requestMessageEdit(authToken3, messageId1, 'My new message').statusCode).toBe(AUTH_ERROR);
+    expect(requestMessageEdit(authToken3, dmMessageId1, 'My new DM').statusCode).toBe(AUTH_ERROR);
+  });
+
+  test('AuthUser did not send message but he is global owner', () => {
+    expect(requestPermissionChange(authToken1, authId2, 1).body).toStrictEqual({}); // user 2 become global owner
+    expect(requestMessageEdit(authToken2, messageId1, 'My new message').statusCode).toBe(200);  // user 2 have permission for channel now
+    expect(requestMessageEdit(authToken2, dmMessageId1, 'My new DM').statusCode).toBe(AUTH_ERROR);  // but user2 doesn't have dm permission
   });
 
   test('Invalid token', () => {
@@ -129,6 +143,43 @@ describe('Valid inputs', () => {
     });
   });
 
+
+  test('New message', () => {
+    const newString = 'New String';
+    expect(requestMessageEdit(authToken1, messageId1, newString).body).toStrictEqual({});
+    expect(requestMessageEdit(authToken1, dmMessageId1, newString).body).toStrictEqual({});
+    expect(requestChannelMessages(authToken1, channelId1, 0).body).toEqual({
+      messages: [{
+        messageId: messageId1,
+        uId: authId1,
+        message: newString,
+        timeSent: expect.any(Number),
+        reacts: [{
+          reactId: expect.any(Number),
+          allUsers: []
+        }],
+        isPinned: false
+      }],
+      start: 0,
+      end: -1
+    });
+
+    expect(requestDmMessages(authToken1, dmId1, 0).body).toEqual({
+      messages: [{
+        messageId: dmMessageId1,
+        uId: authId1,
+        message: newString,
+        timeSent: expect.any(Number),
+        reacts: [{
+          reactId: expect.any(Number),
+          allUsers: []
+        }],
+        isPinned: false
+      }],
+      start: 0,
+      end: -1
+    });
+  });
   test('Delete message', () => {
     const newString = '';
     const messageId2 = requestMessageSend(authToken1, channelId1, 'Second message').body.messageId;
