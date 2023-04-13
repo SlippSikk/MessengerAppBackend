@@ -19,7 +19,7 @@ import config from './config.json';
 import cors from 'cors';
 import errorHandler from 'middleware-http-errors';
 import { notificationsGet } from './notifications';
-
+import { PermissionChange } from './PermissionChange'
 // Set up web app
 const app = express();
 // Use middleware that allows us to access the JSON body of requests
@@ -293,6 +293,15 @@ app.post('/message/share/v1', (req: Request, res: Response) => {
   res.json(messageShareV1(token, ogMessageId, message, channelId, dmId));
 });
 
+
+app.post('/admin/userpermission/change/v1', (req: Request, res: Response) => {
+  const token = req.header('token');
+  const { uId, permissionId } = req.body;
+  return res.json(PermissionChange(token, uId, permissionId));
+});
+
+
+
 app.post('/message/react/v1', (req: Request, res: Response) => {
   const token = req.header('token');
   const { messageId, reactId } = req.body;
@@ -306,6 +315,7 @@ app.post('/message/unreact/v1', (req: Request, res: Response) => {
 
   res.json(messageUnreactV1(token, +messageId, +reactId));
 });
+
 // Keep this BENEATH route definitions
 // handles errors nicely
 app.use(errorHandler());

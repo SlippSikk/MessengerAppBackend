@@ -326,6 +326,64 @@ export const getIdFromMessage = (messageId: number) => {
   }
 };
 
+
+export const isGlobalOwnerFromUid = (uId: number): boolean => {
+  const data = getData();
+
+  const uIdObject = data.users.find(element => element.uId === uId);
+
+  if (uIdObject?.permissionId === 1) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const isGlobalOwnerFromToken = (token: string): boolean => {
+  const uId = getUIdFromToken(token) as number;
+  return isGlobalOwnerFromUid(uId);
+};
+
+export const getPermissionIdFromUid = (uId: number) => {
+  const data = getData();
+  const uIdObject = data.users.find(element => element.uId === uId);
+  return uIdObject?.permissionId;
+};
+
+export const userIndexUid = (uId: number): number => {
+  const data: dataTs = getData();
+  return data.users.findIndex(element => element.uId === uId);
+};
+
+
+export const isGlobalOwnerFromUid = (uId: number): boolean => {
+  const data = getData();
+
+  const uIdObject = data.users.find(element => element.uId === uId);
+
+  if (uIdObject?.permissionId === 1) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const isGlobalOwnerFromToken = (token: string): boolean => {
+  const uId = getUIdFromToken(token) as number;
+  return isGlobalOwnerFromUid(uId);
+};
+
+export const getPermissionIdFromUid = (uId: number) => {
+  const data = getData();
+  const uIdObject = data.users.find(element => element.uId === uId);
+  return uIdObject?.permissionId;
+};
+
+export const userIndexUid = (uId: number): number => {
+  const data: dataTs = getData();
+  return data.users.findIndex(element => element.uId === uId);
+};
+
 /** 
  * Summary: Sends all buffered standup messages at the end of a standup
  * 

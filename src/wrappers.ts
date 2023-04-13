@@ -47,7 +47,7 @@ export function requestAuthRegister(email: string, password: string, nameFirst: 
         nameFirst,
         nameLast
       },
-      timeout: 100
+      timeout: 2000
     }
   );
 

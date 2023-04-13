@@ -63,12 +63,15 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
     foundHandle = data.users.find(element => element.handleStr === nameConcat);
   }
 
-  // Assign appropriate authId number
+  // Assign appropriate authId number and permissionId number
   let Id: number = data.users.length + 1;
+  let permissionId: number = 2;
   if (data.users.length === 0) {
     Id = 1;
+    permissionId = 1;
   } else if (data.users.length > 0) {
     Id = data.users[data.users.length - 1].uId + 1;
+    permissionId = 2;
   }
 
   // Encrypt password
@@ -86,7 +89,8 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
     password: pass,
     token: [hashedToken],
     notifications: [],
-    resetCode: 'NO'
+    resetCode: 'NO',
+    permissionId: permissionId
   };
 
   data.users.push(user);
