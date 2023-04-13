@@ -51,18 +51,18 @@ describe('Invalid inputs', () => {
     expect(requestMessageEdit(authToken2, messageId1, 'My new message').statusCode).toBe(AUTH_ERROR);
     expect(requestMessageEdit(authToken2, dmMessageId1, 'My new DM').statusCode).toBe(AUTH_ERROR);
   });
-  
+
   test('After changing the permissions, authUser did not send message and does not have owner permissions', () => {
-    expect(requestPermissionChange(authToken1, authId2, 1).body).toStrictEqual({})
-    expect(requestPermissionChange(authToken2, authId1, 2).body).toStrictEqual({})
+    expect(requestPermissionChange(authToken1, authId2, 1).body).toStrictEqual({});
+    expect(requestPermissionChange(authToken2, authId1, 2).body).toStrictEqual({});
     expect(requestMessageEdit(authToken3, messageId1, 'My new message').statusCode).toBe(AUTH_ERROR);
     expect(requestMessageEdit(authToken3, dmMessageId1, 'My new DM').statusCode).toBe(AUTH_ERROR);
   });
 
   test('AuthUser did not send message but he is global owner', () => {
     expect(requestPermissionChange(authToken1, authId2, 1).body).toStrictEqual({}); // user 2 become global owner
-    expect(requestMessageEdit(authToken2, messageId1, 'My new message').statusCode).toBe(200);  // user 2 have permission for channel now
-    expect(requestMessageEdit(authToken2, dmMessageId1, 'My new DM').statusCode).toBe(AUTH_ERROR);  // but user2 doesn't have dm permission
+    expect(requestMessageEdit(authToken2, messageId1, 'My new message').statusCode).toBe(200); // user 2 have permission for channel now
+    expect(requestMessageEdit(authToken2, dmMessageId1, 'My new DM').statusCode).toBe(AUTH_ERROR); // but user2 doesn't have dm permission
   });
 
   test('Invalid token', () => {
@@ -142,7 +142,6 @@ describe('Valid inputs', () => {
       end: -1
     });
   });
-
 
   test('New message', () => {
     const newString = 'New String';

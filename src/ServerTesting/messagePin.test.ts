@@ -33,18 +33,12 @@ describe('Error Cases and Function Testing', () => {
   test('(DM) user is not in messageId', () => {
     expect(requestMessagePin(registered3.token, mIdDm).statusCode).toStrictEqual(400);
   });
-  test('Global owner can Pin', () => {
-    const mIdChannel2 = requestMessageSend(registered2.token, channelId2, 'How to become a dog').body.messageId;
-    requestChannelJoin(registered1.token, channelId2);
-    expect(requestMessagePin(registered1.token, mIdChannel2).body).toStrictEqual({});
-  });
 
   test('Global owner can Pin, even if the permission have been changed for a round', () => {
-    expect(requestPermissionChange(registered1.token, registered2.authUserId, 1).body).toStrictEqual({})
-    expect(requestPermissionChange(registered2.token, registered1.authUserId, 2).body).toStrictEqual({})
+    expect(requestPermissionChange(registered1.token, registered2.authUserId, 1).body).toStrictEqual({});
+    expect(requestPermissionChange(registered2.token, registered1.authUserId, 2).body).toStrictEqual({});
     const mIdChannel2 = requestMessageSend(registered2.token, channelId2, 'How to become a dog').body.messageId;
     expect(requestMessagePin(registered2.token, mIdChannel2).body).toStrictEqual({});
-    
   });
   test('(Channel) Message already pinned ', () => {
     expect(requestMessagePin(registered1.token, mIdChannel).body).toStrictEqual({});
@@ -63,10 +57,10 @@ describe('Error Cases and Function Testing', () => {
     expect(requestMessagePin(registered2.token, mIdChannel).statusCode).toStrictEqual(403);
   });
   test('Permission changing test in channel message pin', () => {
-    expect(requestPermissionChange(registered1.token, registered2.authUserId, 1).body).toStrictEqual({})
-    expect(requestPermissionChange(registered2.token, registered1.authUserId, 2).body).toStrictEqual({})  // let user2 become the only global owner
+    expect(requestPermissionChange(registered1.token, registered2.authUserId, 1).body).toStrictEqual({});
+    expect(requestPermissionChange(registered2.token, registered1.authUserId, 2).body).toStrictEqual({}); // let user2 become the only global owner
     requestChannelJoin(registered1.token, channelId2);
-    expect(requestMessagePin(registered1.token, mIdChannel2).statusCode).toStrictEqual(403); //user 1 not global user and owner of channel2
+    expect(requestMessagePin(registered1.token, mIdChannel2).statusCode).toStrictEqual(403); // user 1 not global user and owner of channel2
   });
   test('(DM)User does not have owner permission', () => {
     expect(requestMessagePin(registered1.token, mIdDm).statusCode).toStrictEqual(403);

@@ -41,7 +41,7 @@ describe('Error Cases and Function Testing', () => {
   });
   test('Global owner can unPin, even if some permission changes happened', () => {
     const mIdChannel2 = requestMessageSend(registered2.token, channelId2, 'How to become a dog').body.messageId;
-    expect(requestPermissionChange(registered1.token, registered3.authUserId, 1).body).toStrictEqual({})
+    expect(requestPermissionChange(registered1.token, registered3.authUserId, 1).body).toStrictEqual({});
     requestMessagePin(registered2.token, mIdChannel2);
     requestChannelJoin(registered3.token, channelId2);
     expect(requestMessageUnpin(registered3.token, mIdChannel2).body).toStrictEqual({});
