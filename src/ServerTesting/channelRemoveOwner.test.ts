@@ -1,6 +1,5 @@
 import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelAddowner, requestChannelJoin, requestChannelRemoveOwner, requestChannelDetails, requestChanLeavenel } from '../wrappers';
 import { requestPermissionChange } from '../XujiWrap';
-import { authUserId } from '../interfaces';
 const INPUT_ERROR = 400;
 const AUTH_ERROR = 403;
 
@@ -163,32 +162,14 @@ describe('Valid Inputs', () => {
 describe('Owner permission test', () => {
   requestClear();
   beforeEach(() => {
-  requestClear();
-  
-  let registered1: authUserId;
-  let registered2: authUserId;
-  let registered3: authUserId;
-  let channelId1: number;
-  let channelId2: number;
-  registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
-  registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
-  registered3 = requestAuthRegister('dog@gmail.com', 'doggy123', 'dog', 'drown');
-  channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
-  channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
-  }); //beforeEach does't work again haha
+    requestClear();
+  }); // beforeEach does't work again haha
   test('global owner(not the channel owner)have the same permission to remove himself as channel owner', () => {
     requestClear();
-  
-  let registered1: authUserId;
-  let registered2: authUserId;
-  let registered3: authUserId;
-  let channelId1: number;
-  let channelId2: number;
-  registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
-  registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
-  registered3 = requestAuthRegister('dog@gmail.com', 'doggy123', 'dog', 'drown');
-  channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
-  channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
+    const registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    const registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+    const registered3 = requestAuthRegister('dog@gmail.com', 'doggy123', 'dog', 'drown');
+    const channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
     requestPermissionChange(registered1.token, registered2.authUserId, 1);
     requestChannelJoin(registered3.token, channelId1);
     requestChannelJoin(registered2.token, channelId1);
@@ -197,17 +178,10 @@ describe('Owner permission test', () => {
   });
   test('global owner is not in the list of owner', () => {
     requestClear();
-  
-  let registered1: authUserId;
-  let registered2: authUserId;
-  let registered3: authUserId;
-  let channelId1: number;
-  let channelId2: number;
-  registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
-  registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
-  registered3 = requestAuthRegister('dog@gmail.com', 'doggy123', 'dog', 'drown');
-  channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
-  channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
+    const registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    const registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+    const registered3 = requestAuthRegister('dog@gmail.com', 'doggy123', 'dog', 'drown');
+    const channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
     requestPermissionChange(registered1.token, registered2.authUserId, 1);
     requestChannelJoin(registered3.token, channelId1);
     requestChannelJoin(registered2.token, channelId1);
@@ -215,17 +189,10 @@ describe('Owner permission test', () => {
   });
   test('global owner leave the channel and see if he dont have owner permission to remove others anymore', () => {
     requestClear();
-  
-  let registered1: authUserId;
-  let registered2: authUserId;
-  let registered3: authUserId;
-  let channelId1: number;
-  let channelId2: number;
-  registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
-  registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
-  registered3 = requestAuthRegister('dog@gmail.com', 'doggy123', 'dog', 'drown');
-  channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
-  channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
+    const registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    const registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+    const registered3 = requestAuthRegister('dog@gmail.com', 'doggy123', 'dog', 'drown');
+    const channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
     requestPermissionChange(registered1.token, registered2.authUserId, 1);
     requestChannelJoin(registered3.token, channelId1);
     requestChannelJoin(registered2.token, channelId1);
