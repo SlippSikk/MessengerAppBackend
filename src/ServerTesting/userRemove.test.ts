@@ -47,7 +47,7 @@ describe('vaild input', () => {
     test('leave the dm', () => {
     expect(requestUserRemove(registered1.token, registered2.authUserId).body).toStrictEqual({});
     expect(requestDmDetails(registered1.token, dmId).body).toStrictEqual({
-            name: 'adamb, cb',
+            name: 'chickmafia, duckdash',
             members: [{
               uId: registered1.authUserId,
               email: 'duck@gmail.com',
@@ -61,7 +61,7 @@ describe('vaild input', () => {
         
         expect(requestUserRemove(registered1.token, registered2.authUserId).body).toStrictEqual({});
         expect(requestChannelDetails(registered1.token, channelId1).body).toStrictEqual({
-            name: 'first',
+            name: 'nest',
             isPublic: true,
             ownerMembers: [{
               uId: registered1.authUserId,
@@ -81,6 +81,7 @@ describe('vaild input', () => {
     });
     test('not included in users/all ', () => {
         expect(requestUserRemove(registered1.token, registered2.authUserId).body).toStrictEqual({});
+        expect(requestUserRemove(registered1.token, registered3.authUserId).body).toStrictEqual({});
         expect(requestUsersAllV2(registered1.token).body).toStrictEqual({
             users: [
               {
@@ -104,11 +105,12 @@ describe('vaild input', () => {
     });
     test('Their profile must still be retrievable with user/profile', () => {
         expect(requestUserRemove(registered1.token, registered2.authUserId).body).toStrictEqual({});
+        expect(requestUserRemove(registered1.token, registered3.authUserId).body).toStrictEqual({});
        expect(requestUserProfileV3(registered1.token, registered2.authUserId).body).toStrictEqual({user: {
         uId: registered2.authUserId,
         email: 'chick@gmail.com', 
-        nameFirst: 'chick',
-        nameLast: 'mafia',
+        nameFirst: 'Removed',
+        nameLast: 'user',
         handleStr: expect.any(String)
       }
     });

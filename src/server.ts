@@ -317,7 +317,7 @@ app.post('/message/unreact/v1', (req: Request, res: Response) => {
   res.json(messageUnreactV1(token, +messageId, +reactId));
 });
 
-app.delete('admin/user/remove/v1', (req: Request, res: Response) => {
+app.delete('/admin/user/remove/v1', (req: Request, res: Response) => {
   const token = req.header('token') as string;
   const uId = req.query.uId as string;
 

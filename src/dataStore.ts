@@ -4,7 +4,8 @@ import { dataTs } from './interfaces';
 let data: dataTs = {
   users: [],
   channels: [],
-  dms: []
+  dms: [],
+  deletedUsers: []
 };
 // YOU SHOULDNT NEED TO MODIFY THE FUNCTIONS BELOW IN ITERATION 1
 

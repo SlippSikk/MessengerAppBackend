@@ -1,6 +1,6 @@
 import HTTPError from 'http-errors';
 import { getData, setData } from './dataStore';
-import { isChannelIdValid, validateToken, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser, isOwnerByToken,isGlobalOwnerFromToken } from './helper';
+import { isChannelIdValid, validateToken, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser, isOwnerByToken,isGlobalOwnerFromToken, isGlobalOwnerFromUid } from './helper';
 import { user, channel, dataTs } from './interfaces';
 import { addNotification } from './notifications';
 // import { standupActiveV1 } from './helper'; 
@@ -19,7 +19,7 @@ export function channelJoinV3(token: string, channelId: number) {
   // checks if a non-global owner is joining a private channel
 
   const channel: channel = getChannel(channelId) as channel;
-  if (!channel.isPublic && authUserId !== 1) {
+  if (!channel.isPublic && !isGlobalOwnerFromUid(authUserId)) {
     throw HTTPError(403, 'Regular users cannot join private channels');
   }
 
@@ -195,7 +195,7 @@ export const channelDetailsV3 = (token: string, channelId: number) => {
     throw HTTPError(400, 'authUserId not valid');
   }
   const uId = getUIdFromToken(token) as number;
-  if (!isMember(channelId, uId) && uId !== 1) {
+  if (!isMember(channelId, uId)) {
     throw HTTPError(403, 'authUserId is not a member of channelId');
   }
   const channel = getChannel(channelId) as channel;

@@ -10,6 +10,7 @@ export function clearV1() {
     users: [],
     channels: [],
     dms: [],
+    deletedUsers: []
   };
   setData(iniData);
 
