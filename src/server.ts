@@ -12,8 +12,8 @@ import { messageShareV1 } from './messageShare';
 import { standupStartV1, standupActiveV1, standupSendV1 } from './standup';
 import { messageReactV1 } from './messageReact';
 import { messageUnreactV1 } from './messageUnreact';
-import { standupActiveV1 } from './standup';
 import { clearV1 } from './other';
+import { searchV1 } from './search';
 import morgan from 'morgan';
 import config from './config.json';
 import cors from 'cors';
@@ -35,6 +35,13 @@ const HOST: string = process.env.IP || 'localhost';
 app.get('/echo', (req: Request, res: Response, next) => {
   const data = req.query.echo as string;
   return res.json(echo(data));
+});
+
+app.get('/search/v1', (req: Request, res: Response) => {
+  const token = req.header('token');
+  const queryStr = req.query.queryStr as string;
+
+  res.json(searchV1(token, queryStr));
 });
 
 app.post('/message/sendlater/v1', (req: Request, res: Response) => {
