@@ -1,7 +1,7 @@
 import { requestUserRemove } from '../XujiWrap';
 import { requestAuthRegister, requestClear, requestChannelsCreate, requestDmMessages, requestChannelJoin, requestChannelDetails, requestChannelMessages } from '../wrappers';
 import { authUserId } from '../interfaces';
-import { requestDmCreate, requestDmDetails, requestUserProfileV3, requestuserSetemailV2, requestuserProfileSethandleV2, requestUsersAllV2 } from '../wrappers';
+import { requestDmCreate, requestDmDetails, requestMessageSend, requestMessageSenddm, requestUserProfileV3, requestuserSetemailV2, requestuserProfileSethandleV2, requestUsersAllV2 } from '../wrappers';
 let registered1: authUserId;
 let registered2: authUserId;
 let registered3: authUserId;
@@ -85,10 +85,13 @@ describe('vaild input', () => {
     });
   });
   test('message in channel become Removed user ', () => {
+    requestMessageSend(registered2.token, channelId1, 'love is love');
     expect(requestUserRemove(registered1.token, registered2.authUserId).body).toStrictEqual({});
     expect(requestChannelMessages(registered1.token, channelId1, 0).body.messages[0].message).toStrictEqual('Removed user');
   });
   test('message in dm become Removed user ', () => {
+    requestMessageSenddm(registered1.token, dmId, 'Hi my dogs');
+    requestMessageSenddm(registered2.token, dmId, 'I miss you');
     expect(requestUserRemove(registered1.token, registered2.authUserId).body).toStrictEqual({});
     expect(requestDmMessages(registered1.token, dmId, 0).body.messages[0].message).toStrictEqual('Removed user');
   });
