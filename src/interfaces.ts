@@ -18,7 +18,8 @@ interface users {
     password: password,
     token: string[],
     notifications: notifications[],
-    resetCode: string
+    resetCode: string,
+    permissionId: number
 }
 
 interface user {
