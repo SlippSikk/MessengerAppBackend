@@ -1,9 +1,9 @@
 import HTTPError from 'http-errors';
 import { getData, setData } from './dataStore';
-import { isChannelIdValid, validateToken, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser, isOwnerByToken } from './helper';
+import { isChannelIdValid, validateToken, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser, isOwnerByToken,isGlobalOwnerFromToken } from './helper';
 import { user, channel, dataTs } from './interfaces';
 import { addNotification } from './notifications';
-// import { standupActiveV1 } from './helper';
+// import { standupActiveV1 } from './helper'; 
 export function channelJoinV3(token: string, channelId: number) {
   const data: dataTs = getData();
 
@@ -88,7 +88,7 @@ export function channelRemoveOwnerV2(token: string, channelId: number, uId: numb
   }
 
   const authUserId: number = getUIdFromToken(token) as number;
-  if (!isOwner(channelId, authUserId) && (authUserId !== 1 || !isMember(channelId, 1))) {
+  if (!isMember(channelId, authUserId) || (!isOwner(channelId, authUserId) && !isGlobalOwnerFromToken(token))) {
     throw HTTPError(403, 'This authUser does not have the correct owner permissions');
   }
 
@@ -164,7 +164,7 @@ export const channelAddownerV2 = (token: string, channelId: number, uId: number)
   if (!isMember(channelId, uId)) {
     throw HTTPError(400, 'uId is not a member of channelId');
   }
-  if (!isOwnerByToken(channelId, token)) {
+  if (( !isOwnerByToken(channelId, token) && !isGlobalOwnerFromToken(token)) || !isMember(channelId,getUIdFromToken(token))) { //has problem here
     throw HTTPError(403, 'User(token) does not have owner permissions');
   }
   if (isOwner(channelId, uId)) {
