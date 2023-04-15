@@ -36,6 +36,26 @@ export function requestMessageSendLaterDm(token: string, dmId: number, message: 
   return { body, statusCode };
 }
 
+export function requestSearch(token: string, queryStr: string) {
+  const res = request(
+    'GET',
+    `${url}:${port}/search/v1`,
+    {
+      qs: {
+        queryStr
+      },
+      headers: {
+        token
+      },
+      timeout: 1000
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+
 export function requestAuthRegister(email: string, password: string, nameFirst: string, nameLast: string) {
   const res = request(
     'POST',
