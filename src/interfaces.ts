@@ -99,6 +99,7 @@ interface dataTs {
     users: users[]
     channels: channel[]
     dms: dms[]
+    deletedUsers: users[]
 }
 
 type timeFinish = { timeFinish: number };

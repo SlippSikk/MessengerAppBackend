@@ -13,6 +13,7 @@ import { standupStartV1, standupActiveV1, standupSendV1 } from './standup';
 import { messageReactV1 } from './messageReact';
 import { messageUnreactV1 } from './messageUnreact';
 import { clearV1 } from './other';
+import { userRemove } from './userRemove';
 import { searchV1 } from './search';
 import morgan from 'morgan';
 import config from './config.json';
@@ -323,6 +324,12 @@ app.post('/message/unreact/v1', (req: Request, res: Response) => {
   res.json(messageUnreactV1(token, +messageId, +reactId));
 });
 
+app.delete('/admin/user/remove/v1', (req: Request, res: Response) => {
+  const token = req.header('token') as string;
+  const uId = req.query.uId as string;
+
+  return res.json(userRemove(token, parseInt(uId)));
+});
 // Keep this BENEATH route definitions
 // handles errors nicely
 app.use(errorHandler());
