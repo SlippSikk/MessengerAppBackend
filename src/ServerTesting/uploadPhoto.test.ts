@@ -12,21 +12,37 @@ beforeEach(() => {
 });
   
 describe('uploadPhoto', () => {
-  test('return 200 status code,return value is {}', () => {
-    requestClear();
-    const tokenA = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash').token;
-    const token = tokenA;
-    const imgUrl = jpgImage;
-    const xStart = 50;
-    const yStart = 0;
-    const xEnd = 300;
-    const yEnd = 200;
-
-    const { body, statusCode } = requestUploadPhoto(token, imgUrl, xStart, yStart, xEnd, yEnd);
-
-    expect(statusCode).toBe(200);
-    expect(body).toEqual({});
-  });
+    test('return 200 status code,return value is {}', () => {
+        requestClear();
+        const tokenA = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash').token;
+        const token = tokenA;
+        const imgUrl = jpgImage;
+        const xStart = 50;
+        const yStart = 0;
+        const xEnd = 300;
+        const yEnd = 200;
+    
+        const { body, statusCode } = requestUploadPhoto(token, imgUrl, xStart, yStart, xEnd, yEnd);
+    
+        expect(statusCode).toBe(200);
+        expect(body).toEqual({});
+      });
+    
+    test('invaild token', () => {
+        requestClear();
+        const tokenA = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash').token;
+        const token = tokenA + 'C';
+        const imgUrl = jpgImage;
+        const xStart = 50;
+        const yStart = 0;
+        const xEnd = 300;
+        const yEnd = 200;
+    
+        const { body, statusCode } = requestUploadPhoto(token, imgUrl, xStart, yStart, xEnd, yEnd);
+    
+        expect(statusCode).toBe(200);
+        expect(body).toEqual({});
+      });
 
   test('should throw 400 error if image cannot be retrieved', () => {
     requestClear();
