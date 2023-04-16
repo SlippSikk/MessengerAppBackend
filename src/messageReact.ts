@@ -3,6 +3,7 @@ import { getUIdFromToken, getUser, findChannelIndexWithMessage, findDMIndexWithM
 import { validateToken, isMember, isDmMember } from './helper';
 import { dataTs, messages, channel, dms } from './interfaces';
 import HTTPError from 'http-errors';
+import { reactNotification } from './notifications';
 
 const getChannelFromMessageId = (messageId: number): channel => {
   const data: dataTs = getData();
@@ -113,5 +114,9 @@ export const messageReactV1 = (token: string, messageId: number, reactId: number
     data.dms[dmIndex].messages[mIndex].reacts[0].allUsers.push(user);
   }
   setData(data);
+
+  // add notification
+  reactNotification(messageId, token);
+
   return {};
 };
