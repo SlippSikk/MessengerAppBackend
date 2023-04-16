@@ -5,6 +5,20 @@ import { dataTs, channel, dms, error, messageId } from './interfaces';
 import { tagChannelNotification, tagDmNotification } from './notifications';
 import HTTPError from 'http-errors';
 
+/**
+ *
+ * @param {string} token - Unique token of a user
+ * @param {number} dmId - Unique Id of the Dm to send a message to
+ * @param {string} message - The message string
+ * @param {number} timeSent - Desired time to be sent
+ * @returns {error: 'string'} - Error Message - Error message describing the error cause
+ * @returns {messageId: number} - The unique messageId that gets created upon creating a new message
+ * @method POST
+ * @summary
+ * When given a valid token, dmId, message, timeSent. If the member is a part of the Dm. 
+ * The desired message will be sent at a later time. If this action was successful then
+ * the function will return a messageId, if it was unsuccessful it will return an error.
+ */
 export function messageSendLaterDmV1(token: string, dmId: number, message: string, timeSent: number): error | messageId {
   const data: dataTs = getData();
 
@@ -66,6 +80,20 @@ export function messageSendLaterDmV1(token: string, dmId: number, message: strin
   return { messageId: messageId };
 }
 
+/**
+ *
+ * @param {string} token - Unique token of a user
+ * @param {number} channelId - Unique Id of the channel to send a message to
+ * @param {string} message - The message string
+ * @param {number} timeSent - Desired time to be sent
+ * @returns {error: 'string'} - Error Message - Error message describing the error cause
+ * @returns {messageId: number} - The unique messageId that gets created upon creating a new message
+ * @method POST
+ * @summary
+ * When given a valid token, channelId, message, timeSent. If the member is a part of the channel. 
+ * The desired message will be sent at a later time. If this action was successful then
+ * the function will return a messageId, if it was unsuccessful it will return an error.
+ */
 export function messageSendLaterV1(token: string, channelId: number, message: string, timeSent: number): error | messageId {
   const data: dataTs = getData();
 
