@@ -338,15 +338,10 @@ app.delete('/admin/user/remove/v1', (req: Request, res: Response) => {
 app.post('/user/profile/uploadphoto/v1', (req: Request, res: Response) => {
   const token = req.header('token') as string;
   const { imgUrl, xStart, yStart, xEnd, yEnd } = req.body;
-  const downLoadImg = request(    
-    'GET',    
-    imgUrl,    
-  );    
-  const body = downLoadImg.getBody();    
-  fs.writeFileSync('static/avatar.jpg', body, { flag: 'w' });
   res.json(uploadPhoto(token, imgUrl, xStart, yStart, xEnd, yEnd));
-  app.use('/static', express.static('static'));
+  
 });
+app.use('/static', express.static('static'));
 // Keep this BENEATH route definitions
 // handles errors nicely
 app.use(errorHandler());

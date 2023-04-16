@@ -43,3 +43,26 @@ export function requestUserRemove(token: string, uId: number) {
   return { body, statusCode };
 }
 
+export function requestUploadPhoto(token: string, imgUrl: string, xStart: number, yStart: number, xEnd: number, yEnd: number) {
+  const res = request(
+    'POST',
+    `${url}:${port}/user/profile/uploadphoto/v1`,
+    {
+      json: {
+        imgUrl: imgUrl, 
+        xStart:xStart, 
+        yStart: yStart,
+        xEnd: xEnd,
+        yEnd: yEnd
+      },
+      headers: {
+        token
+      },
+      timeout: 2000
+    }
+  );
+  const body = JSON.parse(res.body as string);  //
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
