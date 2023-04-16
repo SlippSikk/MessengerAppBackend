@@ -6,22 +6,18 @@ import { tagChannelNotification, tagDmNotification } from './notifications';
 import HTTPError from 'http-errors';
 
 /**
- * Summary:
- * When given a valid token, name, and privacy setting,
- * this function will create a new channel
  *
- * Description:
- * When given a valid name and token, the function will create a unique
- * channelId, and after it will create a new object containing; channelId, ownerId,
- * adminIds, memberIds, channelName, isPublic, messages. Then will set this new object into
- * the array named "channels", in the dataStore.js file using the setData function
- *
- * @param {string} token - Unique Id of a user
- * @param {string} name - Desired name for a new channel
- * @param {boolean} isPublic - Desired setting for the channel's privacy
- *
+ * @param {string} token - Unique token of a user
+ * @param {number} dmId - Unique Id of the Dm to send a message to
+ * @param {string} message - The message string
+ * @param {number} timeSent - Desired time to be sent
  * @returns {error: 'string'} - Error Message - Error message describing the error cause
  * @returns {messageId: number} - The unique messageId that gets created upon creating a new message
+ * @method POST
+ * @summary
+ * When given a valid token, dmId, message, timeSent. If the member is a part of the Dm. 
+ * The desired message will be sent at a later time. If this action was successful then
+ * the function will return a messageId, if it was unsuccessful it will return an error.
  */
 export function messageSendLaterDmV1(token: string, dmId: number, message: string, timeSent: number): error | messageId {
   const data: dataTs = getData();
@@ -84,6 +80,20 @@ export function messageSendLaterDmV1(token: string, dmId: number, message: strin
   return { messageId: messageId };
 }
 
+/**
+ *
+ * @param {string} token - Unique token of a user
+ * @param {number} channelId - Unique Id of the channel to send a message to
+ * @param {string} message - The message string
+ * @param {number} timeSent - Desired time to be sent
+ * @returns {error: 'string'} - Error Message - Error message describing the error cause
+ * @returns {messageId: number} - The unique messageId that gets created upon creating a new message
+ * @method POST
+ * @summary
+ * When given a valid token, channelId, message, timeSent. If the member is a part of the channel. 
+ * The desired message will be sent at a later time. If this action was successful then
+ * the function will return a messageId, if it was unsuccessful it will return an error.
+ */
 export function messageSendLaterV1(token: string, channelId: number, message: string, timeSent: number): error | messageId {
   const data: dataTs = getData();
 
