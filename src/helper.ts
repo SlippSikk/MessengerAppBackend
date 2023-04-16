@@ -306,7 +306,7 @@ export const getIdFromMessage = (messageId: number) => {
   let msg;
   for (const channel of data.channels) {
     msg = channel.messages.find(message => message.messageId === messageId);
-    if (msg) {
+    if (msg != undefined) {
       return {
         type: 'channel',
         Id: channel.channelId,
@@ -316,7 +316,7 @@ export const getIdFromMessage = (messageId: number) => {
   }
   for (const dm of data.dms) {
     msg = dm.messages.find(message => message.messageId === messageId);
-    if (msg) {
+    if (msg != undefined) {
       return {
         type: 'dm',
         Id: dm.dmId,
@@ -401,7 +401,7 @@ export const userIndexUid = (uId: number): number => {
 export function sendMessages(channelId: number, uId: number, timeFinish: number) {
   const channel: channel = getChannel(channelId) as channel;
   let message: string = channel.standup.standupMessage.trim();
-  
+
   const data: dataTs = getData();
   const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);
 

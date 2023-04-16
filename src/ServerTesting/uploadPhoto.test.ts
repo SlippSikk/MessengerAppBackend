@@ -7,8 +7,8 @@ let yStart: number;
 let xEnd: number;
 let yEnd: number;
 const jpgImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Panda_Cub_from_Wolong%2C_Sichuan%2C_China.JPG/330px-Panda_Cub_from_Wolong%2C_Sichuan%2C_China.JPG'
-beforeEach(() => {
-    // requestClear();
+afterAll(() => {
+    requestClear();
 });
   
 describe('uploadPhoto', () => {
