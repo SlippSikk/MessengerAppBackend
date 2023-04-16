@@ -1,5 +1,5 @@
-import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelAddowner, requestChannelJoin, requestChannelRemoveOwner, requestChannelDetails } from '../wrappers';
-
+import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelAddowner, requestChannelJoin, requestChannelRemoveOwner, requestChannelDetails, requestChanLeavenel } from '../wrappers';
+import { requestPermissionChange } from '../XujiWrap';
 const INPUT_ERROR = 400;
 const AUTH_ERROR = 403;
 
@@ -156,5 +156,50 @@ describe('Valid Inputs', () => {
     test('Invalid token', () => {
       expect(requestChannelRemoveOwner(authToken1 + authToken2 + authToken3, channelId1, 0).statusCode).toBe(AUTH_ERROR);
     });
+  });
+});
+
+describe('Owner permission test', () => {
+  requestClear();
+  beforeEach(() => {
+    requestClear();
+  }); // beforeEach does't work again haha
+  test('global owner(not the channel owner)have the same permission to remove himself as channel owner', () => {
+    requestClear();
+    const registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    const registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+    const registered3 = requestAuthRegister('dog@gmail.com', 'doggy123', 'dog', 'drown');
+    const channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
+    requestPermissionChange(registered1.token, registered2.authUserId, 1);
+    requestChannelJoin(registered3.token, channelId1);
+    requestChannelJoin(registered2.token, channelId1);
+    expect(requestChannelAddowner(registered2.token, channelId1, registered2.authUserId).body).toStrictEqual({});
+    expect(requestChannelRemoveOwner(registered2.token, channelId1, registered2.authUserId).body).toStrictEqual({});
+  });
+  test('global owner is not in the list of owner', () => {
+    requestClear();
+    const registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    const registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+    const registered3 = requestAuthRegister('dog@gmail.com', 'doggy123', 'dog', 'drown');
+    const channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
+    requestPermissionChange(registered1.token, registered2.authUserId, 1);
+    requestChannelJoin(registered3.token, channelId1);
+    requestChannelJoin(registered2.token, channelId1);
+    expect(requestChannelRemoveOwner(registered1.token, channelId1, registered2.authUserId).statusCode).toBe(400);
+  });
+  test('global owner leave the channel and see if he dont have owner permission to remove others anymore', () => {
+    requestClear();
+    const registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    const registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+    const registered3 = requestAuthRegister('dog@gmail.com', 'doggy123', 'dog', 'drown');
+    const channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
+    requestPermissionChange(registered1.token, registered2.authUserId, 1);
+    requestChannelJoin(registered3.token, channelId1);
+    requestChannelJoin(registered2.token, channelId1);
+    expect(requestChannelAddowner(registered2.token, channelId1, registered2.authUserId).body).toStrictEqual({});
+    expect(requestChannelAddowner(registered2.token, channelId1, registered3.authUserId).body).toStrictEqual({});
+    requestChanLeavenel(registered2.token, channelId1);
+    expect(requestChanLeavenel(registered2.token, channelId1).statusCode).toStrictEqual(403);
+    expect(requestChannelRemoveOwner(registered2.token, channelId1, registered3.authUserId).statusCode).toStrictEqual(403);
   });
 });
