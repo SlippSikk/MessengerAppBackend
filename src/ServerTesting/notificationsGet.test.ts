@@ -105,7 +105,7 @@ describe('Function Testing', () => {
         }
       ]
     });
-  })
+  });
 
   test('User tagged not apart of channel', () => {
     const registered3 = requestAuthRegister('adam@gmail.com', 'adam123', 'adam', 'baqaie');
