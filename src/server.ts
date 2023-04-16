@@ -15,12 +15,16 @@ import { messageUnreactV1 } from './messageUnreact';
 import { clearV1 } from './other';
 import { userRemove } from './userRemove';
 import { searchV1 } from './search';
+import { uploadPhoto } from './uploadphoto'
 import morgan from 'morgan';
 import config from './config.json';
 import cors from 'cors';
 import errorHandler from 'middleware-http-errors';
 import { notificationsGet } from './notifications';
-import { PermissionChange } from './PermissionChange'
+import { PermissionChange } from './PermissionChange';
+import request from 'sync-request';
+import fs from 'fs';
+
 // Set up web app
 const app = express();
 // Use middleware that allows us to access the JSON body of requests
@@ -329,6 +333,19 @@ app.delete('/admin/user/remove/v1', (req: Request, res: Response) => {
   const uId = req.query.uId as string;
 
   return res.json(userRemove(token, parseInt(uId)));
+});
+
+app.post('/user/profile/uploadphoto/v1', (req: Request, res: Response) => {
+  const token = req.header('token') as string;
+  const { imgUrl, xStart, yStart, xEnd, yEnd } = req.body;
+  const downLoadImg = request(    
+    'GET',    
+    imgUrl,    
+  );    
+  const body = downLoadImg.getBody();    
+  fs.writeFileSync('static/avatar.jpg', body, { flag: 'w' });
+  res.json(uploadPhoto(token, imgUrl, xStart, yStart, xEnd, yEnd));
+  app.use('/static', express.static('static'));
 });
 // Keep this BENEATH route definitions
 // handles errors nicely
