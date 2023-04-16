@@ -82,7 +82,7 @@ describe('Function Testing', () => {
     });
   });
 
-  test.only('Notif from react', () => {
+  test('Notif from react', () => {
     // Get registered 1 to react to registered 2 message in channel
     requestMessageReact(registered1.token, messageId1, 1);
     // have registered 2 leave channel
