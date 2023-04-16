@@ -127,6 +127,19 @@ export function messageSendLaterV1(token: string, channelId: number, message: st
   return { messageId: messageId };
 }
 
+/**
+ * 
+ * @param token 
+ * @param messageId 
+ * @param message 
+ * @returns {}
+ * @method PUT
+ * @summary
+ * Given a message with ID messageId, updates its text with new text given in 
+ * message. If the new message is an empty string, the message is deleted. 
+ * NEW IN ITERATION 3: If a shared/standup message is edited, the entire 
+ * contents will be edited as if it was a normal message.
+ */
 export function messageEditV2(token: string, messageId: number, message: string) {
   const data: dataTs = getData();
   if (message.length > 1000) {
@@ -187,6 +200,15 @@ export function messageEditV2(token: string, messageId: number, message: string)
   throw HTTPError(400, 'Invalid messageId');
 }
 
+/**
+ * 
+ * @param token 
+ * @param messageId 
+ * @returns {}
+ * @method DELETE
+ * @summary 
+ * Given a messageId for a message, removes the message from the channel/DM
+ */
 export function messageRemoveV2(token: string, messageId: number) {
   return messageEditV2(token, messageId, '');
 }
