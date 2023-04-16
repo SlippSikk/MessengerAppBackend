@@ -16,7 +16,7 @@ export async function uploadPhoto(token: string, imgUrl: string, xStart: number,
   }
 
   const body = response.getBody();
-  const filename = 'static/avatar.jpg';
+  const filename = 'src/static/avatar.jpg';
   fs.writeFileSync(filename, body, { flag: 'w' });
 
   // Load the image with Jimp
