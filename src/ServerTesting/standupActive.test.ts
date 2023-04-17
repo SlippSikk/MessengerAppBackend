@@ -24,16 +24,10 @@ describe('Miscallaneous errors', () => {
   test('Invalid token', () => {
     requestStandupStart(authToken2, channelId1, 1);
     expect(requestStandupActive(authToken1 + authToken2 + authToken3, channelId1).statusCode).toBe(AUTH_ERROR);
-    sleep(1000);
-  });
 
-  test('Invalid channel Id', () => {
     requestStandupStart(authToken2, channelId1, 1);
     expect(requestStandupActive(authToken3, channelId1 + 1).statusCode).toBe(INPUT_ERROR);
-    sleep(1000);
-  });
 
-  test('Valid channel Id but user not a member', () => {
     requestStandupStart(authToken2, channelId1, 1);
     expect(requestStandupActive(authToken1, channelId1).statusCode).toBe(AUTH_ERROR);
     sleep(1000);
