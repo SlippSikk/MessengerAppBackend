@@ -1,7 +1,7 @@
 import HTTPError from 'http-errors';
 import { getData, setData } from './dataStore';
 import { standupActive, dataTs, channel, timeFinish } from './interfaces';
-import { sendMessages, getUIdFromToken, isChannelIdValid, isMember, validateToken, getChannel, createMessageId, getUser } from './helper';
+import { sendMessages, getUIdFromToken, isChannelIdValid, isMember, validateToken, getChannel, getUser } from './helper';
 
 /**
  * Summary: Starts a standup that lasts length seconds

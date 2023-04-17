@@ -1,6 +1,5 @@
 import request from 'sync-request';
 import { port, url } from './config.json';
-const SERVER_URL = `${url}:${port}`;
 
 export function requestPermissionChange(token: string, uId: number, permissionId: number) {
   const res = request(
