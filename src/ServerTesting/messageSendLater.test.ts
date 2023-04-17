@@ -61,7 +61,7 @@ describe('Error Cases', () => {
 
 describe('Function Testing', () => {
   test('Send a message', () => {
-    const timeSent = (new Date().getTime() / 1000) + 2;
+    const timeSent = (new Date().getTime() / 1000) + 1;
     expect(requestMessageSendLater(registered1.token, channelId1, 'Hi my ducklings', timeSent).body).toStrictEqual({ messageId: expect.any(Number) });
     const a = requestChannelMessages(registered1.token, channelId1, 0).body;
     expect(a.messages[0].message).toStrictEqual('Hi my ducklings');
