@@ -1,8 +1,8 @@
 import { getData, setData } from './dataStore';
 import { validateToken, isMessageInChannel, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember } from './helper';
-import { isDmIdValid, createMessageId, isChannelIdValid,isGlobalOwnerFromToken } from './helper';
-import { dataTs, channel, dms, error, messageId } from './interfaces';
-import { tagChannelNotification, tagDmNotification } from './notifications';
+import { isDmIdValid, createMessageId, isChannelIdValid, isGlobalOwnerFromToken, getDm, isOwner, isGlobalOwnerFromUid } from './helper';
+import { dataTs, channel, dms, error, messageId, messages } from './interfaces';
+import { tagChannelNotification, tagDmNotification, reactNotification } from './notifications';
 import HTTPError from 'http-errors';
 
 export function messageSendLaterDmV1(token: string, dmId: number, message: string, timeSent: number): error | messageId {
@@ -53,7 +53,7 @@ export function messageSendLaterDmV1(token: string, dmId: number, message: strin
     timeSent: ~~(new Date().getTime() / 1000),
     reacts: [{
       reactId: 1,
-      allUsers: []
+      uIds: []
     }],
     isPinned: false
   });
@@ -114,7 +114,7 @@ export function messageSendLaterV1(token: string, channelId: number, message: st
     timeSent: ~~(new Date().getTime() / 1000),
     reacts: [{
       reactId: 1,
-      allUsers: []
+      uIds: []
     }],
     isPinned: false
   });
@@ -228,7 +228,7 @@ export const messageSenddmV2 = (token: string, dmId: number, message: string) =>
     timeSent: ~~(new Date().getTime() / 1000),
     reacts: [{
       reactId: 1,
-      allUsers: []
+      uIds: []
     }],
     isPinned: false
   });
@@ -274,7 +274,7 @@ export const messageSendV2 = (token: string, channelId: number, message: string)
     timeSent: ~~(new Date().getTime() / 1000),
     reacts: [{
       reactId: 1,
-      allUsers: []
+      uIds: []
     }],
     isPinned: false
   });
@@ -282,4 +282,453 @@ export const messageSendV2 = (token: string, channelId: number, message: string)
 
   tagChannelNotification(message, channelId, token);
   return { messageId: messageId };
+};
+
+const getChannelFromMessageId = (messageId: number): channel => {
+  const data: dataTs = getData();
+  return data.channels.find(channel => channel.messages.find(message => message.messageId === messageId));
+};
+
+const getDmFromMessageId = (messageId: number): dms => {
+  const data: dataTs = getData();
+  return data.dms.find(dm => dm.messages.find(message => message.messageId === messageId));
+};
+const isDmOwner = (dmId: number, uId: number): boolean => {
+  const dms: dms = getDm(dmId) as dms;
+  return dms.creator.uId === uId;
+};
+
+export const getMessage = (messageId: number): messages | boolean => {
+  const data: dataTs = getData();
+  let msg;
+  for (const channel of data.channels) {
+    msg = channel.messages.find(message => message.messageId === messageId);
+    if (msg) {
+      return msg;
+    }
+  }
+  for (const dm of data.dms) {
+    msg = dm.messages.find(message => message.messageId === messageId);
+    if (msg) {
+      return msg;
+    }
+  }
+  return false;
+};
+
+/**
+ *
+ * @param token
+ * @param messageId
+ * @returns none
+ * @method POST
+ * @summary
+ * Given a message within a channel or DM, marks it as "pinned".
+ */
+export const messagePinV1 = (token: string, messageId: number) => {
+  const data: dataTs = getData();
+  let inChannel = true;
+  let inDm = true;
+  // MESSAGE OBJECT = either channel or dm
+  let dms;
+  const channel = getChannelFromMessageId(messageId);
+  if (!channel) {
+    dms = getDmFromMessageId(messageId);
+    inChannel = false;
+  }
+  if (!dms) {
+    inDm = false;
+  }
+  // --------- CHECKS IF IS MESSAGEID ISVALID -----------------------
+  // Checks if messageId is in channel or a dm
+  if ((!inChannel && !inDm) || (inChannel && inDm)) {
+    throw HTTPError(400, 'Invalid messageId');
+  }
+  const uId = getUIdFromToken(token);
+  // Check if user is in Channel
+  let channelId: number;
+  if (inChannel) {
+    channelId = channel.channelId;
+    if (!isMember(channelId, uId)) {
+      throw HTTPError(400, 'not a member of messageId');
+    }
+  }
+  // Check if user is in dm
+  let dmId: number;
+  if (inDm) {
+    dmId = dms.dmId;
+    if (!isDmMember(dmId, token)) {
+      throw HTTPError(400, 'not a member of messageId');
+    }
+  }
+  const msg = getMessage(messageId) as messages;
+  // --------- CHECKS IF IS PINNED -----------------------
+  if (msg.isPinned === true) {
+    throw HTTPError(400, 'Already pinned');
+  }
+  // ----------CHECKS OWNER PERMISSION--------------------
+  // IN CHANNEL
+  if (inChannel && !isOwner(channelId, uId) && !isGlobalOwnerFromUid(uId)) {
+    throw HTTPError(403, 'no Owner permission');
+  }
+  // IN DM
+  if (inDm && !isDmOwner(dmId, uId)) {
+    throw HTTPError(403, 'no Owner permission');
+  }
+  // ------------ Set isPinned to true -------------------
+  if (inChannel) {
+    let mIndex;
+    const channelIndex = findChannelIndexWithMessage(messageId);
+    const len = data.channels[channelIndex].messages.length;
+    for (let i = 0; i < len; i++) {
+      if (data.channels[channelIndex].messages[i].messageId === messageId) {
+        mIndex = i;
+        break;
+      }
+    }
+    data.channels[channelIndex].messages[mIndex].isPinned = true;
+  } else {
+    let mIndex;
+    const dmIndex = findDMIndexWithMessage(messageId);
+    const len = data.dms[dmIndex].messages.length;
+    for (let i = 0; i < len; i++) {
+      if (data.dms[dmIndex].messages[i].messageId === messageId) {
+        mIndex = i;
+        break;
+      }
+    }
+    data.dms[dmIndex].messages[mIndex].isPinned = true;
+  }
+  setData(data);
+  return {};
+};
+
+/**
+ *
+ * @param token
+ * @param messageId
+ * @returns none
+ * @method POST
+ * @summary
+ * Given a message within a channel or DM, removes its mark as "pinned".
+ */
+export const messageUnpinV1 = (token: string, messageId: number) => {
+  const data: dataTs = getData();
+  let inChannel = true;
+  let inDm = true;
+  // MESSAGE OBJECT = either channel or dm
+  let dms;
+  const channel = getChannelFromMessageId(messageId);
+  if (!channel) {
+    dms = getDmFromMessageId(messageId);
+    inChannel = false;
+  }
+  if (!dms) {
+    inDm = false;
+  }
+  // --------- CHECKS IF IS MESSAGEID ISVALID -----------------------
+  // Checks if messageId is in channel or a dm
+  if ((!inChannel && !inDm) || (inChannel && inDm)) {
+    throw HTTPError(400, 'Invalid messageId');
+  }
+  const uId = getUIdFromToken(token);
+  // Check if user is in Channel
+  let channelId: number;
+  if (inChannel) {
+    channelId = channel.channelId;
+    if (!isMember(channelId, uId)) {
+      throw HTTPError(403, 'not a member of messageId');
+    }
+  }
+  // Check if user is in dm
+  let dmId: number;
+  if (inDm) {
+    dmId = dms.dmId;
+    if (!isDmMember(dmId, token)) {
+      throw HTTPError(400, 'not a member of messageId');
+    }
+  }
+  const msg = getMessage(messageId) as messages;
+  // --------- CHECKS IF IS PINNED -----------------------
+  if (msg.isPinned === false) {
+    throw HTTPError(400, 'message was not pinned');
+  }
+  // ----------CHECKS OWNER PERMISSION--------------------
+  // IN CHANNEL
+  if (inChannel && !isOwner(channelId, uId) && !isGlobalOwnerFromUid(uId)) {
+    throw HTTPError(403, 'no Owner permission');
+  }
+  // IN DM
+  if (inDm && !isDmOwner(dmId, uId)) {
+    throw HTTPError(403, 'no Owner permission');
+  }
+  // ------------ Set isPinned to false -------------------
+  if (inChannel) {
+    let mIndex;
+    const channelIndex = findChannelIndexWithMessage(messageId);
+    const len = data.channels[channelIndex].messages.length;
+    for (let i = 0; i < len; i++) {
+      if (data.channels[channelIndex].messages[i].messageId === messageId) {
+        mIndex = i;
+        break;
+      }
+    }
+    data.channels[channelIndex].messages[mIndex].isPinned = false;
+  } else {
+    let mIndex;
+    const dmIndex = findDMIndexWithMessage(messageId);
+    const len = data.dms[dmIndex].messages.length;
+    for (let i = 0; i < len; i++) {
+      if (data.dms[dmIndex].messages[i].messageId === messageId) {
+        mIndex = i;
+        break;
+      }
+    }
+    data.dms[dmIndex].messages[mIndex].isPinned = false;
+  }
+  setData(data);
+  return {};
+};
+
+/**
+ * @param token
+ * @param messageId
+ * @param reactId
+ * @returns none
+ * @method POST
+ * @summary
+ * Given a message within a channel or
+ * DM the authorised user is part of, adds a "react" to that particular message.
+ */
+export const messageReactV1 = (token: string, messageId: number, reactId: number) => {
+  if (!validateToken(token)) {
+    throw HTTPError(403, 'Invalid token');
+  }
+  const data: dataTs = getData();
+  let inChannel = true;
+  let inDm = true;
+  let dms;
+  const channel = getChannelFromMessageId(messageId);
+  if (!channel) {
+    dms = getDmFromMessageId(messageId);
+    inChannel = false;
+  }
+  if (!dms) {
+    inDm = false;
+  }
+  // --------- CHECKS IF IS MESSAGEID ISVALID -----------------------
+  // Checks if messageId is in channel or a dm
+  if ((!inChannel && !inDm) || (inChannel && inDm)) {
+    throw HTTPError(400, 'Invalid messageId');
+  }
+  const uId = getUIdFromToken(token);
+  // Check if user is in Channel
+  let channelId: number;
+  if (inChannel) {
+    channelId = channel.channelId;
+    if (!isMember(channelId, uId) && uId !== 1) {
+      throw HTTPError(400, 'not a member of messageId');
+    }
+  }
+  // Check if user is in dm
+  let dmId: number;
+  if (inDm) {
+    dmId = dms.dmId;
+    if (!isDmMember(dmId, token)) {
+      throw HTTPError(400, 'not a member of messageId');
+    }
+  }
+  if (reactId !== 1) {
+    throw HTTPError(400, 'Invalid ReactId');
+  }
+  const msg = getMessage(messageId) as messages;
+  const indexReactId = reactId - 1;
+  if (msg.reacts[indexReactId].uIds.find(a => a === uId)) {
+    throw HTTPError(400, 'Already reacted');
+  }
+  if (inChannel) {
+    let mIndex;
+    const channelIndex = findChannelIndexWithMessage(messageId);
+    const len = data.channels[channelIndex].messages.length;
+    for (let i = 0; i < len; i++) {
+      if (data.channels[channelIndex].messages[i].messageId === messageId) {
+        mIndex = i;
+        break;
+      }
+    }
+    data.channels[channelIndex].messages[mIndex].reacts[0].uIds.push(uId);
+  } else {
+    let mIndex;
+    const dmIndex = findDMIndexWithMessage(messageId);
+    const len = data.dms[dmIndex].messages.length;
+    for (let i = 0; i < len; i++) {
+      if (data.dms[dmIndex].messages[i].messageId === messageId) {
+        mIndex = i;
+        break;
+      }
+    }
+    data.dms[dmIndex].messages[mIndex].reacts[0].uIds.push(uId);
+  }
+  setData(data);
+
+  // add notification
+  reactNotification(messageId, token);
+
+  return {};
+};
+
+/**
+ * @param token
+ * @param messageId
+ * @param reactId
+ * @returns none
+ * @method POST
+ * @summary
+ * Given a message within a channel
+ * or DM the authorised user is part of, removes a "react" to that particular message.
+ */
+export const messageUnreactV1 = (token: string, messageId: number, reactId: number) => {
+  if (!validateToken(token)) {
+    throw HTTPError(403, 'Invalid token');
+  }
+  const data: dataTs = getData();
+  let inChannel = true;
+  let inDm = true;
+  let dms;
+  const channel = getChannelFromMessageId(messageId);
+  if (!channel) {
+    dms = getDmFromMessageId(messageId);
+    inChannel = false;
+  }
+  if (!dms) {
+    inDm = false;
+  }
+  // --------- CHECKS IF IS MESSAGEID ISVALID -----------------------
+  // Checks if messageId is in channel or a dm
+  if ((!inChannel && !inDm) || (inChannel && inDm)) {
+    throw HTTPError(400, 'Invalid messageId');
+  }
+  const uId = getUIdFromToken(token);
+  // Check if user is in Channel
+  let channelId: number;
+  if (inChannel) {
+    channelId = channel.channelId;
+    if (!isMember(channelId, uId) && uId !== 1) {
+      throw HTTPError(400, 'not a member of messageId');
+    }
+  }
+  // Check if user is in dm
+  let dmId: number;
+  if (inDm) {
+    dmId = dms.dmId;
+    if (!isDmMember(dmId, token)) {
+      throw HTTPError(400, 'not a member of messageId');
+    }
+  }
+  if (reactId !== 1) {
+    throw HTTPError(400, 'Invalid ReactId');
+  }
+  const msg = getMessage(messageId) as messages;
+  const indexReactId = reactId - 1;
+  if (!msg.reacts[indexReactId].uIds.find(a => a === uId)) {
+    throw HTTPError(400, 'no reactions');
+  }
+  // const user = getUser(uId);
+  const indexToRemove = msg.reacts[indexReactId].uIds.findIndex(a => a === uId);
+  if (inChannel) {
+    let mIndex;
+    const channelIndex = findChannelIndexWithMessage(messageId);
+    const len = data.channels[channelIndex].messages.length;
+    for (let i = 0; i < len; i++) {
+      if (data.channels[channelIndex].messages[i].messageId === messageId) {
+        mIndex = i;
+        break;
+      }
+    }
+    data.channels[channelIndex].messages[mIndex].reacts[0].uIds.splice(indexToRemove, 1);
+  } else {
+    let mIndex;
+    const dmIndex = findDMIndexWithMessage(messageId);
+    const len = data.dms[dmIndex].messages.length;
+    for (let i = 0; i < len; i++) {
+      if (data.dms[dmIndex].messages[i].messageId === messageId) {
+        mIndex = i;
+        break;
+      }
+    }
+    data.dms[dmIndex].messages[mIndex].reacts[0].uIds.splice(indexToRemove, 1);
+  }
+  setData(data);
+  return {};
+};
+
+/**
+ *
+ * @param token
+ * @param ogMessageId
+ * @param message
+ * @param channelId
+ * @param dmId
+ * @returns { sharedMessageId }
+ * @method POST
+ * @summary
+ * ogMessageId is the ID of the original message.
+ * channelId is the channel that the message is being shared to, and is -1
+ * if it is being sent to a DM. dmId is the DM that the message is being
+ * shared to, and is -1 if it is being sent to a channel. message is the
+ * optional message in addition to the shared message, and will be an empty
+ * string '' if no message is given.
+ *
+ * A new message containing the contents of both the original message and
+ * the optional message should be sent to the channel/DM identified by the
+ * channelId/dmId. The format of the new message does not matter as long
+ * as both the original and optional message exist as a substring within
+ * the new message. Once sent, this new message has no link to the original
+ * message, so if the original message is edited/deleted, no change will
+ * occur for the new message.
+ */
+export const messageShareV1 = (token: string, ogMessageId: number, message: string, channelId: number, dmId: number) => {
+  let toChannel = false;
+  let toDms = false;
+  if (!validateToken(token)) {
+    throw HTTPError(403, 'Invalid token');
+  }
+  if (channelId === -1 && dmId === -1) {
+    throw HTTPError(400, 'both channelId and dmId is -1');
+  }
+  if (!(channelId === -1 || dmId === -1)) {
+    throw HTTPError(400, 'either channelId/dmId must be -1');
+  }
+  if (!isChannelIdValid(channelId) && !isDmIdValid(dmId)) {
+    throw HTTPError(400, 'Invalid dmId/channelId');
+  }
+  (channelId === -1) ? toDms = true : toChannel = true;
+  // -------------- Test ogMessageId -------------------------------
+  const ogMessage = (getMessage(ogMessageId) as messages).message;
+  if (!ogMessage) {
+    throw HTTPError(400, 'Invalid ogMessageId');
+  }
+  if (!(message.length <= 1000)) {
+    throw HTTPError(400, 'message must be between 1 to 1000 letters');
+  }
+  const uId = getUIdFromToken(token) as number;
+  if (toChannel) {
+    if (!isMember(channelId, uId)) {
+      throw HTTPError(403, 'user not a member of Channel');
+    }
+  }
+  if (toDms) {
+    if (!isDmMember(dmId, token)) {
+      throw HTTPError(403, 'user not a member of Dms');
+    }
+  }
+  const note = `${ogMessage}, Note: ${message}`;
+  let sharedMessageId;
+  if (toChannel) {
+    sharedMessageId = messageSendV2(token, channelId, note).messageId;
+  }
+  if (toDms) {
+    sharedMessageId = messageSenddmV2(token, dmId, note).messageId;
+  }
+  return { sharedMessageId: sharedMessageId };
 };

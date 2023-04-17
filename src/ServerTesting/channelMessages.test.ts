@@ -83,7 +83,7 @@ describe('Correct input', () => {
         timeSent: expect.any(Number),
         reacts: [{
           reactId: 1,
-          allUsers: []
+          uIds: []
         }],
         isPinned: false
       }],
@@ -104,7 +104,7 @@ describe('Correct input', () => {
         timeSent: expect.any(Number),
         reacts: [{
           reactId: 1,
-          allUsers: []
+          uIds: []
         }],
         isPinned: false
       },
@@ -115,7 +115,7 @@ describe('Correct input', () => {
         timeSent: expect.any(Number),
         reacts: [{
           reactId: 1,
-          allUsers: []
+          uIds: []
         }],
         isPinned: false
       }],
@@ -138,7 +138,7 @@ describe('Correct input', () => {
         timeSent: expect.any(Number),
         reacts: [{
           reactId: 1,
-          allUsers: []
+          uIds: []
         }],
         isPinned: false
       });

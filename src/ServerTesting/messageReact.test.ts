@@ -6,24 +6,22 @@ let registered1: authUserId;
 let registered2: authUserId;
 let registered3: authUserId;
 let channelId1: number;
-// let channelId2: number;
 let mIdChannel: number;
 let mIdDm: number;
 let dmId: number;
-
-beforeEach(() => {
+afterAll(() => {
   requestClear();
-  registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
-  registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
-  registered3 = requestAuthRegister('hound@gmail.com', 'hound123', 'dog', 'drown');
-  channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
-  // channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
-  dmId = requestDmCreate(registered2.token, [registered1.authUserId]).dmId;
-  mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').body.messageId;
-  mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').body.messageId;
 });
-
 describe('Error Cases', () => {
+  beforeAll(() => {
+    requestClear();
+    registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+    registered3 = requestAuthRegister('hound@gmail.com', 'hound123', 'dog', 'drown');
+    channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
+    // dmId = requestDmCreate(registered2.token, [registered1.authUserId]).dmId;
+    mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').body.messageId;
+  });
   test('Invalid token', () => {
     expect(requestMessageReact(registered1.token + registered2.token, mIdChannel, 1).statusCode).toStrictEqual(403);
   });
@@ -39,18 +37,28 @@ describe('Error Cases', () => {
 });
 
 describe('Function Testing', () => {
+  beforeAll(() => {
+    requestClear();
+    registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+    registered3 = requestAuthRegister('hound@gmail.com', 'hound123', 'dog', 'drown');
+    channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
+    dmId = requestDmCreate(registered2.token, [registered1.authUserId]).dmId;
+    mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').body.messageId;
+    mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').body.messageId;
+  });
   test('Double reacts in channel msg', () => {
     expect(requestMessageReact(registered1.token, mIdChannel, 1).body).toStrictEqual({});
     expect(requestMessageReact(registered1.token, mIdChannel, 1).statusCode).toStrictEqual(400);
     const a = requestChannelMessages(registered1.token, channelId1, 0).body;
     expect(a.messages[0].reacts[0].reactId).toStrictEqual(1);
-    expect(a.messages[0].reacts[0].allUsers[0].uId).toStrictEqual(registered1.authUserId);
+    expect(a.messages[0].reacts[0].uIds[0]).toStrictEqual(registered1.authUserId);
   });
   test('Double reacts in dm msg', () => {
     expect(requestMessageReact(registered1.token, mIdDm, 1).body).toStrictEqual({});
     expect(requestMessageReact(registered1.token, mIdDm, 1).statusCode).toStrictEqual(400);
     const a = requestDmMessages(registered2.token, dmId, 0).body;
     expect(a.messages[0].reacts[0].reactId).toStrictEqual(1);
-    expect(a.messages[0].reacts[0].allUsers[0].uId).toStrictEqual(registered1.authUserId);
+    expect(a.messages[0].reacts[0].uIds[0]).toStrictEqual(registered1.authUserId);
   });
 });
