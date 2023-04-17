@@ -1,8 +1,7 @@
 import HTTPError from 'http-errors';
 import { dataTs } from './interfaces';
 import { getData, setData } from './dataStore';
-import { validateToken, userIndexUid, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser, isOwnerByToken, isGlobalOwnerFromToken, isGlobalOwnerFromUid } from './helper';
-
+import { validateToken, userIndexUid, isUserIdValid, getUIdFromToken, isGlobalOwnerFromToken1 } from './helper';
 
 export function userRemove(token: string, uId: number) {
   const data: dataTs = getData();
@@ -14,18 +13,16 @@ export function userRemove(token: string, uId: number) {
     throw HTTPError(400, 'Invalid uId');
   }
 
-  const newArrays = data.users.filter(function(item) {
+  const newArrays = data.users.filter(function (item) {
     return item.permissionId === 1;
   });
   if (newArrays.length === 1 && uId === getUIdFromToken(token)) {
     throw HTTPError(400, 'You are the only global user now and you can not remove yourself!');
   }
-  if (!isGlobalOwnerFromToken(token)) {
+  if (!isGlobalOwnerFromToken1(token)) {
     throw HTTPError(403, 'You are not global owner');
   }
 
-  let mId: number;
-  let messagesObject;
   let arrayHaveMessge;
 
   for (const channel of data.channels) {

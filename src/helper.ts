@@ -306,7 +306,7 @@ export const getIdFromMessage = (messageId: number) => {
   let msg;
   for (const channel of data.channels) {
     msg = channel.messages.find(message => message.messageId === messageId);
-    if (msg != undefined) {
+    if (msg !== undefined) {
       return {
         type: 'channel',
         Id: channel.channelId,
@@ -316,7 +316,7 @@ export const getIdFromMessage = (messageId: number) => {
   }
   for (const dm of data.dms) {
     msg = dm.messages.find(message => message.messageId === messageId);
-    if (msg != undefined) {
+    if (msg !== undefined) {
       return {
         type: 'dm',
         Id: dm.dmId,
@@ -354,7 +354,7 @@ export const userIndexUid = (uId: number): number => {
   return data.users.findIndex(element => element.uId === uId);
 };
 
-export const isGlobalOwnerFromUid = (uId: number): boolean => {
+export const isGlobalOwnerFromUid1 = (uId: number): boolean => {
   const data = getData();
 
   const uIdObject = data.users.find(element => element.uId === uId);
@@ -366,18 +366,18 @@ export const isGlobalOwnerFromUid = (uId: number): boolean => {
   }
 };
 
-export const isGlobalOwnerFromToken = (token: string): boolean => {
+export const isGlobalOwnerFromToken1 = (token: string): boolean => {
   const uId = getUIdFromToken(token) as number;
   return isGlobalOwnerFromUid(uId);
 };
 
-export const getPermissionIdFromUid = (uId: number) => {
+export const getPermissionIdFromUid1 = (uId: number) => {
   const data = getData();
   const uIdObject = data.users.find(element => element.uId === uId);
   return uIdObject?.permissionId;
 };
 
-export const userIndexUid = (uId: number): number => {
+export const userIndexUid1 = (uId: number): number => {
   const data: dataTs = getData();
   return data.users.findIndex(element => element.uId === uId);
 };
@@ -421,7 +421,7 @@ export function sendMessages(channelId: number, uId: number, timeFinish: number)
     timeSent: timeFinish,
     reacts: [{
       reactId: 1,
-      allUsers: []
+      uIds: []
     }],
     isPinned: false
   });

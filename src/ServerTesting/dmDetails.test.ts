@@ -50,8 +50,8 @@ describe('dmDetails Success', () => {
 
 describe('dmDetails Error', () => {
   test('Test 1: Invalid Token', () => {
-    expect(requestDmDetails(registered5.token, dmId).statusCode).toBe(403);
-    expect(requestDmDetails(registered5.token, dmId).body.error).toStrictEqual({ message: expect.any(String) });
+    expect(requestDmDetails(registered5.token + 'asldkjalsdj', dmId).statusCode).toBe(403);
+    expect(requestDmDetails(registered5.token + 'asldkjalsdj', dmId).body.error).toStrictEqual({ message: expect.any(String) });
   });
 
   test('Test 2: Invalid dmId', () => {

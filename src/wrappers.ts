@@ -702,6 +702,7 @@ export function requestMessageUnreact(token: string, messageId: number, reactId:
   return { body, statusCode };
 }
 
+
 export function requestPermissionChange(token: string, uId: number, permissionId: number) {
   const res = request(
     'POST',
@@ -718,10 +719,23 @@ export function requestPermissionChange(token: string, uId: number, permissionId
     }
   );
   const body = JSON.parse(res.body as string);  //
+  }
+export function requestNotificationsGet(token: string) {
+  const res = request(
+    'GET',
+    SERVER_URL + '/notifications/get/v1',
+    {
+      headers: { token },
+      timeout: 1000
+    }
+  );
+  const body = JSON.parse(res.body as string);
+
   const statusCode = res.statusCode;
 
   return { body, statusCode };
 }
+
 
 export function requestUserRemove(token: string, uId: number) {
   const res = request(
@@ -738,11 +752,22 @@ export function requestUserRemove(token: string, uId: number) {
     }
   );
   const body = JSON.parse(res.body as string);  //
+}
+export function requestAuthPasswordResetRequest(email: string) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/auth/passwordreset/request/v1',
+    {
+      json: { email },
+      timeout: 1000
+    }
+  );
+  const body = JSON.parse(res.body as string);
+
   const statusCode = res.statusCode;
 
   return { body, statusCode };
 }
-
 
 export function requestUploadPhoto(token: string, imgUrl: string, xStart: number, yStart: number, xEnd: number, yEnd: number) {
   const res = request(
@@ -763,6 +788,21 @@ export function requestUploadPhoto(token: string, imgUrl: string, xStart: number
     }
   );
   const body = JSON.parse(res.body as string);  //
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}
+
+export function requestAuthPasswordResetReset(resetCode: string, newPassword: string) {
+  const res = request(
+    'POST',
+    SERVER_URL + '/auth/passwordreset/reset/v1',
+    {
+      json: { resetCode, newPassword },
+      timeout: 1000
+    }
+  );
+  const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode;
 
   return { body, statusCode };
