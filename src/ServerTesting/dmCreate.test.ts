@@ -1,4 +1,4 @@
-import { requestAuthRegister, requestClear, requestDmCreate, requestDmDetails, requestDmList } from '../wrappers';
+import { requestAuthRegister, requestClear, requestDmCreate, requestDmDetails } from '../wrappers';
 
 import { authUserId } from '../interfaces';
 
@@ -65,7 +65,6 @@ describe('Incorrect Dm Create', () => {
     expect(requestDmCreate(registered.token, [registered2.authUserId, registered2.authUserId]).error).toStrictEqual({ message: expect.any(String) });
     expect(requestDmCreate(registered.token, [registered2.authUserId, registered.authUserId]).error).toStrictEqual({ message: expect.any(String) });
     expect(requestDmCreate((registered.token + registered.token + Date.now()), uIds2).error).toStrictEqual({ message: expect.any(String) });
-  
   });
   // test('Duplicate uId', () => {
   //   expect(requestDmCreate(registered.token, [registered2.authUserId, registered2.authUserId]).error).toStrictEqual({ message: expect.any(String) });

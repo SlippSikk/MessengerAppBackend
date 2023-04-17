@@ -66,6 +66,8 @@ describe('Valid operation', () => {
       start: 0,
       end: -1
     });
+
+    sleep(1000);
   });
 
   // test('No message sent', () => {
