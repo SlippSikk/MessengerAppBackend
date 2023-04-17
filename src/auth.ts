@@ -22,7 +22,7 @@ import nodemailer from 'nodemailer';
  * @param {string} password - password of the user
  * @param {string} nameFirst - first name of the user
  * @param {string} nameLast - last name of the user
- *
+ * @method POST
  * @returns {authUserId: Number} authUserId - Unqiue ID of the user created
  * @returns {error: 'string'} Error Message - Error message describing the error cause
  **/
@@ -56,6 +56,7 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
   }
 
   let nameConcat = nameConcats;
+
   // Check for duplicate and if found add numbers till unique
   let foundHandle = data.users.find(element => element.handleStr === nameConcats);
   for (let i = 0; foundHandle !== undefined; i++) {
@@ -113,6 +114,7 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
  * @param {string} email - Email address of the user
  * @param {string} password - password of the user
  *
+ * @method POST
  * @returns {authUserId: Number} authUserId - Unqiue ID of the user created
  * @returns {error: 'string'} Error Message - Error message describing the error caus
  */
@@ -148,6 +150,12 @@ function authLoginV3(email: string, password: string): authUserId | error {
   };
 }
 
+/**
+ * Logs out a user based on their token
+ * @param {string} token - The token of the user to be logged out
+ * @returns {Object} - An empty object upon successful logout
+ * @method POST
+ */
 function authLogoutV2(token: string) {
   const data = getData();
 
@@ -164,6 +172,12 @@ function authLogoutV2(token: string) {
   return {};
 }
 
+/**
+ * Sends a password reset request email to the specified email address
+ * @param {string} email - The email address to send the password reset request to
+ * @returns {Object} - An empty object upon successful email sending
+ * @method POST
+ */
 function authPasswordResetRequestV1(email: string) {
   const data = getData();
   // Generate reset code
@@ -196,6 +210,13 @@ function authPasswordResetRequestV1(email: string) {
   return {};
 }
 
+/**
+ * Resets a user's password based on the reset code and new password provided
+ * @param {string} resetCode - The reset code provided in the password reset email
+ * @param {string} newPassword - The new password for the user
+ * @returns {Object} - An empty object upon successful password reset
+ * @method POST
+ */
 function authPasswordResetResetV1(resetCode: string, newPassword: string) {
   const data = getData();
   const userIndex = data.users.findIndex(element => element.resetCode === resetCode);

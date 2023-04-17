@@ -1,4 +1,4 @@
-import { requestAuthRegister, requestClear, requestDmCreate, requestDmMessages } from '../wrappers';
+import { requestAuthRegister, requestClear, requestDmCreate, requestDmMessages, requestMessageSenddm } from '../wrappers';
 import { authUserId } from '../interfaces';
 
 // Global
@@ -31,6 +31,13 @@ describe('dmDetails Success', () => {
       start: 0,
       end: -1
     });
+  });
+
+  test('Test 2', () => {
+    for (let i = 0; i < 55; i++) {
+      requestMessageSenddm(registered2.token, dmId2, 'i');
+    }
+    expect(requestDmMessages(registered2.token, dmId2, 0).body).toStrictEqual(expect.any(Object));
   });
 });
 

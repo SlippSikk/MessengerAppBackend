@@ -106,7 +106,17 @@ export function dmListV2(token: string): { dms: dmsOutput[] } | error {
   return { dms: userDms };
 }
 
-export function dmCreateV2(token: string, uIds: number[]): dmId | error {
+/**
+ * Creates a new DM with the specified members.
+ *
+ * @function dmCreateV2
+ * @param {string} token - The authentication token of the creator.
+ * @param {number[]} uIds - An array of user IDs representing the DM members.
+ * @returns {dmId | error} - The dmId of the newly created DM or an error if the inputs are not valid.
+ * @throws {HTTPError} - If the token is not valid, a user ID is not valid, or the creator ID is in the list of uIds.
+ * @method POST
+ */
+export function dmCreateV2(token: string, uIds: number[]): dmId {
   const data = getData();
 
   // Error Cases
@@ -170,6 +180,16 @@ export function dmCreateV2(token: string, uIds: number[]): dmId | error {
   return { dmId: dmId };
 }
 
+/**
+ * Allows a user to leave a DM.
+ *
+ * @function dmLeaveV2
+ * @param {string} token - The authentication token of the user leaving the DM.
+ * @param {number} dmId - The ID of the DM the user wants to leave.
+ * @returns {Object} - An empty object to indicate successful execution.
+ * @throws {HTTPError} - If the dmId does not exist, the token is not valid, or the authorized user is no longer in the DM.
+ * @method POST
+ */
 export function dmLeaveV2(token: string, dmId: number) {
   const data = getData();
   // Error Cases
@@ -196,6 +216,16 @@ export function dmLeaveV2(token: string, dmId: number) {
   return {};
 }
 
+/**
+ * Removes a DM if the authorized user is the creator of the DM.
+ *
+ * @function dmRemoveV2
+ * @param {string} token - The authentication token of the user.
+ * @param {number} dmId - The ID of the DM to remove.
+ * @returns {Object} - An empty object to indicate successful execution.
+ * @throws {HTTPError} - If the dmId does not exist, the token is not valid, the authorized user is not the creator, or the authorized user is no longer in the DM.
+ * @method DELETE
+ */
 export function dmRemoveV2(token: string, dmId: number) {
   const data = getData();
 

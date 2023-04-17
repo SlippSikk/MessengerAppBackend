@@ -1,1 +1,55 @@
-{"users":[{"uId":1,"email":"anna@gmail.com","nameFirst":"Anna","nameLast":"Albert","handleStr":"annaalbert","password":{"iv":"657c0b1b1b5bda1cf3d9e0e6565aa06c","encryptedData":"7b00cde44371a7e7de66515b7f87c09c"},"token":["b196ff4e24508b4e12782e9d0b47f9f7"],"notifications":[],"resetCode":"NO","permissionId":1},{"uId":2,"email":"bob@outlook.com","nameFirst":"Bob","nameLast":"Baqaie","handleStr":"bobbaqaie","password":{"iv":"657c0b1b1b5bda1cf3d9e0e6565aa06c","encryptedData":"4352c4794c94ef84b9ea35cddacc3dd2"},"token":["7251316a0840da539d5ffe7e0df735e7"],"notifications":[],"resetCode":"NO","permissionId":2},{"uId":3,"email":"pizza@gmail.com","nameFirst":"mas","nameLast":"luigi","handleStr":"masluigi","password":{"iv":"bb1045af1a9e83cc776046bde1352db3","encryptedData":"5b290873d6d01ac8e1e673b62039098d"},"token":["10445d926a1232529c23893c155311f1"],"notifications":[{"channelId":1,"dmId":-1,"notificationMessage":"{masluigi} reacted to your message in {asdas}"}],"resetCode":"NO","permissionId":2}],"channels":[{"channelId":1,"name":"asdas","isPublic":true,"ownerMembers":[],"allMembers":[{"uId":3,"email":"pizza@gmail.com","nameFirst":"mas","nameLast":"luigi","handleStr":"masluigi"}],"messages":[{"messageId":3925,"uId":3,"message":"asasd","timeSent":1681713530,"reacts":[{"reactId":1,"uIds":[]}],"isPinned":false},{"messageId":6692,"uId":3,"message":"asasd","timeSent":1681713533,"reacts":[{"reactId":1,"uIds":[]}],"isPinned":false},{"messageId":7826,"uId":3,"message":"asasd, Note: LOTEM","timeSent":1681713548,"reacts":[{"reactId":1,"uIds":[3]}],"isPinned":false}],"standup":{"standupMessage":"","isActive":false,"timeFinish":null,"authUserId":null}}],"dms":[],"deletedUsers":[]}
+{
+  "users": [
+    {
+      "uId": 1,
+      "email": "anna@gmail.com",
+      "nameFirst": "Anna",
+      "nameLast": "Adams",
+      "handleStr": "annaadams",
+      "password": {
+        "iv": "dd3c18213488f2a7a63a6cb1f9f4190d",
+        "encryptedData": "10d4652ab686516267c43c04a1635dc7"
+      },
+      "token": [
+        "d6c10ff7c3b1f247daa4515b937c4f7f"
+      ],
+      "notifications": [],
+      "resetCode": "NO",
+      "permissionId": 1
+    }
+  ],
+  "channels": [
+    {
+      "channelId": 1,
+      "name": "Channel 1",
+      "isPublic": true,
+      "ownerMembers": [
+        {
+          "uId": 1,
+          "email": "anna@gmail.com",
+          "nameFirst": "Anna",
+          "nameLast": "Adams",
+          "handleStr": "annaadams"
+        }
+      ],
+      "allMembers": [
+        {
+          "uId": 1,
+          "email": "anna@gmail.com",
+          "nameFirst": "Anna",
+          "nameLast": "Adams",
+          "handleStr": "annaadams"
+        }
+      ],
+      "messages": [],
+      "standup": {
+        "standupMessage": "",
+        "isActive": false,
+        "timeFinish": null,
+        "authUserId": null
+      }
+    }
+  ],
+  "dms": [],
+  "deletedUsers": []
+}
