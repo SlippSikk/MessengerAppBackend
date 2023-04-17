@@ -2,7 +2,7 @@
 import {
   requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate,
   requestChannelInvite, requestMessageEdit,
-  requestMessageReact, requestNotificationsGet
+  requestMessageReact, requestNotificationsGet, requestDmCreate, requestMessageSenddm
 } from '../wrappers';
 import { authUserId } from '../interfaces';
 
@@ -10,7 +10,7 @@ let registered1: authUserId;
 let registered2: authUserId;
 let channelId1: number;
 let messageId1: number;
-
+let dmId1: number;
 describe('Function Testing', () => {
   beforeAll(() => {
     requestClear();
@@ -18,20 +18,20 @@ describe('Function Testing', () => {
     registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
     channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
     requestChannelInvite(registered1.token, channelId1, registered2.authUserId);
-    // dmId1 = requestDmCreate(registered1.token, [registered2.authUserId]).dmId;
+    dmId1 = requestDmCreate(registered1.token, [registered2.authUserId]).dmId;
     messageId1 = requestMessageSend(registered2.token, channelId1, '@duckdash, Hi my ducklings').body.messageId;
     // requestMessageSend(registered1.token, channelId1, '@duckdash! @duckdash! Reminder!!');
-    // requestMessageSenddm(registered1.token, dmId1, 'hello @duckdash');
+    requestMessageSenddm(registered1.token, dmId1, 'hello @duckdash');
   });
 
   test('Tags from channels & Dm', () => {
     expect(requestNotificationsGet(registered1.token).body).toStrictEqual({
       notifications: [
-        // {
-        //   channelId: -1,
-        //   dmId: dmId1,
-        //   notificationMessage: '{duckdash} tagged you in {chickmafia, duckdash}: hello @duckdash'
-        // },
+        {
+          channelId: -1,
+          dmId: dmId1,
+          notificationMessage: '{duckdash} tagged you in {chickmafia, duckdash}: hello @duckdash'
+        },
         // {
         //   channelId: channelId1,
         //   dmId: -1,
