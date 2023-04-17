@@ -719,6 +719,8 @@ export function requestPermissionChange(token: string, uId: number, permissionId
     }
   );
   const body = JSON.parse(res.body as string);  //
+  const statusCode = res.statusCode;
+  return { body, statusCode };
   }
 export function requestNotificationsGet(token: string) {
   const res = request(
@@ -751,7 +753,9 @@ export function requestUserRemove(token: string, uId: number) {
       timeout: 2000
     }
   );
-  const body = JSON.parse(res.body as string);  //
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+  return { body, statusCode };
 }
 export function requestAuthPasswordResetRequest(email: string) {
   const res = request(
