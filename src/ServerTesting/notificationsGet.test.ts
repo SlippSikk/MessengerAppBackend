@@ -1,6 +1,9 @@
 
-import { requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate, requestDmCreate, requestChannelInvite, requestMessageSenddm, requestMessageEdit, requestMessageReact, requestChanLeavenel } from '../wrappers';
-import { requestNotificationsGet } from '../adamWrappers';
+import {
+  requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate,
+  requestDmCreate, requestChannelInvite, requestMessageSenddm, requestMessageEdit,
+  requestMessageReact, requestChanLeavenel, requestNotificationsGet
+} from '../wrappers';
 import { authUserId } from '../interfaces';
 
 let registered1: authUserId;

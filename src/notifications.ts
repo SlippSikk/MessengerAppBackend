@@ -1,10 +1,18 @@
-// import { channel } from 'diagnostics_channel';
 import HTTPError from 'http-errors';
 import { getData, setData } from './dataStore';
 import { getIdFromMessage, userObjToken, validateToken } from './helper';
 import { channels, notifications } from './interfaces';
-// import { getIdFromMessage } from './helper';
-// : notifications[] (add to function return type)
+
+
+/**
+ * Retrieves the notifications for the user associated with the provided token.
+ *
+ * @function notificationsGet
+ * @param {string} token - The authentication token of the user.
+ * @returns {{ notifications: notifications[] }} - An object containing an array of the user's notifications.
+ * @throws {HTTPError} - If the token is invalid.
+ * @method GET
+ */
 export function notificationsGet(token: string): { notifications: notifications[] } {
   if (!validateToken(token)) {
     throw HTTPError(403, 'Invalid Token');
@@ -14,7 +22,14 @@ export function notificationsGet(token: string): { notifications: notifications[
   return { notifications: userObject.notifications };
 }
 
-// Add to messegesend messagesenddm  and message edit
+/**
+ * Adds a notification for each user mentioned in a channel message.
+ *
+ * @function tagChannelNotification
+ * @param {string} message - The message containing user mentions.
+ * @param {number} channelId - The ID of the channel where the message is posted.
+ * @param {string} token - The authentication token of the user who posted the message.
+ */
 export function tagChannelNotification(message: string, channelId: number, token: string) {
   const regex = /@\w+/g;
   const handles = message.match(regex);
@@ -45,6 +60,15 @@ export function tagChannelNotification(message: string, channelId: number, token
   }
 }
 
+
+/**
+ * Adds a notification for each user mentioned in a DM message.
+ *
+ * @function tagDmNotification
+ * @param {string} message - The message containing user mentions.
+ * @param {number} dmId - The ID of the DM where the message is posted.
+ * @param {string} token - The authentication token of the user who posted the message.
+ */
 export function tagDmNotification(message: string, dmId: number, token: string) {
   const regex = /@\w+/g;
   const handles = message.match(regex);
@@ -75,7 +99,15 @@ export function tagDmNotification(message: string, dmId: number, token: string) 
   }
 }
 
-// Add to channelInvite
+/**
+ * Adds a notification to a user when they are added to a channel or DM.
+ *
+ * @function addNotification
+ * @param {number} uId - The user ID of the user being added.
+ * @param {number} channelId - The channel ID the user is being added to (-1 if it's a DM).
+ * @param {number} dmId - The DM ID the user is being added to (-1 if it's a channel).
+ * @param {string} token - The authentication token of the user who added the user.
+ */
 export function addNotification(uId: number, channelId: number, dmId: number, token: string) {
   const data = getData();
   const tokenHandle = userObjToken(token).handleStr;
@@ -97,7 +129,14 @@ export function addNotification(uId: number, channelId: number, dmId: number, to
   setData(data);
 }
 
-// add to message react
+
+/**
+ * Adds a notification to a user when someone reacts to their message in a channel or DM.
+ *
+ * @function reactNotification
+ * @param {number} messageId - The ID of the message being reacted to.
+ * @param {string} token - The authentication token of the user who reacted to the message.
+ */
 export function reactNotification(messageId: number, token: string) {
 
   const tokenHandle = userObjToken(token).handleStr
