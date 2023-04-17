@@ -44,7 +44,8 @@ interface messages {
     timeSent: number
     reacts: [{
         reactId: 1,
-        allUsers: user[]
+        uIds: number[]
+        isThisUserReacted: boolean
     }],
     isPinned: boolean
 }
@@ -115,7 +116,7 @@ type channelId = { channelId: number }
 type messageId = { messageId: number }
 
 export {
-  users, channels, user, messages, dataTs, authUserId, error, channel,
-  dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password, standup,
-  timeFinish, standupActive, notifications, messageId
+    users, channels, user, messages, dataTs, authUserId, error, channel,
+    dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password, standup,
+    timeFinish, standupActive, notifications, messageId
 };
