@@ -21,10 +21,8 @@ describe('Miscallaneous errors', () => {
     requestChannelJoin(authToken3, channelId1);
   });
 
-
-
   test('Errors', () => {
-    // 
+    //
     requestStandupStart(authToken2, channelId1, 1);
     expect(requestStandupSend(authToken1 + authToken2 + authToken3, channelId1, 'test').statusCode).toBe(AUTH_ERROR);
 
@@ -80,6 +78,3 @@ test('Valid Operation', () => {
     end: -1
   });
 });
-
-
-
