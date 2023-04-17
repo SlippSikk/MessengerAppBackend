@@ -69,7 +69,7 @@ test('Valid Operation', () => {
       timeSent: expect.any(Number),
       reacts: [{
         reactId: 1,
-        allUsers: []
+        uIds: []
       }],
       isPinned: false
 

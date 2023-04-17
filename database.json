@@ -1,1 +1,1 @@
-{"users":[{"uId":1,"email":"anna@gmail.com","nameFirst":"Anna","nameLast":"Adams","handleStr":"annaadams","password":{"iv":"3355b894270d42a247bcc60ce2dd7a09","encryptedData":"04e5ef9f40749a247963b2cee60ee185"},"token":["d6c10ff7c3b1f247daa4515b937c4f7f"],"notifications":[],"resetCode":"NO","permissionId":1}],"channels":[],"dms":[],"deletedUsers":[]}
+{"users":[],"channels":[],"dms":[],"deletedUsers":[]}
