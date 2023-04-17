@@ -2,7 +2,7 @@
 import { getData, setData } from './dataStore';
 import validator from 'validator';
 import HTTPError from 'http-errors';
-import { validateToken, userIndexToken, isUserIdValid } from './helper';
+import { validateToken, userIndexToken } from './helper';
 
 /**
  * For a valid user, returns information about their user ID,
@@ -117,7 +117,6 @@ export function usersAllV2(token: string) {
 
 export function userProfileV3(token: string, uId: number) {
   const data = getData();
-  const exists = 0;
   let flag = 1;
   if (!validateToken(token)) {
     throw HTTPError(403, 'token is not valid');

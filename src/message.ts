@@ -1,6 +1,6 @@
 import { getData, setData } from './dataStore';
 import { validateToken, isMessageInChannel, findChannelIndexWithMessage, getUIdFromToken, isOwnerByToken, isMember, isMessageInDM, findDMIndexWithMessage, isDmMember } from './helper';
-import { isDmIdValid, createMessageId, isChannelIdValid, isGlobalOwnerFromToken, getDm, isOwner, isGlobalOwnerFromUid } from './helper';
+import { isDmIdValid, createMessageId, isChannelIdValid, isGlobalOwnerFromToken1, getDm, isOwner, isGlobalOwnerFromUid } from './helper';
 import { dataTs, channel, dms, error, messageId, messages } from './interfaces';
 import { tagChannelNotification, tagDmNotification, reactNotification } from './notifications';
 import HTTPError from 'http-errors';
@@ -187,7 +187,7 @@ export function messageEditV2(token: string, messageId: number, message: string)
       throw HTTPError(403, 'This user is not a member of this channel');
     }
 
-    if (!isOwnerByToken(channel.channelId, token) && currentMessage.uId !== authUserId && !isGlobalOwnerFromToken(token)) {
+    if (!isOwnerByToken(channel.channelId, token) && currentMessage.uId !== authUserId && !isGlobalOwnerFromToken1(token)) {
       throw HTTPError(403, 'User does not have correct permissions');
     }
 

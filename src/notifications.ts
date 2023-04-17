@@ -1,8 +1,7 @@
 import HTTPError from 'http-errors';
 import { getData, setData } from './dataStore';
 import { getIdFromMessage, userObjToken, validateToken } from './helper';
-import { channels, notifications } from './interfaces';
-
+import { notifications } from './interfaces';
 
 /**
  * Retrieves the notifications for the user associated with the provided token.
@@ -59,7 +58,6 @@ export function tagChannelNotification(message: string, channelId: number, token
     }
   }
 }
-
 
 /**
  * Adds a notification for each user mentioned in a DM message.
@@ -129,7 +127,6 @@ export function addNotification(uId: number, channelId: number, dmId: number, to
   setData(data);
 }
 
-
 /**
  * Adds a notification to a user when someone reacts to their message in a channel or DM.
  *
@@ -159,7 +156,7 @@ export function reactNotification(messageId: number, token: string) {
     uId = Id.uId;
   }
 
-  if (dmId == -1) {
+  if (dmId === -1) {
     const channelIndex = data.channels.findIndex(element => element.channelId === channelId);
     inChannel = data.channels[channelIndex].allMembers.find(element => element.uId === uId);
   } else {
