@@ -44,7 +44,7 @@ describe('/user/profile/v2', () => {
         nameFirst: 'boost',
         nameLast: 'run',
         handleStr: 'boostrun',
-        profileImgUrl:expect.any(String)
+        profileImgUrl: expect.any(String)
       }
     });
   });

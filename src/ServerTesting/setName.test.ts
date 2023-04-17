@@ -59,7 +59,7 @@ describe('/user/profile/setname/v1', () => {
         nameFirst: 'Ichiru',
         nameLast: 'Shirase',
         handleStr: 'abcde',
-        profileImgUrl:expect.any(String)
+        profileImgUrl: expect.any(String)
       }
     });
   });

@@ -15,7 +15,7 @@ describe('correct return value', () => {
           nameFirst: 'Ab',
           nameLast: 'CDE',
           handleStr: 'abcde',
-          profileImgUrl:expect.any(String)
+          profileImgUrl: expect.any(String)
         }
       ]
     });

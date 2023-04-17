@@ -43,7 +43,7 @@ describe('/user/profile/setemail/v2', () => {
         nameFirst: 'Ab',
         nameLast: 'CDE',
         handleStr: 'abcde',
-        profileImgUrl:expect.any(String)
+        profileImgUrl: expect.any(String)
       }
     });
     requestClear();

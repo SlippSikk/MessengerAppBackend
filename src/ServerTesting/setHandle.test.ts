@@ -47,7 +47,7 @@ describe('/user/profile/sethandle/v1', () => {
         nameFirst: 'Ab',
         nameLast: 'CDE',
         handleStr: 'AbCats',
-        profileImgUrl:expect.any(String)
+        profileImgUrl: expect.any(String)
       }
     });
   });

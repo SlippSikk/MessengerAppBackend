@@ -79,7 +79,7 @@ describe('vaild input', () => {
           nameFirst: 'duck',
           nameLast: 'dash',
           handleStr: expect.any(String),
-          profileImgUrl:expect.any(String)
+          profileImgUrl: expect.any(String)
         }
       ]
     });
@@ -105,7 +105,7 @@ describe('vaild input', () => {
         nameFirst: 'Removed',
         nameLast: 'user',
         handleStr: expect.any(String),
-        profileImgUrl:expect.any(String)
+        profileImgUrl: expect.any(String)
       }
     });
   });

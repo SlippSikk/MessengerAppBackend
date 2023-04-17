@@ -23,7 +23,7 @@ describe('/users/all/v1', () => {
             nameFirst: 'Ab',
             nameLast: 'CDE',
             handleStr: 'abcde',
-            profileImgUrl:expect.any(String)
+            profileImgUrl: expect.any(String)
           }
         ]
       });
@@ -41,7 +41,7 @@ describe('/users/all/v1', () => {
             nameFirst: 'Ab',
             nameLast: 'CDE',
             handleStr: 'abcde',
-            profileImgUrl:expect.any(String)
+            profileImgUrl: expect.any(String)
           },
           {
             uId: registerObjectB.authUserId,
@@ -49,7 +49,7 @@ describe('/users/all/v1', () => {
             nameFirst: 'john',
             nameLast: 'cena',
             handleStr: 'johncena',
-            profileImgUrl:expect.any(String)
+            profileImgUrl: expect.any(String)
           },
           {
             uId: registerObjectC.authUserId,
@@ -57,7 +57,7 @@ describe('/users/all/v1', () => {
             nameFirst: 'long',
             nameLast: 'short',
             handleStr: 'longshort',
-            profileImgUrl:expect.any(String)
+            profileImgUrl: expect.any(String)
           }
         ]
       });
