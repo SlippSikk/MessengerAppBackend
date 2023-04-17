@@ -1,20 +1,17 @@
 
 import {
   requestAuthRegister, requestClear, requestMessageSend, requestChannelsCreate,
-  requestDmCreate, requestChannelInvite, requestMessageSenddm, requestMessageEdit,
-  requestMessageReact, requestChanLeavenel, requestNotificationsGet
+  requestChannelInvite, requestMessageEdit,
+  requestMessageReact, requestNotificationsGet
 } from '../wrappers';
 import { authUserId } from '../interfaces';
 
 let registered1: authUserId;
 let registered2: authUserId;
 let channelId1: number;
-let dmId1: number;
 let messageId1: number;
 
-
 describe('Function Testing', () => {
-
   beforeAll(() => {
     requestClear();
     registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
