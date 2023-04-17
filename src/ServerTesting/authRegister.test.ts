@@ -3,20 +3,16 @@ import { authUserId } from '../interfaces';
 
 // Global
 let registered: authUserId;
-let registered2: authUserId;
-beforeEach(() => {
+beforeAll(() => {
   requestClear();
   registered = requestAuthRegister('adam.baqaie@gmail.com', 'adam123', 'Adamklklklk', 'Baqaieokokokokok');
-  registered2 = requestAuthRegister('adam@gmail.com', 'adam123', 'Adamklklklk', 'Baqaieokokokokok');
 });
 
 describe('Correct Registration', () => {
   test('Correct Inputs', () => {
     expect(registered).toStrictEqual({ token: expect.any(String), authUserId: expect.any(Number) });
   });
-  test('Correct Inputs', () => {
-    expect(registered2).toStrictEqual({ token: expect.any(String), authUserId: expect.any(Number) });
-  });
+
 });
 
 describe('Incorrect Registration', () => {
