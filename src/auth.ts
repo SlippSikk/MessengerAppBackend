@@ -79,7 +79,7 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
 
   // Hash token
   const hashedToken = hashToken(nameConcat);
-
+  const defaultImg:string = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Panda_Cub_from_Wolong%2C_Sichuan%2C_China.JPG/330px-Panda_Cub_from_Wolong%2C_Sichuan%2C_China.JPG'
   const user: users = {
     uId: Id,
     email: email,
@@ -90,7 +90,8 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
     token: [hashedToken],
     notifications: [],
     resetCode: 'NO',
-    permissionId: permissionId
+    permissionId: permissionId,
+    profileImgUrl: defaultImg
   };
 
   data.users.push(user);

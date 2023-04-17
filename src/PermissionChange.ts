@@ -2,6 +2,16 @@ import { getData, setData } from './dataStore';
 import { users, authUserId, error } from './interfaces';
 import HTTPError from 'http-errors';
 import { validateToken, userIndexToken, userIndexUid, getUIdFromToken, isUserIdValid, isGlobalOwnerFromUid, isGlobalOwnerFromToken,getPermissionIdFromUid } from './helper';
+/**
+ *
+ * @param token
+ * @param uId
+ * @param permissionId
+ * @returns none
+ * @method POST
+ * @summary
+ * Given a user by their uID, sets their permissions to new permissions described by permissionId..
+ */
 export function PermissionChange(token: string, uId: number, permissionId:number){
     const data = getData();
     if (!validateToken(token)) {

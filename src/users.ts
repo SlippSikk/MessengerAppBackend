@@ -105,7 +105,8 @@ export function usersAllV2(token: string) {
       email: p.email,
       nameFirst: p.nameFirst,
       nameLast: p.nameLast,
-      handleStr: p.handleStr
+      handleStr: p.handleStr,
+      profileImgUrl: p.profileImgUrl
     }));
   return { users };
 }
@@ -140,7 +141,8 @@ if(flag === 1){
       email: idToView.email,
       nameFirst: idToView.nameFirst,
       nameLast: idToView.nameLast,
-      handleStr: idToView.handleStr
+      handleStr: idToView.handleStr,
+      profileImgUrl:idToView.profileImgUrl
     }
   };
 }else{
@@ -150,7 +152,8 @@ if(flag === 1){
       email: idToViewD.email,
       nameFirst: idToViewD.nameFirst,
       nameLast: idToViewD.nameLast,
-      handleStr: idToViewD.handleStr
+      handleStr: idToViewD.handleStr,
+      profileImgUrl:idToViewD.profileImgUrl
     }
   };
 }

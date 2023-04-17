@@ -42,7 +42,8 @@ describe('/user/profile/setemail/v2', () => {
         email: 'tEaiHem@gmail.com',
         nameFirst: 'Ab',
         nameLast: 'CDE',
-        handleStr: 'abcde'
+        handleStr: 'abcde',
+        profileImgUrl:expect.any(String)
       }
     });
     requestClear();

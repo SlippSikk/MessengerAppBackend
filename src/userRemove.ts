@@ -3,11 +3,16 @@ import { user, channel, dataTs } from './interfaces';
 import { getData, setData } from './dataStore';
 import { channelJoinV3, channelLeaveV2 } from './channel';
 import { isChannelIdValid, validateToken, userIndexUid, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser, isOwnerByToken,isGlobalOwnerFromToken, isGlobalOwnerFromUid } from './helper';
-import { from } from 'form-data';
-import {messageEditV2} from './message'
-import { userProfileSethandleV2, userProfileSetnameV2 } from './users';
-import {getMessage} from './messagePin';
 
+/**
+ *
+ * @param token
+ * @param uId
+ * @returns none
+ * @method POST
+ * @summary
+ * Given a user by their uId, removes them from Memes.
+ */
 export function userRemove(token: string, uId: number){
     const data: dataTs = getData();
     if (!validateToken(token)) {

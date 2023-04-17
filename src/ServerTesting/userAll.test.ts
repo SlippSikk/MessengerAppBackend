@@ -22,7 +22,8 @@ describe('/users/all/v1', () => {
             email: 'csgo@gmail.com',
             nameFirst: 'Ab',
             nameLast: 'CDE',
-            handleStr: 'abcde'
+            handleStr: 'abcde',
+            profileImgUrl:expect.any(String)
           }
         ]
       });
@@ -39,21 +40,24 @@ describe('/users/all/v1', () => {
             email: 'csgo@gmail.com',
             nameFirst: 'Ab',
             nameLast: 'CDE',
-            handleStr: 'abcde'
+            handleStr: 'abcde',
+            profileImgUrl:expect.any(String)
           },
           {
             uId: registerObjectB.authUserId,
             email: 'csgogo@gmail.com',
             nameFirst: 'john',
             nameLast: 'cena',
-            handleStr: 'johncena'
+            handleStr: 'johncena',
+            profileImgUrl:expect.any(String)
           },
           {
             uId: registerObjectC.authUserId,
             email: 'csgogogo@gmail.com',
             nameFirst: 'long',
             nameLast: 'short',
-            handleStr: 'longshort'
+            handleStr: 'longshort',
+            profileImgUrl:expect.any(String)
           }
         ]
       });

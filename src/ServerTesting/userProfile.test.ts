@@ -27,7 +27,8 @@ describe('/user/profile/v2', () => {
         email: 'csgo@gmail.com',
         nameFirst: 'Ab',
         nameLast: 'CDE',
-        handleStr: 'abcde'
+        handleStr: 'abcde',
+        profileImgUrl:expect.any(String)
       }
     });
   });
@@ -42,7 +43,8 @@ describe('/user/profile/v2', () => {
         email: 'csgoFaze@gmail.com',
         nameFirst: 'boost',
         nameLast: 'run',
-        handleStr: 'boostrun'
+        handleStr: 'boostrun',
+        profileImgUrl:expect.any(String)
       }
     });
   });
