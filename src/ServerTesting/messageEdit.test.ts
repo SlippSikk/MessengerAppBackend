@@ -117,7 +117,7 @@ describe('Valid inputs', () => {
         timeSent: expect.any(Number),
         reacts: [{
           reactId: expect.any(Number),
-          allUsers: []
+          uIds: []
         }],
         isPinned: false
       }],
@@ -133,7 +133,7 @@ describe('Valid inputs', () => {
         timeSent: expect.any(Number),
         reacts: [{
           reactId: expect.any(Number),
-          allUsers: []
+          uIds: []
         }],
         isPinned: false
       }],
@@ -154,7 +154,7 @@ describe('Valid inputs', () => {
         timeSent: expect.any(Number),
         reacts: [{
           reactId: expect.any(Number),
-          allUsers: []
+          uIds: []
         }],
         isPinned: false
       }],
@@ -170,7 +170,7 @@ describe('Valid inputs', () => {
         timeSent: expect.any(Number),
         reacts: [{
           reactId: expect.any(Number),
-          allUsers: []
+          uIds: []
         }],
         isPinned: false
       }],
@@ -192,7 +192,7 @@ describe('Valid inputs', () => {
         timeSent: expect.any(Number),
         reacts: [{
           reactId: expect.any(Number),
-          allUsers: []
+          uIds: []
         }],
         isPinned: false
       }],
@@ -208,7 +208,7 @@ describe('Valid inputs', () => {
         timeSent: expect.any(Number),
         reacts: [{
           reactId: expect.any(Number),
-          allUsers: []
+          uIds: []
         }],
         isPinned: false
 

@@ -7,7 +7,12 @@ let registered3: authUserId;
 let channelId1: number;
 let channelId2: number;
 
-beforeEach(() => {
+afterAll(() => {
+  requestClear();
+});
+// This Testing uses eucledian algorithm to assert that
+// the inputed auth userId is always unique and non exsisting
+beforeAll(() => {
   requestClear();
   registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
   registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
@@ -15,8 +20,6 @@ beforeEach(() => {
   channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
   channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
 });
-// This Testing uses eucledian algorithm to assert that
-// the inputed auth userId is always unique and non exsisting
 describe('Error Cases', () => {
   test('Invalid channelId', () => {
     expect(requestChannelAddowner(registered1.token, channelId1 * channelId2 + 1, registered1.authUserId).statusCode).toStrictEqual(400);
@@ -42,6 +45,14 @@ describe('Error Cases', () => {
 });
 
 describe('Function Testing', () => {
+  beforeEach(() => {
+    requestClear();
+    registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+    registered3 = requestAuthRegister('dog@gmail.com', 'doggy123', 'dog', 'drown');
+    channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
+    channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
+  });
   // Every test has a mix of whitebox testing
   test('Add an owner', () => {
     requestChannelJoin(registered2.token, channelId1);

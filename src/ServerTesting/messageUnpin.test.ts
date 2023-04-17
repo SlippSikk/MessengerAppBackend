@@ -9,20 +9,24 @@ let channelId2: number;
 let mIdChannel: number;
 let mIdDm: number;
 let dmId: number;
-beforeEach(() => {
+afterAll(() => {
   requestClear();
-  registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
-  registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
-  registered3 = requestAuthRegister('dog@gmail.com', 'hound123', 'dog', 'drown');
-  channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
-  channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
-  dmId = requestDmCreate(registered2.token, [registered1.authUserId]).dmId;
-  mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').body.messageId;
-  mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').body.messageId;
-  requestMessagePin(registered2.token, mIdDm);
-  requestMessagePin(registered1.token, mIdChannel);
 });
+
 describe('Error Cases and Function Testing', () => {
+  beforeAll(() => {
+    requestClear();
+    registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+    registered3 = requestAuthRegister('dog@gmail.com', 'hound123', 'dog', 'drown');
+    channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
+    channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
+    dmId = requestDmCreate(registered2.token, [registered1.authUserId]).dmId;
+    mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').body.messageId;
+    mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').body.messageId;
+    requestMessagePin(registered2.token, mIdDm);
+    requestMessagePin(registered1.token, mIdChannel);
+  });
   test('Invalid messageId', () => {
     expect(requestMessageUnpin(registered1.token, mIdChannel * mIdDm + 1).statusCode).toStrictEqual(400);
   });
@@ -56,6 +60,22 @@ describe('Error Cases and Function Testing', () => {
     expect(requestMessageUnpin(registered2.token, mIdDm).statusCode).toStrictEqual(400);
     const a = requestDmMessages(registered2.token, dmId, 0).body;
     expect(a.messages[0].isPinned).toStrictEqual(false);
+  });
+});
+
+describe('Error Cases and Function Testing', () => {
+  beforeAll(() => {
+    requestClear();
+    registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+    registered3 = requestAuthRegister('dog@gmail.com', 'hound123', 'dog', 'drown');
+    channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
+    channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
+    dmId = requestDmCreate(registered2.token, [registered1.authUserId]).dmId;
+    mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').body.messageId;
+    mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').body.messageId;
+    requestMessagePin(registered2.token, mIdDm);
+    requestMessagePin(registered1.token, mIdChannel);
   });
   test('(Channel) User does not have owner permission ', () => {
     requestChannelJoin(registered2.token, channelId1);

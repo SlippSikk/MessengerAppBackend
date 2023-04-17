@@ -60,7 +60,7 @@ describe('Function Testing', () => {
           timeSent: expect.any(Number),
           reacts: [{
             reactId: 1,
-            allUsers: []
+            uIds: []
           }],
           isPinned: false
         },
@@ -71,7 +71,7 @@ describe('Function Testing', () => {
           timeSent: expect.any(Number),
           reacts: [{
             reactId: 1,
-            allUsers: []
+            uIds: []
           }],
           isPinned: false
         }]
@@ -91,7 +91,7 @@ describe('Function Testing', () => {
           timeSent: expect.any(Number),
           reacts: [{
             reactId: 1,
-            allUsers: []
+            uIds: []
           }],
           isPinned: false
         }
@@ -119,7 +119,7 @@ describe('Function Testing', () => {
           timeSent: expect.any(Number),
           reacts: [{
             reactId: 1,
-            allUsers: []
+            uIds: []
           }],
           isPinned: false
         },
@@ -130,7 +130,7 @@ describe('Function Testing', () => {
           timeSent: expect.any(Number),
           reacts: [{
             reactId: 1,
-            allUsers: []
+            uIds: []
           }],
           isPinned: false
         },
@@ -141,7 +141,7 @@ describe('Function Testing', () => {
           timeSent: expect.any(Number),
           reacts: [{
             reactId: 1,
-            allUsers: []
+            uIds: []
           }],
           isPinned: false
         }]

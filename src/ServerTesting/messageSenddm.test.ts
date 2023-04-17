@@ -10,7 +10,7 @@ let registered5: authUserId;
 let dmId1: number;
 let dmId2: number;
 
-beforeEach(() => {
+beforeAll(() => {
   requestClear();
   registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
   registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
@@ -19,6 +19,9 @@ beforeEach(() => {
   registered5 = requestAuthRegister('hunter@gmail.com', 'hunter123', 'hunter', 'great');
   dmId1 = requestDmCreate(registered2.token, [registered1.authUserId, registered3.authUserId]).dmId;
   dmId2 = requestDmCreate(registered2.token, [registered1.authUserId, registered3.authUserId, registered4.authUserId]).dmId;
+});
+afterAll(() => {
+  requestClear();
 });
 describe('Error Cases', () => {
   test('Invalid dm Id', () => {

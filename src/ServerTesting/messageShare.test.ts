@@ -25,30 +25,19 @@ for (let i = 0; i < 1001; i++) {
 afterAll(() => {
   requestClear();
 });
-// beforeEach(() => {
-//   requestClear();
-//   registered1 = (authRegisterV3('duck@gmail.com', 'duck123', 'duck', 'dash') as authUserId);
-//   registered2 = (authRegisterV3('chick@gmail.com', 'chick123', 'chick', 'mafia') as authUserId);
-//   registered3 = (authRegisterV3('dog@gmail.com', 'hound123', 'dog', 'drown') as authUserId);
-//   channelId1 = (channelsCreateV3(registered1.token, 'nest', true) as channelId).channelId;
-//   channelId2 = (channelsCreateV3(registered2.token, 'shed', true) as channelId).channelId;
-//   dmId = requestDmCreate(registered2.token, [registered1.authUserId]).dmId;
-//   mIdChannel = messageSendV2(registered1.token, channelId1, 'Hi my ducklings').messageId;
-//   mIdDm = messageSenddmV2(registered1.token, dmId, 'Hi my dogs').messageId;
-// });
-beforeEach(() => {
-  requestClear();
-  registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
-  registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
-  registered3 = requestAuthRegister('dog@gmail.com', 'hound123', 'dog', 'drown');
-  channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
-  channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
-  dmId = requestDmCreate(registered2.token, [registered1.authUserId]).dmId;
-  mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').body.messageId;
-  mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').body.messageId;
-});
 
 describe('Error Cases', () => {
+  beforeAll(() => {
+    requestClear();
+    registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+    registered3 = requestAuthRegister('dog@gmail.com', 'hound123', 'dog', 'drown');
+    channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
+    channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
+    dmId = requestDmCreate(registered2.token, [registered1.authUserId]).dmId;
+    mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').body.messageId;
+    mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').body.messageId;
+  });
   // ogMessageId = either mIdChannel or mIdDm
   test('(ChannelId) Invalid channelId and dmId', () => {
     expect(requestMessageShare(registered1.token, mIdChannel, message, channelId1 * channelId2 + 1, -1).statusCode).toStrictEqual(400);
@@ -74,6 +63,15 @@ describe('Error Cases', () => {
 });
 
 describe('Function Testing', () => {
+  beforeAll(() => {
+    requestClear();
+    registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+    channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
+    dmId = requestDmCreate(registered2.token, [registered1.authUserId]).dmId;
+    mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').body.messageId;
+    mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').body.messageId;
+  });
   // ogMessageId = in bracket
   test('Shared to Channel (dm)', () => {
     expect(requestMessageShare(registered1.token, mIdDm, message, channelId1, -1).body).toStrictEqual({ sharedMessageId: expect.any(Number) });

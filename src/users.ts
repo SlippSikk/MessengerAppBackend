@@ -2,7 +2,7 @@
 import { getData, setData } from './dataStore';
 import validator from 'validator';
 import HTTPError from 'http-errors';
-import { validateToken, userIndexToken, isUserIdValid  } from './helper';
+import { validateToken, userIndexToken, isUserIdValid } from './helper';
 
 /**
  * For a valid user, returns information about their user ID,
@@ -118,45 +118,41 @@ export function usersAllV2(token: string) {
 
 export function userProfileV3(token: string, uId: number) {
   const data = getData();
-  let exists = 0;
-  let flag:number = 1;
+  const exists = 0;
+  let flag = 1;
   if (!validateToken(token)) {
     throw HTTPError(403, 'token is not valid');
   }
-    let idToView = data.users.find(a => a.uId === uId);
-    if (idToView === undefined){
-      if (data.deletedUsers.find(a => a.uId === uId) === undefined){
-        throw HTTPError(400, 'uId is not valid');
-      }else{
-        flag = 0;
-        
+  const idToView = data.users.find(a => a.uId === uId);
+  if (idToView === undefined) {
+    if (data.deletedUsers.find(a => a.uId === uId) === undefined) {
+      throw HTTPError(400, 'uId is not valid');
+    } else {
+      flag = 0;
+    }
+  }
+  const idToViewD = data.deletedUsers.find(a => a.uId === uId);
+  if (flag === 1) {
+    return {
+      user: {
+        uId: idToView.uId,
+        email: idToView.email,
+        nameFirst: idToView.nameFirst,
+        nameLast: idToView.nameLast,
+        handleStr: idToView.handleStr,
+        profileImgUrl: idToView.profileImgUrl
       }
-      
-    }
-  const idToViewD = data.deletedUsers.find(a => a.uId === uId)
-if(flag === 1){
-  return {
-    user: {
-      uId: idToView.uId,
-      email: idToView.email,
-      nameFirst: idToView.nameFirst,
-      nameLast: idToView.nameLast,
-      handleStr: idToView.handleStr,
-      profileImgUrl:idToView.profileImgUrl
-    }
-  };
-}else{
-  return {
-    user: {
-      uId: idToViewD.uId,
-      email: idToViewD.email,
-      nameFirst: idToViewD.nameFirst,
-      nameLast: idToViewD.nameLast,
-      handleStr: idToViewD.handleStr,
-      profileImgUrl:idToViewD.profileImgUrl
-    }
-  };
-}
-  
-
+    };
+  } else {
+    return {
+      user: {
+        uId: idToViewD.uId,
+        email: idToViewD.email,
+        nameFirst: idToViewD.nameFirst,
+        nameLast: idToViewD.nameLast,
+        handleStr: idToViewD.handleStr,
+        profileImgUrl: idToViewD.profileImgUrl
+      }
+    };
+  }
 }
