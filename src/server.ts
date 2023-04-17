@@ -15,6 +15,7 @@ import { standupStartV1, standupActiveV1, standupSendV1 } from './standup';
 import { clearV1 } from './other';
 import { userRemove } from './userRemove';
 import { searchV1 } from './search';
+import { uploadPhoto } from './uploadphoto'
 import morgan from 'morgan';
 import config from './config.json';
 import cors from 'cors';
@@ -327,6 +328,14 @@ app.delete('/admin/user/remove/v1', (req: Request, res: Response) => {
 
   return res.json(userRemove(token, parseInt(uId)));
 });
+
+app.post('/user/profile/uploadphoto/v1', (req: Request, res: Response) => {
+  const token = req.header('token') as string;
+  const { imgUrl, xStart, yStart, xEnd, yEnd } = req.body;
+  res.json(uploadPhoto(token, imgUrl, xStart, yStart, xEnd, yEnd));
+  
+});
+app.use('/static', express.static('static'));
 // Keep this BENEATH route definitions
 // handles errors nicely
 app.use(errorHandler());
