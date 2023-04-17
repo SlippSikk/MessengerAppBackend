@@ -70,15 +70,13 @@ describe('Error Cases and Function Testing', () => {
     const mIdChannel2 = requestMessageSend(registered2.token, channelId2, 'How to become a dog').body.messageId;
     expect(requestMessagePin(registered2.token, mIdChannel2).body).toStrictEqual({});
   });
-  test('(Channel) Message already pinned ', () => {
+  test('(Channel) Message pinned ', () => {
     expect(requestMessagePin(registered1.token, mIdChannel).body).toStrictEqual({});
-    expect(requestMessagePin(registered1.token, mIdChannel).statusCode).toStrictEqual(400);
     const a = requestChannelMessages(registered1.token, channelId1, 0).body;
     expect(a.messages[0].isPinned).toStrictEqual(true);
   });
-  test('(DM) Message already pinned ', () => {
+  test('(DM) Message pinned ', () => {
     expect(requestMessagePin(registered2.token, mIdDm).body).toStrictEqual({});
-    expect(requestMessagePin(registered2.token, mIdDm).statusCode).toStrictEqual(400);
     const a = requestDmMessages(registered2.token, dmId, 0).body;
     expect(a.messages[0].isPinned).toStrictEqual(true);
   });

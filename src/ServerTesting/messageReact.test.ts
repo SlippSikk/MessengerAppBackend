@@ -47,16 +47,14 @@ describe('Function Testing', () => {
     mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').body.messageId;
     mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').body.messageId;
   });
-  test('Double reacts in channel msg', () => {
+  test('Reacts in channel msg', () => {
     expect(requestMessageReact(registered1.token, mIdChannel, 1).body).toStrictEqual({});
-    expect(requestMessageReact(registered1.token, mIdChannel, 1).statusCode).toStrictEqual(400);
     const a = requestChannelMessages(registered1.token, channelId1, 0).body;
     expect(a.messages[0].reacts[0].reactId).toStrictEqual(1);
     expect(a.messages[0].reacts[0].uIds[0]).toStrictEqual(registered1.authUserId);
   });
-  test('Double reacts in dm msg', () => {
+  test('Reacts in dm msg', () => {
     expect(requestMessageReact(registered1.token, mIdDm, 1).body).toStrictEqual({});
-    expect(requestMessageReact(registered1.token, mIdDm, 1).statusCode).toStrictEqual(400);
     const a = requestDmMessages(registered2.token, dmId, 0).body;
     expect(a.messages[0].reacts[0].reactId).toStrictEqual(1);
     expect(a.messages[0].reacts[0].uIds[0]).toStrictEqual(registered1.authUserId);

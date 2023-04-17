@@ -69,7 +69,9 @@ describe('Error Cases and Function Testing', () => {
     requestClear();
     registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
     registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+    registered3 = requestAuthRegister('dog@gmail.com', 'hound123', 'dog', 'drown');
     channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
+    channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
     dmId = requestDmCreate(registered2.token, [registered1.authUserId]).dmId;
     mIdChannel = requestMessageSend(registered1.token, channelId1, 'Hi my ducklings').body.messageId;
     mIdDm = requestMessageSenddm(registered1.token, dmId, 'Hi my dogs').body.messageId;

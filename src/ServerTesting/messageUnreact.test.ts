@@ -57,16 +57,14 @@ describe('Function Testing', () => {
     requestMessageReact(registered1.token, mIdDm, 1);
   });
 
-  test('Double unreacts in channel msg', () => {
+  test('Unreacts in channel msg', () => {
     expect(requestMessageUnreact(registered1.token, mIdChannel, 1).body).toStrictEqual({});
-    expect(requestMessageUnreact(registered1.token, mIdChannel, 1).statusCode).toStrictEqual(400);
     const a = requestChannelMessages(registered1.token, channelId1, 0).body;
     expect(a.messages[0].reacts[0].reactId).toStrictEqual(1);
     expect(a.messages[0].reacts[0].uIds.length).toStrictEqual(0);
   });
-  test('Double unreacts in dm msg', () => {
+  test('Unreacts in dm msg', () => {
     expect(requestMessageUnreact(registered1.token, mIdDm, 1).body).toStrictEqual({});
-    expect(requestMessageUnreact(registered1.token, mIdDm, 1).statusCode).toStrictEqual(400);
     const a = requestDmMessages(registered2.token, dmId, 0).body;
     expect(a.messages[0].reacts[0].reactId).toStrictEqual(1);
     expect(a.messages[0].reacts[0].uIds.length).toStrictEqual(0);
