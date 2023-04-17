@@ -563,7 +563,6 @@ export function requestuserProfileSethandleV2(token: string, handleStr: string) 
   return { body, statusCode };
 }
 
-
 export function requestStandupStart(token: string, channelId: number, length: number) {
   const res = request(
     'POST',
@@ -591,7 +590,7 @@ export function requestStandupActive(token: string, channelId: number) {
         channelId
       },
       timeout: 2000
-    },
+    }
   );
   const body = JSON.parse(res.body as string);
   const statusCode = res.statusCode;

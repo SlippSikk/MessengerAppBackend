@@ -4,6 +4,18 @@ import { validateToken, isUserIdValid, getHandle, getUser, getUIdFromToken, getD
 import { getData, setData } from './dataStore';
 import HTTPError from 'http-errors';
 
+/**
+ *
+ * @param {string} token - Unique token of a user
+ * @param {number} dmId - Unique Id of the Dm to send a message to
+ * @param {number} start - Start time
+ * @returns {error: 'string'} - Error Message - Error message describing the error cause
+ * @returns {messages: message[], start: number, end: number} - array of messages, start time, end time.
+ * @method GET
+ * @summary
+ * When given a valid token, dmId, start time. The function will return an array of messages that were sent
+ * after the start time. if something is unsuccessful it will return an error.
+ */
 export function dmMessagesV2(token: string, dmId: number, start: number): error | dmMessages {
   // get data from dataStore
   const data = getData();
@@ -56,6 +68,16 @@ export function dmMessagesV2(token: string, dmId: number, start: number): error 
   };
 }
 
+/**
+ *
+ * @param {string} token - Unique token of a user
+ * @returns {error: 'string'} - Error Message - Error message describing the error cause
+ * @returns {dms: [dmId: numeber, name: string]} - array of messages, start time, end time.
+ * @method GET
+ * @summary
+ * When given a valid token. The function will return an array dms. If anything was unsuccesful
+ * the function will return an error
+ */
 export function dmListV2(token: string): { dms: dmsOutput[] } | error {
   // error case: invalid token
   if (validateToken(token) !== true) {
@@ -234,6 +256,17 @@ export function dmRemoveV2(token: string, dmId: number) {
   return {};
 }
 
+/**
+ *
+ * @param {string} token - Unique token of a user
+ * @param {number} dmId - Unique ID of a dm
+ * @returns {error: 'string'} - Error Message - Error message describing the error cause
+ * @returns {name: string, members: string} - array of messages, start time, end time.
+ * @method GET
+ * @summary
+ * When given a valid token. The function will return details of the given dmId.
+ * If there was anything unsuccesful the function will return an error
+ */
 export function dmDetailsV2(token: string, dmId: number): error | dmDetails {
   // get data from dataStore
   const data = getData();

@@ -138,18 +138,17 @@ export function addNotification(uId: number, channelId: number, dmId: number, to
  * @param {string} token - The authentication token of the user who reacted to the message.
  */
 export function reactNotification(messageId: number, token: string) {
+  const tokenHandle = userObjToken(token).handleStr;
 
-  const tokenHandle = userObjToken(token).handleStr
-
-  let data = getData();
+  const data = getData();
   const Id = getIdFromMessage(messageId);
 
-  let channelId: number = -1;
-  let dmId: number = -1;
+  let channelId = -1;
+  let dmId = -1;
   let name: string;
   let uId: number;
-  let inChannel = undefined;
-  let inDm = undefined;
+  let inChannel;
+  let inDm;
   if (Id.type === 'channel') {
     channelId = Id.Id;
     name = data.channels.find(element => element.channelId === channelId).name;
@@ -166,7 +165,6 @@ export function reactNotification(messageId: number, token: string) {
   } else {
     const dmIndex = data.dms.findIndex(element => element.dmId === dmId);
     inDm = data.dms[dmIndex].members.find(element => element.uId === uId);
-
   }
 
   if (inChannel !== undefined || inDm !== undefined) {
@@ -175,10 +173,8 @@ export function reactNotification(messageId: number, token: string) {
       channelId: channelId,
       dmId: dmId,
       notificationMessage: `{${tokenHandle}} reacted to your message in {${name}}`
-    }
+    };
     data.users[userIndex].notifications.unshift(notif);
     setData(data);
-
   }
-
 }

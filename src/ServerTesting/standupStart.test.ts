@@ -1,12 +1,9 @@
 import { requestClear, requestAuthRegister, requestChannelsCreate, requestStandupStart, requestChannelJoin, requestChannelMessages } from '../wrappers';
+const sleep = require('atomic-sleep');
 
 const INPUT_ERROR = 400;
 const AUTH_ERROR = 403;
 const OK = 200;
-
-function sleep(milliseconds: number) {
-  return new Promise(resolve => setTimeout(resolve, milliseconds));
-}
 
 describe('Miscallaneous errors', () => {
   let authToken1: string;
@@ -24,30 +21,26 @@ describe('Miscallaneous errors', () => {
     requestChannelJoin(authToken3, channelId1);
   });
 
-  test('Invalid token', async() => {
+  test('Invalid token', () => {
     expect(requestStandupStart(authToken1 + authToken2 + authToken3, channelId1, 0.5).statusCode).toBe(AUTH_ERROR);
-    await sleep(500);
   });
 
-  test('Invalid channel Id', async() => {
+  test('Invalid channel Id', () => {
     expect(requestStandupStart(authToken3, channelId1 + 1, 0.5).statusCode).toBe(INPUT_ERROR);
-    await sleep(500);
   });
 
   test('Valid channel Id but user not a member', async() => {
     expect(requestStandupStart(authToken1, channelId1, 0.5).statusCode).toBe(AUTH_ERROR);
-    await sleep(500);
   });
 
-  test('Length is negative', async() => {
+  test('Length is negative', () => {
     expect(requestStandupStart(authToken3, channelId1, -1).statusCode).toBe(INPUT_ERROR);
-    await sleep(500);
   });
 
-  test('Another standup is active', async() => {
+  test('Another standup is active', () => {
     expect(requestStandupStart(authToken3, channelId1, 1).statusCode).toBe(OK);
     expect(requestStandupStart(authToken2, channelId1, 0.5).statusCode).toBe(INPUT_ERROR);
-    await sleep(1000);
+    sleep(1000);
   });
 });
 
@@ -61,18 +54,18 @@ describe('Valid operation', () => {
     channelId1 = requestChannelsCreate(authToken2, 'Channel 1', true).body.channelId;
   });
 
-  test('timeFinish is accurate', async() => {
+  test('timeFinish is accurate', () => {
     const standup = requestStandupStart(authToken2, channelId1, 0.5);
     const now: number = Math.floor((new Date()).getTime() / 1000);
     expect(standup.statusCode).toBe(OK);
     const expectedTime: number = standup.body.timeFinish;
     expect(expectedTime).toBeGreaterThanOrEqual(now);
-    await sleep(500);
+    sleep(1000);
   });
 
-  test('No message sent', async() => {
+  test('No message sent', () => {
     expect(requestStandupStart(authToken2, channelId1, 0.5).statusCode).toBe(OK);
-    await sleep(600);
+    sleep(1000);
     expect(requestChannelMessages(authToken2, channelId1, 0).body).toEqual({
       messages: [],
       start: 0,

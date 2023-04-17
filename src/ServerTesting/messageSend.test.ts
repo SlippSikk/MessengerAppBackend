@@ -8,7 +8,11 @@ let registered2: authUserId;
 let channelId1: number;
 let channelId2: number;
 
-beforeEach(() => {
+afterAll(() => {
+  requestClear();
+});
+
+beforeAll(() => {
   requestClear();
   registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
   registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');

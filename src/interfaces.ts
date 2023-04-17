@@ -44,7 +44,7 @@ interface messages {
     timeSent: number
     reacts: [{
         reactId: 1,
-        allUsers: user[]
+        uIds: number[]
     }],
     isPinned: boolean
 }

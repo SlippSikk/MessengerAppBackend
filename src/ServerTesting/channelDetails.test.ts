@@ -5,13 +5,16 @@ import { authUserId } from '../interfaces';
 let registered1: authUserId;
 let channelId1: number;
 
-beforeEach(() => {
+afterAll(() => {
   requestClear();
-  registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
-  channelId1 = requestChannelsCreate(registered1.token, 'first', true).body.channelId;
 });
 
 describe('Error cases', () => {
+  beforeAll(() => {
+    requestClear();
+    registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    channelId1 = requestChannelsCreate(registered1.token, 'first', true).body.channelId;
+  });
   test('Test for Invalid authUserId', () => {
     expect(requestChannelDetails(registered1.token + 'p', channelId1).statusCode).toStrictEqual(400);
   });
@@ -25,6 +28,11 @@ describe('Error cases', () => {
 });
 
 describe('Function Testing', () => {
+  beforeEach(() => {
+    requestClear();
+    registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    channelId1 = requestChannelsCreate(registered1.token, 'first', true).body.channelId;
+  });
   test('In public courseId ', () => {
     expect(requestChannelDetails(registered1.token, channelId1).body).toStrictEqual({
       name: 'first',

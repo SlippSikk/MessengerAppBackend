@@ -66,7 +66,7 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
 
   // Assign appropriate authId number and permissionId number
   let Id: number = data.users.length + 1;
-  let permissionId: number = 2;
+  let permissionId = 2;
   if (data.users.length === 0) {
     Id = 1;
     permissionId = 1;
