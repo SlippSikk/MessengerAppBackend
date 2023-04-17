@@ -20,18 +20,18 @@ const iv = crypto.randomBytes(16);
  * @summary check if an object exists in an array of objects based on searchID ,
  *  returns the index of that object if it exists, otherwise returns false
  */
-export const checkExists = (searchID: number, array: number[]): number | boolean => {
-  let i = 0;
-  for (const element of array) {
-    // the ID of a channel or user is always the first value in both objects
-    const currentID = Object.values(element)[0];
-    if (currentID === searchID) {
-      return i;
-    }
-    i++;
-  }
-  return false;
-};
+// export const checkExists = (searchID: number, array: number[]): number | boolean => {
+//   let i = 0;
+//   for (const element of array) {
+//     // the ID of a channel or user is always the first value in both objects
+//     const currentID = Object.values(element)[0];
+//     if (currentID === searchID) {
+//       return i;
+//     }
+//     i++;
+//   }
+//   return false;
+// };
 
 /**
  * @param {integer} authUserId
@@ -306,7 +306,7 @@ export const getIdFromMessage = (messageId: number) => {
   let msg;
   for (const channel of data.channels) {
     msg = channel.messages.find(message => message.messageId === messageId);
-    if (msg != undefined) {
+    if (msg !== undefined) {
       return {
         type: 'channel',
         Id: channel.channelId,
@@ -316,7 +316,7 @@ export const getIdFromMessage = (messageId: number) => {
   }
   for (const dm of data.dms) {
     msg = dm.messages.find(message => message.messageId === messageId);
-    if (msg != undefined) {
+    if (msg !== undefined) {
       return {
         type: 'dm',
         Id: dm.dmId,
@@ -338,46 +338,46 @@ export const isGlobalOwnerFromUid = (uId: number): boolean => {
   }
 };
 
-export const isGlobalOwnerFromToken = (token: string): boolean => {
-  const uId = getUIdFromToken(token) as number;
-  return isGlobalOwnerFromUid(uId);
-};
+// export const isGlobalOwnerFromToken = (token: string): boolean => {
+//   const uId = getUIdFromToken(token) as number;
+//   return isGlobalOwnerFromUid(uId);
+// };
 
-export const getPermissionIdFromUid = (uId: number) => {
-  const data = getData();
-  const uIdObject = data.users.find(element => element.uId === uId);
-  return uIdObject?.permissionId;
-};
+// export const getPermissionIdFromUid = (uId: number) => {
+//   const data = getData();
+//   const uIdObject = data.users.find(element => element.uId === uId);
+//   return uIdObject?.permissionId;
+// };
 
 export const userIndexUid = (uId: number): number => {
   const data: dataTs = getData();
   return data.users.findIndex(element => element.uId === uId);
 };
 
-export const isGlobalOwnerFromUid = (uId: number): boolean => {
-  const data = getData();
+// export const isGlobalOwnerFromUid1 = (uId: number): boolean => {
+//   const data = getData();
 
-  const uIdObject = data.users.find(element => element.uId === uId);
+//   const uIdObject = data.users.find(element => element.uId === uId);
 
-  if (uIdObject?.permissionId === 1) {
-    return true;
-  } else {
-    return false;
-  }
-};
+//   if (uIdObject?.permissionId === 1) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// };
 
-export const isGlobalOwnerFromToken = (token: string): boolean => {
+export const isGlobalOwnerFromToken1 = (token: string): boolean => {
   const uId = getUIdFromToken(token) as number;
   return isGlobalOwnerFromUid(uId);
 };
 
-export const getPermissionIdFromUid = (uId: number) => {
+export const getPermissionIdFromUid1 = (uId: number) => {
   const data = getData();
   const uIdObject = data.users.find(element => element.uId === uId);
   return uIdObject?.permissionId;
 };
 
-export const userIndexUid = (uId: number): number => {
+export const userIndexUid1 = (uId: number): number => {
   const data: dataTs = getData();
   return data.users.findIndex(element => element.uId === uId);
 };

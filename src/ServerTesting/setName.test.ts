@@ -58,7 +58,8 @@ describe('/user/profile/setname/v1', () => {
         email: 'csgo@gmail.com',
         nameFirst: 'Ichiru',
         nameLast: 'Shirase',
-        handleStr: 'abcde'
+        handleStr: 'abcde',
+        profileImgUrl: expect.any(String)
       }
     });
   });

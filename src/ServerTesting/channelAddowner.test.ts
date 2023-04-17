@@ -1,7 +1,6 @@
 
-import { requestAuthRegister, requestClear, requestChannelAddowner, requestChannelsCreate, requestChannelJoin, requestChannelRemoveOwner, requestChanLeavenel } from '../wrappers';
+import { requestAuthRegister, requestPermissionChange, requestClear, requestChannelAddowner, requestChannelsCreate, requestChannelJoin, requestChannelRemoveOwner, requestChanLeavenel } from '../wrappers';
 import { authUserId } from '../interfaces';
-import { requestPermissionChange } from '../XujiWrap';
 let registered1: authUserId;
 let registered2: authUserId;
 let registered3: authUserId;

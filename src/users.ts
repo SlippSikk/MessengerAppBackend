@@ -2,7 +2,7 @@
 import { getData, setData } from './dataStore';
 import validator from 'validator';
 import HTTPError from 'http-errors';
-import { validateToken, userIndexToken, isUserIdValid } from './helper';
+import { validateToken, userIndexToken } from './helper';
 
 /**
  * For a valid user, returns information about their user ID,
@@ -105,7 +105,8 @@ export function usersAllV2(token: string) {
       email: p.email,
       nameFirst: p.nameFirst,
       nameLast: p.nameLast,
-      handleStr: p.handleStr
+      handleStr: p.handleStr,
+      profileImgUrl: p.profileImgUrl
     }));
   return { users };
 }
@@ -117,7 +118,6 @@ export function usersAllV2(token: string) {
 
 export function userProfileV3(token: string, uId: number) {
   const data = getData();
-  const exists = 0;
   let flag = 1;
   if (!validateToken(token)) {
     throw HTTPError(403, 'token is not valid');
@@ -138,7 +138,8 @@ export function userProfileV3(token: string, uId: number) {
         email: idToView.email,
         nameFirst: idToView.nameFirst,
         nameLast: idToView.nameLast,
-        handleStr: idToView.handleStr
+        handleStr: idToView.handleStr,
+        profileImgUrl: idToView.profileImgUrl
       }
     };
   } else {
@@ -148,7 +149,8 @@ export function userProfileV3(token: string, uId: number) {
         email: idToViewD.email,
         nameFirst: idToViewD.nameFirst,
         nameLast: idToViewD.nameLast,
-        handleStr: idToViewD.handleStr
+        handleStr: idToViewD.handleStr,
+        profileImgUrl: idToViewD.profileImgUrl
       }
     };
   }

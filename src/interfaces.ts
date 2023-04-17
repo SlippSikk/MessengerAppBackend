@@ -19,7 +19,8 @@ interface users {
     token: string[],
     notifications: notifications[],
     resetCode: string,
-    permissionId: number
+    permissionId: number,
+    profileImgUrl: string
 }
 
 interface user {

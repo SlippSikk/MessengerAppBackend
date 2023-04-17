@@ -1,6 +1,6 @@
 import {
-  requestAuthRegister, requestClear, requestDmCreate, requestDmDetails,
-  requestDmList, requestDmRemove, requestDmLeave
+  requestAuthRegister, requestClear, requestDmCreate,
+  requestDmRemove, requestDmLeave
 } from '../wrappers';
 
 import { authUserId } from '../interfaces';

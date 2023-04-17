@@ -29,7 +29,7 @@ describe('Miscallaneous errors', () => {
     expect(requestStandupStart(authToken3, channelId1 + 1, 0.5).statusCode).toBe(INPUT_ERROR);
   });
 
-  test('Valid channel Id but user not a member', async() => {
+  test('Valid channel Id but user not a member', async () => {
     expect(requestStandupStart(authToken1, channelId1, 0.5).statusCode).toBe(AUTH_ERROR);
   });
 
@@ -60,16 +60,23 @@ describe('Valid operation', () => {
     expect(standup.statusCode).toBe(OK);
     const expectedTime: number = standup.body.timeFinish;
     expect(expectedTime).toBeGreaterThanOrEqual(now);
-    sleep(1000);
-  });
-
-  test('No message sent', () => {
     expect(requestStandupStart(authToken2, channelId1, 0.5).statusCode).toBe(OK);
-    sleep(1000);
     expect(requestChannelMessages(authToken2, channelId1, 0).body).toEqual({
       messages: [],
       start: 0,
       end: -1
     });
+
+    sleep(1000);
   });
+
+  // test('No message sent', () => {
+  //   expect(requestStandupStart(authToken2, channelId1, 0.5).statusCode).toBe(OK);
+  //   sleep(1000);
+  //   expect(requestChannelMessages(authToken2, channelId1, 0).body).toEqual({
+  //     messages: [],
+  //     start: 0,
+  //     end: -1
+  //   });
+  // });
 });

@@ -1,4 +1,4 @@
-import { requestAuthRegister, requestClear, requestDmCreate, requestDmDetails, requestDmList } from '../wrappers';
+import { requestAuthRegister, requestClear, requestDmCreate, requestDmDetails } from '../wrappers';
 
 import { authUserId } from '../interfaces';
 

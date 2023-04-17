@@ -1,7 +1,7 @@
 import HTTPError from 'http-errors';
 import { getData, setData } from './dataStore';
 import { getIdFromMessage, userObjToken, validateToken } from './helper';
-import { channels, notifications } from './interfaces';
+import { notifications } from './interfaces';
 
 /**
  * Retrieves the notifications for the user associated with the provided token.
@@ -156,7 +156,7 @@ export function reactNotification(messageId: number, token: string) {
     uId = Id.uId;
   }
 
-  if (dmId == -1) {
+  if (dmId === -1) {
     const channelIndex = data.channels.findIndex(element => element.channelId === channelId);
     inChannel = data.channels[channelIndex].allMembers.find(element => element.uId === uId);
   } else {
