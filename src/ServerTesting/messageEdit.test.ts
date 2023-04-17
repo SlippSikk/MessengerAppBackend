@@ -1,5 +1,4 @@
-import { requestAuthRegister, requestClear, requestChannelsCreate, requestChannelMessages, requestMessageSend, requestDmCreate, requestMessageSenddm, requestChannelJoin, requestMessageEdit, requestDmMessages } from '../wrappers';
-import { requestPermissionChange } from '../XujiWrap';
+import { requestAuthRegister, requestPermissionChange, requestClear, requestChannelsCreate, requestChannelMessages, requestMessageSend, requestDmCreate, requestMessageSenddm, requestChannelJoin, requestMessageEdit, requestDmMessages } from '../wrappers';
 const INPUT_ERROR = 400;
 const AUTH_ERROR = 403;
 

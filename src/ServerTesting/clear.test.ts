@@ -14,7 +14,8 @@ describe('correct return value', () => {
           email: 'csgo@gmail.com',
           nameFirst: 'Ab',
           nameLast: 'CDE',
-          handleStr: 'abcde'
+          handleStr: 'abcde',
+          profileImgUrl: expect.any(String)
         }
       ]
     });

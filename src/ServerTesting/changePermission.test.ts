@@ -1,5 +1,4 @@
-import { requestPermissionChange } from '../XujiWrap';
-import { requestAuthRegister, requestClear } from '../wrappers';
+import { requestAuthRegister, requestClear, requestPermissionChange } from '../wrappers';
 describe('test only for changePermission', () => {
   let authId1: number;
   let authId2: number;

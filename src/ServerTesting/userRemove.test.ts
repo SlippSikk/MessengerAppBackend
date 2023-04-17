@@ -1,5 +1,4 @@
-import { requestUserRemove } from '../XujiWrap';
-import { requestAuthRegister, requestClear, requestChannelsCreate, requestDmMessages, requestChannelJoin, requestChannelDetails, requestChannelMessages } from '../wrappers';
+import { requestAuthRegister, requestClear, requestUserRemove, requestChannelsCreate, requestDmMessages, requestChannelJoin, requestChannelDetails, requestChannelMessages } from '../wrappers';
 import { authUserId } from '../interfaces';
 import { requestDmCreate, requestDmDetails, requestMessageSend, requestMessageSenddm, requestUserProfileV3, requestuserSetemailV2, requestuserProfileSethandleV2, requestUsersAllV2 } from '../wrappers';
 let registered1: authUserId;
@@ -44,7 +43,7 @@ describe('vaild input', () => {
         email: 'duck@gmail.com',
         nameFirst: 'duck',
         nameLast: 'dash',
-        handleStr: 'duckdash'
+        handleStr: 'duckdash',
       }]
     });
   });
@@ -80,6 +79,7 @@ describe('vaild input', () => {
           nameFirst: 'duck',
           nameLast: 'dash',
           handleStr: expect.any(String),
+          profileImgUrl: expect.any(String)
         }
       ]
     });
@@ -104,7 +104,8 @@ describe('vaild input', () => {
         email: 'chick@gmail.com',
         nameFirst: 'Removed',
         nameLast: 'user',
-        handleStr: expect.any(String)
+        handleStr: expect.any(String),
+        profileImgUrl: expect.any(String)
       }
     });
   });

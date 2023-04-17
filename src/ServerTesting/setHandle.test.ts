@@ -46,7 +46,8 @@ describe('/user/profile/sethandle/v1', () => {
         email: 'csgo@gmail.com',
         nameFirst: 'Ab',
         nameLast: 'CDE',
-        handleStr: 'AbCats'
+        handleStr: 'AbCats',
+        profileImgUrl: expect.any(String)
       }
     });
   });
