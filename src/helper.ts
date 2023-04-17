@@ -421,7 +421,7 @@ export function sendMessages(channelId: number, uId: number, timeFinish: number)
     timeSent: timeFinish,
     reacts: [{
       reactId: 1,
-      allUsers: []
+      uIds: []
     }],
     isPinned: false
   });

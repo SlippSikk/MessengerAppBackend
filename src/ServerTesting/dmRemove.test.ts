@@ -16,15 +16,12 @@ beforeAll(() => {
   registered2 = requestAuthRegister('adam@gmail.com', 'adam123', 'Adam', 'B');
   uIds = [registered2.authUserId];
   dmId = requestDmCreate(registered.token, uIds).dmId;
-
-  
 });
 
 describe('Correct Dm Remove', () => {
   test('Correct removal', () => {
     expect(requestDmRemove(registered.token, dmId)).toStrictEqual({});
   });
-
 });
 
 describe('Incorrect Dm Remove', () => {
@@ -37,5 +34,4 @@ describe('Incorrect Dm Remove', () => {
     expect(requestDmRemove(registered2.token, dmId).error).toStrictEqual({ message: expect.any(String) });
     expect(requestDmRemove((registered2.token + Date.now()), dmId).error).toStrictEqual({ message: expect.any(String) });
   });
-
 });

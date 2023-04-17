@@ -41,10 +41,11 @@ interface messages {
     messageId: number,
     uId: number,
     message: string,
-    timeSent: number
+    timeSent: number,
     reacts: [{
         reactId: 1,
-        uIds: number[]
+        uIds: number[],
+        // isThisUserReacted?: boolean
     }],
     isPinned: boolean
 }

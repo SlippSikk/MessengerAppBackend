@@ -3,7 +3,6 @@ import { getData, setData } from './dataStore';
 import { getIdFromMessage, userObjToken, validateToken } from './helper';
 import { channels, notifications } from './interfaces';
 
-
 /**
  * Retrieves the notifications for the user associated with the provided token.
  *
@@ -59,7 +58,6 @@ export function tagChannelNotification(message: string, channelId: number, token
     }
   }
 }
-
 
 /**
  * Adds a notification for each user mentioned in a DM message.
@@ -128,7 +126,6 @@ export function addNotification(uId: number, channelId: number, dmId: number, to
   data.users[userIndex].notifications.unshift(notif);
   setData(data);
 }
-
 
 /**
  * Adds a notification to a user when someone reacts to their message in a channel or DM.

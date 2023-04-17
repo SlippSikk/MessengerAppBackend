@@ -59,10 +59,26 @@ export function dmMessagesV2(token: string, dmId: number, start: number): error 
     end = -1;
     endrange = dm.messages.length;
   }
-
+  const messages = findDm.messages.reverse().slice(start, endrange);
+  const returnMessage: any = [];
+  for (let i = 0; i < messages.length; i++) {
+    const status = messages[i].reacts[0].uIds.includes(currUser.uId);
+    returnMessage.push({
+      messageId: messages[i].messageId,
+      uId: messages[i].uId,
+      message: messages[i].message,
+      timeSent: messages[i].timeSent,
+      reacts: [{
+        reactId: 1,
+        uIds: messages[i].reacts[0].uIds,
+        isThisUserReacted: status
+      }],
+      isPinned: messages[i].isPinned
+    });
+  }
   // return
   return {
-    messages: findDm.messages.reverse().slice(start, endrange),
+    messages: returnMessage,
     start: start,
     end: end
   };

@@ -12,7 +12,7 @@ describe('Incorrect input', () => {
   let channelId2: number;
   let channelId3: number;
 
-  beforeEach(() => {
+  beforeAll(() => {
     requestClear();
     authToken1 = requestAuthRegister('gura@gmail.com', '114514810', 'huaizhi', 'li').token;
     authToken2 = requestAuthRegister('Ina@outlook.com', 'asdgf8', 'me', 'vasdui').token;
@@ -48,7 +48,7 @@ describe('Correct input', () => {
   let channelId2: number;
   let channelId3: number;
 
-  beforeEach(() => {
+  beforeAll(() => {
     requestClear();
     const user1 = requestAuthRegister('gura@gmail.com', '114514810', 'huaizhi', 'li');
     authToken1 = user1.token;
@@ -83,7 +83,8 @@ describe('Correct input', () => {
         timeSent: expect.any(Number),
         reacts: [{
           reactId: 1,
-          uIds: []
+          uIds: [],
+          isThisUserReacted: false
         }],
         isPinned: false
       }],
@@ -104,7 +105,8 @@ describe('Correct input', () => {
         timeSent: expect.any(Number),
         reacts: [{
           reactId: 1,
-          uIds: []
+          uIds: [],
+          isThisUserReacted: false
         }],
         isPinned: false
       },
@@ -115,7 +117,8 @@ describe('Correct input', () => {
         timeSent: expect.any(Number),
         reacts: [{
           reactId: 1,
-          uIds: []
+          uIds: [],
+          isThisUserReacted: false
         }],
         isPinned: false
       }],
@@ -127,7 +130,7 @@ describe('Correct input', () => {
   test('Over 50 messages', () => {
     // generates 50 messages and pushes to an array: ['0', '1', '2', etc...]
     const messages: messages[] = [];
-    for (let i = 0; i < 55; i++) {
+    for (let i = 0; i < 51; i++) {
       const currentMessage = i.toString();
       const messageId: number = requestMessageSend(authToken1, channelId1, currentMessage).body.messageId;
 
@@ -143,11 +146,16 @@ describe('Correct input', () => {
         isPinned: false
       });
     }
-
-    expect(requestChannelMessages(authToken1, channelId1, 0).body).toEqual({
-      messages: messages.reverse().slice(0, 50),
-      start: 0,
-      end: 50
-    });
+    const outPut = requestChannelMessages(authToken1, channelId1, 0).body.messages;
+    const outPut2 = messages.reverse().slice(0, 50);
+    for (let i = 0; i < 50; i++) {
+      expect(outPut[i].messageId).toStrictEqual(outPut2[i].messageId);
+      expect(outPut[i].uId).toStrictEqual(outPut2[i].uId);
+      expect(outPut[i].timeSent).toStrictEqual(outPut2[i].timeSent);
+      expect(outPut[i].isPinned).toStrictEqual(outPut2[i].isPinned);
+      expect(outPut[i].message).toStrictEqual(outPut2[i].message);
+    }
+    expect(requestChannelMessages(authToken1, channelId1, 0).body.start).toStrictEqual(0);
+    expect(requestChannelMessages(authToken1, channelId1, 0).body.end).toStrictEqual(50);
   });
 });

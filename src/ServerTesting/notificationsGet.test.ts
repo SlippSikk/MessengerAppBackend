@@ -12,9 +12,7 @@ let channelId1: number;
 let dmId1: number;
 let messageId1: number;
 
-
 describe('Function Testing', () => {
-
   beforeAll(() => {
     requestClear();
     registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
