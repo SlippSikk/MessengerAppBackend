@@ -87,7 +87,7 @@ export function channelsCreateV3(token: string, name: string, isPublic: boolean)
  * @returns {error: 'string'} - Error Message - Error message describing the error cause
  * @returns {channels: [{channelId: number}, {name: 'string'}]} - Array of channels that the user is a part of
  * @method GET
- * @summary 
+ * @summary
  * If the inputted token is valid, as in it exists in the array of users,
  * then this function will traverse through all existing channels using a for loop
  * and if this member is a part of that channel then it will add it to a new array containing
@@ -131,12 +131,12 @@ export function channelsListV3(token: string): { channels: channels[] } | error 
  * @returns {error: 'string'} - Error Message - Error message describing the error cause
  * @returns {channels: [{channelId: number}, {name: 'string'}]} - Array of all channels
  * @method GET
- * @summary 
+ * @summary
  * If the inputted token is valid, as in it exists in the array of users,
  * then this function will traverse through all existing channels using a for loop
  * then it will add it to a new array containing that channel's Id and name.
  * Once the for loop is complete, then the function will return an array of objects
- * where the objects have the channel's Ids and names. However, it will return 
+ * where the objects have the channel's Ids and names. However, it will return
  * an error if it was unsuccessful
  */
 export function channelsListAllV3(token: string): { channels: channels[] } | error {

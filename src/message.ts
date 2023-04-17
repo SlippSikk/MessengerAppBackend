@@ -15,7 +15,7 @@ import HTTPError from 'http-errors';
  * @returns {messageId: number} - The unique messageId that gets created upon creating a new message
  * @method POST
  * @summary
- * When given a valid token, dmId, message, timeSent. If the member is a part of the Dm. 
+ * When given a valid token, dmId, message, timeSent. If the member is a part of the Dm.
  * The desired message will be sent at a later time. If this action was successful then
  * the function will return a messageId, if it was unsuccessful it will return an error.
  */
@@ -90,7 +90,7 @@ export function messageSendLaterDmV1(token: string, dmId: number, message: strin
  * @returns {messageId: number} - The unique messageId that gets created upon creating a new message
  * @method POST
  * @summary
- * When given a valid token, channelId, message, timeSent. If the member is a part of the channel. 
+ * When given a valid token, channelId, message, timeSent. If the member is a part of the channel.
  * The desired message will be sent at a later time. If this action was successful then
  * the function will return a messageId, if it was unsuccessful it will return an error.
  */
@@ -156,16 +156,16 @@ export function messageSendLaterV1(token: string, channelId: number, message: st
 }
 
 /**
- * 
- * @param token 
- * @param messageId 
- * @param message 
+ *
+ * @param token
+ * @param messageId
+ * @param message
  * @returns {}
  * @method PUT
  * @summary
- * Given a message with ID messageId, updates its text with new text given in 
- * message. If the new message is an empty string, the message is deleted. 
- * NEW IN ITERATION 3: If a shared/standup message is edited, the entire 
+ * Given a message with ID messageId, updates its text with new text given in
+ * message. If the new message is an empty string, the message is deleted.
+ * NEW IN ITERATION 3: If a shared/standup message is edited, the entire
  * contents will be edited as if it was a normal message.
  */
 export function messageEditV2(token: string, messageId: number, message: string) {
@@ -229,12 +229,12 @@ export function messageEditV2(token: string, messageId: number, message: string)
 }
 
 /**
- * 
- * @param token 
- * @param messageId 
+ *
+ * @param token
+ * @param messageId
  * @returns {}
  * @method DELETE
- * @summary 
+ * @summary
  * Given a messageId for a message, removes the message from the channel/DM
  */
 export function messageRemoveV2(token: string, messageId: number) {

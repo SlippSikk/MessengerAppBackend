@@ -234,7 +234,7 @@ export function dmRemoveV2(token: string, dmId: number) {
  * @returns {name: string, members: string} - array of messages, start time, end time.
  * @method GET
  * @summary
- * When given a valid token. The function will return details of the given dmId. 
+ * When given a valid token. The function will return details of the given dmId.
  * If there was anything unsuccesful the function will return an error
  */
 export function dmDetailsV2(token: string, dmId: number): error | dmDetails {
