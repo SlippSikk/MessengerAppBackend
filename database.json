@@ -1,1 +1,1 @@
-{"users":[],"channels":[],"dms":[],"deletedUsers":[]}
+{"users":[{"uId":1,"email":"ilyas.baqaie@gmail.com","nameFirst":"Adam","nameLast":"Baqaie","handleStr":"adambaqaie","password":{"iv":"55da281f3c177009d621e9508f3ec39f","encryptedData":"cb26ab85339d8fbfb8e7ff6d6ee67635"},"token":[],"notifications":[],"resetCode":"661213923629","permissionId":1}],"channels":[],"dms":[],"deletedUsers":[]}
