@@ -1,5 +1,4 @@
-import { requestAuthRegister, requestClear } from '../wrappers';
-import { requestAuthPasswordResetRequest } from '../adamWrappers';
+import { requestAuthRegister, requestClear, requestAuthPasswordResetRequest } from '../wrappers';
 
 beforeEach(() => {
   requestClear();

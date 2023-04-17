@@ -1,5 +1,5 @@
-import { requestAuthRegister, requestClear } from '../wrappers';
-import { requestAuthPasswordResetReset } from '../adamWrappers';
+import { requestAuthRegister, requestClear, requestAuthPasswordResetReset } from '../wrappers';
+import { getData } from '../dataStore';
 
 // Global
 beforeEach(() => {
@@ -7,17 +7,19 @@ beforeEach(() => {
   requestAuthRegister('adam.baqaie@gmail.com', 'adam123', 'Adamk', 'Baqaie');
 });
 
-// describe('Correct Reset', () => {
+describe('Correct Reset', () => {
+  test('Correct resetcode', () => {
+    const data = getData();
 
-//     test('Correct resetcode', () => {
-//         expect(requestAuthPasswordResetReset('1234', 'hell11o').body.error).toStrictEqual({ message: expect.any(String) });
-//         expect(requestAuthPasswordResetReset('1234', 'hell11o').statusCode).toStrictEqual(400);
-//     });
-// });
+    expect(requestAuthPasswordResetReset(data.users[0].resetCode, 'hell11o').body).toStrictEqual({});
+    expect(requestAuthPasswordResetReset(data.users[0].resetCode, 'hell11o').statusCode).toStrictEqual(200);
+  });
+});
 
 describe('Incorrect Reset', () => {
   test('incorrect resetcode', () => {
-    expect(requestAuthPasswordResetReset('1234', 'hell11o').body.error).toStrictEqual({ message: expect.any(String) });
+    const data = getData();
+    expect(requestAuthPasswordResetReset(data.users[0].resetCode, 'helo').body.error).toStrictEqual({ message: expect.any(String) });
     expect(requestAuthPasswordResetReset('1234', 'hell11o').statusCode).toStrictEqual(400);
   });
   test('Short password', () => {
