@@ -13,7 +13,7 @@ import HTTPError from 'http-errors';
  * @summary
  * When given a valid token, queryStr. The function will search through every message sent
  * in both Dms and Channels that the user is a part of. And then it will return a string of
- * messages if the queryStr is included in it. However, if it is unsuccessful it will return an 
+ * messages if the queryStr is included in it. However, if it is unsuccessful it will return an
  * error.
  */
 export function searchV1(token: string, queryStr: string): error | { messages: messages[] } {
