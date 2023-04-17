@@ -5,6 +5,20 @@ import { dataTs, channel, dms, error, messageId, messages } from './interfaces';
 import { tagChannelNotification, tagDmNotification, reactNotification } from './notifications';
 import HTTPError from 'http-errors';
 
+/**
+ *
+ * @param {string} token - Unique token of a user
+ * @param {number} dmId - Unique Id of the Dm to send a message to
+ * @param {string} message - The message string
+ * @param {number} timeSent - Desired time to be sent
+ * @returns {error: 'string'} - Error Message - Error message describing the error cause
+ * @returns {messageId: number} - The unique messageId that gets created upon creating a new message
+ * @method POST
+ * @summary
+ * When given a valid token, dmId, message, timeSent. If the member is a part of the Dm. 
+ * The desired message will be sent at a later time. If this action was successful then
+ * the function will return a messageId, if it was unsuccessful it will return an error.
+ */
 export function messageSendLaterDmV1(token: string, dmId: number, message: string, timeSent: number): error | messageId {
   const data: dataTs = getData();
 
@@ -66,6 +80,20 @@ export function messageSendLaterDmV1(token: string, dmId: number, message: strin
   return { messageId: messageId };
 }
 
+/**
+ *
+ * @param {string} token - Unique token of a user
+ * @param {number} channelId - Unique Id of the channel to send a message to
+ * @param {string} message - The message string
+ * @param {number} timeSent - Desired time to be sent
+ * @returns {error: 'string'} - Error Message - Error message describing the error cause
+ * @returns {messageId: number} - The unique messageId that gets created upon creating a new message
+ * @method POST
+ * @summary
+ * When given a valid token, channelId, message, timeSent. If the member is a part of the channel. 
+ * The desired message will be sent at a later time. If this action was successful then
+ * the function will return a messageId, if it was unsuccessful it will return an error.
+ */
 export function messageSendLaterV1(token: string, channelId: number, message: string, timeSent: number): error | messageId {
   const data: dataTs = getData();
 
@@ -127,6 +155,19 @@ export function messageSendLaterV1(token: string, channelId: number, message: st
   return { messageId: messageId };
 }
 
+/**
+ * 
+ * @param token 
+ * @param messageId 
+ * @param message 
+ * @returns {}
+ * @method PUT
+ * @summary
+ * Given a message with ID messageId, updates its text with new text given in 
+ * message. If the new message is an empty string, the message is deleted. 
+ * NEW IN ITERATION 3: If a shared/standup message is edited, the entire 
+ * contents will be edited as if it was a normal message.
+ */
 export function messageEditV2(token: string, messageId: number, message: string) {
   const data: dataTs = getData();
   if (message.length > 1000) {
@@ -187,6 +228,15 @@ export function messageEditV2(token: string, messageId: number, message: string)
   throw HTTPError(400, 'Invalid messageId');
 }
 
+/**
+ * 
+ * @param token 
+ * @param messageId 
+ * @returns {}
+ * @method DELETE
+ * @summary 
+ * Given a messageId for a message, removes the message from the channel/DM
+ */
 export function messageRemoveV2(token: string, messageId: number) {
   return messageEditV2(token, messageId, '');
 }

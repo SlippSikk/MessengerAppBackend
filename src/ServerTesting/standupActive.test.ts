@@ -1,25 +1,9 @@
 
 import { requestClear, requestAuthRegister, requestChannelsCreate, requestStandupStart, requestStandupActive, requestChannelJoin } from '../wrappers';
+const sleep = require('atomic-sleep');
 
 const INPUT_ERROR = 400;
 const AUTH_ERROR = 403;
-
-/*
-test('Standup active', () => {
-  requestClear();
-  const authToken1 = requestAuthRegister('anna@gmail.com', 'aaa123', 'Anna', 'Adams').token;
-  const channelId1 = requestChannelsCreate(authToken1, 'Channel 1', true).body.channelId;
-  const timeFinish: number = requestStandupStart(authToken1, channelId1, 5).body.timeFinish;
-  expect(requestStandupActive(authToken1, channelId1).body).toStrictEqual({
-    isActive: true,
-    timeFinish: timeFinish
-  });
-});
-*/
-
-function sleep(milliseconds: number) {
-  return new Promise(resolve => setTimeout(resolve, milliseconds));
-}
 
 describe('Miscallaneous errors', () => {
   let authToken1: string;
@@ -37,22 +21,22 @@ describe('Miscallaneous errors', () => {
     requestChannelJoin(authToken3, channelId1);
   });
 
-  test('Invalid token', async() => {
+  test('Invalid token', () => {
     requestStandupStart(authToken2, channelId1, 1);
     expect(requestStandupActive(authToken1 + authToken2 + authToken3, channelId1).statusCode).toBe(AUTH_ERROR);
-    await sleep(1000);
+    sleep(1000);
   });
 
-  test('Invalid channel Id', async() => {
+  test('Invalid channel Id', () => {
     requestStandupStart(authToken2, channelId1, 1);
     expect(requestStandupActive(authToken3, channelId1 + 1).statusCode).toBe(INPUT_ERROR);
-    await sleep(1000);
+    sleep(1000);
   });
 
-  test('Valid channel Id but user not a member', async() => {
+  test('Valid channel Id but user not a member', () => {
     requestStandupStart(authToken2, channelId1, 1);
     expect(requestStandupActive(authToken1, channelId1).statusCode).toBe(AUTH_ERROR);
-    await sleep(1000);
+    sleep(1000);
   });
 });
 

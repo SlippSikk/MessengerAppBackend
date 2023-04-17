@@ -1,12 +1,9 @@
 import { requestClear, requestAuthRegister, requestChannelsCreate, requestStandupStart, requestStandupSend, requestChannelJoin, requestChannelMessages } from '../wrappers';
+const sleep = require('atomic-sleep');
 
 const INPUT_ERROR = 400;
 const AUTH_ERROR = 403;
 const OK = 200;
-
-function sleep(milliseconds: number) {
-  return new Promise(resolve => setTimeout(resolve, milliseconds));
-}
 
 describe('Miscallaneous errors', () => {
   let authToken1: string;
@@ -24,29 +21,29 @@ describe('Miscallaneous errors', () => {
     requestChannelJoin(authToken3, channelId1);
   });
 
-  test('Invalid token', async() => {
+  test('Invalid token', () => {
     requestStandupStart(authToken2, channelId1, 1);
     expect(requestStandupSend(authToken1 + authToken2 + authToken3, channelId1, 'test').statusCode).toBe(AUTH_ERROR);
-    await sleep(1000);
+    sleep(1000);
   });
 
-  test('Invalid channel Id', async() => {
+  test('Invalid channel Id', () => {
     requestStandupStart(authToken2, channelId1, 1);
     expect(requestStandupSend(authToken3, channelId1 + 1, 'test').statusCode).toBe(INPUT_ERROR);
-    await sleep(1000);
+    sleep(1000);
   });
 
-  test('Valid channel Id but user not a member', async() => {
+  test('Valid channel Id but user not a member', () => {
     requestStandupStart(authToken2, channelId1, 1);
     expect(requestStandupSend(authToken1, channelId1, 'test').statusCode).toBe(AUTH_ERROR);
-    await sleep(1000);
+    sleep(1000);
   });
 
-  test('Length is over 1000 characters', async() => {
+  test('Length is over 1000 characters', () => {
     const longString = Array(1002).join('x');
     requestStandupStart(authToken2, channelId1, 1);
     expect(requestStandupSend(authToken3, channelId1, longString).statusCode).toBe(INPUT_ERROR);
-    await sleep(1000);
+    sleep(1000);
   });
 
   test('No standup is active', () => {
@@ -54,7 +51,7 @@ describe('Miscallaneous errors', () => {
   });
 });
 
-test('Valid Operation', async() => {
+test('Valid Operation', () => {
   requestClear();
   const user1 = requestAuthRegister('anna@gmail.com', 'aaa123', 'Anna', 'Adams');
   const authId1 = user1.authUserId;
@@ -67,7 +64,7 @@ test('Valid Operation', async() => {
   requestStandupStart(authToken1, channelId1, 1);
   expect(requestStandupSend(authToken1, channelId1, 'First').statusCode).toBe(OK);
   expect(requestStandupSend(authToken2, channelId1, 'Second').statusCode).toBe(OK);
-  await sleep(1000);
+  sleep(1000);
 
   // user cannot send message to standup after it is finished
   expect(requestStandupSend(authToken1, channelId1, 'Third').statusCode).toBe(INPUT_ERROR);
