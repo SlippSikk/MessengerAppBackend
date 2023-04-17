@@ -42,39 +42,41 @@ describe('Miscallaneous errors', () => {
     expect(requestStandupSend(authToken2, channelId1, 'test').statusCode).toBe(INPUT_ERROR);
   });
 });
+describe('Valid operation', () => {
+  test('send messages', () => {
+    requestClear();
+    const user1 = requestAuthRegister('anna@gmail.com', 'aaa123', 'Anna', 'Adams');
+    const authId1 = user1.authUserId;
+    const authToken1 = user1.token;
+    const authToken2 = requestAuthRegister('bob@outlook.com', 'bbb123', 'Bob', 'Biggums').token;
 
-test('Valid Operation', () => {
-  requestClear();
-  const user1 = requestAuthRegister('anna@gmail.com', 'aaa123', 'Anna', 'Adams');
-  const authId1 = user1.authUserId;
-  const authToken1 = user1.token;
-  const authToken2 = requestAuthRegister('bob@outlook.com', 'bbb123', 'Bob', 'Biggums').token;
+    const channelId1 = requestChannelsCreate(authToken2, 'Channel 1', true).body.channelId;
+    requestChannelJoin(authToken1, channelId1);
 
-  const channelId1 = requestChannelsCreate(authToken2, 'Channel 1', true).body.channelId;
-  requestChannelJoin(authToken1, channelId1);
+    requestStandupStart(authToken1, channelId1, 1);
+    expect(requestStandupSend(authToken1, channelId1, 'First').statusCode).toBe(OK);
+    expect(requestStandupSend(authToken2, channelId1, 'Second').statusCode).toBe(OK);
 
-  requestStandupStart(authToken1, channelId1, 1);
-  expect(requestStandupSend(authToken1, channelId1, 'First').statusCode).toBe(OK);
-  expect(requestStandupSend(authToken2, channelId1, 'Second').statusCode).toBe(OK);
-  sleep(1000);
+    // user cannot send message to standup after it is finished
+    sleep(1000);
+    expect(requestStandupSend(authToken1, channelId1, 'Third').statusCode).toBe(INPUT_ERROR);
 
-  // user cannot send message to standup after it is finished
-  expect(requestStandupSend(authToken1, channelId1, 'Third').statusCode).toBe(INPUT_ERROR);
+    expect(requestChannelMessages(authToken2, channelId1, 0).body).toStrictEqual({
+      messages: [{
+        messageId: expect.any(Number),
+        uId: authId1,
+        message: 'annaadams: First\nbobbiggums: Second',
+        timeSent: expect.any(Number),
+        reacts: [{
+          reactId: 1,
+          uIds: [],
+          isThisUserReacted: false
+        }],
+        isPinned: false
 
-  expect(requestChannelMessages(authToken2, channelId1, 0).body).toStrictEqual({
-    messages: [{
-      messageId: expect.any(Number),
-      uId: authId1,
-      message: 'annaadams: First\nbobbiggums: Second',
-      timeSent: expect.any(Number),
-      reacts: [{
-        reactId: 1,
-        uIds: []
       }],
-      isPinned: false
-
-    }],
-    start: 0,
-    end: -1
+      start: 0,
+      end: -1
+    });
   });
 });

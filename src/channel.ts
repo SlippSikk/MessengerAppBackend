@@ -132,12 +132,28 @@ export function channelMessagesV3(token: string, channelId: number, start: numbe
     end = -1;
     endrange = channel.messages.length;
   }
-  return {
+  const messages = channel.messages.reverse().slice(start, endrange);
+  const returnMessage: any = [];
+  for (let i = 0; i < messages.length; i++) {
+    const status = messages[i].reacts[0].uIds.includes(authUserId);
+    returnMessage.push({
+      messageId: messages[i].messageId,
+      uId: messages[i].uId,
+      message: messages[i].message,
+      timeSent: messages[i].timeSent,
+      reacts: [{
+        reactId: 1,
+        uIds: messages[i].reacts[0].uIds,
+        isThisUserReacted: status
+      }],
+      isPinned: messages[i].isPinned
+    });
+  }
 
-    messages: channel.messages.reverse().slice(start, endrange),
+  return {
+    messages: returnMessage,
     start: start,
     end: end
-
   };
 }
 
