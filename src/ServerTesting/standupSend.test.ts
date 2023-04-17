@@ -21,25 +21,19 @@ describe('Miscallaneous errors', () => {
     requestChannelJoin(authToken3, channelId1);
   });
 
-  test('Invalid token', () => {
+
+
+  test('Errors', () => {
+    // 
     requestStandupStart(authToken2, channelId1, 1);
     expect(requestStandupSend(authToken1 + authToken2 + authToken3, channelId1, 'test').statusCode).toBe(AUTH_ERROR);
-    sleep(1000);
-  });
 
-  test('Invalid channel Id', () => {
     requestStandupStart(authToken2, channelId1, 1);
     expect(requestStandupSend(authToken3, channelId1 + 1, 'test').statusCode).toBe(INPUT_ERROR);
-    sleep(1000);
-  });
 
-  test('Valid channel Id but user not a member', () => {
     requestStandupStart(authToken2, channelId1, 1);
     expect(requestStandupSend(authToken1, channelId1, 'test').statusCode).toBe(AUTH_ERROR);
-    sleep(1000);
-  });
 
-  test('Length is over 1000 characters', () => {
     const longString = Array(1002).join('x');
     requestStandupStart(authToken2, channelId1, 1);
     expect(requestStandupSend(authToken3, channelId1, longString).statusCode).toBe(INPUT_ERROR);
@@ -86,3 +80,6 @@ test('Valid Operation', () => {
     end: -1
   });
 });
+
+
+
