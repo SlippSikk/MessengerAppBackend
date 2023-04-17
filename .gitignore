@@ -5,7 +5,6 @@ build
 coverage/
 .nyc_output
 results/
-src/database.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
