@@ -6,12 +6,12 @@ import { channelsListAllV3, channelsListV3, channelsCreateV3 } from './channels'
 import { channelDetailsV3, channelLeaveV2, channelAddownerV2, channelInviteV3, channelJoinV3, channelRemoveOwnerV2, channelMessagesV3 } from './channel';
 import { userProfileSethandleV2, userProfileSetemailV2, userProfileSetnameV2, usersAllV2, userProfileV3 } from './users';
 import { messageSenddmV2, messageSendV2, messageEditV2, messageRemoveV2, messageSendLaterV1, messageSendLaterDmV1 } from './message';
-import { messagePinV1 } from './messagePin';
-import { messageUnpinV1 } from './messageUnpin';
-import { messageShareV1 } from './messageShare';
+import { messagePinV1, messageUnpinV1, messageReactV1, messageUnreactV1, messageShareV1 } from './message';
+// import { messageUnpinV1 } from './messageUnpin';
+// import { messageShareV1 } from './messageShare';
 import { standupStartV1, standupActiveV1, standupSendV1 } from './standup';
-import { messageReactV1 } from './messageReact';
-import { messageUnreactV1 } from './messageUnreact';
+// import { messageReactV1 } from './messageReact';
+// import { messageUnreactV1 } from './messageUnreact';
 import { clearV1 } from './other';
 import { userRemove } from './userRemove';
 import { searchV1 } from './search';
@@ -20,7 +20,7 @@ import config from './config.json';
 import cors from 'cors';
 import errorHandler from 'middleware-http-errors';
 import { notificationsGet } from './notifications';
-import { PermissionChange } from './PermissionChange'
+import { PermissionChange } from './PermissionChange';
 // Set up web app
 const app = express();
 // Use middleware that allows us to access the JSON body of requests
@@ -266,7 +266,7 @@ app.post('/standup/start/v1', (req: Request, res: Response) => {
   const token = req.header('token');
 
   return res.json(standupStartV1(token, parseInt(channelId), parseInt(length)));
-})
+});
 
 app.get('/standup/active/v1', (req: Request, res: Response) => {
   const channelId = req.query.channelId as string;
@@ -280,7 +280,7 @@ app.post('/standup/send/v1', (req: Request, res: Response) => {
   const token = req.header('token');
 
   return res.json(standupSendV1(token, parseInt(channelId), message));
-})
+});
 app.post('/message/pin/v1', (req: Request, res: Response) => {
   const token = req.header('token');
   const { messageId } = req.body;
@@ -301,14 +301,11 @@ app.post('/message/share/v1', (req: Request, res: Response) => {
   res.json(messageShareV1(token, ogMessageId, message, channelId, dmId));
 });
 
-
 app.post('/admin/userpermission/change/v1', (req: Request, res: Response) => {
   const token = req.header('token');
   const { uId, permissionId } = req.body;
   return res.json(PermissionChange(token, uId, permissionId));
 });
-
-
 
 app.post('/message/react/v1', (req: Request, res: Response) => {
   const token = req.header('token');

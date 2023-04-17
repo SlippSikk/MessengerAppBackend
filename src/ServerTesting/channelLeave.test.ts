@@ -10,7 +10,11 @@ let registered2: authUserId;
 let channelId1: number;
 let channelId2: number;
 
-beforeEach(() => {
+afterAll(() => {
+  requestClear();
+});
+
+beforeAll(() => {
   requestClear();
   registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
   registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
@@ -52,6 +56,11 @@ describe('Function Testing', () => {
     expect(requestChannelAddowner(registered1.token, channelId1, registered2.authUserId).statusCode).toStrictEqual(403);
   });
   test('Owner leaves (not original owner)', () => {
+    requestClear();
+    registered1 = requestAuthRegister('duck@gmail.com', 'duck123', 'duck', 'dash');
+    registered2 = requestAuthRegister('chick@gmail.com', 'chick123', 'chick', 'mafia');
+    channelId1 = requestChannelsCreate(registered1.token, 'nest', true).body.channelId;
+    channelId2 = requestChannelsCreate(registered2.token, 'shed', true).body.channelId;
     requestChannelJoin(registered2.token, channelId1);
     expect(requestChannelAddowner(registered1.token, channelId1, registered2.authUserId).body).toStrictEqual({});
     expect(requestChanLeavenel(registered2.token, channelId1).body).toStrictEqual({});
