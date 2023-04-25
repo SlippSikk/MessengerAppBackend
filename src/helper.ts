@@ -3,6 +3,7 @@ import { channel, user, dms, password, users, dataTs } from './interfaces';
 
 import md5 from 'md5';
 import crypto from 'crypto';
+import { msgExistStats, msgStats } from './userStats';
 
 // Global Variables
 const randomWord = 'yT95GGuk3FGVzcaFfPXb';
@@ -427,4 +428,6 @@ export function sendMessages(channelId: number, uId: number, timeFinish: number)
   });
 
   setData(data);
+  msgExistStats(true, 1);
+  msgStats(uId);
 }

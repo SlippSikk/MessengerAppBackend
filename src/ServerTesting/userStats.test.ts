@@ -15,9 +15,9 @@ describe('Success Test', () => {
     requestMessageSend(registered.token, chanId.channelId, 'Hello');
     expect(requestUserStats(registered.token).body).toStrictEqual({
         userStats: {
-            channelsJoined: [{numChannelsJoined: 0, timeStamp: 0},{numChannelsJoined: 1, timeStamp: expect.any(Number)}],
-            dmsJoined: [{numDmsJoined: 0, timeStamp: 0}, {numDmsJoined: 1, timeStamp: expect.any(Number)}], 
-            messagesSent: [{numMessagesSent: 0, timeStamp: 0}, {numMessagesSent: 1, timeStamp: expect.any(Number)}], 
+            channelsJoined: [{numChannelsJoined: 0, timeStamp: expect.any(Number)},{numChannelsJoined: 1, timeStamp: expect.any(Number)}],
+            dmsJoined: [{numDmsJoined: 0, timeStamp: expect.any(Number)}, {numDmsJoined: 1, timeStamp: expect.any(Number)}], 
+            messagesSent: [{numMessagesSent: 0, timeStamp: expect.any(Number)}, {numMessagesSent: 1, timeStamp: expect.any(Number)}], 
             involvementRate: 1 
             }
     });

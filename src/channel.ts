@@ -64,7 +64,7 @@ export function channelInviteV3(token: string, channelId: number, uId: number) {
 
   setData(data);
   addNotification(uId, channelId, -1, token);
-  
+
   channelStats(uId, true);
 
   return {};

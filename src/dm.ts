@@ -3,7 +3,7 @@ import { error, dmId, user, dms, dmDetails, dmsOutput, dmMessages } from './inte
 import { validateToken, isUserIdValid, getHandle, getUser, getUIdFromToken, getDm, userObjToken } from './helper';
 import { getData, setData } from './dataStore';
 import HTTPError from 'http-errors';
-import { dmStats } from './userStats';
+import { dmStats, dmsExistStats, msgExistStats } from './userStats';
 
 /**
  *
@@ -198,8 +198,8 @@ export function dmCreateV2(token: string, uIds: number[]): dmId {
   dmStats(getUIdFromToken(token), true);
   for (const uId of uIds) {
     dmStats(uId, true);
-
   }
+  dmsExistStats(true);
   return { dmId: dmId };
 }
 
@@ -270,21 +270,24 @@ export function dmRemoveV2(token: string, dmId: number) {
     throw HTTPError(403, 'authorised user no longer in the DM');
   }
 
-
   const dmUsers = foundDm.members;
 
   // Removing dm
 
   const dmIndex = data.dms.findIndex(element => element.dmId === dmId);
+
+  // Consider editing to remove all at once
+  msgExistStats(false, data.dms[dmIndex].messages.length);
+
   data.dms.splice(dmIndex, 1);
 
   setData(data);
   dmStats(getUIdFromToken(token), false);
   for (const uId of dmUsers) {
-    dmStats(uId.uId, false)
+    dmStats(uId.uId, false);
   }
 
-
+  dmsExistStats(false);
   return {};
 }
 

@@ -32,7 +32,7 @@
 //   }
 
 //   // Get the dimensions of the image
-  
+
 //   const { width, height } = await image;
 
 //   // Check that the crop bounds are within the image dimensions
@@ -41,7 +41,6 @@
 // }
 
 //   // Check that xEnd is greater than xStart and yEnd is greater than yStart
-  
 
 //   // Check that the file is a JPEG
 //   const fileFormat = await Jimp.MIME_JPEG;

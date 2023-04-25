@@ -8,7 +8,24 @@ interface notifications {
     dmId: number,
     notificationMessage: string
 }
-
+interface channelsJoined {
+    numChannelsJoined: number,
+    timeStamp: number
+}
+interface dmsJoined {
+    numDmsJoined: number,
+    timeStamp: number
+}
+interface messagesSent {
+    numMessagesSent: number,
+    timeStamp: number
+}
+interface userStats {
+    channelsJoined: channelsJoined[],
+    dmsJoined: dmsJoined[],
+    messagesSent: messagesSent[],
+    involvementRate: number
+}
 interface users {
     uId: number,
     email: string,
@@ -22,27 +39,7 @@ interface users {
     permissionId: number,
     profileImgUrl: string,
     userStats: userStats
-    
-}
 
-interface userStats {
-    channelsJoined: channelsJoined[],
-    dmsJoined: dmsJoined[], 
-    messagesSent: messagesSent[], 
-    involvementRate: number   
-}
-
-interface channelsJoined {
-    numChannelsJoined: number,
-    timeStamp: number
-}
-interface dmsJoined {
-    numDmsJoined: number,
-    timeStamp: number
-}
-interface messagesSent {
-    numMessagesSent: number,
-    timeStamp: number
 }
 
 interface user {
@@ -119,11 +116,33 @@ interface dmMessages {
     start: number,
     end: number
 }
+
+interface channelsExist {
+    numChannelsExist: number,
+    timeStamp: number
+}
+interface dmsExist {
+    numDmsExist: number,
+    timeStamp: number
+}
+interface messagesExist {
+    numMessagesExist: number,
+    timeStamp: number
+}
+
+interface usersStats {
+    channelsExist: channelsExist[],
+    dmsExist: dmsExist[],
+    messagesExist: messagesExist[],
+    utilizationRate: number
+}
+
 interface dataTs {
     users: users[]
     channels: channel[]
     dms: dms[]
     deletedUsers: users[]
+    usersStats: usersStats
 }
 
 type timeFinish = { timeFinish: number };
@@ -141,5 +160,5 @@ type messageId = { messageId: number }
 export {
   users, channels, user, messages, dataTs, authUserId, error, channel,
   dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password, standup,
-  timeFinish, standupActive, notifications, messageId, userStats
+  timeFinish, standupActive, notifications, messageId, userStats, usersStats
 };
