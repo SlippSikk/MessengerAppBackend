@@ -61,17 +61,41 @@ app.post('/message/sendlaterdm/v1', (req: Request, res: Response) => {
   res.json(messageSendLaterDmV1(token, parseInt(dmId), message, timeSent));
 });
 
-app.post('/message/send/v2', (req: Request, res: Response) => {
-  const token = req.header('token');
-  const { channelId, message } = req.body;
-  res.json(messageSendV2(token, parseInt(channelId), message));
+// app.post('/message/send/v2', (req: Request, res: Response) => {
+//   const token = req.header('token');
+//   const { channelId, message } = req.body;
+//   res.json(messageSendV2(token, parseInt(channelId), message));
+// });
+
+app.post('/message/send/v2', async (req: Request, res: Response) => {
+  try {
+    const token = req.header('token');
+    const { channelId, message } = req.body;
+    const response = await messageSendV2(token, parseInt(channelId), message);
+    res.json(response);
+  } catch (error) {
+    console.error('Error in /message/send/v2:', error);
+    res.status(500).json({ error: 'An error occurred while processing the request.' });
+  }
 });
 
-app.post('/message/senddm/v2', (req: Request, res: Response) => {
-  const token = req.header('token');
-  const { dmId, message } = req.body;
+// app.post('/message/senddm/v2', (req: Request, res: Response) => {
+//   const token = req.header('token');
+//   const { dmId, message } = req.body;
 
-  res.json(messageSenddmV2(token, parseInt(dmId), message));
+//   res.json(messageSenddmV2(token, parseInt(dmId), message));
+// });
+
+app.post('/message/senddm/v2', async (req: Request, res: Response) => {
+  try {
+    const token = req.header('token');
+    const { dmId, message } = req.body;
+    const response = await messageSenddmV2(token, parseInt(dmId), message);
+    res.json(response);
+  } catch (error) {
+    console.error('Error in /message/senddm/v2:', error);
+    res.status(500).json({ error: 'An error occurred while processing the request.' });
+  }
 });
 
 app.put('/message/edit/v2', (req: Request, res: Response) => {

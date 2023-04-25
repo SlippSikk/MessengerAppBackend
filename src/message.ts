@@ -6,6 +6,26 @@ import { tagChannelNotification, tagDmNotification, reactNotification } from './
 import HTTPError from 'http-errors';
 import { msgExistStats, msgStats } from './userStats';
 
+import { Configuration, OpenAIApi } from 'openai'
+import dotenv from 'dotenv';
+dotenv.config();
+
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
+
+async function generateAIResponse(prompt: string) {
+  const completion = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: prompt,
+    temperature: 0.7,
+    max_tokens: 50
+  });
+  return completion.data.choices[0].text;
+}
+
+
 /**
  *
  * @param {string} token - Unique token of a user
@@ -259,7 +279,7 @@ export function messageRemoveV2(token: string, messageId: number) {
  * should share an ID with another message, even if that other message
  * is in a different channel or DM.
  */
-export const messageSenddmV2 = (token: string, dmId: number, message: string) => {
+export const messageSenddmV2 = async (token: string, dmId: number, message: string) => {
   const data: dataTs = getData();
 
   if (!isDmIdValid(dmId)) {
@@ -274,6 +294,19 @@ export const messageSenddmV2 = (token: string, dmId: number, message: string) =>
   if (!isDmMember(dmId, token)) {
     throw HTTPError(403, 'user is not member of channel');
   }
+
+ // Check if the message starts with '/chat' command
+ if (message.startsWith('/chat')) {
+  // Extract the question from the message
+  const question = message.slice('/chat'.length).trim();
+
+  // Generate the AI response
+  const aiResponse = await generateAIResponse(question);
+
+  // Modify the 'message' variable to store the AI response
+  message = `You: ${question}\n AI Response: ${aiResponse}`;
+}
+
   const messageId = createMessageId();
   const uId = getUIdFromToken(token) as number;
   const dmIndex: number = data.dms.findIndex(dm => dm.dmId === dmId);
@@ -307,7 +340,7 @@ export const messageSenddmV2 = (token: string, dmId: number, message: string) =>
  *  with another message, even if that other message is in a different channel or DM.
  */
 
-export const messageSendV2 = (token: string, channelId: number, message: string) => {
+export const messageSendV2 = async (token: string, channelId: number, message: string): Promise<{messageId: number}> => {
   const data: dataTs = getData();
 
   if (!isChannelIdValid(channelId)) {
@@ -323,6 +356,20 @@ export const messageSendV2 = (token: string, channelId: number, message: string)
   if (!isMember(channelId, uId)) {
     throw HTTPError(403, 'user is not member of channel');
   }
+  
+ // Check if the message starts with '/chat' command
+  if (message.startsWith('/chat')) {
+    // Extract the question from the message
+    const question = message.slice('/chat'.length).trim();
+
+    // Generate the AI response
+    const aiResponse = await generateAIResponse(question);
+
+    // Modify the 'message' variable to store the AI response
+    message = `You: ${question}\n AI Response: ${aiResponse}`;
+  }
+
+
   const messageId = createMessageId();
   const channelIndex: number = data.channels.findIndex(channel => channel.channelId === channelId);
   data.channels[channelIndex].messages.push({
@@ -747,7 +794,7 @@ export const messageUnreactV1 = (token: string, messageId: number, reactId: numb
  * message, so if the original message is edited/deleted, no change will
  * occur for the new message.
  */
-export const messageShareV1 = (token: string, ogMessageId: number, message: string, channelId: number, dmId: number) => {
+export const messageShareV1 = async (token: string, ogMessageId: number, message: string, channelId: number, dmId: number) => {
   let toChannel = false;
   let toDms = false;
   if (!validateToken(token)) {
@@ -785,10 +832,10 @@ export const messageShareV1 = (token: string, ogMessageId: number, message: stri
   const note = `${ogMessage}, Note: ${message}`;
   let sharedMessageId;
   if (toChannel) {
-    sharedMessageId = messageSendV2(token, channelId, note).messageId;
+    sharedMessageId = (await messageSendV2(token, channelId, note)).messageId;
   }
   if (toDms) {
-    sharedMessageId = messageSenddmV2(token, dmId, note).messageId;
+    sharedMessageId = (await messageSenddmV2(token, dmId, note)).messageId;
   }
   return { sharedMessageId: sharedMessageId };
 };
