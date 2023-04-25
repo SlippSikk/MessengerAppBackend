@@ -828,3 +828,20 @@ export function requestUserStats(token: string) {
 
   return { body, statusCode };
 }
+
+export function requestUsersStats(token: string) {
+  const res = request(
+    'GET',
+    `${url}:${port}/users/stats/v1`,
+    {
+      headers: {
+        token
+      },
+      timeout: 1000
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}

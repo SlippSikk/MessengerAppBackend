@@ -14,11 +14,11 @@ describe('Success Test', () => {
     requestDmCreate(registered.token, []);
     requestMessageSend(registered.token, chanId.channelId, 'Hello');
     expect(requestUsersStats(registered.token).body).toStrictEqual({
-        userStats: {
-            channelsExist: [{numChannelsExist: 0, timeStamp: 0},{numChannelsExist: 1, timeStamp: expect.any(Number)}],
-            dmsExist: [{numDmsExist: 0, timeStamp: 0}, {numDmsExist: 1, timeStamp: expect.any(Number)}], 
-            messagesExist: [{numMessagesExist: 0, timeStamp: 0}, {numMessagesExist: 1, timeStamp: expect.any(Number)}], 
-            involvementRate: 1 
+        workspaceStats: {
+            channelsExist: [{numChannelsExist: 0, timeStamp: expect.any(Number)},{numChannelsExist: 1, timeStamp: expect.any(Number)}],
+            dmsExist: [{numDmsExist: 0, timeStamp: expect.any(Number)}, {numDmsExist: 1, timeStamp: expect.any(Number)}], 
+            messagesExist: [{numMessagesExist: 0, timeStamp: expect.any(Number)}, {numMessagesExist: 1, timeStamp: expect.any(Number)}], 
+            utilizationRate: 1 
             }
     });
 

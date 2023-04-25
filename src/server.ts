@@ -22,7 +22,7 @@ import cors from 'cors';
 import errorHandler from 'middleware-http-errors';
 import { notificationsGet } from './notifications';
 import { PermissionChange } from './PermissionChange';
-import { userStatsV1 } from './userStats';
+import { usersStatsV1, userStatsV1 } from './userStats';
 // Set up web app
 const app = express();
 // Use middleware that allows us to access the JSON body of requests
@@ -341,6 +341,12 @@ app.get('/user/stats/v1', (req: Request, res: Response) => {
   const token = req.header('token');
 
   return res.json(userStatsV1(token));
+});
+
+app.get('/users/stats/v1', (req: Request, res: Response) => {
+  const token = req.header('token');
+
+  return res.json(usersStatsV1(token));
 });
 
 app.use('/static', express.static('static'));

@@ -82,9 +82,9 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
   const hashedToken = hashToken(nameConcat);
   const defaultImg:string = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Panda_Cub_from_Wolong%2C_Sichuan%2C_China.JPG/330px-Panda_Cub_from_Wolong%2C_Sichuan%2C_China.JPG'
   const stats: userStats = {
-    channelsJoined: [{numChannelsJoined: 0, timeStamp: 0}],
-    dmsJoined: [{numDmsJoined: 0, timeStamp: 0}], 
-    messagesSent: [{numMessagesSent: 0, timeStamp: 0}], 
+    channelsJoined: [{numChannelsJoined: 0, timeStamp: Math.floor((new Date()).getTime() / 1000)}],
+    dmsJoined: [{numDmsJoined: 0, timeStamp: Math.floor((new Date()).getTime() / 1000)}], 
+    messagesSent: [{numMessagesSent: 0, timeStamp: Math.floor((new Date()).getTime() / 1000)}], 
     involvementRate: 0  
   }
   const user: users = {

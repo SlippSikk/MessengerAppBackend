@@ -4,7 +4,7 @@ import { isDmIdValid, createMessageId, isChannelIdValid, isGlobalOwnerFromToken1
 import { dataTs, channel, dms, error, messageId, messages } from './interfaces';
 import { tagChannelNotification, tagDmNotification, reactNotification } from './notifications';
 import HTTPError from 'http-errors';
-import { msgStats } from './userStats';
+import { msgExistStats, msgStats } from './userStats';
 
 /**
  *
@@ -76,6 +76,7 @@ export function messageSendLaterDmV1(token: string, dmId: number, message: strin
   setData(data);
 
   msgStats(getUIdFromToken(token));
+  msgExistStats(true, 1);
   // notification
   tagDmNotification(message, dmId, token);
 
@@ -151,6 +152,7 @@ export function messageSendLaterV1(token: string, channelId: number, message: st
 
   setData(data);
   msgStats(getUIdFromToken(token));
+  msgExistStats(true, 1);
 
   // notification
   tagChannelNotification(message, channelId, token);
@@ -241,6 +243,7 @@ export function messageEditV2(token: string, messageId: number, message: string)
  * Given a messageId for a message, removes the message from the channel/DM
  */
 export function messageRemoveV2(token: string, messageId: number) {
+  msgExistStats(false, 1);
   return messageEditV2(token, messageId, '');
 }
 
@@ -287,6 +290,7 @@ export const messageSenddmV2 = (token: string, dmId: number, message: string) =>
   });
   setData(data);
   msgStats(getUIdFromToken(token));
+  msgExistStats(true, 1);
   tagDmNotification(message, dmId, token);
   return { messageId: messageId };
 };
@@ -335,6 +339,7 @@ export const messageSendV2 = (token: string, channelId: number, message: string)
   setData(data);
 
   msgStats(getUIdFromToken(token));
+  msgExistStats(true, 1);
   tagChannelNotification(message, channelId, token);
   return { messageId: messageId };
 };
