@@ -1,6 +1,6 @@
 import { getData, setData } from './dataStore';
 import validator from 'validator';
-import { users, authUserId, error } from './interfaces';
+import { users, authUserId, error, userStats } from './interfaces';
 import HTTPError from 'http-errors';
 import { encrypt, findPassword, hashToken, userIndexToken } from './helper';
 import nodemailer from 'nodemailer';
@@ -81,6 +81,12 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
   // Hash token
   const hashedToken = hashToken(nameConcat);
   const defaultImg:string = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Panda_Cub_from_Wolong%2C_Sichuan%2C_China.JPG/330px-Panda_Cub_from_Wolong%2C_Sichuan%2C_China.JPG'
+  const stats: userStats = {
+    channelsJoined: [{numChannelsJoined: 0, timeStamp: 0}],
+    dmsJoined: [{numDmsJoined: 0, timeStamp: 0}], 
+    messagesSent: [{numMessagesSent: 0, timeStamp: 0}], 
+    involvementRate: 0  
+  }
   const user: users = {
     uId: Id,
     email: email,
@@ -92,7 +98,8 @@ function authRegisterV3(email: string, password: string, nameFirst: string, name
     notifications: [],
     resetCode: 'NO',
     permissionId: permissionId,
-    profileImgUrl: defaultImg
+    profileImgUrl: defaultImg,
+    userStats: stats,
   };
 
   data.users.push(user);

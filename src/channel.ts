@@ -3,6 +3,7 @@ import { getData, setData } from './dataStore';
 import { isChannelIdValid, validateToken, isUserIdValid, getUIdFromToken, isOwner, getChannel, isMember, getUser, isOwnerByToken, isGlobalOwnerFromToken1, isGlobalOwnerFromUid } from './helper';
 import { user, channel, dataTs } from './interfaces';
 import { addNotification } from './notifications';
+import { channelStats } from './userStats';
 // import { standupActiveV1 } from './helper';
 export function channelJoinV3(token: string, channelId: number) {
   const data: dataTs = getData();
@@ -29,6 +30,7 @@ export function channelJoinV3(token: string, channelId: number) {
   const userObj = getUser(authUserId);
   data.channels[channelIndex].allMembers.push(userObj);
   setData(data);
+  channelStats(getUIdFromToken(token), true);
   return {};
 }
 
@@ -59,8 +61,12 @@ export function channelInviteV3(token: string, channelId: number, uId: number) {
   // finally adds user to channel
   const userObj = getUser(uId);
   data.channels[channelIndex].allMembers.push(userObj);
+
   setData(data);
   addNotification(uId, channelId, -1, token);
+  
+  channelStats(uId, true);
+
   return {};
 }
 
@@ -256,5 +262,6 @@ export const channelLeaveV2 = (token: string, channelId: number) => {
   data.channels[channelIndex].ownerMembers = channel.ownerMembers.filter(owner => owner.uId !== uId);
   data.channels[channelIndex].allMembers = channel.allMembers.filter(member => member.uId !== uId);
   setData(data);
+  channelStats(getUIdFromToken(token), false);
   return {};
 };

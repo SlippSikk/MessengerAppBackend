@@ -811,3 +811,20 @@ export function requestAuthPasswordResetReset(resetCode: string, newPassword: st
 
   return { body, statusCode };
 }
+
+export function requestUserStats(token: string) {
+  const res = request(
+    'GET',
+    `${url}:${port}/user/stats/v1`,
+    {
+      headers: {
+        token
+      },
+      timeout: 1000
+    }
+  );
+  const body = JSON.parse(res.body as string);
+  const statusCode = res.statusCode;
+
+  return { body, statusCode };
+}

@@ -6,7 +6,8 @@
         "lint-fix": "eslint --fix src/*.ts",
         "start": "ts-node -T src/server.ts",
         "ts-node-coverage": "nyc --reporter=text --reporter=lcov ts-node -T src/server.ts",
-        "posttest": "pkill -f 'node_modules/sync-rpc/lib/worker.js' > /dev/null 2>&1"
+        "posttest": "pkill -f 'node_modules/sync-rpc/lib/worker.js' > /dev/null 2>&1",
+        "jest": "jest"
     },
     "dependencies": {
         "atomic-sleep": "^1.0.0",
