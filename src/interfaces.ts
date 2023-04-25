@@ -20,7 +20,29 @@ interface users {
     notifications: notifications[],
     resetCode: string,
     permissionId: number,
-    profileImgUrl: string
+    profileImgUrl: string,
+    userStats: userStats
+    
+}
+
+interface userStats {
+    channelsJoined: channelsJoined[],
+    dmsJoined: dmsJoined[], 
+    messagesSent: messagesSent[], 
+    involvementRate: number   
+}
+
+interface channelsJoined {
+    numChannelsJoined: number,
+    timeStamp: number
+}
+interface dmsJoined {
+    numDmsJoined: number,
+    timeStamp: number
+}
+interface messagesSent {
+    numMessagesSent: number,
+    timeStamp: number
 }
 
 interface user {
@@ -119,5 +141,5 @@ type messageId = { messageId: number }
 export {
   users, channels, user, messages, dataTs, authUserId, error, channel,
   dmMessages, dmDetails, dmsOutput, dmId, dms, channelId, password, standup,
-  timeFinish, standupActive, notifications, messageId
+  timeFinish, standupActive, notifications, messageId, userStats
 };

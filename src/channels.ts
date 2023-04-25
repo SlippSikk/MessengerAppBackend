@@ -3,6 +3,7 @@ import { getData, setData } from './dataStore';
 import { getUIdFromToken, userIndexToken, validateToken } from './helper';
 import { error, channel, channelId, channels } from './interfaces';
 import HTTPError from 'http-errors';
+import { channelStats } from './userStats';
 
 /**
  * @param {string} token - Unique Id of a user
@@ -78,6 +79,8 @@ export function channelsCreateV3(token: string, name: string, isPublic: boolean)
   data.channels.push(newChannel);
 
   setData(data);
+
+  channelStats(getUIdFromToken(token), true);
 
   return { channelId: channelId };
 }
