@@ -1,12 +1,12 @@
 // YOU SHOULD MODIFY THIS OBJECT BELOW
 import fs from 'fs';
 const stats = {
-  channelsExist: [{numChannelsExist: 0, timeStamp:  Math.floor((new Date()).getTime() / 1000)}],
-  dmsExist: [{numDmsExist: 0, timeStamp:  Math.floor((new Date()).getTime() / 1000)}], 
-  messagesExist: [{numMessagesExist: 0, timeStamp: Math.floor((new Date()).getTime() / 1000)}], 
-  utilizationRate: 0 
-  
-}
+  channelsExist: [{ numChannelsExist: 0, timeStamp: Math.floor((new Date()).getTime() / 1000) }],
+  dmsExist: [{ numDmsExist: 0, timeStamp: Math.floor((new Date()).getTime() / 1000) }],
+  messagesExist: [{ numMessagesExist: 0, timeStamp: Math.floor((new Date()).getTime() / 1000) }],
+  utilizationRate: 0
+
+};
 import { dataTs } from './interfaces';
 let data: dataTs = {
   users: [],

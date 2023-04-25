@@ -702,7 +702,6 @@ export function requestMessageUnreact(token: string, messageId: number, reactId:
   return { body, statusCode };
 }
 
-
 export function requestPermissionChange(token: string, uId: number, permissionId: number) {
   const res = request(
     'POST',
@@ -718,10 +717,10 @@ export function requestPermissionChange(token: string, uId: number, permissionId
       timeout: 2000
     }
   );
-  const body = JSON.parse(res.body as string);  //
+  const body = JSON.parse(res.body as string); //
   const statusCode = res.statusCode;
   return { body, statusCode };
-  }
+}
 export function requestNotificationsGet(token: string) {
   const res = request(
     'GET',
@@ -737,7 +736,6 @@ export function requestNotificationsGet(token: string) {
 
   return { body, statusCode };
 }
-
 
 export function requestUserRemove(token: string, uId: number) {
   const res = request(
@@ -779,8 +777,8 @@ export function requestUploadPhoto(token: string, imgUrl: string, xStart: number
     `${url}:${port}/user/profile/uploadphoto/v1`,
     {
       json: {
-        imgUrl: imgUrl, 
-        xStart: xStart, 
+        imgUrl: imgUrl,
+        xStart: xStart,
         yStart: yStart,
         xEnd: xEnd,
         yEnd: yEnd
@@ -791,7 +789,7 @@ export function requestUploadPhoto(token: string, imgUrl: string, xStart: number
       timeout: 2000
     }
   );
-  const body = JSON.parse(res.body as string);  //
+  const body = JSON.parse(res.body as string); //
   const statusCode = res.statusCode;
 
   return { body, statusCode };

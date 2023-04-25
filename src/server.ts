@@ -334,7 +334,7 @@ app.delete('/admin/user/remove/v1', (req: Request, res: Response) => {
 //   const token = req.header('token') as string;
 //   const { imgUrl, xStart, yStart, xEnd, yEnd } = req.body;
 //   res.json(uploadPhoto(token, imgUrl, xStart, yStart, xEnd, yEnd));
-  
+
 // });
 
 app.get('/user/stats/v1', (req: Request, res: Response) => {

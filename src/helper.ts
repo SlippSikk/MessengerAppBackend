@@ -427,7 +427,6 @@ export function sendMessages(channelId: number, uId: number, timeFinish: number)
     isPinned: false
   });
 
-
   setData(data);
   msgExistStats(true, 1);
   msgStats(uId);
