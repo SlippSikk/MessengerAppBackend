@@ -1,5 +1,5 @@
 import { authUserId, channelId } from '../interfaces';
-import { requestUserStats, requestClear, requestAuthRegister, requestChannelsCreate, requestDmCreate, requestMessageSend} from './../wrappers';
+import { requestUserStats, requestClear, requestAuthRegister, requestChannelsCreate, requestDmCreate, requestMessageSend, requestChanLeavenel} from './../wrappers';
 
 // test success cases
 let registered: authUserId;
@@ -13,12 +13,15 @@ describe('Success Test', () => {
     chanId = requestChannelsCreate(registered.token, 'nest', false).body;
     requestDmCreate(registered.token, []);
     requestMessageSend(registered.token, chanId.channelId, 'Hello');
+    requestChanLeavenel(registered.token, chanId.channelId)
+    requestClear();
+    registered = requestAuthRegister('adam@gmail.com', 'hello123', 'Adam', 'Baqaie')
     expect(requestUserStats(registered.token).body).toStrictEqual({
         userStats: {
-            channelsJoined: [{numChannelsJoined: 0, timeStamp: expect.any(Number)},{numChannelsJoined: 1, timeStamp: expect.any(Number)}],
-            dmsJoined: [{numDmsJoined: 0, timeStamp: expect.any(Number)}, {numDmsJoined: 1, timeStamp: expect.any(Number)}], 
-            messagesSent: [{numMessagesSent: 0, timeStamp: expect.any(Number)}, {numMessagesSent: 1, timeStamp: expect.any(Number)}], 
-            involvementRate: 1 
+            channelsJoined: [{numChannelsJoined: 0, timeStamp: expect.any(Number)}],
+            dmsJoined: [{numDmsJoined: 0, timeStamp: expect.any(Number)}], 
+            messagesSent: [{numMessagesSent: 0, timeStamp: expect.any(Number)}], 
+            involvementRate: 0 
             }
     });
 

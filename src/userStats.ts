@@ -208,11 +208,13 @@ function involvement(uId: number) {
   const denominator = (msgTotal + dmTotal + channelTotal);
   if (denominator === 0) {
     involvement = 0;
+  } else {
+    involvement = (numChan + numDm + numMsg) / denominator;
+    if (involvement > 1) {
+      involvement = 1;
+    }
   }
-  involvement = (numChan + numDm + numMsg) / denominator;
-  if (involvement > 1) {
-    involvement = 1;
-  }
+
   userStat.involvementRate = involvement;
 
   const userIndex = data.users.findIndex(element => element.uId === uId);
